@@ -2,7 +2,7 @@ FROM node:18
 
 WORKDIR /usr/src/app
 
-COPY build ./
+COPY build ./usr/src/app
 
 EXPOSE 8080
 
