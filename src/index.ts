@@ -31,8 +31,8 @@ app.use(
 // mysql connection
 mySqlConnect((err: Error) => {
   try {
-    if (err) console.log(err.message);
-    console.log("mysql connected");
+    if (err) console.log(err);
+    else console.log("mysql connected");
   } catch (error) {
     console.log(error);
   }
