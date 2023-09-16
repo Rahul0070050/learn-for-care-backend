@@ -3,23 +3,24 @@ import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";
+import compression from "compression";
 
 import { mySqlConnect } from "./db/mysql";
 import userRouter from "./routes/userRouter";
-import { getRedisConnection } from "./db/redis";
 const app = express();
 
 dotenv.config();
 
 // middleware
+app.use(compression());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(helmet());
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
-app.use(express.urlencoded({ extended: true }));
-app.use(helmet());
 app.use(
   cors({
     origin: ["*"],
@@ -30,18 +31,8 @@ app.use(
 // mysql connection
 mySqlConnect((err: Error) => {
   try {
-    if (err) throw err;
+    if (err) console.log(err.message);
     console.log("mysql connected");
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-//redis connection
-getRedisConnection((err: Error) => {
-  try {
-    if (err) throw err;
-    console.log("redis connection successful");
   } catch (error) {
     console.log(error);
   }
