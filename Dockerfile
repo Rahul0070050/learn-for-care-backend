@@ -6,4 +6,4 @@ COPY build ./usr/src/app
 
 EXPOSE 8080
 
-CMD [ "node", "build/server.js" ]
+CMD [ "node", "build/index.js" ]
