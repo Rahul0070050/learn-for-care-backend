@@ -29,7 +29,7 @@ export const insertUser = (user: User, otp: number) => {
   });
 };
 
-export function loginUser(info: LoginData) {
+export function getUserByEmail(info: LoginData) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `SELECT * FROM users WHERE email = ?;`;
@@ -65,6 +65,39 @@ export function getOtp(email: string) {
         if (err) return reject(err.message);
         else return resolve(result);
       });
+    } catch (error: any) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function deleteUser(email: string) {
+  return new Promise((resolve, reject) => {
+    try {
+      const userDeleteQuery = `DELETE FROM users WHERE email=?`;
+      db.query(userDeleteQuery, [email], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
+    } catch (error: any) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function saveError(error: object, lineNumber: number, file: string) {
+  return new Promise((resolve, reject) => {
+    try {
+      let errorObject = JSON.stringify(error);
+      const saveErrorQuery = `INSERT INTO errors (error, lineNumber, file) VALUES (?,?,?)`;
+      db.query(
+        saveErrorQuery,
+        [errorObject, lineNumber, file],
+        (err, result) => {
+          if (err) return reject(err.message);
+          else return resolve(result);
+        }
+      );
     } catch (error: any) {
       reject(error?.message);
     }

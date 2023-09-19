@@ -9,13 +9,13 @@ export const db = mysql.createPool({
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
   connectionLimit: 10, // Number of connections in the pool
-  multipleStatements: false
+  multipleStatements: false,
 });
 
 export function mySqlConnect(done: CallableFunction) {
   db.getConnection((err) => {
     if (err) return done(err);
-    
+
     const userTable = `
       CREATE TABLE IF NOT EXISTS users (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -38,6 +38,20 @@ export function mySqlConnect(done: CallableFunction) {
   );`;
 
     db.query(userTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log(result);
+    });
+
+    const unexpectedError = `
+      CREATE TABLE IF NOT EXISTS errors (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      date DATETIME DEFAULT NOW(),
+      error TEXT DEFAULT NULL,
+      lineNumber VARCHAR(50) DEFAULT NULL,
+      file varchar(100) DEFAULT NULL
+  );`;
+
+    db.query(unexpectedError, (err, result) => {
       if (err) console.log(err);
       else console.log(result);
     });

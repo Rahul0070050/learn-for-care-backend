@@ -23,7 +23,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["*"],
+    origin: ["http://localhost:3000", "*", "https://test.learnforcare.com"],
     credentials: true,
   })
 );
@@ -44,7 +44,9 @@ app.use("/api/user", userRouter);
 // error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
-  res.status(500).send("Something broke!");
+  res
+    .status(500)
+    .json({ ok: false, error: err?.message, message: "Something broke!" });
 });
 
 const PORT = process.env.PORT || 3001;

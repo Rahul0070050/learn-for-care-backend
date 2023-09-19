@@ -9,7 +9,7 @@ export function sentEmail(email: string, otp: number) {
 
     try {
       const transporter = nodemailer.createTransport({
-        service: "gmail",
+        service: "Outlook",
         secure: false,
         auth: {
           user: process.env.EMAIL_ID,

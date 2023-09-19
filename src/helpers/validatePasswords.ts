@@ -9,7 +9,7 @@ export const hashPassword = (password: string) => {
         else return resolve(hash);
       });
     } catch (error: any) {
-      reject(error?.message);
+      reject(error.message);
     }
   });
 };
@@ -22,7 +22,7 @@ export const validatePassword = (password: string, hashedPassword: string) => {
         else return resolve(result);
       });
     } catch (error: any) {
-      reject(error?.message);
+      reject(error.message);
     }
   });
 };

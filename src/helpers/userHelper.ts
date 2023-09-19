@@ -21,10 +21,10 @@ export function validateUserInfo(userInfo: User) {
           resolve(res);
         })
         .catch((err) => {
-          reject(err.errors);
+          reject(err?.message);
         });
     } catch (error: any) {
-      reject(error?.errors);
+      reject(error?.message);
     }
   });
 }
@@ -43,7 +43,7 @@ export function checkOtpInfo(otpReqInfo: OtpInfo) {
           resolve(result);
         })
         .catch((err) => {
-          reject(err.message);
+          reject(err?.message);
         });
     } catch (error: any) {
       reject(error?.message);

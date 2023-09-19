@@ -5,8 +5,8 @@ import {
   validateUserLoginData,
 } from "../helpers/userHelper";
 import { sentEmail } from "../helpers/sendEmail";
-import { activateUser, getOtp, insertUser, loginUser } from "../db/mysql/users";
-import { hashPassword, validatePassword } from "../helpers/validatePassowrds";
+import { activateUser, getOtp, insertUser, getUserByEmail } from "../db/mysql/users";
+import { hashPassword, validatePassword } from "../helpers/validatePasswords";
 import { LoginData } from "../type/user";
 import { createToken } from "../helpers/jwt";
 
@@ -18,7 +18,6 @@ export const userController = {
           hashPassword(result.password).then((hashedPassword) => {
             let otp = Number((Math.random() + "").substring(2, 8));
             result.password = hashedPassword;
-
             insertUser(result, otp)
               .then(() => {
                 sentEmail(result.email, otp).then((sentOtpRes) => {
@@ -26,6 +25,12 @@ export const userController = {
                     ok: true,
                     message: "OTP sent check your email",
                     response: sentOtpRes,
+                  });
+                }).catch(err => {
+                  res.status(206).json({
+                    ok: false,
+                    message: "some error occurred please try again later",
+                    response: err,
                   });
                 });
               })
@@ -36,6 +41,12 @@ export const userController = {
                   message: "values not acceptable",
                 });
               });
+          }).catch(err => {
+            res.status(406).json({
+              ok: false,
+              message: "some error occurred please try again later",
+              response: err,
+            });
           });
         })
         .catch((err) => {
@@ -69,13 +80,19 @@ export const userController = {
                 .catch((err) => {
                   res.status(500).json({
                     ok: false,
-                    message: "some error occurs",
+                    message: "some error occurs try again later",
                     error: err,
                   });
                 });
             } else {
               res.status(406).json({ ok: false, message: "incorrect otp" });
             }
+          }).catch(err => {
+            res.status(500).json({
+              ok: false,
+              message: "some error occurs try again later",
+              error: err,
+            });
           });
         })
         .catch((err) => {
@@ -95,7 +112,7 @@ export const userController = {
     try {
       validateUserLoginData(req.body)
         .then((loginInfo: any) => {
-          loginUser(loginInfo as LoginData)
+          getUserByEmail(loginInfo as LoginData)
             .then((userData: any) => {
               if (userData.length <= 0) {
                 res.status(404).json({
