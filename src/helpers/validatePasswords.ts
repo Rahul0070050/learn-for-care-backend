@@ -1,5 +1,4 @@
 import bcrypt from "bcrypt";
-import { createToken } from "./jwt";
 
 export const hashPassword = (password: string) => {
   return new Promise((resolve, reject) => {

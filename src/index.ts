@@ -5,8 +5,8 @@ import helmet from "helmet";
 import bodyParser from "body-parser";
 import compression from "compression";
 
-import { mySqlConnect } from "./db/mysql";
-import userRouter from "./routes/userRouter";
+import { mySqlConnect } from "./conf/mysql";
+import userRouter from "./routes/authRouter";
 const app = express();
 
 dotenv.config();
@@ -23,7 +23,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["http://localhost:3000", "*", "https://test.learnforcare.com"],
+    origin: ["http://localhost:3000", "https://test.learnforcare.com"],
     credentials: true,
   })
 );

@@ -1,5 +1,6 @@
-import { db } from "./index";
+import { db } from "../../conf/mysql";
 import { LoginData, User } from "../../type/user";
+import { generatorOtp } from "../../utils/auth";
 
 export const insertUser = (user: User, otp: number) => {
   return new Promise((resolve, reject) => {
@@ -57,7 +58,24 @@ export function activateUser(email: string) {
   });
 }
 
-export function getOtp(email: string) {
+export function saveOtpToDB(email: string) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let otp = await Number(generatorOtp());
+      console.log(otp, email);
+      
+      let setOtpQuery = `UPDATE users SET otp = ? WHERE email = ?;`;
+      db.query(setOtpQuery, [otp, email], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve({otp,email});
+      });
+    } catch (error: any) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getOtpFromDB(email: string) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `SELECT otp FROM users WHERE email = ? limit 1;`;

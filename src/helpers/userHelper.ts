@@ -1,4 +1,4 @@
-import { LoginData, OtpInfo, User } from "../type/user";
+import { LoginData, OtpInfo, User, ResentOtpInfo } from "../type/user";
 import { object, string, number, date, InferType } from "yup";
 
 export function validateUserInfo(userInfo: User) {
@@ -59,13 +59,35 @@ export function validateUserLoginData(info: LoginData) {
     });
 
     try {
-      checkInfo.validate(info).then(result => {
-        resolve(result)
-      }).catch(err => {
-        reject(err?.message)
-      })
+      checkInfo
+        .validate(info)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
     } catch (error: any) {
-      reject(error?.message)
+      reject(error?.message);
     }
+  });
+}
+
+export function checkReSendOtpInfo(info: ResentOtpInfo) {
+  return new Promise((resolve, reject) => {
+    let checkInfo = object({
+      email: string().email().required()
+    });
+    
+    try {
+      checkInfo
+        .validate(info)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err: any) => {
+          reject(err?.message);
+        });
+    } catch (error: any) {}
   });
 }

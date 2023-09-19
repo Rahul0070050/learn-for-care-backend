@@ -1,22 +1,13 @@
-import nodemailer from "nodemailer";
 import { config } from "dotenv";
+import {mailer} from '../conf/nodeMailer'
 
 config();
 
-export function sentEmail(email: string, otp: number) {
+export default function sentOtpEmail(email: string, otp: number) {
   return new Promise((resolve, reject) => {
     console.log(otp);
 
     try {
-      const transporter = nodemailer.createTransport({
-        service: "Outlook",
-        secure: false,
-        auth: {
-          user: process.env.EMAIL_ID,
-          pass: process.env.EMAIL_PASSWORD,
-        },
-      });
-
       const mailData = {
         from: process.env.EMAIL_ID,
         to: email,
@@ -25,7 +16,7 @@ export function sentEmail(email: string, otp: number) {
         html: `<h3>OTP: ${otp}<h3/>`,
       };
 
-      transporter.sendMail(mailData, function (err, info) {
+      mailer().sendMail(mailData, function (err, info) {
         if (err) {
           reject(err.message);
         } else {
