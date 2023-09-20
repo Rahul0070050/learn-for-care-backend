@@ -15,14 +15,20 @@ export const insertUser = (user: User, otp: number) => {
           user?.password,
           user?.country,
           user?.city,
-          otp
+          otp,
         ],
         (err, result) => {
-          if (err) return reject(err.message);
-          resolve(result);
+          if (err) {
+            console.log(err);
+            return reject(err.message);
+          } else {
+            resolve(result);
+          }
         }
       );
     } catch (error: any) {
+      console.log(error);
+      
       reject(error?.message);
     }
   });
@@ -61,11 +67,11 @@ export function saveOtpToDB(email: string) {
     try {
       let otp = await Number(generatorOtp());
       console.log(otp, email);
-      
+
       let setOtpQuery = `UPDATE users SET otp = ? WHERE email = ?;`;
       db.query(setOtpQuery, [otp, email], (err, result) => {
         if (err) return reject(err.message);
-        else return resolve({otp,email});
+        else return resolve({ otp, email });
       });
     } catch (error: any) {
       reject(error?.message);
@@ -90,7 +96,7 @@ export function getOtpFromDB(email: string) {
 export function deleteInactivateUser(email: string) {
   return new Promise((resolve, reject) => {
     try {
-      const userDeleteQuery = `DELETE FROM users WHERE email=?`;
+      const userDeleteQuery = `DELETE FROM users WHERE email=?;`;
       db.query(userDeleteQuery, [email], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
@@ -105,7 +111,7 @@ export function saveError(error: object, lineNumber: number, file: string) {
   return new Promise((resolve, reject) => {
     try {
       let errorObject = JSON.stringify(error);
-      const saveErrorQuery = `INSERT INTO errors (error, lineNumber, file) VALUES (?,?,?)`;
+      const saveErrorQuery = `INSERT INTO errors (error, lineNumber, file) VALUES (?,?,?);`;
       db.query(
         saveErrorQuery,
         [errorObject, lineNumber, file],
