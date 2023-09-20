@@ -5,18 +5,16 @@ import { generatorOtp } from "../../utils/auth";
 export const insertUser = (user: User, otp: number) => {
   return new Promise((resolve, reject) => {
     try {
-      let insertQuery = `INSERT INTO users (username, email, type, address, password, country, city, phone, otp) VALUES (?,?,?,?,?,?,?,?,?);`;
+      let insertQuery = `INSERT INTO users (username, email, type, password, country, city, otp) VALUES (?,?,?,?,?,?,?,?);`;
       db.query(
         insertQuery,
         [
           user?.username,
           user?.email,
           user?.type,
-          user?.address,
           user?.password,
           user?.country,
           user?.city,
-          user?.phone,
           otp,
         ],
         (err, result) => {
