@@ -5,9 +5,7 @@ export function validateUserInfo(userInfo: User) {
   return new Promise((resolve, reject) => {
     let user = object({
       username: string().required(),
-      address: string().required(),
       email: string().required().email(),
-      phone: number().required(),
       password: string().required(),
       country: string().required(),
       type: string().required(),
