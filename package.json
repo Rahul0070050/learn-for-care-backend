@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/jsonwebtoken": "^9.0.2",
+    "@types/jsonwebtoken": "^9.0.3",
     "@types/otp-generator": "^4.0.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",

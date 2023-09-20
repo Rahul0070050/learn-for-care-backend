@@ -89,7 +89,7 @@ export function getOtpFromDB(email: string) {
   });
 }
 
-export function deleteUser(email: string) {
+export function deleteInactivateUser(email: string) {
   return new Promise((resolve, reject) => {
     try {
       const userDeleteQuery = `DELETE FROM users WHERE email=?`;
