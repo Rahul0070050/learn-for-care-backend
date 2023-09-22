@@ -1,5 +1,5 @@
 import { db } from "../../conf/mysql";
-import { LoginData, User } from "../../type/user";
+import { LoginData, User } from "../../type/auth";
 import { generatorOtp } from "../../utils/auth";
 
 export const insertUser = (user: User, otp: number) => {
@@ -19,8 +19,7 @@ export const insertUser = (user: User, otp: number) => {
         ],
         (err, result) => {
           if (err) {
-            console.log(err);
-            return reject(err.message);
+            return reject(err?.message);
           } else {
             resolve(result);
           }
@@ -28,7 +27,7 @@ export const insertUser = (user: User, otp: number) => {
       );
     } catch (error: any) {
       console.log(error);
-      
+
       reject(error?.message);
     }
   });
@@ -53,8 +52,11 @@ export function activateUser(email: string) {
     try {
       let updateQuery = `UPDATE users SET activate = ?, otp = ? WHERE email = ?;`;
       db.query(updateQuery, [true, null, email], (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve(result);
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
       });
     } catch (error: any) {
       reject(error?.message);
@@ -66,8 +68,6 @@ export function saveOtpToDB(email: string) {
   return new Promise(async (resolve, reject) => {
     try {
       let otp = await Number(generatorOtp());
-      console.log(otp, email);
-
       let setOtpQuery = `UPDATE users SET otp = ? WHERE email = ?;`;
       db.query(setOtpQuery, [otp, email], (err, result) => {
         if (err) return reject(err.message);
@@ -84,8 +84,11 @@ export function getOtpFromDB(email: string) {
     try {
       let getQuery = `SELECT otp FROM users WHERE email = ? limit 1;`;
       db.query(getQuery, [email], (err, result) => {
-        if (err) return reject(err.message);
-        else return resolve(result);
+        if (err) {
+          reject(err.message);
+        }else {
+          resolve(result);
+        } 
       });
     } catch (error: any) {
       reject(error?.message);
@@ -101,25 +104,6 @@ export function deleteInactivateUser(email: string) {
         if (err) return reject(err.message);
         else return resolve(result);
       });
-    } catch (error: any) {
-      reject(error?.message);
-    }
-  });
-}
-
-export function saveError(error: object, lineNumber: number, file: string) {
-  return new Promise((resolve, reject) => {
-    try {
-      let errorObject = JSON.stringify(error);
-      const saveErrorQuery = `INSERT INTO errors (error, lineNumber, file) VALUES (?,?,?);`;
-      db.query(
-        saveErrorQuery,
-        [errorObject, lineNumber, file],
-        (err, result) => {
-          if (err) return reject(err.message);
-          else return resolve(result);
-        }
-      );
     } catch (error: any) {
       reject(error?.message);
     }

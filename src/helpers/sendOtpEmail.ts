@@ -5,13 +5,11 @@ config();
 
 export default function sentOtpEmail(email: string, otp: number) {
   return new Promise((resolve, reject) => {
-    console.log(otp);
-
     try {
       const mailData = {
         from: process.env.EMAIL_ID,
         to: email,
-        subject: "learn for dare registration otp",
+        subject: "learn for care registration otp",
         text: "here is your otp",
         html: `<h3>OTP: ${otp}<h3/>`,
       };

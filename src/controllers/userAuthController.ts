@@ -5,7 +5,7 @@ import {
   checkReSendOtpInfo,
   validateUserInfo,
   validateUserLoginData,
-} from "../helpers/userHelper";
+} from "../helpers/user/validateAuthReqData";
 import sentOtpEmail from "../helpers/sendOtpEmail";
 import {
   activateUser,
@@ -15,11 +15,11 @@ import {
   saveOtpToDB,
 } from "../db/mysql/users";
 import { hashPassword, validatePassword } from "../helpers/validatePasswords";
-import { LoginData } from "../type/user";
+import { LoginData } from "../type/auth";
 import { createTokenForUser } from "../helpers/jwt";
 import { generatorOtp } from "../utils/auth";
 
-export const userController = {
+export const userAuthController = {
   signup: (req: Request, res: Response) => {
     try {
       validateUserInfo(req.body)
@@ -39,49 +39,56 @@ export const userController = {
                       });
                     })
                     .catch((err) => {
-                      res.status(406).json({
+                      res.status(500).json({
                         ok: false,
                         message: "some error occurred please try again later",
                         response: err,
+                        errorType: "server",
                       });
                     });
                 })
                 .catch((err) => {
                   res.status(406).json({
                     ok: false,
-                    error: err,
+                    response: err,
                     message: "values not acceptable",
+                    errorType: "client",
                   });
                 });
             })
             .catch((err) => {
-              res.status(406).json({
+              res.status(500).json({
                 ok: false,
                 message: "some error occurred please try again later",
                 response: err,
+                errorType: "server",
               });
             });
         })
         .catch((err) => {
-          res
-            .status(400)
-            .json({ ok: false, message: "values not acceptable", error: err });
+          res.status(406).json({
+            ok: false,
+            message: "values not acceptable",
+            response: err,
+            errorType: "client",
+          });
         });
     } catch (error: any) {
       res.status(500).json({
         ok: false,
         message: "some error occurred in the server try again after some times",
-        error: error?.message,
+        response: error?.message,
+        errorType: "server",
       });
     }
   },
-  resentOtp: (req: Request, res: Response) => {
+  resendOtp: (req: Request, res: Response) => {
     try {
       checkReSendOtpInfo(req.body)
         .then((result: any) => {
           saveOtpToDB(result?.email)
             .then((result: any) => {
-              sentOtpEmail(result.email, result.email)
+              sentOtpEmail(result.email, result.otp)
                 .then(() => {
                   res.status(200).json({
                     ok: true,
@@ -89,31 +96,37 @@ export const userController = {
                   });
                 })
                 .catch((err) => {
-                  res.status(406).json({
+                  res.status(500).json({
                     ok: false,
                     message: "some error occurred please try again later",
                     response: err,
+                    errorType: "server",
                   });
                 });
             })
             .catch((err: any) => {
               res.status(406).json({
                 ok: false,
-                message: "some error occurred",
+                message: "value not acceptable",
                 response: err,
+                errorType: "client",
               });
             });
         })
         .catch((err) => {
-          res
-            .status(400)
-            .json({ ok: false, message: "value not acceptable", error: err });
+          res.status(406).json({
+            ok: false,
+            message: "value not acceptable",
+            response: err,
+            errorType: "client",
+          });
         });
     } catch (error: any) {
       res.status(500).json({
         ok: false,
         message: "some error occurred in the server try again after some times",
-        error: error?.message,
+        response: error?.message,
+        errorType: "server",
       });
     }
   },
@@ -123,44 +136,64 @@ export const userController = {
         .then(async (result: any) => {
           getOtpFromDB(result.email)
             .then((otp: any) => {
+              if (otp.length <= 0) {
+                return res.status(406).json({
+                  ok: false,
+                  message: "this user not exist",
+                  errorType: "client",
+                });
+              }
+
               otp = otp[0]?.otp;
 
               if (otp == result.otp) {
                 activateUser(result.email)
                   .then(() => {
                     res
-                      .status(406)
+                      .status(202)
                       .json({ ok: true, message: "signup successful" });
                   })
                   .catch((err) => {
                     res.status(500).json({
                       ok: false,
-                      message: "some error occurs try again later",
-                      error: err,
+                      message:
+                        "some error occurred in the server try again after some times",
+                      response: err,
+                      errorType: "server",
                     });
                   });
               } else {
-                res.status(406).json({ ok: false, message: "incorrect otp" });
+                res.status(406).json({
+                  ok: false,
+                  message: "incorrect otp",
+                  errorType: "client",
+                });
               }
             })
             .catch((err) => {
               res.status(500).json({
                 ok: false,
-                message: "some error occurs try again later",
-                error: err,
+                message:
+                  "some error occurred in the server try again after some times",
+                response: err,
+                errorType: "server",
               });
             });
         })
         .catch((err) => {
-          res
-            .status(406)
-            .json({ ok: false, message: "values not acceptable", error: err });
+          res.status(406).json({
+            ok: false,
+            message: "values not acceptable",
+            response: err,
+            errorType: "client",
+          });
         });
     } catch (error: any) {
       res.status(500).json({
         ok: false,
         message: "some error occurred in the server try again after some times",
-        error: error?.message,
+        response: error?.message,
+        errorType: "server",
       });
     }
   },
@@ -174,6 +207,7 @@ export const userController = {
                 res.status(404).json({
                   ok: false,
                   message: "user not found",
+                  errorType: "client",
                 });
               } else {
                 userData = userData[0];
@@ -188,31 +222,39 @@ export const userController = {
                         });
                       });
                     } else {
-                      res
-                        .status(201)
-                        .json({ ok: false, message: "password is incorrect" });
+                      res.status(406).json({
+                        ok: false,
+                        message: "password is incorrect",
+                        errorType: "client",
+                      });
                     }
-                  }
-                );
+                  }).catch(err => {});
               }
             })
             .catch((err) => {
-              res.status(406).json({
+              res.status(500).json({
                 ok: false,
-                message: err,
+                message:
+                  "some error occurred in the server try again after some times",
+                response: err,
+                errorType: "server",
               });
             });
         })
         .catch((err) => {
-          res
-            .status(406)
-            .json({ ok: false, message: "values not acceptable", error: err });
+          res.status(406).json({
+            ok: false,
+            message: "values not acceptable",
+            response: err,
+            errorType: "client",
+          });
         });
     } catch (error: any) {
       res.status(500).json({
         ok: false,
         message: "some error occurred in the server try again after some times",
-        error: error?.message,
+        response: error?.message,
+        errorType: "server",
       });
     }
   },

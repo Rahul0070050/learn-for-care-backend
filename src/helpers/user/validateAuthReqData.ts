@@ -1,4 +1,4 @@
-import { LoginData, OtpInfo, User, ResentOtpInfo } from "../type/user";
+import { LoginData, OtpInfo, User, ResentOtpInfo } from "../../type/auth";
 import { object, string, number, date, InferType } from "yup";
 
 export function validateUserInfo(userInfo: User) {

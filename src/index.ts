@@ -6,7 +6,10 @@ import bodyParser from "body-parser";
 import compression from "compression";
 
 import { mySqlConnect } from "./conf/mysql";
-import userRouter from "./routes/authRouter";
+
+import userAuth from "./routes/user/auth";
+import adminAuth from "./routes/admin/auth";
+
 const app = express();
 
 dotenv.config();
@@ -39,11 +42,11 @@ mySqlConnect((err: Error) => {
 });
 
 // routes
-app.use("/api/user", userRouter);
+app.use("/api/auth/user", userAuth);
+app.use("/api/auth/admin", adminAuth);
 
 // error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
   res
     .status(500)
     .json({ ok: false, error: err?.message, message: "Something broke!" });

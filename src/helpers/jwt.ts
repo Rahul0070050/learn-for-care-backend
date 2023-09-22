@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { User } from "../type/user";
+import { User } from "../type/auth";
 import { config } from "dotenv";
 
 config();
