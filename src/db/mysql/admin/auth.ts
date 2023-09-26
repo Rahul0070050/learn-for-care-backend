@@ -1,6 +1,6 @@
-import { db } from "../../conf/mysql";
-import { LoginData, User } from "../../type/auth";
-import { generatorOtp } from "../../utils/auth";
+import { db } from "../../../conf/mysql";
+import { LoginData, User } from "../../../type/auth";
+import { generatorOtp } from "../../../utils/auth";
 
 export function getAdminByEmail(email: string) {
   return new Promise((resolve, reject) => {

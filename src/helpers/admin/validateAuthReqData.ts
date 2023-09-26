@@ -1,7 +1,7 @@
 import { number, object, string } from "yup";
 import { LoginData, OtpInfo } from "../../type/auth";
 
-export function validateAdminLoginData(info: LoginData) {
+export function validateAdminLoginReqBody(info: LoginData) {
   return new Promise((resolve, reject) => {
     let checkInfo = object({
       email: string().required().email(),
@@ -23,7 +23,7 @@ export function validateAdminLoginData(info: LoginData) {
   });
 }
 
-export function checkValidateOtpInfo(otpReqInfo: OtpInfo) {
+export function checkValidateOtpReqBody(otpReqInfo: OtpInfo) {
   return new Promise((resolve, reject) => {
     let otpInfo = object({
       otp: number().required(),

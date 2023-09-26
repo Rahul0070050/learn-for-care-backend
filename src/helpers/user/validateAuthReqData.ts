@@ -4,12 +4,12 @@ import { object, string, number, date, InferType } from "yup";
 export function validateUserInfo(userInfo: User) {
   return new Promise((resolve, reject) => {
     let user = object({
-      username: string().required(),
       email: string().required().email(),
+      username: string().required().matches(/^[a-zA-Z]+$/,{excludeEmptyString: true}),
       password: string().required(),
-      country: string().required(),
-      type: string().required(),
-      city: string().required(),
+      country: string().required().matches(/^[a-zA-Z]+$/,{excludeEmptyString: true}),
+      type: string().required().matches(/^[a-zA-Z]+$/,{excludeEmptyString: true}),
+      city: string().required().matches(/^[a-zA-Z]+$/,{excludeEmptyString: true}),
     });
 
     try {

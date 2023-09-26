@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import {mailer} from '../conf/nodeMailer'
+import { otpEMail } from "../emailTemplates/otpVerification";
 
 config();
 
@@ -9,9 +10,9 @@ export default function sentOtpEmail(email: string, otp: number) {
       const mailData = {
         from: process.env.EMAIL_ID,
         to: email,
-        subject: "learn for care registration otp",
+        subject: "Learn For Care",
         text: "here is your otp",
-        html: `<h3>OTP: ${otp}<h3/>`,
+        html: otpEMail(email,otp),
       };
 
       mailer().sendMail(mailData, function (err, info) {

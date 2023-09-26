@@ -9,6 +9,7 @@ import { mySqlConnect } from "./conf/mysql";
 
 import userAuth from "./routes/user/auth";
 import adminAuth from "./routes/admin/auth";
+import category from './routes/admin/category'
 
 const app = express();
 
@@ -41,9 +42,12 @@ mySqlConnect((err: Error) => {
   }
 });
 
-// routes
-app.use("/api/auth/user", userAuth);
-app.use("/api/auth/admin", adminAuth);
+// user routes
+app.use("/api/user/auth", userAuth);
+
+// admin routes
+app.use("/api/admin/auth", adminAuth);
+app.use("/api/admin/category", category);
 
 // error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
