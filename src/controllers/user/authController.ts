@@ -313,7 +313,7 @@ export const userAuthController = {
                           data: {
                             code: 200,
                             jwt_access_token: token.accessToken,
-                            jwt_re_fresh_token: token.reFreshToken,
+                            jwt_refresh_token: token.reFreshToken,
                             message: "login successful",
                           },
                         });

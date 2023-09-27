@@ -4,8 +4,8 @@ import { LoginData, OtpInfo } from "../../type/auth";
 export function validateAdminLoginReqBody(info: LoginData) {
   return new Promise((resolve, reject) => {
     let checkInfo = object({
-      email: string().required().email(),
-      password: string().required(),
+      email: string().required("please enter email address").email(),
+      password: string().required("please enter password"),
     });
 
     try {
@@ -26,8 +26,8 @@ export function validateAdminLoginReqBody(info: LoginData) {
 export function checkValidateOtpReqBody(otpReqInfo: OtpInfo) {
   return new Promise((resolve, reject) => {
     let otpInfo = object({
-      otp: number().required(),
-      email: string().required().email(),
+      otp: number().required("please provide otp"),
+      email: string().required("please provide email address").email(),
     });
 
     try {

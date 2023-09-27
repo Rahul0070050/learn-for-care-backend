@@ -5,8 +5,7 @@ export function checkCreateCategoryReqBody(body: categoryBody) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       category: string()
-        .required()
-        .matches(/^[a-zA-Z]+$/, { excludeEmptyString: true }),
+        .required("please enter category"),
     });
 
     try {
@@ -28,9 +27,8 @@ export function checkUpdateCategoryReqBody(body: updateCategoryBody) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       category: string()
-        .required()
-        .matches(/[a-zA-Z]+$/, { excludeEmptyString: true }),
-      id: number().required(),
+        .required("please enter category"),
+      id: number().required("please enter category id"),
     });
 
     try {

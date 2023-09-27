@@ -4,12 +4,12 @@ import { object, string, number, date, InferType } from "yup";
 export function validateUserInfo(userInfo: User) {
   return new Promise((resolve, reject) => {
     let user = object({
-      email: string().required().email(),
-      username: string().required().matches(/^[a-zA-Z]+$/,{excludeEmptyString: true}),
-      password: string().required(),
-      country: string().required().matches(/^[a-zA-Z]+$/,{excludeEmptyString: true}),
-      type: string().required().matches(/^[a-zA-Z]+$/,{excludeEmptyString: true}),
-      city: string().required().matches(/^[a-zA-Z]+$/,{excludeEmptyString: true}),
+      email: string().required("please provide email address").email(),
+      username: string().required("please provide username"),
+      password: string().required("please provide password"),
+      country: string().required("please provide country"),
+      type: string().required("please provide type"),
+      city: string().required("please provide city"),
     });
 
     try {
@@ -30,8 +30,8 @@ export function validateUserInfo(userInfo: User) {
 export function checkOtpInfo(otpReqInfo: OtpInfo) {
   return new Promise((resolve, reject) => {
     let otpInfo = object({
-      otp: number().required(),
-      email: string().required().email(),
+      otp: number().required("please provide otp"),
+      email: string().required("please provide email address").email(),
     });
 
     try {
@@ -52,8 +52,8 @@ export function checkOtpInfo(otpReqInfo: OtpInfo) {
 export function validateUserLoginData(info: LoginData) {
   return new Promise((resolve, reject) => {
     let checkInfo = object({
-      email: string().required().email(),
-      password: string().required(),
+      email: string().required("please provide email address").email(),
+      password: string().required("please provide password"),
     });
 
     try {
@@ -74,7 +74,7 @@ export function validateUserLoginData(info: LoginData) {
 export function checkReSendOtpInfo(info: ResentOtpInfo) {
   return new Promise((resolve, reject) => {
     let checkInfo = object({
-      email: string().email().required()
+      email: string().email().required("please provide email address")
     });
     
     try {
