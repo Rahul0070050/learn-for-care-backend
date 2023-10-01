@@ -1,4 +1,4 @@
 .tsbuildinfo
 .env
 node_modules
-build
+build_file

@@ -3,11 +3,9 @@ import { validateAdminJwtToken } from "../helpers/jwt";
 
 export function validateAdmin(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
-  console.log(authorization?.split(" ")[1]);
   const token = authorization?.split(" ")[1] || "";
   validateAdminJwtToken(token)
     .then((result) => {
-      console.log(result);
       next()
     })
     .catch((err) => {

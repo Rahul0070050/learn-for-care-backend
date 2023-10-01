@@ -5,13 +5,13 @@ import { generatorOtp } from "../../utils/auth";
 export const insertUser = (user: User, otp: number) => {
   return new Promise((resolve, reject) => {
     try {
-      let insertQuery = `INSERT INTO users (username, email, type, password, country, city, otp) VALUES (?,?,?,?,?,?,?);`;
+      let insertQuery = `INSERT INTO users (username, email, type_of_account, password, country, city, otp) VALUES (?,?,?,?,?,?,?);`;
       db.query(
         insertQuery,
         [
-          user?.username,
+          user?.name,
           user?.email,
-          user?.type,
+          user?.type_of_account,
           user?.password,
           user?.country,
           user?.city,
@@ -19,15 +19,16 @@ export const insertUser = (user: User, otp: number) => {
         ],
         (err, result) => {
           if (err) {
-            return reject(err?.message);
+            if(err?.message === `ER_DUP_ENTRY: Duplicate entry '${user.email}' for key 'users.email'`) {
+              return reject("email already exist");
+            }
+            reject(err?.message);
           } else {
             resolve(result);
           }
         }
       );
     } catch (error: any) {
-      console.log(error);
-
       reject(error?.message);
     }
   });
