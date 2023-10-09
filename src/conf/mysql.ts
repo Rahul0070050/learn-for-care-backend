@@ -81,6 +81,22 @@ export function mySqlConnect(done: CallableFunction) {
   //     if (err) console.log(err);
   //     else console.log("course table created");
   //   });
+
+
+    //  const createBlogTable = `
+    //   CREATE TABLE IF NOT EXISTS Blogs (
+    //   id INT AUTO_INCREMENT PRIMARY KEY,
+    //   header VARCHAR(150) NOT NULL,
+    //   img VARCHAR(200) NOT NULL,
+    //   content TEXT NOT NULL,
+    //   date DATETIME DEFAULT NOW()
+    // );`;
+
+    // db.query(createBlogTable, (err, result) => {
+    //   if (err) console.log(err);
+    //   else console.log("course table created");
+    // });
+
     return done();
   });
 }

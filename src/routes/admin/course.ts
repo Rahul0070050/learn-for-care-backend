@@ -1,34 +1,18 @@
 import { Router } from "express";
-import multer from "multer";
 
 import { courseController } from "../../controllers/admin/courseController";
 import { validateAdmin } from "../../middlewares/adminAuth";
 
 const route = Router();
 
-const storage = multer.diskStorage({
-  destination(req, file, callback) {
-    callback(null, "./uploads/");
-  },
-  filename(req, file, callback) {
-    callback(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const upload = multer();
-let multerOption = upload.fields([
-  { name: "thumbnail", maxCount: 1 },
-  { name: "intro_video", maxCount: 1 },
-  { name: "video", maxCount: 1 },
-  { name: "ppt", maxCount: 1 },
-  { name: "pdf", maxCount: 1 },
-]);
-route.post(
-  "/create-course",
-  validateAdmin,
-  multerOption,
-  courseController.createCourse
-);
+route.post("/create-course", validateAdmin, courseController.createCourse);
 route.get("/get-single-course/:id",validateAdmin,courseController.getCourseById);
+route.post("/get-course-by-category",validateAdmin,courseController.getCourseByCategory);
+route.post("/update-course-video",validateAdmin,courseController.updateCourseVideo);
+route.post("/update-course-ppt",validateAdmin,courseController.updateCoursePpt);
+route.post("/update-course-pdf",validateAdmin,courseController.updateCoursePdf);
+route.post("/update-course-intro-video",validateAdmin,courseController.updateCourseIntroVideo);
+route.post("/update-course-thumbnail",validateAdmin,courseController.updateCourseThumbnail);
+route.post("/update-course-data",validateAdmin,courseController.updateCourseData);
 
 export default route;

@@ -312,7 +312,7 @@ ul.social li{
             		<td style="padding: 0 2.5em; text-align: center; padding-bottom: 1em;">
             			<div class="text">
             				<h2>Verify your account</h2>
-							<p style="font-weight: 600;">Use this code to sign up to transmit security</p>
+							<p style="font-weight: 600;">Use this code to sign up</p>
             			</div>
             		</td>
             	</tr>
