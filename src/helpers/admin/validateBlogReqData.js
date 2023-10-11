@@ -1,0 +1,104 @@
+import { number, object, string } from "yup";
+import { validateFile } from "../validateFileTypes.js";
+
+export function checkCreateBlogReqBody(body, file) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      header: string().required("please provide valid header"),
+      content: string().required("please provide valid content"),
+    });
+
+    if(Array.isArray(file.image)) {
+      file = {image: file.image[0]}
+    };
+
+    let imageFile = validateFile([file], "image");
+    let bodyResult = bodyTemplate.validate(body);
+
+    try {
+      Promise.all([bodyResult, imageFile])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkUpDateBlogImageBodyAndFile(
+  body,
+  file
+) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      blog_id: number().required("please provide valid blog id"),
+    });
+    
+    if(Array.isArray(file.image)) {
+      file = {image: file.image[0]}
+    };
+
+    let imageFile = validateFile([file], "image");
+    let bodyResult = bodyTemplate.validate(body);
+
+    try {
+      Promise.all([bodyResult, imageFile])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkUpdateBlogDataReqBody(body) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      blog_id: number().required("please provide valid blog id"),
+      header: string().required("please provide valid header"),
+      content: string().required("please provide valid content"),
+    });
+
+    let bodyResult = bodyTemplate.validate(body);
+    try {
+      Promise.all([bodyResult])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkDeleteBlogReqBody(body) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      blog_id: number().required("please provide valid blog id"),
+    });
+
+    let bodyResult = bodyTemplate.validate(body);
+    try {
+      Promise.all([bodyResult])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
