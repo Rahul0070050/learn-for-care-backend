@@ -5,6 +5,8 @@ import { cartController } from "../../controllers/user/cartController.js";
 
 const route = Router();
 
-route.post("/add-to-cart",validateUser, cartController.addToCart);
+route.post("/add",validateUser, cartController.addToCart);
+route.patch("/update-cart-count",validateUser, cartController.updateCartCount);
+route.delete("/delete-cart-item",validateUser, cartController.deleteCourseFromCart);
 
 export default route;

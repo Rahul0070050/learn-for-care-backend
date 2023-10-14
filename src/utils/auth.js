@@ -1,3 +1,4 @@
+import { decode } from "jsonwebtoken";
 import otp from "otp-generator";
 
 export function generatorOtp() {
@@ -7,4 +8,11 @@ export function generatorOtp() {
     specialChars: false,
     upperCaseAlphabets: false,
   });
+}
+
+export function getUser({headers}) {
+  const { authorization } = headers;
+  const token = authorization?.split(" ")[1] || "";
+  let user = decode(token)
+  return user
 }

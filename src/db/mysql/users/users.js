@@ -1,5 +1,5 @@
-import { db } from "../../conf/mysql.js";
-import { generatorOtp } from "../../utils/auth.js";
+import { db } from "../../../conf/mysql.js";
+import { generatorOtp } from "../../../utils/auth.js";
 
 export const insertUser = (user, otp) => {
   return new Promise((resolve, reject) => {

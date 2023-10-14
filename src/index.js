@@ -66,8 +66,6 @@ app.use("/api/admin/blog", blog);
 
 // error handler
 app.use((err, req, res, next) => {
-  console.log(err);
-
   res
     .status(500)
     .json({ ok: false, error: err?.message, message: "Something broke!" });

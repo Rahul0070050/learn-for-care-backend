@@ -7,6 +7,7 @@ import {
 import { removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
   deleteBlogById,
+  getAllBlogs,
   getBlogById,
   insertNewBlog,
   updateBlogData,
@@ -59,6 +60,46 @@ export const blogController = {
             errorType: "client",
           });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllBlog:(req, res) => {
+    try {
+      getAllBlogs().then(result => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: "all blogs",
+            response: result,
+          },
+        });
+      }).catch(err => {
+        res.status(500).json({
+          success: false,
+          errors: [
+            {
+              code: 500,
+              message:
+                "some error occurred in the server try again after some times",
+              error: err?.message,
+            },
+          ],
+          errorType: "server",
+        });
+      })
     } catch (error) {
       res.status(500).json({
         success: false,

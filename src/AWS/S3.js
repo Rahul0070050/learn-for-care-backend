@@ -11,6 +11,7 @@ export function uploadFileToS3(dir, file) {
   return new Promise(async (resolve, reject) => {
     try {
       let uploadPath = path.join(__dirname, "../uploads/", file.name);
+      console.log(file);
       file.mv(uploadPath, async function (err) {
         if (err) {
           reject(err?.message);
@@ -30,8 +31,7 @@ export function uploadFileToS3(dir, file) {
           .promise();
         fs.unlinkSync(uploadPath);
 
-        console.log(fileUploading);
-        resolve({ ok: true, file: fileUploading.Location });
+        resolve({ ok: true, file: fileUploading.Location, name: dir.split("/").pop()});
       });
     } catch (error) {
       reject(error);

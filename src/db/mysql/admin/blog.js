@@ -19,6 +19,17 @@ export function insertNewBlog(blog) {
   });
 }
 
+export function getAllBlogs() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getAllBlogsQuery = "SELECT * FROM blogs";
+      db.query(getAllBlogsQuery, (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {}
+  });
+}
 export function updateBlogImage(blogInfo) {
   return new Promise((resolve, reject) => {
     try {
@@ -38,23 +49,23 @@ export function updateBlogImage(blogInfo) {
 }
 
 export function updateBlogData(blogInfo) {
-    return new Promise((resolve, reject) => {
-      try {
-        console.log(blogInfo.header,blogInfo.content, blogInfo.blog_id);
-        let updateBlogImageQuery = "UPDATE blogs SET header = ?, content = ? WHERE id = ?;";
-        db.query(
-          updateBlogImageQuery,
-          [blogInfo.header,blogInfo.content, blogInfo.blog_id],
-          (err, result) => {
-            if (err) return reject(err?.message);
-            else return resolve(result);
-          }
-        );
-      } catch (error) {
-        reject(error?.message);
-      }
-    });
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      let updateBlogInfoQuery =
+        "UPDATE blogs SET header = ?, content = ? WHERE id = ?;";
+      db.query(
+        updateBlogInfoQuery,
+        [blogInfo.header, blogInfo.content, blogInfo.blog_id],
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
 
 export function getBlogById(id) {
   return new Promise((resolve, reject) => {
@@ -64,8 +75,8 @@ export function getBlogById(id) {
         if (err) {
           return reject(err?.message);
         } else {
-          if(!result[0]) {
-            return reject('No Blog Found')
+          if (!result[0]) {
+            return reject("No Blog Found");
           }
           resolve(result[0]);
         }
@@ -77,15 +88,15 @@ export function getBlogById(id) {
 }
 
 export function deleteBlogById(id) {
-    return new Promise((resolve, reject) => {
-      try {
-        let getBlogByIdQuery = "DELETE FROM blogs WHERE id = ?;";
-        db.query(getBlogByIdQuery, [id], (err, result) => {
-          if (err) return reject(err?.message);
-          else return resolve(result[0]);
-        });
-      } catch (error) {
-        reject(error?.message);
-      }
-    });
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      let deleteBlogByIdQuery = "DELETE FROM blogs WHERE id = ?;";
+      db.query(deleteBlogByIdQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result[0]);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

@@ -11,7 +11,7 @@ import {
   insertUser,
   getUserByEmail,
   saveOtpToDB,
-} from "../../db/mysql/users.js";
+} from "../../db/mysql/users/users.js";
 import {
   hashPassword,
   validatePassword,

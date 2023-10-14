@@ -33,7 +33,12 @@ export function validateFile(files, key) {
     });
 
     try {
-      let fileUploads = files.map((file) => fileTemplate.validate(file));
+      let fileUploads = null;
+      if (Array.isArray(files[0][key])) {
+        fileUploads = files[0][key].map((file) => fileTemplate.validate({[key]:file}));
+      } else {
+        fileUploads = files.map((file) => fileTemplate.validate(file));
+      }
 
       Promise.all([...fileUploads])
         .then((result) => {

@@ -93,10 +93,7 @@ export function checkGetCourseByCategoryBody(body) {
   });
 }
 
-export function checkUpdateCourseVideoReqBodyAndFile(
-  file,
-  body
-) {
+export function checkUpdateCourseVideoReqBodyAndFile(file, body) {
   return new Promise((resolve, reject) => {
     try {
       let bodyTemplate = object({
@@ -119,10 +116,7 @@ export function checkUpdateCourseVideoReqBodyAndFile(
   });
 }
 
-export function checkUpdateCoursePdfReqBodyAndFile(
-  files,
-  body
-) {
+export function checkUpdateCoursePdfReqBodyAndFile(files, body) {
   return new Promise((resolve, reject) => {
     try {
       let bodyTemplate = object({
@@ -153,10 +147,7 @@ export function checkUpdateCoursePdfReqBodyAndFile(
     }
   });
 }
-export function checkUpdateCoursePptReqBodyAndFile(
-  file,
-  body
-) {
+export function checkUpdateCoursePptReqBodyAndFile(file, body) {
   return new Promise((resolve, reject) => {
     try {
       let bodyTemplate = object({
@@ -178,10 +169,7 @@ export function checkUpdateCoursePptReqBodyAndFile(
     }
   });
 }
-export function checkUpdateCourseIntroVideoReqBodyAndFile(
-  file,
-  body
-) {
+export function checkUpdateCourseIntroVideoReqBodyAndFile(file, body) {
   return new Promise((resolve, reject) => {
     try {
       let bodyTemplate = object({
@@ -204,10 +192,7 @@ export function checkUpdateCourseIntroVideoReqBodyAndFile(
   });
 }
 
-export function checkUpdateCourseThumbnailReqBodyAndFile(
-  file,
-  body
-) {
+export function checkUpdateCourseThumbnailReqBodyAndFile(file, body) {
   return new Promise((resolve, reject) => {
     try {
       let bodyTemplate = object({

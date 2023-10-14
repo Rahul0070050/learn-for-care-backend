@@ -2,7 +2,6 @@ import { validateUserJwtToken } from "../helpers/jwt.js";
 
 export function validateUser(req, res, next) {
   const { authorization } = req.headers;
-  console.log(authorization?.split(" ")[1]);
   const token = authorization?.split(" ")[1] || "";
   validateUserJwtToken(token)
     .then((result) => {

@@ -74,7 +74,7 @@ export function mySqlConnect(done) {
     //     thumbnail VARCHAR(200) NOT NULL,
     //     video VARCHAR(200) NOT NULL,
     //     ppt VARCHAR(200) NOT NULL,
-    //     pdf VARCHAR(200) NOT NULL
+    //     pdf TEXT NOT NULL
     // );`;
 
     //   db.query(createCourseTable, (err, result) => {
@@ -93,7 +93,21 @@ export function mySqlConnect(done) {
 
     // db.query(createBlogTable, (err, result) => {
     //   if (err) console.log(err);
-    //   else console.log("course table created");
+    //   else console.log("blog table created");
+    // });
+
+    // const createCartTable = `
+    // CREATE TABLE IF NOT EXISTS cart (
+    //   id INT AUTO_INCREMENT PRIMARY KEY,
+    //   user_id INT NOT NULL,
+    //   course_id VARCHAR(255) NOT NULL,
+    //   product_count VARCHAR(255) NOT NULL,
+    //   amount INT NOT NULL
+    // );`;
+
+    // db.query(createCartTable, (err, result) => {
+    //   if (err) console.log(err);
+    //   else console.log("cart table created");
     // });
 
     return done();
