@@ -83,7 +83,7 @@ export function mySqlConnect(done) {
       });
 
     const createBlogTable = `
-      CREATE TABLE IF NOT EXISTS Blogs (
+      CREATE TABLE IF NOT EXISTS blogs (
       id INT AUTO_INCREMENT PRIMARY KEY,
       header VARCHAR(150) NOT NULL,
       img VARCHAR(200) NOT NULL,

@@ -14,7 +14,7 @@ export const hashPassword = (password) => {
 };
 
 export const validatePassword = (password, hashedPassword) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async(resolve, reject) => {
     try {
       bcrypt.compare(password, hashedPassword, (err, result) => {
         if (err) return reject(err.message);
