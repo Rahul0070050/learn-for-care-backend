@@ -39,7 +39,11 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://test.learnforcare.com"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://test.learnforcare.com",
+    ],
     credentials: true,
   })
 );
