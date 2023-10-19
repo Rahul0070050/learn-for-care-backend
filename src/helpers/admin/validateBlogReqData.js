@@ -8,8 +8,8 @@ export function checkCreateBlogReqBody(body, file) {
       content: string().required("please provide valid content"),
     });
 
-    if(Array.isArray(file.image)) {
-      file = {image: file.image[0]}
+    if(Array.isArray(file?.image)) {
+      file = {image: file?.image[0]}
     };
 
     let imageFile = validateFile([file], "image");
@@ -27,6 +27,23 @@ export function checkCreateBlogReqBody(body, file) {
       reject(error?.message);
     }
   });
+}
+
+export function checkGetBlogByIdReqDate(id) {
+  return new Promise((resolve, reject) => { 
+    try {
+      let blog_id = number().required("please provide valid blog id")
+      
+      blog_id.validate(id).then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err?.message);
+      });
+    } catch (error) {
+      reject(error?.message)
+    }
+   })
 }
 
 export function checkUpDateBlogImageBodyAndFile(

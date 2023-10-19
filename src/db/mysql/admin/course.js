@@ -4,7 +4,6 @@ export function addNewCourse(courseData) {
   return new Promise((resolve, reject) => {
     try {
       let pdf = JSON.stringify(courseData.pdf);
-      console.log(typeof pdf);
       let insertCourseQuery =
         "INSERT INTO course(name,description,category,price,intro_video,thumbnail,video,ppt,pdf) VALUES(?,?,?,?,?,?,?,?,?);";
       db.query(
@@ -21,13 +20,11 @@ export function addNewCourse(courseData) {
           pdf,
         ],
         (err, result) => {
-          console.log(err);
           if (err) return reject(err.message);
           else return resolve(result);
         }
       );
     } catch (error) {
-      console.log(error);
       reject(error?.message);
     }
   });
@@ -97,7 +94,6 @@ export function getAllCoursesFromDb() {
 export function updateCourseSingleFieldMediaById(id, data, type) {
   return new Promise((resolve, reject) => {
     try {
-      console.log(data);
       let updateCourseMediaQuery = `UPDATE course SET ${type} = ? WHERE id = ?;`;
       db.query(updateCourseMediaQuery, [data, id], (err, result) => {
         if (err) return reject(err?.message);

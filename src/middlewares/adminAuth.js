@@ -12,7 +12,7 @@ export function validateAdmin(req, res, next) {
         success: false,
         errors: [
           {
-            code: 500,
+            code: 401,
             message: "please login",
             error: err,
           },

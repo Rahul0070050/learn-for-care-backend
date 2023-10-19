@@ -11,7 +11,9 @@ import userAuth from "./routes/user/auth.js";
 import adminAuth from "./routes/admin/auth.js";
 import category from "./routes/admin/category.js";
 import course from "./routes/admin/course.js";
-import blog from "./routes/admin/blog.js";
+import adminBlog from "./routes/admin/blog.js";
+import userBlog from "./routes/user/blog.js";
+import user from "./routes/user/user.js";
 import cart from "./routes/user/cart.js";
 import { s3Config } from "./conf/aws_s3.js";
 
@@ -24,7 +26,7 @@ s3Config();
 // middleware
 app.use(compression());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(helmet());
 app.use(
   fileUpload({
@@ -32,17 +34,14 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   cors({
     origin: [
       "http://localhost:3000",
       "http://localhost:5173",
       "https://test.learnforcare.com",
+      "https://admin.learnforcare.co.uk",
     ],
     credentials: true,
   })
@@ -61,12 +60,14 @@ mySqlConnect((err) => {
 // user routes
 app.use("/api/user/auth", userAuth);
 app.use("/api/user/cart", cart);
+app.use("/api/user/blog", userBlog);
+app.use("/api/user/info", user);
 
 // admin routes
 app.use("/api/admin/auth", adminAuth);
 app.use("/api/admin/category", category);
 app.use("/api/admin/course", course);
-app.use("/api/admin/blog", blog);
+app.use("/api/admin/blog", adminBlog);
 
 // error handler
 app.use((err, req, res, next) => {

@@ -5,7 +5,7 @@ import {
   getOtpFromDB,
   getAdminByEmail,
 } from "../../db/mysql/admin/auth.js";
-import { validatePassword } from "../../helpers/validatePasswords.js";
+import { hashPassword, validatePassword } from "../../helpers/validatePasswords.js";
 import { createTokenForAdmin } from "../../helpers/jwt.js";
 import { getAdminEmail } from "../../db/mysql/admin/auth.js";
 import {
@@ -17,15 +17,15 @@ export const adminAuthController = {
   login: (req, res) => {
     try {
       validateAdminLoginReqBody(req.body)
-        .then((loginInfo) => {
+      .then((loginInfo) => {
           getAdminByEmail(loginInfo?.email)
             .then((adminData) => {
               if (adminData?.length <= 0) {
-                res.status(404).json({
+                res.status(406).json({
                   success: false,
                   errors: [
                     {
-                      code: 404,
+                      code: 406,
                       message:
                         "this email is invalid please provide valid email",
                       error: "email in incorrect",

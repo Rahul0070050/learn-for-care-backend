@@ -1,19 +1,21 @@
 import { validateUserJwtToken } from "../helpers/jwt.js";
 
 export function validateUser(req, res, next) {
+
   const { authorization } = req.headers;
   const token = authorization?.split(" ")[1] || "";
+
   validateUserJwtToken(token)
     .then((result) => {
-    //   console.log(result);
-      next()
+      next();
     })
     .catch((err) => {
+      console.log(err);
       res.status(401).json({
         success: false,
         errors: [
           {
-            code: 500,
+            code: 401,
             message: "please login",
             error: err,
           },

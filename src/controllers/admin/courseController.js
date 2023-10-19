@@ -305,7 +305,7 @@ export const courseController = {
         .then((result) => {
           getCourseByIdFromDb(result[1].course_id)
             .then(async (course) => {
-              let key = course.video.split("//").pop();
+              let key = course.video;
               await removeFromS3(key);
               let uploadedResult = await uploadFileToS3(
                 "/course/video",
@@ -398,7 +398,7 @@ export const courseController = {
               let pdf = JSON.parse(course.pdf);
 
               pdf.forEach((file) => {
-                let key = file.file.split("//").pop();
+                let key = file.file;
                 removeFromS3(key);
               });
 
@@ -488,8 +488,7 @@ export const courseController = {
         .then((result) => {
           getCourseByIdFromDb(req.body.course_id)
             .then(async (course) => {
-              let key = course.ppt.split("//").pop();
-              console.log();
+              let key = course.ppt;
               await removeFromS3(key);
               let uploadedResult = await uploadFileToS3(
                 "/course/ppt",
@@ -573,8 +572,7 @@ export const courseController = {
         .then((result) => {
           getCourseByIdFromDb(req.body.course_id)
             .then(async (course) => {
-              console.log(result[0][0].intro_video);
-              let key = course.intro_video.split("//").pop();
+              let key = course.intro_video;
               await removeFromS3(key);
               let uploadedResult = await uploadFileToS3(
                 "/course/intro_video",
@@ -658,8 +656,7 @@ export const courseController = {
         .then((result) => {
           getCourseByIdFromDb(req.body.course_id)
             .then(async (course) => {
-              console.log(result[0][0].intro_video);
-              let key = course.thumbnail.split("//").pop();
+              let key = course.thumbnail;
               await removeFromS3(key);
               let uploadedResult = await uploadFileToS3(
                 "/course/thumbnail",

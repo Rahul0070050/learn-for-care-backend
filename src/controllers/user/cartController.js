@@ -73,12 +73,10 @@ export const cartController = {
     try {
       checkUpdateCartCountReqBody(req.body)
         .then(async (result) => {
-          console.log(result);
           let user = await getUser(req);
           let course = await getCourseByIdFromDb(result.course_id);
           updateCourseCountInTheCart(result, user.id, course.price)
             .then((result) => {
-              console.log(result);
               res.status(200).json({
                 success: true,
                 data: {

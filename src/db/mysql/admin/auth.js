@@ -90,8 +90,6 @@ export const changeEmail = (email) => {
         }
       });
     } catch (error) {
-      console.log(error);
-
       reject(error?.message);
     }
   });

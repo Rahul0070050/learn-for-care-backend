@@ -47,6 +47,20 @@ export function getUserByEmail(info) {
   });
 }
 
+export function getUserById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT * FROM users WHERE id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function activateUser(email) {
   return new Promise((resolve, reject) => {
     try {

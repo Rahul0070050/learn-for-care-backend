@@ -1,14 +1,16 @@
 import {
   checkCreateBlogReqBody,
   checkDeleteBlogReqBody,
+  checkGetBlogByIdReqDate,
   checkUpDateBlogImageBodyAndFile,
   checkUpdateBlogDataReqBody,
 } from "../../helpers/admin/validateBlogReqData.js";
-import { removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
+import { downloadFromS3, removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
   deleteBlogById,
   getAllBlogs,
   getBlogById,
+  getBlogByIdFromDb,
   insertNewBlog,
   updateBlogData,
   updateBlogImage,
@@ -19,7 +21,7 @@ export const blogController = {
     try {
       checkCreateBlogReqBody(req.body, req.files)
         .then(async (result) => {
-          const blogImage = await uploadFileToS3("/blogs", result[1][0].image);
+          const blogImage = await uploadFileToS3("/blogs", result[1][0]?.image);
           insertNewBlog({ ...result[0], image: blogImage.file })
             .then((result) => {
               res.status(200).json({
@@ -47,7 +49,6 @@ export const blogController = {
             });
         })
         .catch((err) => {
-          console.log(err);
           res.status(406).json({
             success: false,
             errors: [
@@ -75,31 +76,104 @@ export const blogController = {
       });
     }
   },
-  getAllBlog:(req, res) => {
+  getBlogById: (req, res) => {
     try {
-      getAllBlogs().then(result => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "all blogs",
-            response: result,
+      checkGetBlogByIdReqDate(req.params.id)
+        .then((result) => {
+          getBlogByIdFromDb(result)
+            .then(async (blog) => {
+              if (blog.length) {
+                let signedUrl = await downloadFromS3(blog.id, blog[0].img);
+                blog[0].img = signedUrl.url;
+              }
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "blog by id",
+                  response: blog,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message: "some error occur while getting the blogs",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
           },
-        });
-      }).catch(err => {
-        res.status(500).json({
-          success: false,
-          errors: [
-            {
-              code: 500,
-              message:
-                "some error occurred in the server try again after some times",
-              error: err?.message,
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllBlog: (req, res) => {
+    try {
+      getAllBlogs()
+        .then(async (result) => {
+          let fileResponses = result.map((item) =>
+            downloadFromS3(item.id, item.img)
+          );
+
+          let SignedUrl = await Promise.all(fileResponses);
+
+          result.forEach((item) => {
+            item.img = SignedUrl.find((url) => url.id == item.id).url;
+          });
+
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "all blogs",
+              response: result,
             },
-          ],
-          errorType: "server",
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message:
+                  "some error occurred in the server try again after some times",
+                error: err?.message,
+              },
+            ],
+            errorType: "server",
+          });
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -260,7 +334,7 @@ export const blogController = {
         .then(async (result) => {
           getBlogById(result[0].blog_id)
             .then(async (blogResult) => {
-              let blogImage = blogResult?.img?.split("//").pop() || "";
+              let blogImage = blogResult?.img;
               await removeFromS3(blogImage);
               deleteBlogById(result[0].blog_id)
                 .then((result) => {

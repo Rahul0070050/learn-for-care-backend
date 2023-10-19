@@ -23,7 +23,6 @@ export function s3Config() {
             if (err) {
               console.log(err);
             }
-            console.log(success);
           }
         );
       } else {
