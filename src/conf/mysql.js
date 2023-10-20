@@ -74,7 +74,7 @@ export function mySqlConnect(done) {
     //     thumbnail VARCHAR(200) NOT NULL,
     //     video VARCHAR(200) NOT NULL,
     //     ppt VARCHAR(200) NOT NULL,
-    //     pdf TEXT NOT NULL
+    //     resource TEXT NOT NULL
     // );`;
 
     //   db.query(createCourseTable, (err, result) => {

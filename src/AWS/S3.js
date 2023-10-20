@@ -11,7 +11,7 @@ dotenv.config({ path: "../../.env" });
 export function uploadFileToS3(dir, file) {
   return new Promise(async (resolve, reject) => {
     try {
-      let fileName = file.name.split(" ").join("");
+      let fileName = uuid() + file.name.split(" ").join("");
 
       let uploadPath = path.join(__dirname, "../uploads/", fileName);
 
@@ -20,8 +20,11 @@ export function uploadFileToS3(dir, file) {
           reject(err?.message);
           return;
         }
+
+
         let blob = fs.readFileSync(uploadPath);
         let name = `${dir}/${uuid()}`;
+        let type = file.mimetype;
 
         let fileUploading = await s3
           .upload({
@@ -35,8 +38,9 @@ export function uploadFileToS3(dir, file) {
 
         resolve({
           ok: true,
-          file: fileUploading.key,
+          file: fileUploading.Key,
           name: dir.split("/").pop(),
+          type
         });
       });
     } catch (error) {
@@ -56,8 +60,7 @@ export function removeFromS3(key) {
         .then((res) => {
           resolve({});
         })
-        .catch((err) => {
-        });
+        .catch((err) => {});
     } catch (error) {
       reject(error?.message);
     }
@@ -75,7 +78,10 @@ export function downloadFromS3(id, key) {
 
       resolve({ id, url: signedUrl });
     } catch (error) {
-      reject(error.message);
+      if(error.message === `Expected uri parameter to have length >= 1, but found "" for params.Key`) {
+        resolve({ id, url: "" });
+      }
+      console.log(error.message);
     }
   });
 }

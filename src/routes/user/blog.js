@@ -5,7 +5,7 @@ import { validateUser } from "../../middlewares/userAuth.js";
 
 const route = Router();
 
-route.get("/get-blog-by-id/:id", validateUser, blogController.getBlogById);
-route.get("/get-all-blog", validateUser, blogController.getAllBlog);
+route.get("/get-blog-by-id/:id", blogController.getBlogById);
+route.get("/get-all-blog", blogController.getAllBlog);
 
 export default route;

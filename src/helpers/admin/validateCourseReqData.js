@@ -4,13 +4,28 @@ import { validateFile } from "../validateFileTypes.js";
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
     try {
+
+      let introVideoFile = null;
+      
       let VideoFile = validateFile([{ video: files.video }], "video");
-      let introVideoFile = validateFile(
-        [{ intro_video: files.intro_video }],
-        "intro_video"
+
+      if(files?.intro_video) {
+        introVideoFile = validateFile(
+          [{ intro_video: files.intro_video }],
+          "intro_video"
+        );
+      } else {
+        introVideoFile = validateFile(
+          [{ intro_video: {name: 'somevideos.mp4'} }],
+          "intro_video"
+        );
+      }
+
+      let ImageFile = validateFile(
+        [{ thumbnail: files.thumbnail }],
+        "thumbnail"
       );
-      let ImageFile = validateFile([{ thumbnail: files.thumbnail }], "thumbnail");
-      let PdfFile = validateFile([{ pdf: files.pdf }], "pdf");
+      let PdfFile = validateFile([{ resource: files.resource }], "resource");
       let PptFile = validateFile([{ ppt: files.ppt }], "ppt");
 
       let bodyTemplate = object({
@@ -21,7 +36,7 @@ export function checkAddCourseReqBodyAndFile(body, files) {
       });
 
       let bodData = bodyTemplate.validate(body);
-
+      
       Promise.all([
         bodData,
         VideoFile,
@@ -31,7 +46,15 @@ export function checkAddCourseReqBodyAndFile(body, files) {
         PptFile,
       ])
         .then((result) => {
-          resolve(result);
+          let values = {
+            ...result[0],
+            ...result[1][0],
+            ...result[2][0],
+            ...result[3][0],
+            resource: result[4].map((item) => item.resource),
+            ...result[5][0],
+          };
+          resolve(values);
         })
         .catch((err) => {
           if (
@@ -116,7 +139,7 @@ export function checkUpdateCourseVideoReqBodyAndFile(file, body) {
   });
 }
 
-export function checkUpdateCoursePdfReqBodyAndFile(files, body) {
+export function checkUpdateCourseResourceReqBodyAndFile(files, body) {
   return new Promise((resolve, reject) => {
     try {
       let bodyTemplate = object({
@@ -125,17 +148,17 @@ export function checkUpdateCoursePdfReqBodyAndFile(files, body) {
 
       let bodyData = bodyTemplate.validate(body);
 
-      let pdfFile = [];
+      let resourceFile = [];
 
-      if (Array.isArray(files?.pdf)) {
-        files.pdf.forEach((file) =>
-          pdfFile.push(validateFile([{ pdf: file }], "pdf"))
+      if (Array.isArray(files?.resource)) {
+        files.resource.forEach((file) =>
+          resourceFile.push(validateFile([{ resource: file }], "resource"))
         );
       } else {
-        pdfFile.push(validateFile([files], "pdf"));
+        resourceFile.push(validateFile([files], "resource"));
       }
 
-      Promise.all([...pdfFile, bodyData])
+      Promise.all([...resourceFile, bodyData])
         .then((result) => {
           resolve(result);
         })

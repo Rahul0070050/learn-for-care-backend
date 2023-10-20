@@ -3,9 +3,10 @@ import { db } from "../../../conf/mysql.js";
 export function addNewCourse(courseData) {
   return new Promise((resolve, reject) => {
     try {
-      let pdf = JSON.stringify(courseData.pdf);
+      let resource = JSON.stringify(courseData.resource);
+      console.log(resource);
       let insertCourseQuery =
-        "INSERT INTO course(name,description,category,price,intro_video,thumbnail,video,ppt,pdf) VALUES(?,?,?,?,?,?,?,?,?);";
+        "INSERT INTO course(name,description,category,price,intro_video,thumbnail,video,ppt,resource) VALUES(?,?,?,?,?,?,?,?,?);";
       db.query(
         insertCourseQuery,
         [
@@ -17,7 +18,7 @@ export function addNewCourse(courseData) {
           courseData.thumbnail,
           courseData.video,
           courseData.ppt,
-          pdf,
+          resource,
         ],
         (err, result) => {
           if (err) return reject(err.message);
@@ -80,7 +81,7 @@ export function getAllCoursesFromDb() {
           return reject(err?.message);
         } else {
           if (!result[0]) {
-            return reject("No Blog Found");
+            return reject("No courses Found");
           }
           resolve(result);
         }

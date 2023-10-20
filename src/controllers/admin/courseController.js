@@ -1,4 +1,4 @@
-import { removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
+import { downloadFromS3, removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
   addNewCourse,
   getAllCoursesFromDb,
@@ -13,8 +13,8 @@ import {
   checkGetSingleCourseParams,
   checkUpdateCourseDataReqBodyAndFile,
   checkUpdateCourseIntroVideoReqBodyAndFile,
-  checkUpdateCoursePdfReqBodyAndFile,
   checkUpdateCoursePptReqBodyAndFile,
+  checkUpdateCourseResourceReqBodyAndFile,
   checkUpdateCourseThumbnailReqBodyAndFile,
   checkUpdateCourseVideoReqBodyAndFile,
 } from "../../helpers/admin/validateCourseReqData.js";
@@ -24,34 +24,38 @@ export const courseController = {
     try {
       checkAddCourseReqBodyAndFile(req.body, req.files)
         .then((result) => {
-          let video = uploadFileToS3("/course/video", result[1][0].video);
-          let introVideo = uploadFileToS3(
-            "/course/intro_video",
-            result[2][0].intro_video
-          );
-          let thumbnail = uploadFileToS3(
-            "/course/thumbnail",
-            result[3][0].thumbnail
-          );
-          let ppt = uploadFileToS3("/course/ppt", result[5][0].ppt);
-          let pdf = result[4].map((file) =>
-            uploadFileToS3("/course/pdf", file.pdf)
+          let video = uploadFileToS3("/course/video", result.video);
+
+          let introVideo = null;
+
+          if (result?.intro_video?.mv) {
+            introVideo = uploadFileToS3(
+              "/course/intro_video",
+              result?.intro_video
+            );
+          } else {
+            introVideo = Promise.resolve({ name: "intro_video", file: "" });
+          }
+
+          let thumbnail = uploadFileToS3("/course/thumbnail", result.thumbnail);
+
+          let ppt = uploadFileToS3("/course/ppt", result.ppt);
+
+          let resource = result.resource.map((file) =>
+            uploadFileToS3("/course/resource", file)
           );
 
-          Promise.all([video, introVideo, thumbnail, ppt, ...pdf])
+          Promise.all([video, introVideo, thumbnail, ppt, ...resource])
             .then((uploadedResult) => {
+              result.resource = [];
               uploadedResult.forEach((file) => {
-                if (file.name == "pdf") {
-                  if (Array.isArray(result[0][file.name])) {
-                    result[0][file.name].push({ file: file.file });
-                  } else {
-                    result[0][file.name] = [{ file: file.file }];
-                  }
+                if (file.name == "resource") {
+                  result[file.name].push({ type: file.type, file: file.file });
                 } else {
-                  result[0][file.name] = file.file;
+                  result[file.name] = file.file;
                 }
               });
-              addNewCourse(result[0])
+              addNewCourse(result)
                 .then(() => {
                   res.status(200).json({
                     success: true,
@@ -99,7 +103,7 @@ export const courseController = {
               {
                 code: 406,
                 message: "values not acceptable",
-                error: "err" + err,
+                error: err,
               },
             ],
             errorType: "client",
@@ -255,19 +259,38 @@ export const courseController = {
   getAllCourses: (req, res) => {
     try {
       getAllCoursesFromDb()
-        .then((result) => {
-          result = result.map((course) => {
-            course.pdf = JSON.parse(course.pdf);
+        .then(async (result) => {
+          let newResult = await result.map(async (course, i) => {
+            course.resource = JSON.parse(course.resource);
+
+            let intro_video = await downloadFromS3(
+              course.id,
+              course.intro_video
+            );
+
+            let thumbnail = await downloadFromS3(course.id, course.thumbnail);
+
+            let video = await downloadFromS3(course.id, course.video);
+
+            let ppt = await downloadFromS3(course.id, course.ppt);
+
+            course["intro_video"] = intro_video?.url;
+            course["thumbnail"] = thumbnail?.url;
+            course["video"] = video?.url;
+            course["ppt"] = ppt?.url;
+
             return course;
           });
 
-          res.status(200).json({
-            success: true,
-            data: {
-              code: 200,
-              message: "got all courses",
-              response: result,
-            },
+          Promise.all(newResult).then((result) => {
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "got all courses",
+                response: result,
+              },
+            });
           });
         })
         .catch((err) => {
@@ -383,44 +406,48 @@ export const courseController = {
       });
     }
   },
-  updateCoursePdf: (req, res) => {
+  updateCourseResource: (req, res) => {
     try {
-      checkUpdateCoursePdfReqBodyAndFile(req.files, req.body)
+      checkUpdateCourseResourceReqBodyAndFile(req.files, req.body)
         .then((result) => {
           getCourseByIdFromDb(req.body.course_id)
             .then(async (course) => {
-              let pdfFiles = req.files.pdf;
+              let resourceFiles = req.files.resource;
 
-              if (!Array.isArray(pdfFiles)) {
-                pdfFiles = [pdfFiles];
+              if (!Array.isArray(resourceFiles)) {
+                resourceFiles = [resourceFiles];
               }
 
-              let pdf = JSON.parse(course.pdf);
+              let resource = JSON.parse(course.resource);
 
-              pdf.forEach((file) => {
+              resource.forEach((file) => {
                 let key = file.file;
                 removeFromS3(key);
               });
 
-              let uploadedFileArray = pdfFiles.map((file) =>
-                uploadFileToS3("/course/pdf", file)
+              let uploadedFileArray = resourceFiles.map((file) =>
+                uploadFileToS3("/course/resource", file)
               );
 
               let files = await Promise.all(uploadedFileArray);
 
-              let pdfFilesS3Links = files.map((file) => {
+              let resourceFilesS3Links = files.map((file) => {
                 return { file: file.file };
               });
 
-              pdf = JSON.stringify(pdfFilesS3Links);
+              resource = JSON.stringify(resourceFilesS3Links);
 
-              updateCourseSingleFieldMediaById(req.body.course_id, pdf, "pdf")
+              updateCourseSingleFieldMediaById(
+                req.body.course_id,
+                resource,
+                "resource"
+              )
                 .then(() => {
                   res.status(200).json({
                     success: true,
                     data: {
                       code: 200,
-                      message: "course pdf file updated",
+                      message: "course resource file updated",
                       response: "",
                     },
                   });
