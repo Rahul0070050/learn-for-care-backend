@@ -58,24 +58,24 @@ export function mySqlConnect(done) {
     //   productCount INT DEFAULT 0
     // );`;
 
-    //   db.query(createCategoryTable, (err, result) => {
-    //     if (err) console.log(err);
-    //     else console.log("category table created");
-    //   });
+      db.query(createCategoryTable, (err, result) => {
+        if (err) console.log(err);
+        else console.log("category table created");
+      });
 
-    //   const createCourseTable = `
-    //     CREATE TABLE IF NOT EXISTS Course (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     name VARCHAR(200) NOT NULL,
-    //     description TEXT NOT NULL,
-    //     category VARCHAR(50) NOT NULL,
-    //     price INT NOT NULL,
-    //     intro_video VARCHAR(200),
-    //     thumbnail VARCHAR(200) NOT NULL,
-    //     video VARCHAR(200) NOT NULL,
-    //     ppt VARCHAR(200) NOT NULL,
-    //     resource TEXT NOT NULL
-    // );`;
+      const createCourseTable = `
+        CREATE TABLE IF NOT EXISTS Course (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(200) NOT NULL,
+        description TEXT NOT NULL,
+        category VARCHAR(50) NOT NULL,
+        price INT NOT NULL,
+        intro_video VARCHAR(200),
+        thumbnail VARCHAR(200) NOT NULL,
+        video VARCHAR(200) NOT NULL,
+        ppt VARCHAR(200) NOT NULL,
+        resource TEXT NOT NULL
+    );`;
 
     //   db.query(createCourseTable, (err, result) => {
     //     if (err) console.log(err);
