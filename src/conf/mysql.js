@@ -64,7 +64,7 @@ export function mySqlConnect(done) {
       // });
 
       const createCourseTable = `
-        CREATE TABLE IF NOT EXISTS Course (
+        CREATE TABLE IF NOT EXISTS course (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(200) NOT NULL,
         description TEXT NOT NULL,
