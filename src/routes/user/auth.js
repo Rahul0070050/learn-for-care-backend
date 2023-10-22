@@ -6,7 +6,7 @@ const route = Router();
 
 // user auth routes
 route.post("/registration", userAuthController.signup);
-route.post("/login", validateSubUser, userAuthController.login);
+route.post("/login", userAuthController.login);
 route.post("/validate-otp", userAuthController.validateOtp);
 route.patch("/resend-otp", userAuthController.resendOtp);
 
