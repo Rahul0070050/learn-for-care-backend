@@ -11,6 +11,8 @@ export function s3Config() {
     accessKeyId: process.env.AWS_S3_ACCESS_KEY || "",
     secretAccessKey: process.env.AWS_S3_SECRET_KEY || "",
     region: process.env.AWS_S3_REGION || "",
+    // endpoint: 'http://localhost:3002',
+    // s3ForcePathStyle: true
   });
 
   s3.headBucket({ Bucket: process.env.AWS_S3_NAME || "" }, (err, data) => {

@@ -3,6 +3,8 @@ import { validateFile } from "../validateFileTypes.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
+    files.resource = files["resource[]"]
+    delete files["resource[]"]
     try {
 
       let introVideoFile = null;
@@ -255,6 +257,30 @@ export function checkUpdateCourseDataReqBodyAndFile(body) {
           resolve(result);
         })
         .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkDeleteCourseParams(id) {
+  return new Promise((resolve, reject) => {
+    let paramsTemplate = number().required("please provide valid course id");
+    try {
+      paramsTemplate
+        .validate(id)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          if (
+            err?.message ===
+            "this must be a `number` type, but the final value was: `NaN` (cast from the value `NaN`)."
+          ) {
+            return reject("please provide a valid id");
+          }
           reject(err?.message);
         });
     } catch (error) {

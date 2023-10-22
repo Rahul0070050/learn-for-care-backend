@@ -15,5 +15,6 @@ route.post("/update-course-resource",validateAdmin,courseController.updateCourse
 route.post("/update-course-intro-video",validateAdmin,courseController.updateCourseIntroVideo);
 route.post("/update-course-thumbnail",validateAdmin,courseController.updateCourseThumbnail);
 route.post("/update-course-data",validateAdmin,courseController.updateCourseData);
+route.delete("/delete/:id",validateAdmin,courseController.deleteCourse);
 
 export default route;

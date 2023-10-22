@@ -10,7 +10,8 @@ import { mySqlConnect } from "./conf/mysql.js";
 import userAuth from "./routes/user/auth.js";
 import adminAuth from "./routes/admin/auth.js";
 import category from "./routes/admin/category.js";
-import course from "./routes/admin/course.js";
+import adminCourse from "./routes/admin/course.js";
+import course from "./routes/user/course.js";
 import adminBlog from "./routes/admin/blog.js";
 import userBlog from "./routes/user/blog.js";
 import user from "./routes/user/user.js";
@@ -62,11 +63,12 @@ app.use("/api/user/auth", userAuth);
 app.use("/api/user/cart", cart);
 app.use("/api/user/blog", userBlog);
 app.use("/api/user/info", user);
+app.use("/api/user/course", course);
 
 // admin routes
 app.use("/api/admin/auth", adminAuth);
 app.use("/api/admin/category", category);
-app.use("/api/admin/course", course);
+app.use("/api/admin/course", adminCourse);
 app.use("/api/admin/blog", adminBlog);
 
 // error handler

@@ -42,7 +42,7 @@ export function getCourseByIdFromDb(id) {
           if (result.length <= 0) {
             return reject("No course Found");
           } else {
-            return resolve(result[0]);
+            return resolve(result);
           }
         }
       });
@@ -125,6 +125,29 @@ export function updateCourseData(courseInfo) {
           else return resolve(result);
         }
       );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function deleteCourseFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getCourseDataQuery = "SELECT * FROM course WHERE id = ?;";
+      let deleteCourseDataQuery = "DELETE FROM course WHERE id = ?;";
+
+      db.query(getCourseDataQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          db.query(deleteCourseDataQuery, [id], (err, success) => {
+            if (err) return reject(err?.message);
+            result[0].resource = JSON.parse(result[0].resource);
+            return resolve(result[0]);
+          });
+        }
+      });
     } catch (error) {
       reject(error?.message);
     }

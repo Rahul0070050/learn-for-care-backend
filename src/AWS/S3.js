@@ -60,7 +60,11 @@ export function removeFromS3(key) {
         .then((res) => {
           resolve({});
         })
-        .catch((err) => {});
+        .catch((err) => {
+          if(err?.message === `Expected uri parameter to have length >= 1, but found "" for params.Key`) {
+            resolve({});
+          }
+        });
     } catch (error) {
       reject(error?.message);
     }

@@ -6,6 +6,7 @@ import {
   getCourseByIdFromDb,
   updateCourseData,
   updateCourseSingleFieldMediaById,
+  deleteCourseFromDb,
 } from "../../db/mysql/admin/course.js";
 import {
   checkAddCourseReqBodyAndFile,
@@ -17,6 +18,7 @@ import {
   checkUpdateCourseResourceReqBodyAndFile,
   checkUpdateCourseThumbnailReqBodyAndFile,
   checkUpdateCourseVideoReqBodyAndFile,
+  checkDeleteCourseParams,
 } from "../../helpers/admin/validateCourseReqData.js";
 
 export const courseController = {
@@ -130,15 +132,64 @@ export const courseController = {
       checkGetSingleCourseParams(id)
         .then((result) => {
           getCourseByIdFromDb(id)
-            .then((result) => {
-              result.pdf = JSON.parse(result.pdf);
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: `got one course by id of '${id}'`,
-                  response: result,
-                },
+            .then(async (result) => {
+              let newResult = await result.map(async (course, i) => {
+                let resources = JSON.parse(course.resource);
+
+                delete course.resource;
+
+                course[`resourceCount`] = resources.length;
+
+                resources.forEach((item, i) => {
+                  course[`resource${i}`] = `${item.file}##${item.type}`;
+                  console.log(`${item.file}##${item.type}`);
+                });
+
+                for (let index = 0; index < resources.length; index++) {
+                  let urlstring = course[`resource${index}`].split("##");
+
+                  let type = urlstring.pop();
+
+                  let key = urlstring.pop();
+
+                  let url = await downloadFromS3(index, key);
+
+                  course[`resource${index}`] = `${url.url}##${type}`;
+                }
+
+                let intro_video = await downloadFromS3(
+                  course.id,
+                  course.intro_video
+                );
+
+                let thumbnail = await downloadFromS3(
+                  course.id,
+                  course.thumbnail
+                );
+
+                let video = await downloadFromS3(course.id, course.video);
+
+                let ppt = await downloadFromS3(course.id, course.ppt);
+
+                course["intro_video"] = intro_video?.url;
+                course["thumbnail"] = thumbnail?.url;
+                course["video"] = video?.url;
+                course["ppt"] = ppt?.url;
+
+                return course;
+              });
+
+              Promise.all(newResult).then((result) => {
+                console.log(result[0]);
+
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: `got one course by id of '${id}'`,
+                    response: result,
+                  },
+                });
               });
             })
             .catch((err) => {
@@ -203,14 +254,73 @@ export const courseController = {
       checkGetCourseByCategoryBody(req.body)
         .then((result) => {
           getCourseByCategory(result.category)
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: `got all courses by category`,
-                  response: result,
-                },
+            .then(async (result) => {
+              let newResult = await result.map(async (course, i) => {
+                let resources = JSON.parse(course.resource);
+
+                delete course.resource;
+
+                course[`resourceCount`] = resources.length;
+
+                resources.forEach((item, i) => {
+                  course[`resource${i}`] = `${item.file}##${item.type}`;
+                  console.log(`${item.file}##${item.type}`);
+                });
+
+                for (let index = 0; index < resources.length; index++) {
+                  let urlstring = course[`resource${index}`].split("##");
+
+                  let type = urlstring.pop();
+
+                  let key = urlstring.pop();
+
+                  let url = await downloadFromS3(index, key);
+
+                  course[`resource${index}`] = `${url.url}##${type}`;
+                }
+
+                let intro_video = await downloadFromS3(
+                  course.id,
+                  course.intro_video
+                );
+
+                let thumbnail = await downloadFromS3(
+                  course.id,
+                  course.thumbnail
+                );
+
+                let video = await downloadFromS3(course.id, course.video);
+
+                let ppt = await downloadFromS3(course.id, course.ppt);
+
+                course["intro_video"] = intro_video?.url;
+                course["thumbnail"] = thumbnail?.url;
+                course["video"] = video?.url;
+                course["ppt"] = ppt?.url;
+
+                return course;
+              });
+
+              Promise.all(newResult).then((result) => {
+                // console.log();
+                // result.forEach((course) => {
+
+                // });
+
+                // result.forEach(course => {
+
+                // })
+
+                console.log(result[0]);
+
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: `got all courses by category`,
+                    response: result,
+                  },
+                });
               });
             })
             .catch((err) => {
@@ -261,7 +371,27 @@ export const courseController = {
       getAllCoursesFromDb()
         .then(async (result) => {
           let newResult = await result.map(async (course, i) => {
-            course.resource = JSON.parse(course.resource);
+            let resources = JSON.parse(course.resource);
+
+            delete course.resource;
+
+            course[`resourceCount`] = resources.length;
+
+            resources.forEach((item, i) => {
+              course[`resource${i}`] = `${item.file}##${item.type}`;
+            });
+
+            for (let index = 0; index < resources.length; index++) {
+              let urlstring = course[`resource${index}`].split("##");
+
+              let type = urlstring.pop();
+
+              let key = urlstring.pop();
+
+              let url = await downloadFromS3(index, key);
+
+              course[`resource${index}`] = `${url.url}##${type}`;
+            }
 
             let intro_video = await downloadFromS3(
               course.id,
@@ -803,6 +933,56 @@ export const courseController = {
             ],
             errorType: "client",
           });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  deleteCourse: (req, res) => {
+    try {
+      checkDeleteCourseParams(req.params.id)
+        .then((result) => {
+          deleteCourseFromDb(result)
+            .then(async (course) => {
+              console.log(course);
+              
+              await removeFromS3(course?.thumbnail || "");
+              await removeFromS3(course?.video || "");
+              await removeFromS3(course?.ppt || "");
+              await removeFromS3(course?.intro_video || "");
+              
+              course?.resource?.forEach(async (url) => {
+                await removeFromS3(url.file);
+              });
+
+              console.log('hi');
+
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "course deleted",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
         });
     } catch (error) {
       res.status(500).json({

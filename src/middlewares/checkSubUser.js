@@ -1,16 +1,16 @@
-import { validateUserJwtToken } from "../helpers/jwt.js";
+import { isSubUser } from "../helpers/checkSubUser.js";
 import { getUser } from "../utils/auth.js";
 
-export function validateUser(req, res, next) {
-
+export function validateSubUser(req, res, next) {
   const { authorization } = req.headers;
   const token = authorization?.split(" ")[1] || "";
 
-  validateUserJwtToken(token)
+  isSubUser(getUser(req))
     .then((result) => {
-      next();
+      res.redirect('/sub-user-login')
     })
     .catch((err) => {
+      console.log(err);
       res.status(401).json({
         success: false,
         errors: [
@@ -23,9 +23,4 @@ export function validateUser(req, res, next) {
         errorType: "server",
       });
     });
-}
-
-export function isCompanyUser(req,res,next) {
-  let user = getUser(req)
-  checkIsCompanyUser()
 }
