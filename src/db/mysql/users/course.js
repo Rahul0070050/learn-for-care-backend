@@ -8,11 +8,7 @@ export function getCourseByIdFromDb(id) {
         if (err) {
           return reject(err?.message);
         } else {
-          if (result.length <= 0) {
-            return reject("No course Found");
-          } else {
-            return resolve(result);
-          }
+          return resolve(result);
         }
       });
     } catch (error) {
@@ -29,9 +25,6 @@ export function getCourseByCategory(category) {
         if (err) {
           return reject(err?.message);
         } else {
-          if (!result[0]) {
-            return reject("No course Found");
-          }
           resolve(result);
         }
       });
@@ -49,9 +42,6 @@ export function getAllCoursesFromDb() {
         if (err) {
           return reject(err?.message);
         } else {
-          if (!result[0]) {
-            return reject("No courses Found");
-          }
           resolve(result);
         }
       });
