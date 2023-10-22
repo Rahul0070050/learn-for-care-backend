@@ -27,7 +27,7 @@ s3Config();
 // middleware
 app.use(compression());
 app.use(express.json());
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.urlencoded({ limit: "250mb", extended: true }));
 app.use(helmet());
 app.use(
   fileUpload({
@@ -35,7 +35,7 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "250mb", extended: true }));
 app.use(
   cors({
     origin: [
