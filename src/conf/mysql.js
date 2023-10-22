@@ -58,10 +58,10 @@ export function mySqlConnect(done) {
     //   productCount INT DEFAULT 0
     // );`;
 
-      db.query(createCategoryTable, (err, result) => {
-        if (err) console.log(err);
-        else console.log("category table created");
-      });
+      // db.query(createCategoryTable, (err, result) => {
+      //   if (err) console.log(err);
+      //   else console.log("category table created");
+      // });
 
       const createCourseTable = `
         CREATE TABLE IF NOT EXISTS Course (
@@ -77,10 +77,10 @@ export function mySqlConnect(done) {
         resource TEXT NOT NULL
     );`;
 
-    //   db.query(createCourseTable, (err, result) => {
-    //     if (err) console.log(err);
-    //     else console.log("course table created");
-    //   });
+      db.query(createCourseTable, (err, result) => {
+        if (err) console.log(err);
+        else console.log("course table created");
+      });
 
     // const createBlogTable = `
     //   CREATE TABLE IF NOT EXISTS blogs (
