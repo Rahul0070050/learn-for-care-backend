@@ -180,7 +180,6 @@ export const courseController = {
               });
 
               Promise.all(newResult).then((result) => {
-                console.log(result[0]);
 
                 res.status(200).json({
                   success: true,
