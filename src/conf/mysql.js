@@ -63,6 +63,7 @@ export function mySqlConnect(done) {
       //   else console.log("category table created");
       // });
 
+      
       const createCourseTable = `
         CREATE TABLE IF NOT EXISTS course (
         id INT AUTO_INCREMENT PRIMARY KEY,
