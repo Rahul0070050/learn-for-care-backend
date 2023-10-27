@@ -28,3 +28,18 @@ export function updateCategory(categoryInfo) {
     }
   });
 }
+
+export function getAllCategoriesFromDb() {
+  return new Promise((resolve, reject) => { 
+    try {
+      let getAllCategoryQuery =
+        "SELECT * FROM category";
+      db.query(getAllCategoryQuery, (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+   })
+}

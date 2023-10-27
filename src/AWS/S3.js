@@ -84,8 +84,9 @@ export function downloadFromS3(id, key) {
     } catch (error) {
       if(error.message === `Expected uri parameter to have length >= 1, but found "" for params.Key`) {
         resolve({ id, url: "" });
+      } else {
+        reject(error?.message)
       }
-      console.log(error.message);
     }
   });
 }

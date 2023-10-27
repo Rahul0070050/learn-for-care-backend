@@ -89,6 +89,7 @@ export function mySqlConnect(done) {
     //   header VARCHAR(150) NOT NULL,
     //   img VARCHAR(200) NOT NULL,
     //   content TEXT NOT NULL,
+    //   author VARCHAR(200) NOT NULL,
     //   date DATETIME DEFAULT NOW()
     // );`;
 
@@ -101,14 +102,31 @@ export function mySqlConnect(done) {
     // CREATE TABLE IF NOT EXISTS cart (
     //   id INT AUTO_INCREMENT PRIMARY KEY,
     //   user_id INT NOT NULL,
-    //   course_id VARCHAR(255) NOT NULL,
-    //   product_count VARCHAR(255) NOT NULL,
+    //   course_id INT NOT NULL,
+    //   product_count INT NOT NULL,
+    //   thumbnail VARCHAR(255) NOT NULL,
+    //   name VARCHAR(255) NOT NULL,
     //   amount INT NOT NULL
     // );`;
 
     // db.query(createCartTable, (err, result) => {
     //   if (err) console.log(err);
     //   else console.log("cart table created");
+    // });
+
+    // const createBlogTable = `
+    //   CREATE TABLE IF NOT EXISTS blogs (
+    //   id INT AUTO_INCREMENT PRIMARY KEY,
+    //   header VARCHAR(150) NOT NULL,
+    //   img VARCHAR(200) NOT NULL,
+    //   content TEXT NOT NULL,
+    //   author VARCHAR(200) NOT NULL,
+    //   date DATETIME DEFAULT NOW()
+    // );`;
+
+    // db.query(createBlogTable, (err, result) => {
+    //   if (err) console.log(err);
+    //   else console.log("blog table created");
     // });
 
     return done();

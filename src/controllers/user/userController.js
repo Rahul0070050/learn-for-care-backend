@@ -28,5 +28,5 @@ export const userController = {
           errorType: "server",
         });
       });
-  },
+  }
 };

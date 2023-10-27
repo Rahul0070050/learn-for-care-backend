@@ -2,10 +2,12 @@ import { number, object, string } from "yup";
 import { validateFile } from "../validateFileTypes.js";
 
 export function checkCreateBlogReqBody(body, file) {
+  console.log(body);
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       header: string().required("please provide valid header"),
       content: string().required("please provide valid content"),
+      author: string().required("please provide valid author name"),
     });
 
     if(Array.isArray(file?.image)) {

@@ -1,16 +1,17 @@
 import { db } from "../../../conf/mysql.js";
 
-export function addCourseToCart(courseId, price, userId) {
+export function addCourseToCart(courseId, price, thumbnail, userId, name) {
+  console.log(courseId, price, userId);
   return new Promise((resolve, reject) => {
     try {
-      let insertQuery = `INSERT INTO cart (user_id, course_id, product_count, amount)
-                SELECT ?, ?, ?, ?
+      let insertQuery = `INSERT INTO cart (user_id, course_id, product_count, thumbnail, amount, name)
+                SELECT ?, ?, ?, ?, ?, ?
                 WHERE NOT EXISTS (SELECT * FROM cart WHERE user_id = ? AND course_id = ?);      
               `;
 
       db.query(
         insertQuery,
-        [userId, courseId, 1, price, userId, courseId],
+        [userId, courseId, 1, thumbnail, price, name, userId, courseId],
         (err, result) => {
           if (err) {
             reject(err?.message);
@@ -50,13 +51,15 @@ export function updateCourseCountInTheCart(body, userId, price) {
       if (body.identifier == 1) {
         updateCartCountQuery = `UPDATE cart SET product_count = product_count + 1, amount = product_count * ${price} WHERE user_id = ? AND course_id = ?;`;
       } else {
-        updateCartCountQuery = `UPDATE cart SET product_count = product_count - 1, amount = product_count * ${price}   WHERE user_id = ? AND course_id = ?;`;
+        updateCartCountQuery = `UPDATE cart SET product_count = product_count - 1, amount = product_count * ${price} WHERE user_id = ? AND course_id = ?;`;
       }
+      console.log(body,userId,price);
 
       db.query(
         updateCartCountQuery,
         [userId, body.course_id],
         (err, result) => {
+          console.log(err);
           if (err) return reject(err?.message);
           else return resolve(result);
         }
@@ -71,16 +74,40 @@ export function deleteCourseFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let deleteItemFromCartQuery = `DELETE FROM cart WHERE id = ?`;
-      db.query(
-        deleteItemFromCartQuery,
-        [id],
-        (err, result) => {
-          if (err) return reject(err?.message);
-          else return resolve(result);
-        }
-      );
+      db.query(deleteItemFromCartQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }
   });
+}
+
+export function getAllCartItemFromDB() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getAllItemsFromCartQuery = `SELECT * FROM cart`;
+      db.query(getAllItemsFromCartQuery, (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getCartItemsByUserId(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getAllItemsFromCartByUserIdQuery = `SELECT * FROM cart WHERE user_id = ?`;
+      db.query(getAllItemsFromCartByUserIdQuery,[id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  })
 }

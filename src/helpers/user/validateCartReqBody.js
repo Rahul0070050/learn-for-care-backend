@@ -2,9 +2,9 @@ import { number, object } from "yup";
 
 export function checkAddToCartReqBody(id) {
   return new Promise((resolve, reject) => {
-    let course = number().required("please provide course id");
+    let courseId = number().required("please provide course id");
     try {
-      course
+      courseId
         .validate(id)
         .then((res) => {
           resolve(res);
@@ -24,6 +24,7 @@ export function checkUpdateCartCountReqBody(body) {
       course_id: number().required("please provide course id"),
       identifier: number().required("please provide identifier")
     });
+
     try {
       bodyTemplate
         .validate(body)
