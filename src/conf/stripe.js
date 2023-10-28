@@ -1,29 +1,30 @@
-import Stripe from 'stripe'
-import {config} from 'dotenv'
+import Stripe from "stripe";
+import { config } from "dotenv";
 
-config()
+config();
 
-export const stripeObj = new Stripe(process.env.STRIP_PRIVAT_KEY)
+export const stripeObj = new Stripe(process.env.STRIP_PRIVAT_KEY);
 
-export async function getStripeUrl(items=[]) {
-    let session = await stripeObj.checkout.sessions.create({
-        payment_method_types: ["card"],
-        mode: "payment",
-        line_items: items.map((item) => {
-            return {
-                price_data: {
-                    currency: 'GBP',
-                    product_data: {
-                        name: item.name
-                    },
-                    unit_amount: item.amount * 100
-                },
-                quantity: item.product_count,
-            }
-        }),
-        success_url: "https://test.learnforcare.com/success",
-        cancel_url: "https://test.learnforcare.com/failed"
-    })
+export async function getStripeUrl(items = [], email) {
+  let session = await stripeObj.checkout.sessions.create({
+    payment_method_types: ["card"],
+    mode: "payment",
+    customer_email: email,
+    line_items: items.map((item) => {
+      return {
+        price_data: {
+          currency: "GBP",
+          product_data: {
+            name: item.name,
+          },
+          unit_amount: item.amount * 100,
+        },
+        quantity: item.product_count,
+      };
+    }),
+    success_url: "https://test.learnforcare.com/success",
+    cancel_url: "https://test.learnforcare.com/failed",
+  });
 
-    return session
+  return session;
 }

@@ -251,8 +251,8 @@ export const cartController = {
   },
   checkout: async (req, res) => {
     try {
-      let userId = getUser(req)?.id;
-      let cart = await getCartItemsByUserId(userId);
+      let user = getUser(req);
+      let cart = await getCartItemsByUserId(user.id);
       if (cart.length <= 0) {
         res.status(500).json({
           success: false,
@@ -266,7 +266,7 @@ export const cartController = {
           errorType: "client",
         });
       } else {
-        let session = await getStripeUrl(cart);
+        let session = await getStripeUrl(cart,user.email);
         res.status(200).json({
           success: true,
           data: {
