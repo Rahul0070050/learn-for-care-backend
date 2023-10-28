@@ -21,8 +21,8 @@ export async function getStripeUrl(items=[]) {
                 quantity: item.product_count,
             }
         }),
-        success_url: "http://localhost:3000/",
-        cancel_url: "http://localhost:3000/"
+        success_url: "http://localhost:3000/success",
+        cancel_url: "http://localhost:3000/failed"
     })
 
     return session

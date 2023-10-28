@@ -89,3 +89,22 @@ export function checkReSendOtpInfo(info) {
     } catch (error) {}
   });
 }
+
+export function checkForgotPasswordInfo(info) {
+  return new Promise((resolve, reject) => {
+    let checkInfo = object({
+      email: string().email().required("please provide email address")
+    });
+    
+    try {
+      checkInfo
+        .validate(info)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {}
+  });
+}

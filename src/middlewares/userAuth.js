@@ -27,5 +27,5 @@ export function validateUser(req, res, next) {
 
 export function isCompanyUser(req,res,next) {
   let user = getUser(req)
-  checkIsCompanyUser()
+  // checkIsCompanyUser()
 }

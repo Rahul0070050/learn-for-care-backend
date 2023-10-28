@@ -1,4 +1,5 @@
 import {
+  checkForgotPasswordInfo,
   checkOtpInfo,
   checkReSendOtpInfo,
   validateUserInfo,
@@ -373,6 +374,41 @@ export const userAuthController = {
             errorType: "client",
           });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  forgotPassword: (req, res) => {
+    try {
+      checkForgotPasswordInfo(req.body).then(async (result) => {
+        saveOtpToDB(result.email).then(savedOtpResult => {
+          sentOtpEmail(savedOtpResult.email, savedOtpResult.otp).then(() => {
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                response: "check your email",
+                message: "successfully sent OTP",
+              },
+            });
+          }).catch(err => {
+            console.log(err);
+          });
+        }).catch(err => {
+          console.log(err);
+        })
+      });
     } catch (error) {
       res.status(500).json({
         success: false,

@@ -26,7 +26,7 @@ export const cartController = {
             course[0].price,
             course[0].thumbnail,
             user.id,
-            course[0].name,
+            course[0].name
           )
             .then((result) => {
               res.status(200).json({
@@ -86,7 +86,7 @@ export const cartController = {
         .then(async (result) => {
           let user = await getUser(req);
           let course = await getCourseByIdFromDb(result.course_id);
-          console.log('course',course);
+          console.log("course", course);
           updateCourseCountInTheCart(result, user.id, course[0].price)
             .then((result) => {
               res.status(200).json({
@@ -247,15 +247,15 @@ export const cartController = {
       });
     }
   },
-  checkout: async(req,res) => {
+  checkout: async (req, res) => {
     try {
-      let userId = getUser(req)?.id
+      let userId = getUser(req)?.id;
       console.log(userId);
-      let cart = await getCartItemsByUserId(userId)
-      if(cart.length <= 0) {
-        throw new Error("Your Cart is Empty")
+      let cart = await getCartItemsByUserId(userId);
+      if (cart.length <= 0) {
+        throw new Error("Your Cart is Empty");
       } else {
-        let session = await getStripeUrl(cart)
+        let session = await getStripeUrl(cart);
         console.log(cart);
         res.status(200).json({
           success: true,
@@ -267,6 +267,7 @@ export const cartController = {
         });
       }
     } catch (error) {
+      console.log(error);
       res.status(500).json({
         success: false,
         errors: [
@@ -279,5 +280,53 @@ export const cartController = {
         errorType: "server",
       });
     }
-  }
+  },
+  stripResponse: (req, res) => {
+    try {
+      const sig = request.headers["stripe-signature"];
+      let event = stripe.webhooks.constructEvent(
+        req.body,
+        sig,
+        process.env.STRIPE_ENDPOINTSECRET
+      );
+
+      // Handle the event
+      switch (event.type) {
+        case "charge.failed":
+          const chargeFailed = event.data.object;
+          // Then define and call a function to handle the event charge.failed
+          console.log(chargeFailed);
+          console.log('payment failed');
+          break;
+        case "charge.pending":
+          const chargePending = event.data.object;
+          console.log(chargePending);
+          console.log('payment pending');
+          // Then define and call a function to handle the event charge.pending
+          break;
+          case "charge.succeeded":
+            const chargeSucceeded = event.data.object;
+            console.log(chargeSucceeded);
+            console.log('payment success');
+          // Then define and call a function to handle the event charge.succeeded
+          break;
+        // ... handle other event types
+        default:
+          console.log(`Unhandled event type ${event.type}`);
+      }
+    } catch (err) {
+      
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err?.message ? err?.message : error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
 };
