@@ -53,7 +53,6 @@ export function updateCourseCountInTheCart(body, userId, price) {
       } else {
         updateCartCountQuery = `UPDATE cart SET product_count = product_count - 1, amount = product_count * ${price} WHERE user_id = ? AND course_id = ?;`;
       }
-      console.log(body,userId,price);
 
       db.query(
         updateCartCountQuery,

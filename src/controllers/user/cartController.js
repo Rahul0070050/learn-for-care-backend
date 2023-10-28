@@ -15,6 +15,7 @@ import {
 } from "../../db/mysql/users/cart.js";
 import { downloadFromS3 } from "../../AWS/S3.js";
 import { getStripeUrl, stripeObj } from "../../conf/stripe.js";
+import { getUserByEmail } from "../../db/mysql/users/users.js";
 config("../../../.env");
 export const cartController = {
   addToCart: (req, res) => {
@@ -266,7 +267,7 @@ export const cartController = {
           errorType: "client",
         });
       } else {
-        let session = await getStripeUrl(cart,user.email);
+        let session = await getStripeUrl(cart, user.email);
         res.status(200).json({
           success: true,
           data: {
@@ -300,31 +301,75 @@ export const cartController = {
         sig,
         process.env.STRIPE_ENDPOINTSECRET
       );
+      // "whsec_c2c28348c7abca18d7df195514b505a057decd9956e7e237eaae28c3b29c8c7e"
 
+      console.log("hi", event.type);
       // Handle the event
       switch (event.type) {
         case "payment_intent.created":
-          console.log(event.data.object);
+          // console.log(event.data.object);
           res.send();
         case "payment_intent.requires_action":
-          console.log(event.data.object);
+          // console.log(event.data.object);
           res.send();
         case "charge.failed":
           const chargeFailed = event.data.object;
-          console.log(chargeFailed);
+          // console.log(chargeFailed);
           res.send();
           // Then define and call a function to handle the event charge.failed
           break;
         case "charge.pending":
           const chargePending = event.data.object;
-          console.log(chargePending);
+          // console.log(chargePending);
           res.send();
           // Then define and call a function to handle the event charge.pending
           break;
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
-          console.log(chargeSucceeded);
-          res.send();
+          // console.log(chargeSucceeded.billing_details.email);
+          console.log(chargeSucceeded.billing_details.email);
+          getUserByEmail(chargeSucceeded.billing_details.email || "")
+            .then((user) => {
+              let userId = user[0].id;
+              getCartItemsByUserId(userId)
+                .then((cartItems) => {
+                  Promise.all(
+                    cartItems.map((item) => {
+                      console.log(item);
+                      saveToPurchasedCourse({
+                        user_id: item.user_id,
+                        course_id: item.course_id,
+                        amount: item.amount,
+                        product_count: item.course_count,
+                      });
+                    })
+                  )
+                    .then((result) => {
+                      cartItems.forEach((item) => {
+                        deleteCourseFromDb(item.id)
+                          .then(() => {
+                            console.log("Deleted from Cart");
+                          })
+                          .catch((err) => {
+                            console.error("Error deleting from db", err);
+                          });
+                      });
+                      res.send();
+                    })
+                    .catch((err) => {
+                      res.status(406).send();
+                    });
+                })
+                .catch((err) => {
+                  res.status(406).send();
+                  console.log(err.message);
+                });
+            })
+            .catch((err) => {
+              res.status(406).send();
+              console.log("err.message");
+              console.log(err.message);
+            });
           // Then define and call a function to handle the event charge.succeeded
           break;
         // ... handle other event types
@@ -338,7 +383,7 @@ export const cartController = {
         success: false,
         errors: [
           {
-            code: 500,
+            code: 400,
             message: "some error occurred please try again later",
             error: err?.message ? err?.message : error,
           },

@@ -58,12 +58,11 @@ export function mySqlConnect(done) {
     //   productCount INT DEFAULT 0
     // );`;
 
-      // db.query(createCategoryTable, (err, result) => {
-      //   if (err) console.log(err);
-      //   else console.log("category table created");
-      // });
+    // db.query(createCategoryTable, (err, result) => {
+    //   if (err) console.log(err);
+    //   else console.log("category table created");
+    // });
 
-      
     //   const createCourseTable = `
     //     CREATE TABLE IF NOT EXISTS course (
     //     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -127,6 +126,23 @@ export function mySqlConnect(done) {
     // db.query(createBlogTable, (err, result) => {
     //   if (err) console.log(err);
     //   else console.log("blog table created");
+    // });
+
+    // const purchasedCourseTable = `
+    //   CREATE TABLE IF NOT EXISTS purchased_course (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     user_id INT NOT NULL,
+    //     course_id INT NOT NULL,
+    //     amount TEXT NOT NULL,
+    //     course_count INT NOT NULL,
+    //     validity VARCHAR(10) NOT NULL,
+    //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    //   );
+    // `;
+
+    // db.query(purchasedCourseTable, (err, result) => {
+    //   if (err) console.log(err.message);
+    //   else console.log("purchasedCourse table created");
     // });
 
     return done();
