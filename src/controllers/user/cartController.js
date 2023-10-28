@@ -15,7 +15,7 @@ import {
 } from "../../db/mysql/users/cart.js";
 import { downloadFromS3 } from "../../AWS/S3.js";
 import { getStripeUrl, stripeObj } from "../../conf/stripe.js";
-config();
+config("../../../.env");
 export const cartController = {
   addToCart: (req, res) => {
     try {
@@ -306,16 +306,19 @@ export const cartController = {
         case "charge.failed":
           const chargeFailed = event.data.object;
           console.log(chargeFailed);
+          res.status(200).sent()
           // Then define and call a function to handle the event charge.failed
           break;
         case "charge.pending":
           const chargePending = event.data.object;
           console.log(chargePending);
+          res.status(200).send();
           // Then define and call a function to handle the event charge.pending
           break;
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
           console.log(chargeSucceeded);
+          res.status(200).send();
           // Then define and call a function to handle the event charge.succeeded
           break;
         // ... handle other event types
