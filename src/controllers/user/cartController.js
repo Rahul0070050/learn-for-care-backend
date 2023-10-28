@@ -342,7 +342,7 @@ export const cartController = {
                         user_id: item.user_id,
                         course_id: item.course_id,
                         amount: item.amount,
-                        product_count: item.course_count,
+                        course_count: item.product_count,
                       });
                     })
                   )
