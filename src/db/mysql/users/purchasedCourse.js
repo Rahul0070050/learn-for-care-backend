@@ -1,4 +1,4 @@
-import { db } from "../../../conf/mysql";
+import { db } from "../../../conf/mysql.js";
 
 export function saveToPurchasedCourse(course) {
   return new Promise((resolve, reject) => {
