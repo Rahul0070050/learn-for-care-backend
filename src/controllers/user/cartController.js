@@ -328,11 +328,11 @@ export const cartController = {
           const chargeSucceeded = event.data.object;
           // console.log(chargeSucceeded.billing_details.email);
           console.log(chargeSucceeded.billing_details.email);
-          getUserByEmail(chargeSucceeded.billing_details.email || "")
+          getUserByEmail({email: chargeSucceeded.billing_details.email} || {email: ""})
             .then((user) => {
               console.log(user);
               let userId = user[0].id;
-              getCartItemsByUserId({ email: userId })
+              getCartItemsByUserId(userId)
                 .then((cartItems) => {
                   Promise.all(
                     cartItems.map((item) => {
