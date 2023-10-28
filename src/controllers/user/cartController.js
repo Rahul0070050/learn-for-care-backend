@@ -1,3 +1,4 @@
+import { config } from "dotenv";
 import {
   checkAddToCartReqBody,
   checkDeleteCorseFromCartReqBody,
@@ -14,6 +15,7 @@ import {
 } from "../../db/mysql/users/cart.js";
 import { downloadFromS3 } from "../../AWS/S3.js";
 import { getStripeUrl, stripeObj } from "../../conf/stripe.js";
+config();
 export const cartController = {
   addToCart: (req, res) => {
     try {
