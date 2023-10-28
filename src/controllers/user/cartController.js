@@ -16,6 +16,7 @@ import {
 import { downloadFromS3 } from "../../AWS/S3.js";
 import { getStripeUrl, stripeObj } from "../../conf/stripe.js";
 import { getUserByEmail } from "../../db/mysql/users/users.js";
+import { saveToPurchasedCourse } from "../../db/mysql/users/purchasedCourse.js";
 config("../../../.env");
 export const cartController = {
   addToCart: (req, res) => {
