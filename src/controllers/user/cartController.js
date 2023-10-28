@@ -13,7 +13,7 @@ import {
   updateCourseCountInTheCart,
 } from "../../db/mysql/users/cart.js";
 import { downloadFromS3 } from "../../AWS/S3.js";
-import { getStripeUrl } from "../../conf/stripe.js";
+import { getStripeUrl, stripeObj } from "../../conf/stripe.js";
 export const cartController = {
   addToCart: (req, res) => {
     try {
@@ -289,10 +289,11 @@ export const cartController = {
       });
     }
   },
-  stripResponse: (req, res) => {
+  stripResponse: async (req, res) => {
     try {
-      const sig = request.headers["stripe-signature"];
-      let event = stripe.webhooks.constructEvent(
+      const sig = req.headers["stripe-signature"];
+
+      let event = stripeObj.webhooks.constructEvent(
         req.body,
         sig,
         process.env.STRIPE_ENDPOINTSECRET
@@ -303,19 +304,13 @@ export const cartController = {
         case "charge.failed":
           const chargeFailed = event.data.object;
           // Then define and call a function to handle the event charge.failed
-          console.log(chargeFailed);
-          console.log("payment failed");
           break;
         case "charge.pending":
           const chargePending = event.data.object;
-          console.log(chargePending);
-          console.log("payment pending");
           // Then define and call a function to handle the event charge.pending
           break;
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
-          console.log(chargeSucceeded);
-          console.log("payment success");
           // Then define and call a function to handle the event charge.succeeded
           break;
         // ... handle other event types
@@ -323,7 +318,9 @@ export const cartController = {
           console.log(`Unhandled event type ${event.type}`);
       }
     } catch (err) {
-      res.status(500).json({
+      console.log(err.message);
+      // console.log(err.message);
+      res.status(400).json({
         success: false,
         errors: [
           {

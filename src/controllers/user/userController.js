@@ -11,7 +11,7 @@ export const userController = {
           data: {
             code: 200,
             message: "got user",
-            response: {...result},
+            response: { ...result },
           },
         });
       })
@@ -28,5 +28,22 @@ export const userController = {
           errorType: "server",
         });
       });
-  }
+  },
+  createSubUser: (req, res) => {
+    try {
+      
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
 };

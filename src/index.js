@@ -17,12 +17,17 @@ import userBlog from "./routes/user/blog.js";
 import user from "./routes/user/user.js";
 import cart from "./routes/user/cart.js";
 import { s3Config } from "./conf/aws_s3.js";
+import { stripeObj } from "./conf/stripe.js";
+import { cartController } from "./controllers/user/cartController.js";
 
 const app = express();
 
 dotenv.config();
 
 s3Config();
+
+// stripe checkout route
+app.post("/stripe-checkout", express.raw({ type: "application/json" }), cartController.stripResponse);
 
 // middleware
 app.use(compression());
@@ -35,7 +40,7 @@ app.use(
     tempFileDir: "/tmp/",
   })
 );
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(
   cors({

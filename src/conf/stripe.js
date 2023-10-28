@@ -3,7 +3,7 @@ import {config} from 'dotenv'
 
 config()
 
-let stripeObj = new Stripe(process.env.STRIP_PRIVAT_KEY)
+export const stripeObj = new Stripe(process.env.STRIP_PRIVAT_KEY)
 
 export async function getStripeUrl(items=[]) {
     let session = await stripeObj.checkout.sessions.create({
