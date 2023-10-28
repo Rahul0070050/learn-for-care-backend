@@ -298,27 +298,33 @@ export const cartController = {
       let event = stripeObj.webhooks.constructEvent(
         req.body,
         sig,
-        process.env.STRIPE_ENDPOINTSECRET
+        "whsec_c2c28348c7abca18d7df195514b505a057decd9956e7e237eaae28c3b29c8c7e"
       );
 
       // Handle the event
       switch (event.type) {
+        case "payment_intent.created":
+          console.log(event.data.object);
+          res.send();
+        case "payment_intent.requires_action":
+          console.log(event.data.object);
+          res.send();
         case "charge.failed":
           const chargeFailed = event.data.object;
           console.log(chargeFailed);
-          res.status(200).sent()
+          res.send();
           // Then define and call a function to handle the event charge.failed
           break;
         case "charge.pending":
           const chargePending = event.data.object;
           console.log(chargePending);
-          res.status(200).send();
+          res.send();
           // Then define and call a function to handle the event charge.pending
           break;
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
           console.log(chargeSucceeded);
-          res.status(200).send();
+          res.send();
           // Then define and call a function to handle the event charge.succeeded
           break;
         // ... handle other event types

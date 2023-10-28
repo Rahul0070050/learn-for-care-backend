@@ -12,7 +12,7 @@ export async function getStripeUrl(items=[]) {
         line_items: items.map((item) => {
             return {
                 price_data: {
-                    currency: 'usd',
+                    currency: 'GBP',
                     product_data: {
                         name: item.name
                     },
@@ -21,8 +21,8 @@ export async function getStripeUrl(items=[]) {
                 quantity: item.product_count,
             }
         }),
-        success_url: "http://localhost:3000/success",
-        cancel_url: "http://localhost:3000/failed"
+        success_url: "https://test.learnforcare.com/success",
+        cancel_url: "https://test.learnforcare.com/failed"
     })
 
     return session
