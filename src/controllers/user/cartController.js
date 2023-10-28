@@ -303,14 +303,17 @@ export const cartController = {
       switch (event.type) {
         case "charge.failed":
           const chargeFailed = event.data.object;
+          console.log(chargeFailed);
           // Then define and call a function to handle the event charge.failed
           break;
         case "charge.pending":
           const chargePending = event.data.object;
+          console.log(chargePending);
           // Then define and call a function to handle the event charge.pending
           break;
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
+          console.log(chargeSucceeded);
           // Then define and call a function to handle the event charge.succeeded
           break;
         // ... handle other event types
