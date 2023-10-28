@@ -1,3 +1,5 @@
+import { db } from "../../../conf/mysql";
+
 export function saveToPurchasedCourse(course) {
   return new Promise((resolve, reject) => {
     try {
