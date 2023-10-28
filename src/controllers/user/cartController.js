@@ -250,13 +250,21 @@ export const cartController = {
   checkout: async (req, res) => {
     try {
       let userId = getUser(req)?.id;
-      console.log(userId);
       let cart = await getCartItemsByUserId(userId);
       if (cart.length <= 0) {
-        throw new Error("Your Cart is Empty");
+        res.status(500).json({
+          success: false,
+          errors: [
+            {
+              code: 500,
+              message: "your cart is empty",
+              response: {},
+            },
+          ],
+          errorType: "client",
+        });
       } else {
         let session = await getStripeUrl(cart);
-        console.log(cart);
         res.status(200).json({
           success: true,
           data: {
@@ -296,18 +304,18 @@ export const cartController = {
           const chargeFailed = event.data.object;
           // Then define and call a function to handle the event charge.failed
           console.log(chargeFailed);
-          console.log('payment failed');
+          console.log("payment failed");
           break;
         case "charge.pending":
           const chargePending = event.data.object;
           console.log(chargePending);
-          console.log('payment pending');
+          console.log("payment pending");
           // Then define and call a function to handle the event charge.pending
           break;
-          case "charge.succeeded":
-            const chargeSucceeded = event.data.object;
-            console.log(chargeSucceeded);
-            console.log('payment success');
+        case "charge.succeeded":
+          const chargeSucceeded = event.data.object;
+          console.log(chargeSucceeded);
+          console.log("payment success");
           // Then define and call a function to handle the event charge.succeeded
           break;
         // ... handle other event types
@@ -315,7 +323,6 @@ export const cartController = {
           console.log(`Unhandled event type ${event.type}`);
       }
     } catch (err) {
-      
       res.status(500).json({
         success: false,
         errors: [
