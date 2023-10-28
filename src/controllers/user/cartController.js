@@ -298,7 +298,7 @@ export const cartController = {
       let event = stripeObj.webhooks.constructEvent(
         req.body,
         sig,
-        "whsec_c2c28348c7abca18d7df195514b505a057decd9956e7e237eaae28c3b29c8c7e"
+        process.env.STRIPE_ENDPOINTSECRET
       );
 
       // Handle the event
