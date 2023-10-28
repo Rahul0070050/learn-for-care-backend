@@ -330,6 +330,7 @@ export const cartController = {
           console.log(chargeSucceeded.billing_details.email);
           getUserByEmail(chargeSucceeded.billing_details.email || "")
             .then((user) => {
+              console.log(user);
               let userId = user[0].id;
               getCartItemsByUserId(userId)
                 .then((cartItems) => {
