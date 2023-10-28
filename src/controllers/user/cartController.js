@@ -332,7 +332,7 @@ export const cartController = {
             .then((user) => {
               console.log(user);
               let userId = user[0].id;
-              getCartItemsByUserId(userId)
+              getCartItemsByUserId({ email: userId })
                 .then((cartItems) => {
                   Promise.all(
                     cartItems.map((item) => {
