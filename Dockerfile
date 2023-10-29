@@ -8,4 +8,4 @@ RUN npm install
 
 EXPOSE 3002
 
-CMD [ "node", "/src/index.js" ]
+CMD [ "node", "/usr/src/app/src/index.js" ]
