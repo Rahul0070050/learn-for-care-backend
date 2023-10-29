@@ -6,8 +6,6 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY ./build .
-
-EXPOSE 8080
+EXPOSE 3002
 
 CMD [ "node", "index.js" ]
