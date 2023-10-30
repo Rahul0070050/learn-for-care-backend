@@ -6,18 +6,22 @@ import bodyParser from "body-parser";
 import compression from "compression";
 import fileUpload from "express-fileupload";
 
-import { mySqlConnect } from "./conf/mysql.js";
 import userAuth from "./routes/user/auth.js";
-import adminAuth from "./routes/admin/auth.js";
-import category from "./routes/admin/category.js";
-import adminCourse from "./routes/admin/course.js";
 import course from "./routes/user/course.js";
-import adminBlog from "./routes/admin/blog.js";
 import userBlog from "./routes/user/blog.js";
 import user from "./routes/user/user.js";
 import cart from "./routes/user/cart.js";
+import exam from "./routes/user/exam.js";
+
+import adminAuth from "./routes/admin/auth.js";
+import category from "./routes/admin/category.js";
+import adminCourse from "./routes/admin/course.js";
+import adminBlog from "./routes/admin/blog.js";
+import adminExam from "./routes/admin/exam.js";
+
+import { mySqlConnect } from "./conf/mysql.js";
 import { s3Config } from "./conf/aws_s3.js";
-import { stripeObj } from "./conf/stripe.js";
+
 import { cartController } from "./controllers/user/cartController.js";
 
 const app = express();
@@ -71,12 +75,15 @@ app.use("/api/user/cart", cart);
 app.use("/api/user/blog", userBlog);
 app.use("/api/user/info", user);
 app.use("/api/user/course", course);
+app.use("/api/user/exam", exam);
 
 // admin routes
 app.use("/api/admin/auth", adminAuth);
 app.use("/api/admin/category", category);
 app.use("/api/admin/course", adminCourse);
 app.use("/api/admin/blog", adminBlog);
+app.use("/api/admin/blog", adminBlog);
+app.use("/api/admin/exam", adminExam);
 
 // error handler
 app.use((err, req, res, next) => {

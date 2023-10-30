@@ -8,5 +8,6 @@ const route = Router();
 route.get("/get-single-course/:id",courseController.getCourseById);
 route.get("/get-all-course",courseController.getAllCourses);
 route.post("/get-course-by-category",courseController.getCourseByCategory);
+route.get("/get-bought-course",validateUser, courseController.getBoughtCourses);
 
 export default route;

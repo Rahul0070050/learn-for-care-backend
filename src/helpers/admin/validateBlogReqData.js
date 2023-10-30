@@ -2,7 +2,6 @@ import { number, object, string } from "yup";
 import { validateFile } from "../validateFileTypes.js";
 
 export function checkCreateBlogReqBody(body, file) {
-  console.log(body);
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       header: string().required("please provide valid header"),

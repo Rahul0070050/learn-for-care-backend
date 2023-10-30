@@ -6,8 +6,10 @@ import {
   getAllCoursesFromDb,
   getCourseByCategory,
   getCourseByIdFromDb,
+  getPurchasedCourseByUserId,
 } from "../../db/mysql/users/course.js";
 import { downloadFromS3 } from "../../AWS/S3.js";
+import { getUser } from "../../utils/auth.js";
 export const courseController = {
   getCourseById: (req, res) => {
     try {
@@ -329,6 +331,32 @@ export const courseController = {
             message:
               "some error occurred in the server try again after some times",
             error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getBoughtCourses: (req, res) => {
+    try {
+      let userId = getUser(req).id;
+      console.log("user id ", userId);
+      getPurchasedCourseByUserId()
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
           },
         ],
         errorType: "server",
