@@ -54,11 +54,14 @@ export function getAllCoursesFromDb() {
 export function getPurchasedCourseByUserId(id) {
   return new Promise((resolve, reject) => {
     try {
+
+      console.log(id);
+
       let getPurchasedCourseDataQuery = `
-        SELECT purchased_course.* 
+        SELECT Name, description, category, validity 
         FROM purchased_course INNER JOIN course ON 
         purchased_course.course_id = course.id
-        WHERE purchased_course.user_id = 1
+        WHERE purchased_course.user_id = ?
       `;
 
       db.query(getPurchasedCourseDataQuery, [id], (err, result) => {
