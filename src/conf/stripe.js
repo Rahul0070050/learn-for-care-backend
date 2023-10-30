@@ -6,6 +6,7 @@ config();
 export const stripeObj = new Stripe(process.env.STRIP_PRIVAT_KEY);
 
 export async function getStripeUrl(items = [], email) {
+  console.log(items);
   let session = await stripeObj.checkout.sessions.create({
 
     payment_method_types: ["card"],
@@ -19,7 +20,7 @@ export async function getStripeUrl(items = [], email) {
           product_data: {
             name: item.name,
           },
-          unit_amount: item.amount * 100,
+          unit_amount: (item.amount / item.product_count) * 100,
         },
         quantity: item.product_count,
       };
