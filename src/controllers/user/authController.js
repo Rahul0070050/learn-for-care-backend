@@ -89,7 +89,11 @@ export const userAuthController = {
           res.status(406).json({
             success: false,
             errors: [
-              { code: 406, message: "values not acceptable", response: err },
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
             ],
             errorType: "client",
           });
@@ -392,22 +396,26 @@ export const userAuthController = {
   forgotPassword: (req, res) => {
     try {
       checkForgotPasswordInfo(req.body).then(async (result) => {
-        saveOtpToDB(result.email).then(savedOtpResult => {
-          sentOtpEmail(savedOtpResult.email, savedOtpResult.otp).then(() => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                response: "check your email",
-                message: "successfully sent OTP",
-              },
-            });
-          }).catch(err => {
+        saveOtpToDB(result.email)
+          .then((savedOtpResult) => {
+            sentOtpEmail(savedOtpResult.email, savedOtpResult.otp)
+              .then(() => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    response: "check your email",
+                    message: "successfully sent OTP",
+                  },
+                });
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
             console.log(err);
           });
-        }).catch(err => {
-          console.log(err);
-        })
       });
     } catch (error) {
       res.status(500).json({
