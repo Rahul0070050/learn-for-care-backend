@@ -12,6 +12,7 @@ export const db = mysql.createPool({
   multipleStatements: false,
 });
 
+// TODO: uncomment
 export function mySqlConnect(done) {
   db.getConnection((err) => {
     if (err) return done(err);
@@ -89,6 +90,7 @@ export function mySqlConnect(done) {
     //   img VARCHAR(200) NOT NULL,
     //   content TEXT NOT NULL,
     //   author VARCHAR(200) NOT NULL,
+    //   tags VARCHAR(200) NOT NULL,
     //   date DATETIME DEFAULT NOW()
     // );`;
 
@@ -120,6 +122,7 @@ export function mySqlConnect(done) {
     //     course_id INT NOT NULL,
     //     amount TEXT NOT NULL,
     //     course_count INT NOT NULL,
+    //     fake_course_count INT NOT NULL,
     //     validity VARCHAR(10) NOT NULL,
     //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     //   );
@@ -135,7 +138,7 @@ export function mySqlConnect(done) {
     //     id INT AUTO_INCREMENT PRIMARY KEY,
     //     user_id INT NOT NULL,
     //     course_id INT NOT NULL,
-    //     progress VARCHAR(30) NOT NULL,
+    //     progress VARCHAR(30) NOT NULL DEFAULT 0,
     //     validity VARCHAR(10) NOT NULL,
     //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     //   );
@@ -177,6 +180,55 @@ export function mySqlConnect(done) {
     //   if (err) console.log(err.message);
     //   else console.log("exam_attempts table created");
     // });
+
+    // const subUserTable = `
+    //   CREATE TABLE IF NOT EXISTS sub_user (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     first_name VARCHAR(250) NOT NULL,
+    //     last_name VARCHAR(250) NOT NULL,
+    //     password VARCHAR(250) NOT NULL,
+    //     email VARCHAR(250) NOT NULL UNIQUE,
+    //     city VARCHAR(250) NOT NULL,
+    //     country VARCHAR(250) NOT NULL,
+    //     created_by INT NOT NULL,
+    //     block BOOLEAN NOT NULL DEFAULT FALSE
+    //   );
+    // `;
+
+    // db.query(subUserTable, (err, result) => {
+    //   if (err) console.log(err.message);
+    //   else console.log("sub_user table created");
+    // });
+
+
+    // const assignedCourseTable = `
+    //   CREATE TABLE IF NOT EXISTS assigned_course (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     company_id INT NOT NULL,
+    //     course_id INT NOT NULL,
+    //     sub_user_id INT NOT NULL,
+    //     validity VARCHAR(15) NOT NULL
+    //   );
+    // `;
+
+    // db.query(assignedCourseTable, (err, result) => {
+    //   if (err) console.log(err.message);
+    //   else console.log("assigned course table created");
+    // });
+
+  // const subAdminTable = `
+  //   CREATE TABLE IF NOT EXISTS sub_admin (
+  //     id INT AUTO_INCREMENT PRIMARY KEY,
+  //     email VARCHAR(150) NOT NULL UNIQUE,
+  //     password VARCHAR(150) NOT NULL,
+  //     block BOOLEAN DEFAULT FALSE
+  //   );
+  // `;
+
+  // db.query(subAdminTable, (err, result) => {
+  //   if (err) console.log(err.message);
+  //   else console.log("assigned course table created");
+  // });
 
     return done();
   });

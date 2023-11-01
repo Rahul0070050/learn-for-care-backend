@@ -18,6 +18,7 @@ import category from "./routes/admin/category.js";
 import adminCourse from "./routes/admin/course.js";
 import adminBlog from "./routes/admin/blog.js";
 import adminExam from "./routes/admin/exam.js";
+import subAdmin from "./routes/admin/subAdmin.js";
 
 import { mySqlConnect } from "./conf/mysql.js";
 import { s3Config } from "./conf/aws_s3.js";
@@ -84,6 +85,7 @@ app.use("/api/admin/course", adminCourse);
 app.use("/api/admin/blog", adminBlog);
 app.use("/api/admin/blog", adminBlog);
 app.use("/api/admin/exam", adminExam);
+app.use("/api/admin/sub-admin", subAdmin);
 
 // error handler
 app.use((err, req, res, next) => {

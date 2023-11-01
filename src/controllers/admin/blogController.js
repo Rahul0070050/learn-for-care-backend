@@ -21,6 +21,8 @@ export const blogController = {
     try {
       checkCreateBlogReqBody(req.body, req.files)
         .then(async (result) => {
+          let tags = result[0].tags.split(",").map((tag) => "#" + tag);
+          result[0].tags = JSON.stringify(tags)
           const blogImage = await uploadFileToS3("/blogs", result[1][0]?.image);
           insertNewBlog({ ...result[0], image: blogImage.file })
             .then((result) => {
@@ -49,6 +51,7 @@ export const blogController = {
             });
         })
         .catch((err) => {
+          console.log(err);
           res.status(406).json({
             success: false,
             errors: [

@@ -1,4 +1,6 @@
+import { config } from "dotenv";
 import {
+  checkChangePasswordReqData,
   checkForgotPasswordInfo,
   checkOtpInfo,
   checkReSendOtpInfo,
@@ -12,6 +14,7 @@ import {
   insertUser,
   getUserByEmail,
   saveOtpToDB,
+  updateUserPassword,
 } from "../../db/mysql/users/users.js";
 import {
   hashPassword,
@@ -19,7 +22,13 @@ import {
 } from "../../helpers/validatePasswords.js";
 import { createTokenForUser } from "../../helpers/jwt.js";
 import { generatorOtp } from "../../utils/auth.js";
+import {
+  generateChangePassToken,
+  validateChangePassToken,
+} from "../../helpers/genarateToken.js";
+import sendLinkToChangePasswordEmail from "../../helpers/sendForgotPassLink.js";
 
+config();
 export const userAuthController = {
   signup: (req, res) => {
     try {
@@ -30,7 +39,7 @@ export const userAuthController = {
               let otp = await Number(generatorOtp());
               result.password = hashedPassword;
               insertUser(result, otp)
-                .then(() => {
+                .then(({ otp }) => {
                   sentOtpEmail(result.email, otp)
                     .then((sentOtpRes) => {
                       res.status(200).json({
@@ -396,27 +405,156 @@ export const userAuthController = {
   forgotPassword: (req, res) => {
     try {
       checkForgotPasswordInfo(req.body).then(async (result) => {
-        saveOtpToDB(result.email)
-          .then((savedOtpResult) => {
-            sentOtpEmail(savedOtpResult.email, savedOtpResult.otp)
+        generateChangePassToken(result)
+          .then((token) => {
+            let newToken = token.split(".").join("$");
+            let url = process.env.FRONT_END_FORGOT_PASSWORD_URL + newToken;
+            sendLinkToChangePasswordEmail(result.email, url)
               .then(() => {
                 res.status(200).json({
                   success: true,
                   data: {
                     code: 200,
                     response: "check your email",
-                    message: "successfully sent OTP",
+                    message: "successfully sent link",
                   },
                 });
               })
               .catch((err) => {
-                console.log(err);
+                res.status(500).json({
+                  success: false,
+                  errors: [
+                    {
+                      code: 500,
+                      message:
+                        "some error occurred in the server try again after some times",
+                      error: err,
+                    },
+                  ],
+                  errorType: "server",
+                });
               });
           })
           .catch((err) => {
-            console.log(err);
+            res.status(500).json({
+              success: false,
+              errors: [
+                {
+                  code: 500,
+                  message:
+                    "some error occurred in the server try again after some times",
+                  error: err,
+                },
+              ],
+              errorType: "server",
+            });
           });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          success: false,
+          errors: [
+            {
+              code: 500,
+              message:
+                "value not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "server",
+        });
       });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  changePassword: (req, res) => {
+    try {
+      checkChangePasswordReqData(req.body)
+        .then((result) => {
+          console.log(result);
+          let token = result.token.split("$").join(".")
+          validateChangePassToken(token)
+            .then(() => {
+              if (result.password === result.confirmPassword) {
+                hashPassword(result.password).then((hash) => {
+                  updateUserPassword(result.email, hash)
+                    .then(() => {
+                      res.status(200).json({
+                        success: true,
+                        data: {
+                          code: 200,
+                          response: "",
+                          message: "password updated",
+                        },
+                      });
+                    })
+                    .catch((err) => {
+                      res.status(406).json({
+                        success: false,
+                        errors: [
+                          {
+                            code: 406,
+                            message: "password not updated",
+                            error: err?.message,
+                          },
+                        ],
+                        errorType: "server",
+                      });
+                    });
+                });
+              } else {
+                res.status(406).json({
+                  success: false,
+                  errors: [
+                    {
+                      code: 406,
+                      message: "password is not matching",
+                      error: "password is not matching",
+                    },
+                  ],
+                  errorType: "client",
+                });
+              }
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "token timed out",
+                    error: "token is invalid",
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
     } catch (error) {
       res.status(500).json({
         success: false,

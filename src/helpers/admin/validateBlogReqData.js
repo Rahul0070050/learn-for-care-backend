@@ -1,12 +1,14 @@
-import { number, object, string } from "yup";
+import { number, object, string, array } from "yup";
 import { validateFile } from "../validateFileTypes.js";
 
 export function checkCreateBlogReqBody(body, file) {
+  console.log(body);
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       header: string().required("please provide valid header"),
       content: string().required("please provide valid content"),
       author: string().required("please provide valid author name"),
+      tags: string().required("please provide valid author tags"),
     });
 
     if(Array.isArray(file?.image)) {
@@ -22,6 +24,7 @@ export function checkCreateBlogReqBody(body, file) {
           resolve(result);
         })
         .catch((err) => {
+          console.log(err);
           reject(err?.message);
         });
     } catch (error) {

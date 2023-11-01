@@ -10,6 +10,7 @@ route.post("/login", userAuthController.login);
 route.post("/validate-otp", userAuthController.validateOtp);
 route.patch("/resend-otp", userAuthController.resendOtp);
 route.post("/forgot-password", userAuthController.forgotPassword);
+route.post("/change-password", userAuthController.changePassword);
 
 route.post("/sub-user-login", (req,res) => {
     console.log(req.path);
