@@ -55,6 +55,7 @@ app.use(
       "http://localhost:5173",
       "https://test.learnforcare.com",
       "https://admin.learnforcare.co.uk",
+      "https://test.learnforcare.co.uk"
     ],
     credentials: true,
   })
