@@ -483,7 +483,6 @@ export const userAuthController = {
     try {
       checkChangePasswordReqData(req.body)
         .then((result) => {
-          console.log(result);
           let token = result.token.split("$").join(".")
           validateChangePassToken(token)
             .then(() => {

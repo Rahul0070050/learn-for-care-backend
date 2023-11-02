@@ -27,7 +27,6 @@ export const courseController = {
 
                 resources.forEach((item, i) => {
                   course[`resource${i}`] = `${item.file}##${item.type}`;
-                  console.log(`${item.file}##${item.type}`);
                 });
 
                 for (let index = 0; index < resources.length; index++) {
@@ -66,8 +65,6 @@ export const courseController = {
 
               Promise.all(newResult)
                 .then((result) => {
-                  console.log(result[0]);
-
                   res.status(200).json({
                     success: true,
                     data: {
@@ -150,7 +147,6 @@ export const courseController = {
 
                 resources.forEach((item, i) => {
                   course[`resource${i}`] = `${item.file}##${item.type}`;
-                  console.log(`${item.file}##${item.type}`);
                 });
 
                 for (let index = 0; index < resources.length; index++) {
@@ -365,7 +361,6 @@ export const courseController = {
   getBoughtCourses: (req, res) => {
     try {
       let userId = getUser(req).id;
-      console.log("user id ", userId);
       getPurchasedCourseByUserId(userId)
         .then((result) => {
           res.status(200).json({

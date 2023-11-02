@@ -8,7 +8,6 @@ export const examController = {
     try {
       checkGetExamReqBody(req.body)
         .then((result) => {
-          console.log(result);
           getQuestionsForExamByCourseId(result.course_id)
             .then((exam) => {
               exam.map((item) => {

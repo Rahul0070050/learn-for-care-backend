@@ -142,7 +142,6 @@ export const courseController = {
 
                 resources.forEach((item, i) => {
                   course[`resource${i}`] = `${item.file}##${item.type}`;
-                  console.log(`${item.file}##${item.type}`);
                 });
 
                 for (let index = 0; index < resources.length; index++) {
@@ -263,7 +262,6 @@ export const courseController = {
 
                 resources.forEach((item, i) => {
                   course[`resource${i}`] = `${item.file}##${item.type}`;
-                  console.log(`${item.file}##${item.type}`);
                 });
 
                 for (let index = 0; index < resources.length; index++) {
@@ -311,7 +309,7 @@ export const courseController = {
 
                   // })
 
-                  console.log(result[0]);
+                  // console.log(result[0]);
 
                   res.status(200).json({
                     success: true,
@@ -984,7 +982,6 @@ export const courseController = {
         .then((result) => {
           deleteCourseFromDb(result)
             .then(async (course) => {
-              console.log(course);
 
               await removeFromS3(course?.thumbnail || "");
               await removeFromS3(course?.video || "");
@@ -995,7 +992,6 @@ export const courseController = {
                 await removeFromS3(url.file);
               });
 
-              console.log("hi");
 
               res.status(200).json({
                 success: true,

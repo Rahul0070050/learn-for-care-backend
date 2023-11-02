@@ -28,10 +28,8 @@ export function insertQuestionsToExam({
 export function getQuestionsForExamByCourseId(course_id) {
   return new Promise((resolve, reject) => {
     try {
-      console.log(1);
       let getQuestionsQuery = "SELECT * FROM exams LIMIT 10;";
       db.query(getQuestionsQuery, [course_id], (err, result) => {
-        console.log(1);
         if (err) return reject(err?.message);
         else return resolve(result);
       });

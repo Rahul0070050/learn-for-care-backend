@@ -10,7 +10,6 @@ export function validateSubUser(req, res, next) {
       res.redirect('/sub-user-login')
     })
     .catch((err) => {
-      console.log(err);
       res.status(401).json({
         success: false,
         errors: [
