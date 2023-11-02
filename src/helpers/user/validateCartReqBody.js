@@ -1,11 +1,16 @@
-import { number, object } from "yup";
+import yup, { array, number, object } from "yup";
 
-export function checkAddToCartReqBody(id) {
+export function checkAddToCartReqBody(ids) {
   return new Promise((resolve, reject) => {
-    let courseId = number().required("please provide course id");
+    let course = yup.array().of(
+      yup.object().shape({
+        count: yup.number().required("Count is required"),
+        id: yup.number().required("ID is required"),
+      })
+    );
     try {
-      courseId
-        .validate(id)
+      course
+        .validate(ids)
         .then((res) => {
           resolve(res);
         })
@@ -22,7 +27,7 @@ export function checkUpdateCartCountReqBody(body) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       course_id: number().required("please provide course id"),
-      identifier: number().required("please provide identifier")
+      identifier: number().required("please provide identifier"),
     });
 
     try {

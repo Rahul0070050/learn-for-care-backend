@@ -21,18 +21,32 @@ config("../../../.env");
 export const cartController = {
   addToCart: (req, res) => {
     try {
-      checkAddToCartReqBody(req.body.course_id)
-        .then(async (courseId) => {
+      checkAddToCartReqBody(req.body.course)
+        .then(async (courseIds) => {
           let user = getUser(req);
-          let course = await getCourseByIdFromDb(courseId);
-          addCourseToCart(
-            courseId,
-            course[0].price,
-            course[0].thumbnail,
-            user.id,
-            course[0].name
+
+          let allCourses = courseIds.map(async (item) => {
+            return await getCourseByIdFromDb(item.id);
+          });
+
+          let courses = await Promise.all(allCourses);
+
+          courses = courses.flat(1);
+
+          Promise.all(
+            courses.map(async (course) => {
+              let item = courseIds.find(item => item.id == course.id)
+              return await addCourseToCart(
+                course.id,
+                course.price,
+                course.thumbnail,
+                user.id,
+                course.name,
+                item.count
+              );
+            })
           )
-            .then((result) => {
+            .then(() => {
               res.status(200).json({
                 success: true,
                 data: {
@@ -90,7 +104,6 @@ export const cartController = {
         .then(async (result) => {
           let user = await getUser(req);
           let course = await getCourseByIdFromDb(result.course_id);
-          console.log("course", course);
           updateCourseCountInTheCart(result, user.id, course[0].price)
             .then((result) => {
               res.status(200).json({
@@ -203,7 +216,8 @@ export const cartController = {
   },
   getAllCartItems: (req, res) => {
     try {
-      getAllCartItemFromDB()
+      let userId = getUser(req).id;
+      getAllCartItemFromDB(userId)
         .then((result) => {
           let newResult = result.map(async (item) => {
             let file = await downloadFromS3(null, item.thumbnail);
@@ -329,7 +343,9 @@ export const cartController = {
           const chargeSucceeded = event.data.object;
           // console.log(chargeSucceeded.billing_details.email);
           console.log(chargeSucceeded.billing_details.email);
-          getUserByEmail({email: chargeSucceeded.billing_details.email} || {email: ""})
+          getUserByEmail(
+            { email: chargeSucceeded.billing_details.email } || { email: "" }
+          )
             .then((user) => {
               console.log(user);
               let userId = user[0].id;
