@@ -23,7 +23,18 @@ export const blogController = {
               });
             })
             .catch((err) => {
-              console.log(err);
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message:
+                      "some error occurred in the server try again after some times",
+                    error: error?.message,
+                  },
+                ],
+                errorType: "server",
+              });
             });
         })
         .catch((err) => {
@@ -67,7 +78,7 @@ export const blogController = {
           result.forEach((item) => {
             item.img = SignedUrl.find((url) => url.id == item.id).url;
           });
-          
+
           res.status(200).json({
             success: true,
             data: {

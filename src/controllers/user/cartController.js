@@ -98,7 +98,6 @@ export const cartController = {
     }
   },
   updateCartCount: (req, res) => {
-    console.log(req.body);
     try {
       checkUpdateCartCountReqBody(req.body)
         .then(async (result) => {
@@ -233,6 +232,19 @@ export const cartController = {
                 message: `got all cart items`,
                 response: result,
               },
+            });
+          }).catch(err => {
+            res.status(500).json({
+              success: false,
+              errors: [
+                {
+                  code: 500,
+                  message:
+                    "some error occurred white get the data from db try again after some times",
+                  error: err,
+                },
+              ],
+              errorType: "server",
             });
           });
         })

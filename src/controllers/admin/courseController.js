@@ -179,17 +179,31 @@ export const courseController = {
                 return course;
               });
 
-              Promise.all(newResult).then((result) => {
-
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    message: `got one course by id of '${id}'`,
-                    response: result,
-                  },
+              Promise.all(newResult)
+                .then((result) => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: `got one course by id of '${id}'`,
+                      response: result,
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 500,
+                        message:
+                          "some error occurred in the server try again after some times",
+                        error: err,
+                      },
+                    ],
+                    errorType: "server",
+                  });
                 });
-              });
             })
             .catch((err) => {
               res.status(500).json({
@@ -205,20 +219,6 @@ export const courseController = {
                 errorType: "server",
               });
             });
-        })
-        .catch((err) => {
-          res.status(500).json({
-            success: false,
-            errors: [
-              {
-                code: 500,
-                message:
-                  "some error occurred in the server try again after some times",
-                error: err,
-              },
-            ],
-            errorType: "server",
-          });
         })
         .catch((err) => {
           res.status(406).json({
@@ -300,27 +300,42 @@ export const courseController = {
                 return course;
               });
 
-              Promise.all(newResult).then((result) => {
-                // console.log();
-                // result.forEach((course) => {
+              Promise.all(newResult)
+                .then((result) => {
+                  // console.log();
+                  // result.forEach((course) => {
 
-                // });
+                  // });
 
-                // result.forEach(course => {
+                  // result.forEach(course => {
 
-                // })
+                  // })
 
-                console.log(result[0]);
+                  console.log(result[0]);
 
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    message: `got all courses by category`,
-                    response: result,
-                  },
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: `got all courses by category`,
+                      response: result,
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 500,
+                        message:
+                          "try another category or try again after some times",
+                        error: err,
+                      },
+                    ],
+                    errorType: "server",
+                  });
                 });
-              });
             })
             .catch((err) => {
               res.status(500).json({
@@ -411,16 +426,31 @@ export const courseController = {
             return course;
           });
 
-          Promise.all(newResult).then((result) => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: "got all courses",
-                response: result,
-              },
+          Promise.all(newResult)
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "got all courses",
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message:
+                      "some error occurred in the server try again after some times",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
+              });
             });
-          });
         })
         .catch((err) => {
           res.status(500).json({
@@ -955,17 +985,17 @@ export const courseController = {
           deleteCourseFromDb(result)
             .then(async (course) => {
               console.log(course);
-              
+
               await removeFromS3(course?.thumbnail || "");
               await removeFromS3(course?.video || "");
               await removeFromS3(course?.ppt || "");
               await removeFromS3(course?.intro_video || "");
-              
+
               course?.resource?.forEach(async (url) => {
                 await removeFromS3(url.file);
               });
 
-              console.log('hi');
+              console.log("hi");
 
               res.status(200).json({
                 success: true,
@@ -977,11 +1007,33 @@ export const courseController = {
               });
             })
             .catch((err) => {
-              console.log(err);
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message:
+                      "some error occurred in the server try again after some times",
+                    error: error?.message,
+                  },
+                ],
+                errorType: "server",
+              });
             });
         })
         .catch((err) => {
-          console.log(err);
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message:
+                  "some error occurred in the server try again after some times",
+                error: error?.message,
+              },
+            ],
+            errorType: "server",
+          });
         });
     } catch (error) {
       res.status(500).json({
