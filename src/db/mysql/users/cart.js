@@ -54,12 +54,12 @@ export function getAllCartItem(userId) {
 export function updateCourseCountInTheCart(body, userId, price) {
   return new Promise((resolve, reject) => {
     try {
-        let updateCartCountQuery = `UPDATE cart SET product_count = ?, amount = ? WHERE user_id = ? AND course_id = ?;`;
+        let updateCartCountQuery = `UPDATE cart SET product_count = product_count + ${body.count}, amount = product_count * ${price} WHERE user_id = ? AND course_id = ?;`;
         let deleteItemZeroCountCartItemQuery = `DELETE FROM cart WHERE product_count = ?`;
 
       db.query(
         updateCartCountQuery,
-        [body.count, body.count * price, userId, body.course_id],
+        [userId, body.course_id],
         (err, result) => {
           db.query(deleteItemZeroCountCartItemQuery, [0], (err, result) => {});
           if (err) return reject(err?.message);
