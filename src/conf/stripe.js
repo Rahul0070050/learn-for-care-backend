@@ -25,8 +25,8 @@ export async function getStripeUrl(items = [], email) {
         quantity: item.product_count,
       };
     }),
-    success_url: "https://test.learnforcare.com/success",
-    cancel_url: "https://test.learnforcare.com/failed",
+    success_url: "https://test.learnforcare.co.uk/success",
+    cancel_url: "https://test.learnforcare.co.uk/failed",
   });
 
   return session;
