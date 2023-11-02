@@ -115,120 +115,120 @@ export function mySqlConnect(done) {
     //   else console.log("cart table created");
     // });
 
-    const purchasedCourseTable = `
-      CREATE TABLE IF NOT EXISTS purchased_course (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        course_id INT NOT NULL,
-        amount TEXT NOT NULL,
-        course_count INT NOT NULL,
-        fake_course_count INT NOT NULL,
-        validity VARCHAR(10) NOT NULL,
-        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `;
+  //   const purchasedCourseTable = `
+  //     CREATE TABLE IF NOT EXISTS purchased_course (
+  //       id INT AUTO_INCREMENT PRIMARY KEY,
+  //       user_id INT NOT NULL,
+  //       course_id INT NOT NULL,
+  //       amount TEXT NOT NULL,
+  //       course_count INT NOT NULL,
+  //       fake_course_count INT NOT NULL,
+  //       validity VARCHAR(10) NOT NULL,
+  //       date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  //     );
+  //   `;
 
-    db.query(purchasedCourseTable, (err, result) => {
-      if (err) console.log(err.message);
-      else console.log("purchasedCourse table created");
-    });
+  //   db.query(purchasedCourseTable, (err, result) => {
+  //     if (err) console.log(err.message);
+  //     else console.log("purchasedCourse table created");
+  //   });
 
-    const enrolledCourseTable = `
-      CREATE TABLE IF NOT EXISTS enrolled_course (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        course_id INT NOT NULL,
-        progress VARCHAR(30) NOT NULL DEFAULT 0,
-        validity VARCHAR(10) NOT NULL,
-        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-    `;
+  //   const enrolledCourseTable = `
+  //     CREATE TABLE IF NOT EXISTS enrolled_course (
+  //       id INT AUTO_INCREMENT PRIMARY KEY,
+  //       user_id INT NOT NULL,
+  //       course_id INT NOT NULL,
+  //       progress VARCHAR(30) NOT NULL DEFAULT 0,
+  //       validity VARCHAR(10) NOT NULL,
+  //       date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  //     );
+  //   `;
 
-    db.query(enrolledCourseTable, (err, result) => {
-      if (err) console.log(err.message);
-      else console.log("enrolled_course table created");
-    });
-
-
-    const ExamTable = `
-      CREATE TABLE IF NOT EXISTS exams (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        course_id INT NOT NULL,
-        question TEXT NOT NULL,
-        options TEXT NOT NULL,
-        answer VARCHAR(250) NOT NULL
-      );
-    `;
-
-    db.query(ExamTable, (err, result) => {
-      if (err) console.log(err.message);
-      else console.log("exam table created");
-    });
-
-    const ExamAttemptsTable = `
-      CREATE TABLE IF NOT EXISTS exam_attempts (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        course_id INT NOT NULL,
-        user_id TEXT NOT NULL,
-        attempts INT NOT NULL,
-        percentage INT NOT NULL,
-        status VARCHAR(10) NOT NULL
-      );
-    `;
-
-    db.query(ExamAttemptsTable, (err, result) => {
-      if (err) console.log(err.message);
-      else console.log("exam_attempts table created");
-    });
-
-    const subUserTable = `
-      CREATE TABLE IF NOT EXISTS sub_user (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        first_name VARCHAR(250) NOT NULL,
-        last_name VARCHAR(250) NOT NULL,
-        password VARCHAR(250) NOT NULL,
-        email VARCHAR(250) NOT NULL UNIQUE,
-        city VARCHAR(250) NOT NULL,
-        country VARCHAR(250) NOT NULL,
-        created_by INT NOT NULL,
-        block BOOLEAN NOT NULL DEFAULT FALSE
-      );
-    `;
-
-    db.query(subUserTable, (err, result) => {
-      if (err) console.log(err.message);
-      else console.log("sub_user table created");
-    });
+  //   db.query(enrolledCourseTable, (err, result) => {
+  //     if (err) console.log(err.message);
+  //     else console.log("enrolled_course table created");
+  //   });
 
 
-    const assignedCourseTable = `
-      CREATE TABLE IF NOT EXISTS assigned_course (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        company_id INT NOT NULL,
-        course_id INT NOT NULL,
-        sub_user_id INT NOT NULL,
-        validity VARCHAR(15) NOT NULL
-      );
-    `;
+  //   const ExamTable = `
+  //     CREATE TABLE IF NOT EXISTS exams (
+  //       id INT AUTO_INCREMENT PRIMARY KEY,
+  //       course_id INT NOT NULL,
+  //       question TEXT NOT NULL,
+  //       options TEXT NOT NULL,
+  //       answer VARCHAR(250) NOT NULL
+  //     );
+  //   `;
 
-    db.query(assignedCourseTable, (err, result) => {
-      if (err) console.log(err.message);
-      else console.log("assigned course table created");
-    });
+  //   db.query(ExamTable, (err, result) => {
+  //     if (err) console.log(err.message);
+  //     else console.log("exam table created");
+  //   });
 
-  const subAdminTable = `
-    CREATE TABLE IF NOT EXISTS sub_admin (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      email VARCHAR(150) NOT NULL UNIQUE,
-      password VARCHAR(150) NOT NULL,
-      block BOOLEAN DEFAULT FALSE
-    );
-  `;
+  //   const ExamAttemptsTable = `
+  //     CREATE TABLE IF NOT EXISTS exam_attempts (
+  //       id INT AUTO_INCREMENT PRIMARY KEY,
+  //       course_id INT NOT NULL,
+  //       user_id TEXT NOT NULL,
+  //       attempts INT NOT NULL,
+  //       percentage INT NOT NULL,
+  //       status VARCHAR(10) NOT NULL
+  //     );
+  //   `;
 
-  db.query(subAdminTable, (err, result) => {
-    if (err) console.log(err.message);
-    else console.log("assigned course table created");
-  });
+  //   db.query(ExamAttemptsTable, (err, result) => {
+  //     if (err) console.log(err.message);
+  //     else console.log("exam_attempts table created");
+  //   });
+
+  //   const subUserTable = `
+  //     CREATE TABLE IF NOT EXISTS sub_user (
+  //       id INT AUTO_INCREMENT PRIMARY KEY,
+  //       first_name VARCHAR(250) NOT NULL,
+  //       last_name VARCHAR(250) NOT NULL,
+  //       password VARCHAR(250) NOT NULL,
+  //       email VARCHAR(250) NOT NULL UNIQUE,
+  //       city VARCHAR(250) NOT NULL,
+  //       country VARCHAR(250) NOT NULL,
+  //       created_by INT NOT NULL,
+  //       block BOOLEAN NOT NULL DEFAULT FALSE
+  //     );
+  //   `;
+
+  //   db.query(subUserTable, (err, result) => {
+  //     if (err) console.log(err.message);
+  //     else console.log("sub_user table created");
+  //   });
+
+
+  //   const assignedCourseTable = `
+  //     CREATE TABLE IF NOT EXISTS assigned_course (
+  //       id INT AUTO_INCREMENT PRIMARY KEY,
+  //       company_id INT NOT NULL,
+  //       course_id INT NOT NULL,
+  //       sub_user_id INT NOT NULL,
+  //       validity VARCHAR(15) NOT NULL
+  //     );
+  //   `;
+
+  //   db.query(assignedCourseTable, (err, result) => {
+  //     if (err) console.log(err.message);
+  //     else console.log("assigned course table created");
+  //   });
+
+  // const subAdminTable = `
+  //   CREATE TABLE IF NOT EXISTS sub_admin (
+  //     id INT AUTO_INCREMENT PRIMARY KEY,
+  //     email VARCHAR(150) NOT NULL UNIQUE,
+  //     password VARCHAR(150) NOT NULL,
+  //     block BOOLEAN DEFAULT FALSE
+  //   );
+  // `;
+
+  // db.query(subAdminTable, (err, result) => {
+  //   if (err) console.log(err.message);
+  //   else console.log("assigned course table created");
+  // });
 
     return done();
   });

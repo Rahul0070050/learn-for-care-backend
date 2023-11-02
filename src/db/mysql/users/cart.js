@@ -1,6 +1,13 @@
 import { db } from "../../../conf/mysql.js";
 
-export function addCourseToCart(courseId, price, thumbnail, userId, name,count) {
+export function addCourseToCart(
+  courseId,
+  price,
+  thumbnail,
+  userId,
+  name,
+  count
+) {
   return new Promise((resolve, reject) => {
     try {
       let insertQuery = `INSERT INTO cart (user_id, course_id, product_count, thumbnail, amount, name)
@@ -47,29 +54,16 @@ export function getAllCartItem(userId) {
 export function updateCourseCountInTheCart(body, userId, price) {
   return new Promise((resolve, reject) => {
     try {
-      let updateCartCountQuery = null;
-      let deleteItemZeroCountCartItemQuery = null;
-      if (body.identifier == 1) {
-        updateCartCountQuery = `UPDATE cart SET product_count = product_count + 1, amount = product_count * ${price} WHERE user_id = ? AND course_id = ?;`;
-      } else {
-        updateCartCountQuery = `UPDATE cart SET product_count = product_count - 1, amount = product_count * ${price} WHERE user_id = ? AND course_id = ?;`;
-        deleteItemZeroCountCartItemQuery = `DELETE FROM cart WHERE product_count = ?`;
-      }
+        let updateCartCountQuery = `UPDATE cart SET product_count = ?, amount = ? WHERE user_id = ? AND course_id = ?;`;
+        let deleteItemZeroCountCartItemQuery = `DELETE FROM cart WHERE product_count = ?`;
 
       db.query(
         updateCartCountQuery,
-        [userId, body.course_id],
+        [body.count, body.count * price, userId, body.course_id],
         (err, result) => {
-          console.log(err);
+          db.query(deleteItemZeroCountCartItemQuery, [0], (err, result) => {});
           if (err) return reject(err?.message);
-          if (deleteItemZeroCountCartItemQuery) {
-            db.query(deleteItemZeroCountCartItemQuery, [0], (err, result) => {
-              if (err) return reject(err?.message);
-              else return resolve(result);
-            });
-          } else {
-            return resolve(result);
-          }
+          else return resolve(result);
         }
       );
     } catch (error) {

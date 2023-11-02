@@ -28,6 +28,7 @@ export function checkUpdateCartCountReqBody(body) {
     let bodyTemplate = object({
       course_id: number().required("please provide course id"),
       identifier: number().required("please provide identifier"),
+      count: number().required("please provide count"),
     });
 
     try {
