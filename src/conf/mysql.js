@@ -115,39 +115,39 @@ export function mySqlConnect(done) {
     //   else console.log("cart table created");
     // });
 
-    // const purchasedCourseTable = `
-    //   CREATE TABLE IF NOT EXISTS purchased_course (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     user_id INT NOT NULL,
-    //     course_id INT NOT NULL,
-    //     amount TEXT NOT NULL,
-    //     course_count INT NOT NULL,
-    //     fake_course_count INT NOT NULL,
-    //     validity VARCHAR(10) NOT NULL,
-    //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    //   );
-    // `;
+    const purchasedCourseTable = `
+      CREATE TABLE IF NOT EXISTS purchased_course (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        course_id INT NOT NULL,
+        amount TEXT NOT NULL,
+        course_count INT NOT NULL,
+        fake_course_count INT NOT NULL,
+        validity VARCHAR(10) NOT NULL,
+        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
 
-    // db.query(purchasedCourseTable, (err, result) => {
-    //   if (err) console.log(err.message);
-    //   else console.log("purchasedCourse table created");
-    // });
+    db.query(purchasedCourseTable, (err, result) => {
+      if (err) console.log(err.message);
+      else console.log("purchasedCourse table created");
+    });
 
-    // const enrolledCourseTable = `
-    //   CREATE TABLE IF NOT EXISTS enrolled_course (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     user_id INT NOT NULL,
-    //     course_id INT NOT NULL,
-    //     progress VARCHAR(30) NOT NULL DEFAULT 0,
-    //     validity VARCHAR(10) NOT NULL,
-    //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    //   );
-    // `;
+    const enrolledCourseTable = `
+      CREATE TABLE IF NOT EXISTS enrolled_course (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        course_id INT NOT NULL,
+        progress VARCHAR(30) NOT NULL DEFAULT 0,
+        validity VARCHAR(10) NOT NULL,
+        date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
 
-    // db.query(enrolledCourseTable, (err, result) => {
-    //   if (err) console.log(err.message);
-    //   else console.log("enrolled_course table created");
-    // });
+    db.query(enrolledCourseTable, (err, result) => {
+      if (err) console.log(err.message);
+      else console.log("enrolled_course table created");
+    });
 
 
     const ExamTable = `
