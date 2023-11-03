@@ -17,7 +17,7 @@ export function addCourseToCart(
 
       db.query(
         insertQuery,
-        [userId, courseId, count, thumbnail, price, name, userId, courseId],
+        [userId, courseId, count, thumbnail, count * price, name, userId, courseId],
         (err, result) => {
           if (err) {
             console.log(err?.message);
