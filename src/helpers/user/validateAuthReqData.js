@@ -111,9 +111,7 @@ export function checkForgotPasswordInfo(info) {
 export function checkChangePasswordReqData(body) {
   return new Promise((resolve, reject) => {
     let checkInfo = object({
-      email: string().email().required("please provide email"),
       password: string().required("please provide password"),
-      confirmPassword: string().required("please provide confirmPassword"),
       token: string().required("please provide token"),
     });
     

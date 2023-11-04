@@ -7,7 +7,7 @@ export function generateChangePassToken(userData) {
       jwt.sign(
         { ...userData },
         process.env.TOKEN_FOR_NEW_PASSWORD || "",
-        { expiresIn: "30m" },
+        { expiresIn: "1h" },
         (err, token) => {
           if (err) return reject(err?.message);
           else return resolve(token);

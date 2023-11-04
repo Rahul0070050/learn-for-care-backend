@@ -1,4 +1,5 @@
 import { config } from "dotenv";
+import Cryptr from "cryptr";
 import {
   checkChangePasswordReqData,
   checkForgotPasswordInfo,
@@ -29,6 +30,8 @@ import {
 import sendLinkToChangePasswordEmail from "../../helpers/sendForgotPassLink.js";
 
 config();
+let cryptr = new Cryptr(process.env.CRYPTER);
+
 export const userAuthController = {
   signup: (req, res) => {
     try {
@@ -404,66 +407,72 @@ export const userAuthController = {
   },
   forgotPassword: (req, res) => {
     try {
-      checkForgotPasswordInfo(req.body).then(async (result) => {
-        generateChangePassToken(result)
-          .then((token) => {
-            let newToken = token.split(".").join("$");
-            let url = process.env.FRONT_END_FORGOT_PASSWORD_URL + newToken;
-            sendLinkToChangePasswordEmail(result.email, url)
-              .then(() => {
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    response: "check your email",
-                    message: "successfully sent link",
-                  },
-                });
-              })
-              .catch((err) => {
-                res.status(500).json({
-                  success: false,
-                  errors: [
-                    {
-                      code: 500,
-                      message:
-                        "some error occurred in the server try again after some times",
-                      error: err,
+      checkForgotPasswordInfo(req.body)
+        .then(async (result) => {
+          generateChangePassToken(result)
+            .then(async (token) => {
+              // let newToken = token.split(".").join("$");
+              let newToken = cryptr.encrypt(token);
+              let newEmail = cryptr.encrypt(result.email);
+              let url =
+                process.env.FRONT_END_FORGOT_PASSWORD_URL +
+                newToken +
+                "$" +
+                newEmail;
+              sendLinkToChangePasswordEmail(result.email, url)
+                .then(() => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      response: "check your email",
+                      message: "successfully sent link",
                     },
-                  ],
-                  errorType: "server",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 500,
+                        message:
+                          "some error occurred in the server try again after some times",
+                        error: err,
+                      },
+                    ],
+                    errorType: "server",
+                  });
                 });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message:
+                      "some error occurred in the server try again after some times",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
               });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              success: false,
-              errors: [
-                {
-                  code: 500,
-                  message:
-                    "some error occurred in the server try again after some times",
-                  error: err,
-                },
-              ],
-              errorType: "server",
             });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "server",
           });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          errors: [
-            {
-              code: 500,
-              message:
-                "value not acceptable",
-              error: err,
-            },
-          ],
-          errorType: "server",
         });
-      });
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -483,49 +492,37 @@ export const userAuthController = {
     try {
       checkChangePasswordReqData(req.body)
         .then((result) => {
-          let token = result.token.split("$").join(".")
+          let values = result.token.split("$");
+          let token = cryptr.decrypt(values[0]);
+          let email = cryptr.decrypt(values[1]);
           validateChangePassToken(token)
             .then(() => {
-              if (result.password === result.confirmPassword) {
-                hashPassword(result.password).then((hash) => {
-                  updateUserPassword(result.email, hash)
-                    .then(() => {
-                      res.status(200).json({
-                        success: true,
-                        data: {
-                          code: 200,
-                          response: "",
-                          message: "password updated",
-                        },
-                      });
-                    })
-                    .catch((err) => {
-                      res.status(406).json({
-                        success: false,
-                        errors: [
-                          {
-                            code: 406,
-                            message: "password not updated",
-                            error: err?.message,
-                          },
-                        ],
-                        errorType: "server",
-                      });
+              hashPassword(result.password).then((hash) => {
+                updateUserPassword(email, hash)
+                  .then(() => {
+                    res.status(200).json({
+                      success: true,
+                      data: {
+                        code: 200,
+                        response: "",
+                        message: "password updated",
+                      },
                     });
-                });
-              } else {
-                res.status(406).json({
-                  success: false,
-                  errors: [
-                    {
-                      code: 406,
-                      message: "password is not matching",
-                      error: "password is not matching",
-                    },
-                  ],
-                  errorType: "client",
-                });
-              }
+                  })
+                  .catch((err) => {
+                    res.status(406).json({
+                      success: false,
+                      errors: [
+                        {
+                          code: 406,
+                          message: "password not updated",
+                          error: err?.message,
+                        },
+                      ],
+                      errorType: "server",
+                    });
+                  });
+              });
             })
             .catch((err) => {
               res.status(406).json({

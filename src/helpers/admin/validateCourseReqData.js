@@ -3,8 +3,14 @@ import { validateFile } from "../validateFileTypes.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
-    files.resource = files["resource[]"]
+    let resources = files["resource[]"]
     delete files["resource[]"]
+    if(!resources) {
+      resources = files.resource
+    }
+
+    files.resource = resources
+    
     try {
 
       let introVideoFile = null;
