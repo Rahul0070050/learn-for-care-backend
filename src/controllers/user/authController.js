@@ -446,6 +446,7 @@ export const userAuthController = {
                 });
             })
             .catch((err) => {
+              console.log(err);
               res.status(500).json({
                 success: false,
                 errors: [
