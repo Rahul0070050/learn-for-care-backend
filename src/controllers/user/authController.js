@@ -329,7 +329,8 @@ export const userAuthController = {
                             code: 200,
                             jwt_access_token: token.accessToken,
                             jwt_refresh_token: token.reFreshToken,
-                            message: "login successful",
+                            userType: userData.type_of_account,
+                            message: "login successful"
                           },
                         });
                       });

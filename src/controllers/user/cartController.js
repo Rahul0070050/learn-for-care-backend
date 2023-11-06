@@ -1,5 +1,6 @@
 import { config } from "dotenv";
 import {
+  checkAddBundleToCartReqBody,
   checkAddToCartReqBody,
   checkDeleteCorseFromCartReqBody,
   checkUpdateCartCountReqBody,
@@ -17,9 +18,10 @@ import { downloadFromS3 } from "../../AWS/S3.js";
 import { getStripeUrl, stripeObj } from "../../conf/stripe.js";
 import { getUserByEmail } from "../../db/mysql/users/users.js";
 import { saveToPurchasedCourse } from "../../db/mysql/users/purchasedCourse.js";
+import { getCourseBundleById } from "../../db/mysql/users/courseBundle.js";
 config("../../../.env");
 export const cartController = {
-  addToCart: (req, res) => {
+  addCourseToCart: (req, res) => {
     try {
       checkAddToCartReqBody(req.body.course)
         .then(async (courseIds) => {
@@ -35,7 +37,7 @@ export const cartController = {
 
           Promise.all(
             courses.map(async (course) => {
-              let item = courseIds.find(item => item.id == course.id)
+              let item = courseIds.find((item) => item.id == course.id);
               return await addCourseToCart(
                 course.id,
                 course.price,
@@ -97,13 +99,102 @@ export const cartController = {
       });
     }
   },
+  addBundleToCart: (req, res) => {
+    try {
+      checkAddBundleToCartReqBody(req.body.bundleId)
+        .then(async (courseId) => {
+          let user = getUser(req);
+
+          let courseBundle = await getCourseBundleById(courseId);
+
+          console.log(courseBundle);
+          if (courseBundle.length) {
+            await addCourseToCart(
+              courseBundle[0].id,
+              courseBundle[0].price,
+              courseBundle[0].image,
+              user.id,
+              courseBundle[0].name,
+              1,
+              "bundle"
+            )
+              .then(() => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: `product added to the cart`,
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(500).json({
+                  success: false,
+                  errors: [
+                    {
+                      code: 500,
+                      message:
+                        "something went wrong try again after some times",
+                      error: err,
+                    },
+                  ],
+                  errorType: "server",
+                });
+              });
+          } else {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "product is not exist",
+                  error: err,
+                },
+              ],
+              errorType: "server",
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            response: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
   updateCartCount: (req, res) => {
     try {
       checkUpdateCartCountReqBody(req.body)
         .then(async (result) => {
-          let user = await getUser(req);
-          let course = await getCourseByIdFromDb(result.course_id);
-          updateCourseCountInTheCart(result, user.id, course[0].price)
+          let price = null;
+          if (result.type === "course") {
+            price = await getCourseByIdFromDb(result.courseId);
+          } else {
+            price = await getCourseBundleById(result.courseId);
+          }
+          price = price[0].price
+          updateCourseCountInTheCart(result, price, result.id)
             .then((result) => {
               res.status(200).json({
                 success: true,
@@ -129,6 +220,7 @@ export const cartController = {
             });
         })
         .catch((err) => {
+          console.log(err);
           res.status(406).json({
             success: false,
             errors: [
@@ -224,29 +316,31 @@ export const cartController = {
             return item;
           });
 
-          Promise.all(newResult).then((result) => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: `got all cart items`,
-                response: result,
-              },
-            });
-          }).catch(err => {
-            res.status(500).json({
-              success: false,
-              errors: [
-                {
-                  code: 500,
-                  message:
-                    "some error occurred white get the data from db try again after some times",
-                  error: err,
+          Promise.all(newResult)
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `got all cart items`,
+                  response: result,
                 },
-              ],
-              errorType: "server",
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message:
+                      "some error occurred white get the data from db try again after some times",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
+              });
             });
-          });
         })
         .catch((err) => {
           res.status(500).json({

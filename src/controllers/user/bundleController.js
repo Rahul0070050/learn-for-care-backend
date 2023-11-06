@@ -26,17 +26,22 @@ export const bundleController = {
                     return await getCourseByIdFromDb(id);
                   })
                 )
-                  .then((result) => {
+                  .then(async(result) => {
                     result = result.flat(1)
-                    console.log(result);
-                    result.forEach(async (course) => {
-                      let url = await downloadFromS3(
+                    let urls = await Promise.all(result.map(async (course,i) => {
+                      return await downloadFromS3(
                         course.id,
                         course.thumbnail
-                      );
-                      course.thumbnail = url.url;
-                    });
-                    bundle[0].courses = result;
+                        );
+                    }));
+
+                    let updatedCourse = result.map(course => {
+                      course.thumbnail = urls.find(url => url.id === course.id).url;
+                      return course
+                    })
+
+                    bundle[0].courses = updatedCourse;
+
                     res.status(200).json({
                       success: true,
                       data: {
@@ -168,4 +173,57 @@ export const bundleController = {
       });
     }
   },
+  // getBundleById: (req, res) => {
+  //   try {
+  //     getBBundleByIdFromDb()
+  //       .then(async (result) => {
+  //         let fileResponses = result.map((item) =>
+  //           downloadFromS3(item.id, item.image)
+  //         );
+
+  //         let SignedUrl = await Promise.all(fileResponses);
+
+  //         result.forEach((item) => {
+  //           item.image = SignedUrl.find((url) => url.id == item.id).url;
+  //         });
+
+  //         res.status(200).json({
+  //           success: true,
+  //           data: {
+  //             code: 200,
+  //             message: "all Bundle",
+  //             response: result,
+  //           },
+  //         });
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         res.status(500).json({
+  //           success: false,
+  //           errors: [
+  //             {
+  //               code: 500,
+  //               message:
+  //                 "some error occurred in the server try again after some times",
+  //               error: err?.message,
+  //             },
+  //           ],
+  //           errorType: "server",
+  //         });
+  //       });
+  //   } catch (error) {
+  //     res.status(500).json({
+  //       success: false,
+  //       errors: [
+  //         {
+  //           code: 500,
+  //           message:
+  //             "some error occurred in the server try again after some times",
+  //           error: error?.message,
+  //         },
+  //       ],
+  //       errorType: "server",
+  //     });
+  //   }
+  // }
 };

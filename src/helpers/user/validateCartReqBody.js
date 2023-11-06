@@ -1,4 +1,4 @@
-import yup, { array, number, object } from "yup";
+import yup, { string, number, object } from "yup";
 
 export function checkAddToCartReqBody(ids) {
   return new Promise((resolve, reject) => {
@@ -23,12 +23,31 @@ export function checkAddToCartReqBody(ids) {
   });
 }
 
+export function checkAddBundleToCartReqBody(id) {
+  return new Promise((resolve, reject) => {
+    let bundleId = number().required("bundleId is required");
+    try {
+      bundleId
+        .validate(id)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function checkUpdateCartCountReqBody(body) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
-      course_id: number().required("please provide course id"),
-      identifier: number().required("please provide identifier"),
+      id: number().required("please provide course id"),
+      type: string().required("please provide type"),
       count: number().required("please provide count"),
+      courseId: number().required("please provide course id"),
     });
 
     try {

@@ -6,18 +6,30 @@ export function addCourseToCart(
   thumbnail,
   userId,
   name,
-  count
+  count,
+  type = "course"
 ) {
   return new Promise((resolve, reject) => {
     try {
-      let insertQuery = `INSERT INTO cart (user_id, course_id, product_count, thumbnail, amount, name)
-                SELECT ?, ?, ?, ?, ?, ?
-                WHERE NOT EXISTS (SELECT * FROM cart WHERE user_id = ? AND course_id = ?);      
+      let insertQuery = `INSERT INTO cart (user_id, course_id, product_count, thumbnail, amount, name, item_type)
+                SELECT ?, ?, ?, ?, ?, ?, ?
+                WHERE NOT EXISTS (SELECT * FROM cart WHERE user_id = ? AND course_id = ? AND item_type = ?);
               `;
 
       db.query(
         insertQuery,
-        [userId, courseId, count, thumbnail, count * price, name, userId, courseId],
+        [
+          userId,
+          courseId,
+          count,
+          thumbnail,
+          count * price,
+          name,
+          type,
+          userId,
+          courseId,
+          type,
+        ],
         (err, result) => {
           if (err) {
             console.log(err?.message);
@@ -51,21 +63,18 @@ export function getAllCartItem(userId) {
   });
 }
 
-export function updateCourseCountInTheCart(body, userId, price) {
+export function updateCourseCountInTheCart(body, price, id) {
   return new Promise((resolve, reject) => {
+    console.log(price);
     try {
-        let updateCartCountQuery = `UPDATE cart SET product_count = product_count + ${body.count}, amount = product_count * ${price} WHERE user_id = ? AND course_id = ?;`;
-        let deleteItemZeroCountCartItemQuery = `DELETE FROM cart WHERE product_count = ?`;
+      let updateCartCountQuery = `UPDATE cart SET product_count = product_count + ?, amount = product_count * ? WHERE id = ?;`;
+      let deleteItemZeroCountCartItemQuery = `DELETE FROM cart WHERE product_count = ?`;
 
-      db.query(
-        updateCartCountQuery,
-        [userId, body.course_id],
-        (err, result) => {
-          db.query(deleteItemZeroCountCartItemQuery, [0], (err, result) => {});
-          if (err) return reject(err?.message);
-          else return resolve(result);
-        }
-      );
+      db.query(updateCartCountQuery, [body.count, price, id], (err, result) => {
+        db.query(deleteItemZeroCountCartItemQuery, [0], (err, result) => {});
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }
