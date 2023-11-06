@@ -7,6 +7,7 @@ export function saveToPurchasedCourse(course) {
         "INSERT INTO purchased_course(user_id, course_id, amount, course_count, fake_course_count, validity) VALUES (?,?,?,?,?,?);";
       let date = new Date();
       date.setFullYear(date.getFullYear() + 1);
+      // TODO: year: 1/5/2023 to 01/05/2023 // add '0' to frond of everyone
       let year = date.toLocaleDateString();
       db.query(
         insertPurchasedCourseQuery,

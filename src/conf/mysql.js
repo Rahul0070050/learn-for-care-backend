@@ -26,6 +26,7 @@ export function mySqlConnect(done) {
     //     password VARCHAR(500) NOT NULL,
     //     country VARCHAR(50) NOT NULL,
     //     city VARCHAR(50) NOT NULL,
+    //     phone VARCHAR(15) NOT NULL,
     //     company_name VARCHAR(100) DEFAULT NULL,
     //     otp INT DEFAULT NULL,
     //     joined DATETIME DEFAULT NOW(),

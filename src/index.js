@@ -12,6 +12,7 @@ import userBlog from "./routes/user/blog.js";
 import user from "./routes/user/user.js";
 import cart from "./routes/user/cart.js";
 import exam from "./routes/user/exam.js";
+import userBundle from "./routes/user/bundle.js";
 
 import adminAuth from "./routes/admin/auth.js";
 import category from "./routes/admin/category.js";
@@ -19,7 +20,7 @@ import adminCourse from "./routes/admin/course.js";
 import adminBlog from "./routes/admin/blog.js";
 import adminExam from "./routes/admin/exam.js";
 import admin from "./routes/admin/admin.js";
-
+import bundle from "./routes/admin/bundle.js";
 
 import subUserAuth from "./routes/subUser/auth.js";
 import subAdminAuth from "./routes/subAdmin/auth.js";
@@ -80,6 +81,7 @@ app.use("/api/user/blog", userBlog);
 app.use("/api/user/info", user);
 app.use("/api/user/course", course);
 app.use("/api/user/exam", exam);
+app.use("/api/user/bundle", userBundle);
 
 app.use("/api/user/sub-user", subUserAuth);
 
@@ -91,6 +93,7 @@ app.use("/api/admin/blog", adminBlog);
 app.use("/api/admin/blog", adminBlog);
 app.use("/api/admin/exam", adminExam);
 app.use("/api/admin/info", admin);
+app.use("/api/admin/bundle", bundle);
 
 app.use("/api/admin/sub-admin", subAdminAuth);
 

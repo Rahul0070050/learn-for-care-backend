@@ -7,6 +7,7 @@ export function validateUserInfo(userInfo) {
       first_name: string().required("please provide first_name"),
       last_name: string().required("please provide last_name"),
       password: string().required("please provide password"),
+      phone: string().required("please provide password"),
       country: string().required("please provide country"),
       type_of_account: string().required("please provide type"),
       city: string().required("please provide city"),

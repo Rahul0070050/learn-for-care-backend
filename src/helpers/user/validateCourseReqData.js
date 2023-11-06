@@ -44,3 +44,24 @@ export function checkGetCourseByCategoryBody(body) {
     }
   });
 }
+
+export function checkGetCourseByLimitReqData(data) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      limit: string().required("please enter valid limit"),
+    });
+
+    try {
+      bodyTemplate
+        .validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          return reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

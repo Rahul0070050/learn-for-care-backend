@@ -4,7 +4,8 @@ import { generatorOtp } from "../../../utils/auth.js";
 export const insertUser = (user, otp) => {
   return new Promise((resolve, reject) => {
     try {
-      let insertQuery = `INSERT INTO users (first_name, last_name, email, type_of_account, password, country, city, otp) VALUES (?,?,?,?,?,?,?,?);`;
+      let insertQuery = `INSERT INTO users (first_name, last_name, email, type_of_account, password, country, phone, city, otp) VALUES (?,?,?,?,?,?,?,?,?);`;
+      user.phone = Number(user.phone);
       db.query(
         insertQuery,
         [
@@ -14,6 +15,7 @@ export const insertUser = (user, otp) => {
           user?.type_of_account,
           user?.password,
           user?.country,
+          user?.phone,
           user?.city,
           otp,
         ],

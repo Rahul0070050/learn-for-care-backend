@@ -70,6 +70,7 @@ export const userAuthController = {
                     });
                 })
                 .catch((err) => {
+                  console.log(err);
                   res.status(406).json({
                     success: false,
                     errors: [
@@ -409,56 +410,71 @@ export const userAuthController = {
     try {
       checkForgotPasswordInfo(req.body)
         .then(async (result) => {
-          generateChangePassToken(result)
-            .then(async (token) => {
-              // let newToken = token.split(".").join("$");
-              let newToken = cryptr.encrypt(token);
-              let newEmail = cryptr.encrypt(result.email);
-              let url =
-                process.env.FRONT_END_FORGOT_PASSWORD_URL +
-                newToken +
-                "$" +
-                newEmail;
-              sendLinkToChangePasswordEmail(result.email, url)
-                .then(() => {
-                  res.status(200).json({
-                    success: true,
-                    data: {
-                      code: 200,
-                      response: "check your email",
-                      message: "successfully sent link",
-                    },
-                  });
-                })
-                .catch((err) => {
-                  res.status(500).json({
-                    success: false,
-                    errors: [
-                      {
-                        code: 500,
-                        message:
-                          "some error occurred in the server try again after some times",
-                        error: err,
-                      },
-                    ],
-                    errorType: "server",
-                  });
-                });
-            })
-            .catch((err) => {
-              res.status(500).json({
-                success: false,
-                errors: [
-                  {
-                    code: 500,
-                    message:
-                      "some error occurred in the server try again after some times",
-                    error: err,
-                  },
-                ],
-                errorType: "server",
-              });
+          let user = await getUserByEmail(result.email);
+          if (!user) {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "please provide a registered email",
+                  error: "this user is not exist",
+                },
+              ],
+              errorType: "client",
             });
+          } else {
+            generateChangePassToken(result)
+              .then(async (token) => {
+                // let newToken = token.split(".").join("$");
+                let newToken = cryptr.encrypt(token);
+                let newEmail = cryptr.encrypt(result.email);
+                let url =
+                  process.env.FRONT_END_FORGOT_PASSWORD_URL +
+                  newToken +
+                  "$" +
+                  newEmail;
+                sendLinkToChangePasswordEmail(result.email, url)
+                  .then(() => {
+                    res.status(200).json({
+                      success: true,
+                      data: {
+                        code: 200,
+                        response: "check your email",
+                        message: "successfully sent link",
+                      },
+                    });
+                  })
+                  .catch((err) => {
+                    res.status(500).json({
+                      success: false,
+                      errors: [
+                        {
+                          code: 500,
+                          message:
+                            "some error occurred in the server try again after some times",
+                          error: err,
+                        },
+                      ],
+                      errorType: "server",
+                    });
+                  });
+              })
+              .catch((err) => {
+                res.status(500).json({
+                  success: false,
+                  errors: [
+                    {
+                      code: 500,
+                      message:
+                        "some error occurred in the server try again after some times",
+                      error: err,
+                    },
+                  ],
+                  errorType: "server",
+                });
+              });
+          }
         })
         .catch((err) => {
           res.status(500).json({

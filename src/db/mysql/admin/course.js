@@ -123,6 +123,32 @@ export function updateCourseData(courseInfo) {
   });
 }
 
+export function getCourseByLimitFromDb(limit) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getCourseDataByLimitQuery =
+        `SELECT thumbnail, name, price, description
+        FROM course
+        LIMIT ? , ?;`;
+      let getCourseCountQuery = "SELECT COUNT(id) FROM course;";
+
+      let maxLimit = Number(limit) + 11
+      db.query(getCourseDataByLimitQuery, [Number(limit), maxLimit], (err, course) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          db.query(getCourseCountQuery, (err, count) => {
+            if (err) return reject(err?.message);
+            resolve({ course: course, count: count[0]['COUNT(id)'] });
+          });
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function deleteCourseFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
@@ -145,4 +171,3 @@ export function deleteCourseFromDb(id) {
     }
   });
 }
-

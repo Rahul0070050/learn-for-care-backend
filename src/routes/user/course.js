@@ -7,6 +7,7 @@ const route = Router();
 
 route.get("/get-single-course/:id",courseController.getCourseById);
 route.get("/get-all-course",courseController.getAllCourses);
+route.get("/get-course-by-limit/:limit",courseController.getCoursesByLimit);
 route.post("/get-course-by-category",courseController.getCourseByCategory);
 route.get("/get-bought-course",validateUser, courseController.getBoughtCourses);
 

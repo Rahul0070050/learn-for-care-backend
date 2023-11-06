@@ -1,5 +1,6 @@
 import {
   checkGetCourseByCategoryBody,
+  checkGetCourseByLimitReqData,
   checkGetSingleCourseParams,
 } from "../../helpers/user/validateCourseReqData.js";
 import {
@@ -10,6 +11,7 @@ import {
 } from "../../db/mysql/users/course.js";
 import { downloadFromS3 } from "../../AWS/S3.js";
 import { getUser } from "../../utils/auth.js";
+import { getCourseByLimitFromDb } from "../../db/mysql/admin/course.js";
 export const courseController = {
   getCourseById: (req, res) => {
     try {
@@ -183,38 +185,31 @@ export const courseController = {
                 return course;
               });
 
-              Promise.all(newResult).then((result) => {
-                // console.log();
-                // result.forEach((course) => {
-
-                // });
-
-                // result.forEach(course => {
-
-                // })
-
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    message: `got all courses by category`,
-                    response: result,
-                  },
-                });
-              }).catch(Err => {
-                res.status(500).json({
-                  success: false,
-                  errors: [
-                    {
-                      code: 500,
-                      message:
-                        "try another category or try again after some times",
-                      error: err,
+              Promise.all(newResult)
+                .then((result) => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: `got all courses by category`,
+                      response: result,
                     },
-                  ],
-                  errorType: "server",
+                  });
+                })
+                .catch((Err) => {
+                  res.status(500).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 500,
+                        message:
+                          "try another category or try again after some times",
+                        error: err,
+                      },
+                    ],
+                    errorType: "server",
+                  });
                 });
-              });
             })
             .catch((err) => {
               res.status(500).json({
@@ -305,29 +300,31 @@ export const courseController = {
             return course;
           });
 
-          Promise.all(newResult).then((result) => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: "got all courses",
-                response: result,
-              },
-            });
-          }).catch(err => {
-            res.status(500).json({
-              success: false,
-              errors: [
-                {
-                  code: 500,
-                  message:
-                    "some error occurred in the server try again after some times",
-                  error: err,
+          Promise.all(newResult)
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "got all courses",
+                  response: result,
                 },
-              ],
-              errorType: "server",
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message:
+                      "some error occurred in the server try again after some times",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
+              });
             });
-          });
         })
         .catch((err) => {
           res.status(500).json({
@@ -341,6 +338,93 @@ export const courseController = {
               },
             ],
             errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getCoursesByLimit: (req, res) => {
+    try {
+      checkGetCourseByLimitReqData(req.params)
+        .then((result) => {
+          getCourseByLimitFromDb(result.limit)
+            .then(async (courseResult) => {
+              let newResult = await courseResult.course.map(
+                async (course, i) => {
+                  let thumbnail = await downloadFromS3(
+                    i,
+                    course.thumbnail
+                  );
+
+                  course["thumbnail"] = thumbnail?.url;
+
+                  return course;
+                }
+              );
+
+              Promise.all(newResult)
+                .then((result) => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "got courses",
+                      response: { courses: result, count: courseResult.count },
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 500,
+                        message:
+                          "some error occurred in the server try again after some times",
+                        error: err,
+                      },
+                    ],
+                    errorType: "server",
+                  });
+                });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
           });
         });
     } catch (error) {
