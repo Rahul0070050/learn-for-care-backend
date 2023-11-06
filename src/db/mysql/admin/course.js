@@ -127,7 +127,7 @@ export function getCourseByLimitFromDb(limit) {
   return new Promise((resolve, reject) => {
     try {
       let getCourseDataByLimitQuery =
-        `SELECT thumbnail, name, price, description
+        `SELECT id, thumbnail, name, price, description
         FROM course
         LIMIT ? , ?;`;
       let getCourseCountQuery = "SELECT COUNT(id) FROM course;";
