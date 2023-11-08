@@ -4,8 +4,8 @@ import { checkGetOnGoingCourseByIdReqData } from "../../helpers/user/validateOnG
 export const onGoingCourseController = {
   getOnGoingCourseById: (req, res) => {
     try {
-      req.param.id = Number(req.param.id);
-      checkGetOnGoingCourseByIdReqData(req.param.id)
+      req.params.id = Number(req.params.id);
+      checkGetOnGoingCourseByIdReqData(req.params.id)
         .then((result) => {
           getOnGoingCourseByIdFromDb(result)
             .then((result) => {
