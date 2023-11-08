@@ -10,7 +10,7 @@ export function addCourseToEnrolledCourse(
     try {
       let insertQuery = `
             INSERT INTO enrolled_course (user_id, course_id, progress, validity, color, user_type) VALUES (?,?,?,?,?,?);
-            SELECT LAST_INSERT_ID() as 'insert id';
+            SELECT LAST_INSERT_ID();
           `;
 
       // TODO: before response have to get the id of inserted row
