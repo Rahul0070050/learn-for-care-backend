@@ -61,7 +61,7 @@ export function getPurchasedCourseByUserId(id) {
         WHERE purchased_course.user_id = ? AND purchased_course.course_count >= ?;
       `;
 
-      db.query(getPurchasedCourseDataQuery, [id,1], (err, result) => {
+      db.query(getPurchasedCourseDataQuery, [id, 1], (err, result) => {
         if (err) {
           return reject(err?.message);
         } else {
@@ -106,7 +106,10 @@ export function decrementTheCourseCount(id) {
         if (err) {
           return reject(err?.message);
         } else {
-          return resolve({validity: getPurchasedCourse[0].validity});
+          return resolve({
+            validity: getPurchasedCourse[0].validity,
+            id: getPurchasedCourse[0].course_id,
+          });
         }
       });
     } catch (error) {

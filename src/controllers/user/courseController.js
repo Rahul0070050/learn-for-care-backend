@@ -14,6 +14,7 @@ import {
 import { downloadFromS3 } from "../../AWS/S3.js";
 import { getUser } from "../../utils/auth.js";
 import { getCourseByLimitFromDb } from "../../db/mysql/admin/course.js";
+import { addCourseToEnrolledCourse } from "../../db/mysql/users/enrolledCourse.js";
 export const courseController = {
   getCourseById: (req, res) => {
     try {
@@ -486,58 +487,71 @@ export const courseController = {
     }
   },
   startCourse:(req,res) => {
-  //   try {
-  //     req.params.id = Number(req.params.id)
-  //     checkStartCourseReqData(req.params).then(result => {
-  //       decrementTheCourseCount(result.id).then((courseValidity) => {
-  //         let user = getUser(req)
-  //         addCourseToEnrolledCourse(result.id,user.id,courseValidity.validity).then()
-  //         res.status(200).json({
-  //           success: true,
-  //           data: {
-  //             code: 200,
-  //             message: "success",
-  //             response: "",
-  //           },
-  //         });
-  //       }).catch(err => {
-  //         res.status(500).json({
-  //           success: false,
-  //           errors: [
-  //             {
-  //               code: 500,
-  //               message: "some error occurred please try again later",
-  //               error: err,
-  //             },
-  //           ],
-  //           errorType: "server",
-  //         });
-  //       })
-  //     }).catch(err => {
-  //       res.status(406).json({
-  //         success: false,
-  //         errors: [
-  //           {
-  //             code: 406,
-  //             message: "value not acceptable",
-  //             error: err,
-  //           },
-  //         ],
-  //         errorType: "client",
-  //       });
-  //     })
-  //   } catch (error) {
-  //     res.status(500).json({
-  //       success: false,
-  //       errors: [
-  //         {
-  //           code: 500,
-  //           message: "some error occurred please try again later",
-  //           error: err,
-  //         },
-  //       ],
-  //       errorType: "server",
-  //     });
-  //   }
+    try {
+      req.params.id = Number(req.params.id)
+      checkStartCourseReqData(req.params).then(result => {
+        decrementTheCourseCount(result.id).then((course) => {
+          let user = getUser(req)
+          addCourseToEnrolledCourse(course.id,user.id,course.validity,"user").then(() => {
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "success",
+                response: "",
+              },
+            });
+          }).catch(err => {
+            res.status(500).json({
+              success: false,
+              errors: [
+                {
+                  code: 500,
+                  message: "some error occurred please try again later",
+                  error: err,
+                },
+              ],
+              errorType: "server",
+            });
+          })
+        }).catch(err => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "some error occurred please try again later",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        })
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "value not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
   }
 };
