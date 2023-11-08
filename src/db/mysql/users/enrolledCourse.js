@@ -12,7 +12,6 @@ export function addCourseToEnrolledCourse(
             INSERT INTO enrolled_course (user_id, course_id, progress, validity, color, user_type) VALUES (?,?,?,?,?,?);
           `;
 
-      // TODO: before response have to get the id of inserted row
       db.query(
         insertQuery,
         [userId, courseId, 30, validity, "orange", userType],
@@ -20,18 +19,7 @@ export function addCourseToEnrolledCourse(
           if (err) {
             return reject(err?.message);
           } else {
-            console.log(result);
-            db.query(
-              'SELECT LAST_INSERT_ID();',
-              (err, result) => {
-                if (err) {
-                  console.log(err);
-                  return reject(err?.message);
-                } else {
-                  return resolve(result);
-                }
-              }
-            );
+            return resolve({ id: result.insertId });
           }
         }
       );

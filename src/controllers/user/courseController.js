@@ -499,7 +499,7 @@ export const courseController = {
               data: {
                 code: 200,
                 message: "success",
-                response: result,
+                response: {id: result.id},
               },
             });
           }).catch(err => {
