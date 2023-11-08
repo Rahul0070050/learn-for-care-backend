@@ -113,6 +113,7 @@ export function decrementTheCourseCount(id) {
         }
       });
     } catch (error) {
+      console.log(error);
       reject(error?.message);
     }
   });
