@@ -142,6 +142,8 @@ export function mySqlConnect(done) {
   //       course_id INT NOT NULL,
   //       progress VARCHAR(30) NOT NULL DEFAULT 0,
   //       validity VARCHAR(10) NOT NULL,
+  //       color VARCHAR(15) NOT NULL,
+  //       user_type VARCHAR(15) NOT NULL,
   //       date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   //     );
   //   `;

@@ -65,3 +65,24 @@ export function checkGetCourseByLimitReqData(data) {
     }
   });
 }
+
+export function checkStartCourseReqData() {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      id: number().required("please enter valid id"),
+    });
+
+    try {
+      bodyTemplate
+        .validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          return reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
