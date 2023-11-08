@@ -66,7 +66,7 @@ export function checkGetCourseByLimitReqData(data) {
   });
 }
 
-export function checkStartCourseReqData() {
+export function checkStartCourseReqData(data) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       id: number().required("please enter valid id"),
