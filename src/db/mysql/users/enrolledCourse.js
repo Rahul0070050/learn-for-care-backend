@@ -1,3 +1,5 @@
+import { db } from "../../../conf/mysql.js";
+
 export function addCourseToEnrolledCourse(
   courseId,
   userId,
