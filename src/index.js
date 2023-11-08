@@ -13,6 +13,7 @@ import user from "./routes/user/user.js";
 import cart from "./routes/user/cart.js";
 import exam from "./routes/user/exam.js";
 import userBundle from "./routes/user/bundle.js";
+import onGoingCourse from "./routes/user/onGoingCourse.js";
 
 import adminAuth from "./routes/admin/auth.js";
 import category from "./routes/admin/category.js";
@@ -79,9 +80,10 @@ app.use("/api/user/auth", userAuth);
 app.use("/api/user/cart", cart);
 app.use("/api/user/blog", userBlog);
 app.use("/api/user/info", user);
-app.use("/api/user/course", course);
 app.use("/api/user/exam", exam);
 app.use("/api/user/bundle", userBundle);
+app.use("/api/user/course", course);
+app.use("/api/user/on-going-course", onGoingCourse);
 
 app.use("/api/user/sub-user", subUserAuth);
 
