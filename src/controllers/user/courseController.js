@@ -492,6 +492,7 @@ export const courseController = {
       checkStartCourseReqData(req.params).then(result => {
         decrementTheCourseCount(result.id).then((course) => {
           let user = getUser(req)
+          console.log(course);
           addCourseToEnrolledCourse(course.id,user.id,course.validity,"user").then(() => {
             res.status(200).json({
               success: true,
