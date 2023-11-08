@@ -78,7 +78,7 @@ export function getPurchasedCourseById(id) {
   return new Promise((resolve, reject) => {
     try {
       let getPurchasedCourseByIdDataQuery = `
-        SELECT * FROM purchased_course id = ?
+        SELECT * FROM purchased_course id = ?;
       `;
 
       db.query(getPurchasedCourseByIdDataQuery, [id], (err, result) => {
@@ -98,7 +98,7 @@ export function decrementTheCourseCount(id) {
   return new Promise(async (resolve, reject) => {
     try {
       let decrementTheCourseCountQuery = `
-        UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?
+        UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;
       `;
 
       let getPurchasedCourse = await getPurchasedCourseById(id);
