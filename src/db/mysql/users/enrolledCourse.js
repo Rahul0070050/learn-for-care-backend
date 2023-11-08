@@ -16,6 +16,7 @@ export function addCourseToEnrolledCourse(
         [userId, courseId, 30, validity, "orange", userType],
         (err, result) => {
           if (err) {
+            console.log(err);
             return reject(err?.message);
           } else {
             return resolve(result);
