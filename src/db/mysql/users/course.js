@@ -58,7 +58,7 @@ export function getPurchasedCourseByUserId(id) {
         SELECT id, Name, description, course_id, category, validity 
         FROM purchased_course INNER JOIN course ON 
         purchased_course.course_id = course.id
-        WHERE purchased_course.user_id = ? purchased_course.course_count >= ?
+        WHERE purchased_course.user_id = ? purchased_course.course_count >= ?;
       `;
 
       db.query(getPurchasedCourseDataQuery, [id,1], (err, result) => {
