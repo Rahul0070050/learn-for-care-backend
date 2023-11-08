@@ -21,14 +21,7 @@ export function addCourseToEnrolledCourse(
             console.log(err);
             return reject(err?.message);
           } else {
-            db.query(
-              getId,
-              (err,
-              (result) => {
-                if (err) reject(err);
-                else resolve(result);
-              })
-            );
+            resolve(result);
           }
         }
       );
