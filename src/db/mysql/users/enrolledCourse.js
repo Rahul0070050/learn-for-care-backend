@@ -11,6 +11,8 @@ export function addCourseToEnrolledCourse(
       let insertQuery = `
             INSERT INTO enrolled_course (user_id, course_id, progress, validity, color, user_type) VALUES (?,?,?,?,?,?); SELECT SCOPE_IDENTITY();
           `;
+
+      let getId = "SELECT SCOPE_IDENTITY();";
       db.query(
         insertQuery,
         [userId, courseId, 30, validity, "orange", userType],
@@ -19,7 +21,14 @@ export function addCourseToEnrolledCourse(
             console.log(err);
             return reject(err?.message);
           } else {
-            return resolve(result);
+            db.query(
+              getId,
+              (err,
+              (result) => {
+                if (err) reject(err);
+                else resolve(result);
+              })
+            );
           }
         }
       );
