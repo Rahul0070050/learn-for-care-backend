@@ -1,3 +1,5 @@
+import { db } from "../../../conf/mysql.js";
+
 export function getOnGoingCourseByIdFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
