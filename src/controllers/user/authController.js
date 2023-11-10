@@ -21,7 +21,9 @@ import {
   hashPassword,
   validatePassword,
 } from "../../helpers/validatePasswords.js";
-import { createTokenForUser } from "../../helpers/jwt.js";
+import {
+  createTokenForUser,
+} from "../../helpers/jwt.js";
 import { generatorOtp } from "../../utils/auth.js";
 import {
   generateChangePassToken,
@@ -320,19 +322,18 @@ export const userAuthController = {
               } else {
                 userData = userData[0];
                 validatePassword(loginInfo.password, userData.password)
-                  .then((result) => {
+                  .then(async (result) => {
                     if (result) {
-                      createTokenForUser(userData).then((token) => {
-                        res.status(200).json({
-                          success: true,
-                          data: {
-                            code: 200,
-                            jwt_access_token: token.accessToken,
-                            jwt_refresh_token: token.reFreshToken,
-                            userType: userData.type_of_account,
-                            message: "login successful"
-                          },
-                        });
+                      let token = await createTokenForUser(userData);
+                      res.status(200).json({
+                        success: true,
+                        data: {
+                          code: 200,
+                          jwt_access_token: token.accessToken,
+                          jwt_refresh_token: token.reFreshToken,
+                          userType: userData.type_of_account,
+                          message: "login successful",
+                        },
                       });
                     } else {
                       res.status(406).json({

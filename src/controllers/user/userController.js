@@ -2,6 +2,7 @@ import { getPurchasedCourseById } from "../../db/mysql/users/purchasedCourse.js"
 import {
   assignCourseToSubUserDb,
   blockSubUserBySubUserId,
+  getAllBlockedUser,
   getAllSubUsersFrom,
   getUserById,
   saveASubUserToDb,
@@ -263,24 +264,64 @@ export const userController = {
           let course = await getPurchasedCourseById(result.purchased_course_id);
           let validity = course[0].validity;
           let userId = getUser(req).id;
-          assignCourseToSubUserDb({ ...result, userId, validity }).then(result => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: "assigned successfully",
-                response: "",
-              },
+          assignCourseToSubUserDb({ ...result, userId, validity })
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "assigned successfully",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: true,
+                data: {
+                  code: 406,
+                  message: "value not acceptable",
+                  response: err,
+                },
+              });
             });
-          }).catch(err => {
-            res.status(406).json({
-              success: true,
-              data: {
-                code: 406,
-                message: "value not acceptable",
-                response: err,
-              },
-            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: true,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getBlocked: (req, res) => {
+    try {
+      let user = getUser(req);
+      getAllBlockedUser(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "get all sub users",
+              response: result,
+            },
           });
         })
         .catch((err) => {

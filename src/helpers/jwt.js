@@ -121,7 +121,7 @@ export function createTokenForSubUser(userData) {
 export function validateSubUserJwtToken(token) {
   return new Promise((resolve, reject) => {
     try {
-      jwt.verify(token, process.env.JWT_RF_KEY_FOR_SUB_USER || "", (err, result) => {
+      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_SUB_USER || "", (err, result) => {
         if (err) return reject(err?.message);
         else return resolve({});
       });
@@ -165,7 +165,7 @@ export function createTokenForSubAdmin(userData) {
 export function validateSubAdminJwtToken(token) {
   return new Promise((resolve, reject) => {
     try {
-      jwt.verify(token, process.env.JWT_RF_KEY_FOR_SUB_ADMIN || "", (err, result) => {
+      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_SUB_ADMIN || "", (err, result) => {
         if (err) return reject(err?.message);
         else return resolve({});
       });
@@ -176,3 +176,22 @@ export function validateSubAdminJwtToken(token) {
 }
 
 // ========== sub admin token =========== //
+
+// ========== company user token =========== //
+
+export function checkCompanyUserPrivileges(token) {
+  return new Promise((resolve, reject) => {
+    try {
+      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_USER || "", (err, result) => {
+        if (err) return reject(err?.message);
+        if(result.type_of_account === "company") {
+          return resolve({});
+        } else {
+          reject("you don't have company privilege")
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

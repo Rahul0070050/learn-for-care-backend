@@ -12,6 +12,4 @@ route.patch("/resend-otp", userAuthController.resendOtp);
 route.post("/forgot-password", userAuthController.forgotPassword);
 route.post("/change-password", userAuthController.changePassword);
 
-
-
 export default route;

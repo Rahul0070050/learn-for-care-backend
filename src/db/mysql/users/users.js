@@ -272,3 +272,17 @@ export function assignCourseToSubUserDb(data) {
     }
   });
 }
+
+export function getAllBlockedUser(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getAllBlockedUsersQuery = `SELECT id, first_name, last_name, block, email, city, country, created_by FROM sub_user WHERE created_by = ?;`;
+      db.query(getAllBlockedUsersQuery, [id], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

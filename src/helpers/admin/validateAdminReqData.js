@@ -1,6 +1,7 @@
-import { object, string, number } from "yup";
+import { number, object, string } from "yup";
 
-export function validateUserInfo(userInfo) {
+
+export function validateCreateUserInfo(userData) {
   return new Promise((resolve, reject) => {
     let user = object({
       email: string().required("please provide email address").email(),
@@ -9,13 +10,12 @@ export function validateUserInfo(userInfo) {
       password: string().required("please provide password"),
       phone: string().required("please provide phone"),
       country: string().required("please provide country"),
-      type_of_account: string().required("please provide type"),
       city: string().required("please provide city"),
     });
 
     try {
       user
-        .validate(userInfo)
+        .validate(userData)
         .then((res) => {
           resolve(res);
         })
@@ -28,7 +28,7 @@ export function validateUserInfo(userInfo) {
   });
 }
 
-export function checkOtpInfo(otpReqInfo) {
+export function checkValidateOtpReqBody(otpReqInfo) {
   return new Promise((resolve, reject) => {
     let otpInfo = object({
       otp: number().required("please provide otp"),
@@ -50,16 +50,15 @@ export function checkOtpInfo(otpReqInfo) {
   });
 }
 
-export function validateUserLoginData(info) {
+export function validateBlockUserInfo(data) {
   return new Promise((resolve, reject) => {
-    let checkInfo = object({
-      email: string().required("please provide email address").email(),
-      password: string().required("please provide password"),
+    let dataTemplate = object({
+      id: number().required("please provide id"),
     });
 
     try {
-      checkInfo
-        .validate(info)
+      dataTemplate
+        .validate(data)
         .then((result) => {
           resolve(result);
         })
@@ -72,53 +71,15 @@ export function validateUserLoginData(info) {
   });
 }
 
-export function checkReSendOtpInfo(info) {
+export function validateUnBlockUserInfo(data) {
   return new Promise((resolve, reject) => {
-    let checkInfo = object({
-      email: string().email().required("please provide email address")
+    let dataTemplate = object({
+      id: number().required("please provide id"),
     });
-    
-    try {
-      checkInfo
-        .validate(info)
-        .then((result) => {
-          resolve(result);
-        })
-        .catch((err) => {
-          reject(err?.message);
-        });
-    } catch (error) {}
-  });
-}
 
-export function checkForgotPasswordInfo(info) {
-  return new Promise((resolve, reject) => {
-    let checkInfo = object({
-      email: string().email().required("please provide email address")
-    });
-    
     try {
-      checkInfo
-        .validate(info)
-        .then((result) => {
-          resolve(result);
-        })
-        .catch((err) => {
-          reject(err?.message);
-        });
-    } catch (error) {}
-  });
-}
-export function checkChangePasswordReqData(body) {
-  return new Promise((resolve, reject) => {
-    let checkInfo = object({
-      password: string().required("please provide password"),
-      token: string().required("please provide token"),
-    });
-    
-    try {
-      checkInfo
-        .validate(body)
+      dataTemplate
+        .validate(data)
         .then((result) => {
           resolve(result);
         })
@@ -126,7 +87,7 @@ export function checkChangePasswordReqData(body) {
           reject(err?.message);
         });
     } catch (error) {
-      reject(err.message)
+      reject(error?.message);
     }
   });
 }

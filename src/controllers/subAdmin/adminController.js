@@ -114,5 +114,5 @@ export const subAdminController = {
         errorType: "server",
       });
     }
-  },
+  }
 };
