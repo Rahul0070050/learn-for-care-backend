@@ -7,6 +7,7 @@ import { validateCompanyUserUser } from "../../middlewares/compayUserAuth.js";
 const route = Router();
 
 route.get("/data", validateUser, userController.getUserData);
+route.post("/update-user-data", validateUser, userController.updateUserData);
 route.post("/create-sub-user", validateCompanyUserUser, userController.createSubUser);
 route.get("/get-all-sub-users", validateCompanyUserUser, userController.getSubUser);
 route.post("/assign-course-to-sub-user", validateCompanyUserUser, userController.assignCourseToSubUser);

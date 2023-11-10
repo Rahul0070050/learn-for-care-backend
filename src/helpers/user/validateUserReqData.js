@@ -1,5 +1,28 @@
-import yup from "yup";
+import yup, {object,number,string} from "yup";
 
+export function validateUpdateUserInfo(userInfo) {
+  return new Promise((resolve, reject) => {
+    let user = object({
+      first_name: string().required("please provide first_name"),
+      last_name: string().required("please provide last_name"),
+      phone: string().required("please provide phone"),
+      city: string().required("please provide city"),
+    });
+
+    try {
+      user
+        .validate(userInfo)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
 export function checkCreateSubUSerReqBody(body) {
   return new Promise((resolve, reject) => {
     try {

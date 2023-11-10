@@ -7,6 +7,7 @@ import {
   getUserById,
   saveASubUserToDb,
   unBlockSubUserBySubUserId,
+  updateUserData,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
@@ -15,6 +16,7 @@ import {
   checkBlockSubUserRewData,
   checkCreateSubUSerReqBody,
   checkUnBlockSubUserRewData,
+  validateUpdateUserInfo,
 } from "../../helpers/user/validateUserReqData.js";
 import { hashPassword } from "../../helpers/validatePasswords.js";
 import { getUser } from "../../utils/auth.js";
@@ -46,6 +48,58 @@ export const userController = {
           errorType: "server",
         });
       });
+  },
+  updateUserData: (req, res) => {
+    try {
+      validateUpdateUserInfo(req.body)
+        .then((result) => {
+          let user = getUser(req);
+          updateUserData({ ...result, id: user.id })
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "user data updated",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: true,
+                data: {
+                  code: 406,
+                  message: "value not acceptable",
+                  response: err,
+                },
+              });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(406).json({
+            success: true,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
   },
   createSubUser: (req, res) => {
     try {

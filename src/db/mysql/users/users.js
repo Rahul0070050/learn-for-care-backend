@@ -84,8 +84,12 @@ export function getUserById(id) {
     try {
       let getQuery = `SELECT * FROM users WHERE id = ?;`;
       db.query(getQuery, [id], (err, result) => {
-        if (err) return reject(err.message);
-        else return resolve(result);
+        if (err) {
+          return reject(err.message);
+        } else {
+          delete result[0]?.password;
+          return resolve(result);
+        }
       });
     } catch (error) {
       reject(error?.message);
@@ -165,6 +169,25 @@ export function updateUserPassword(email, password) {
         if (err) return reject(err.message);
         else return resolve(result);
       });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function updateUserData(userData) {
+  return new Promise((resolve, reject) => {
+    const { first_name, last_name, phone, city, id } = userData;
+    try {
+      let updateUserInfoQuery = `UPDATE users SET first_name = ?, last_name = ?, phone = ?, city = ? WHERE id = ?;`;
+      db.query(
+        updateUserInfoQuery,
+        [first_name, last_name, phone, city, id],
+        (err, result) => {
+          if (err) return reject(err.message);
+          else return resolve(result);
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }
