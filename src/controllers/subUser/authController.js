@@ -1,8 +1,10 @@
+import { getAllAssignedCourses } from "../../db/mysql/subAdmin/assignedCourse.js";
 import { getSubUserByEmail } from "../../db/mysql/subUser/auth.js";
 
 import { createTokenForSubUser } from "../../helpers/jwt.js";
 import { validateSubUserLoginReqBody } from "../../helpers/subUser/validateAuthReqData.js";
 import { validatePassword } from "../../helpers/validatePasswords.js";
+import { getUser } from "../../utils/auth.js";
 
 export const subUserController = {
   login: (req, res) => {
@@ -115,4 +117,44 @@ export const subUserController = {
       });
     }
   },
+  getAssignedCourse:(req,res) => {
+    try {
+      let user = getUser(req)
+      getAllAssignedCourses(user.id).then(assignedCourse => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: "got all assigned courses",
+            response: assignedCourse
+          },
+        });
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "values not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
 };

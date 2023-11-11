@@ -6,5 +6,7 @@ const route = Router();
 
 // user auth routes
 route.post("/login", subUserController.login);
+route.get("/get-assigned-course", subUserController.getAssignedCourse);
+route.post("/login", subUserController.login);
 
 export default route;
