@@ -402,4 +402,22 @@ export const userController = {
       });
     }
   },
+  getAllAssignedCourseProgress:(req,res) => {
+    try {
+      let user = getUser(req)
+      // getAllAssignedCourseProgressFromDb(user.id)
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
 };
