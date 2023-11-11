@@ -1,13 +1,12 @@
-import { isSubUser } from "../helpers/checkSubUser.js";
-import { getUser } from "../utils/auth.js";
+import { validateSubUserJwtToken } from "../helpers/jwt.js";
 
 export function validateSubUser(req, res, next) {
   const { authorization } = req.headers;
   const token = authorization?.split(" ")[1] || "";
 
-  isSubUser(getUser(req))
+  validateSubUserJwtToken(token)
     .then((result) => {
-      res.redirect('/sub-user-login')
+      next();
     })
     .catch((err) => {
       res.status(401).json({

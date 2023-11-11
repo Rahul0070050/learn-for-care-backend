@@ -24,6 +24,7 @@ import admin from "./routes/admin/admin.js";
 import bundle from "./routes/admin/bundle.js";
 
 import subUserAuth from "./routes/subUser/auth.js";
+import subUserCourse from "./routes/subUser/assigneCourse.js";
 import subAdminAuth from "./routes/subAdmin/auth.js";
 
 import { mySqlConnect } from "./conf/mysql.js";
@@ -86,6 +87,7 @@ app.use("/api/user/course", course);
 app.use("/api/user/on-going-course", onGoingCourse);
 
 app.use("/api/user/sub-user", subUserAuth);
+app.use("/api/user/sub-user/course", subUserCourse);
 
 // admin routes
 app.use("/api/admin/auth", adminAuth);

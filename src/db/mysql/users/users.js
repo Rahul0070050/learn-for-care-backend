@@ -302,8 +302,8 @@ export function assignCourseToSubUserDb(data) {
 export function getAllBlockedUser(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getAllBlockedUsersQuery = `SELECT id, first_name, last_name, block, email, city, country, created_by FROM sub_user WHERE created_by = ?;`;
-      db.query(getAllBlockedUsersQuery, [id], (err, result) => {
+      let getAllBlockedUsersQuery = `SELECT id, first_name, last_name, block, email, city, country, created_by FROM sub_user WHERE created_by = ? AND block = ?;`;
+      db.query(getAllBlockedUsersQuery, [id, true], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
       });
