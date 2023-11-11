@@ -33,7 +33,7 @@ export function checkCreateSubUSerReqBody(body) {
         email: yup.string().email().required("please provide valid email"),
         city: yup.string().required("please provide valid city"),
         country: yup.string().required("please provide valid country"),
-        phone: yup.string().required("please provide valid phone"),
+        phone: yup.number().required("please provide valid phone"),
       });
 
       let value = schema.validate(body);

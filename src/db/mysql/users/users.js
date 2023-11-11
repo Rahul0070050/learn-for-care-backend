@@ -220,7 +220,9 @@ export function saveASubUserToDb(data) {
             } else {
               return reject(err.message);
             }
-          } else return resolve(result);
+          } else {
+            return resolve(result);
+          }
         }
       );
     } catch (error) {
