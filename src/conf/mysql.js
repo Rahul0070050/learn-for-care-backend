@@ -207,20 +207,22 @@ export function mySqlConnect(done) {
     });
 
 
-  //   const assignedCourseTable = `
-  //     CREATE TABLE IF NOT EXISTS assigned_course (
-  //       id INT AUTO_INCREMENT PRIMARY KEY,
-  //       company_id INT NOT NULL,
-  //       course_id INT NOT NULL,
-  //       sub_user_id INT NOT NULL,
-  //       validity VARCHAR(15) NOT NULL
-  //     );
-  //   `;
+    const assignedCourseTable = `
+      CREATE TABLE IF NOT EXISTS assigned_course (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        company_id INT NOT NULL,
+        course_id INT NOT NULL,
+        sub_user_id INT NOT NULL,
+        progress INT NOT NULL DEFAULT 0,
+        color VARCHAR(15) NOT NULL DEFAULT 'red',
+        validity VARCHAR(15) NOT NULL
+      );
+    `;
 
-  //   db.query(assignedCourseTable, (err, result) => {
-  //     if (err) console.log(err.message);
-  //     else console.log("assigned course table created");
-  //   });
+    db.query(assignedCourseTable, (err, result) => {
+      if (err) console.log(err.message);
+      else console.log("assigned course table created");
+    });
 
   // const subAdminTable = `
   //   CREATE TABLE IF NOT EXISTS sub_admin (

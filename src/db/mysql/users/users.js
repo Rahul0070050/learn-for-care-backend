@@ -283,8 +283,7 @@ export function assignCourseToSubUserDb(data) {
 
       db.query(decreaseQuery, [purchased_course_id], (err, result) => {});
 
-      let assignCourseToSubUserQuery = `
-      INSERT INTO assigned_course (company_id,course_id,sub_user_id,validity) VALUES (?,?,?,?);`;
+      let assignCourseToSubUserQuery = `INSERT INTO assigned_course (company_id,course_id,sub_user_id,validity) VALUES (?,?,?,?);`;
       db.query(
         assignCourseToSubUserQuery,
         [userId, course_id, sub_user_id, validity],
