@@ -316,7 +316,7 @@ export function getAllAssignedCourseProgressFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getAllBlockedUsersQuery = `
-      SELECT course_id, sub_user_id, progress, validity first_name, last_name, course.name as courseName
+      SELECT course_id, sub_user_id, progress, validity, first_name, last_name, course.name as courseName
       FROM assigned_course
       JOIN course ON assigned_course.course_id = course.id
       JOIN sub_user ON assigned_course.sub_user_id = sub_user.id
