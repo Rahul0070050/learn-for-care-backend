@@ -107,45 +107,35 @@ export const userController = {
         .then(async (result) => {
           let userId = getUser(req).id;
           let password = await hashPassword(result.password);
-          saveASubUserToDb({ ...result, password, userId })
-            .then(() => {
-              sentEmailToSubUserEmailAndPassword(
-                `${result.first_name} ${result.last_name}`,
-                result.email,
-                result.password
-              )
-                .then((emailRes) => {
-                  res.status(200).json({
-                    success: true,
-                    data: {
-                      code: 200,
-                      message: "email sent",
-                      response: emailRes,
-                    },
-                  });
-                })
-                .catch((err) => {
-                  res.status(500).json({
-                    success: false,
-                    errors: [
-                      {
-                        code: 500,
-                        message: "some error occurred please try again later",
-                        error: err,
-                      },
-                    ],
-                    errorType: "server",
-                  });
-                });
-            })
-            .catch((err) => {
-              res.status(406).json({
+          if (result.type === "individual") {
+            await saveASubUserToDb({ ...result, password, userId });
+          }
+          sentEmailToSubUserEmailAndPassword(
+            `${result.first_name} ${result.last_name}`,
+            result.email,
+            result.password
+          )
+            .then((emailRes) => {
+              res.status(200).json({
                 success: true,
                 data: {
-                  code: 406,
-                  message: "value not acceptable",
-                  response: err,
+                  code: 200,
+                  message: "email sent",
+                  response: emailRes,
                 },
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message: "some error occurred please try again later",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
               });
             });
         })

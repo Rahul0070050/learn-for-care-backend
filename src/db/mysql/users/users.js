@@ -197,7 +197,7 @@ export function updateUserData(userData) {
 export function saveASubUserToDb(data) {
   return new Promise((resolve, reject) => {
     try {
-      const createSubUserQuery = `INSERT INTO sub_user (first_name, last_name, password, email, city, country,created_by) VALUES (?,?,?,?,?,?,?);`;
+      const createSubUserQuery = `INSERT INTO sub_user (first_name, last_name, password, email, city, country, created_by, phone) VALUES (?,?,?,?,?,?,?,?);`;
       db.query(
         createSubUserQuery,
         [
@@ -208,6 +208,7 @@ export function saveASubUserToDb(data) {
           data?.city,
           data?.country,
           data?.userId,
+          data?.phone,
         ],
         (err, result) => {
           if (err) {

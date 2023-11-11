@@ -20,7 +20,8 @@ export function mySqlConnect(done) {
     // const userTable = `
     //   CREATE TABLE IF NOT EXISTS users (
     //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     username VARCHAR(50) NOT NULL,
+    //     first_name VARCHAR(50) NOT NULL,
+    //     last_name VARCHAR(50) NOT NULL,
     //     email VARCHAR(50) NOT NULL UNIQUE,
     //     type_of_account VARCHAR(50) NOT NULL,
     //     password VARCHAR(500) NOT NULL,
@@ -100,22 +101,22 @@ export function mySqlConnect(done) {
     //   else console.log("blog table created");
     // });
 
-    const createCartTable = `
-    CREATE TABLE IF NOT EXISTS cart (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      user_id INT NOT NULL,
-      course_id INT NOT NULL,
-      product_count INT NOT NULL,
-      thumbnail VARCHAR(255) NOT NULL,
-      name VARCHAR(255) NOT NULL,
-      item_type VARCHAR(20) NOT NULL,
-      amount INT NOT NULL
-    );`;
+    // const createCartTable = `
+    // CREATE TABLE IF NOT EXISTS cart (
+    //   id INT AUTO_INCREMENT PRIMARY KEY,
+    //   user_id INT NOT NULL,
+    //   course_id INT NOT NULL,
+    //   product_count INT NOT NULL,
+    //   thumbnail VARCHAR(255) NOT NULL,
+    //   name VARCHAR(255) NOT NULL,
+    //   item_type VARCHAR(20) NOT NULL,
+    //   amount INT NOT NULL
+    // );`;
 
-    db.query(createCartTable, (err, result) => {
-      if (err) console.log(err);
-      else console.log("cart table created");
-    });
+    // db.query(createCartTable, (err, result) => {
+    //   if (err) console.log(err);
+    //   else console.log("cart table created");
+    // });
 
   //   const purchasedCourseTable = `
   //     CREATE TABLE IF NOT EXISTS purchased_course (
@@ -192,6 +193,7 @@ export function mySqlConnect(done) {
   //       last_name VARCHAR(250) NOT NULL,
   //       password VARCHAR(250) NOT NULL,
   //       email VARCHAR(250) NOT NULL UNIQUE,
+  //       phone INT DEFAULT NULL,
   //       city VARCHAR(250) NOT NULL,
   //       country VARCHAR(250) NOT NULL,
   //       created_by INT NOT NULL,
@@ -248,6 +250,28 @@ export function mySqlConnect(done) {
   //   if (err) console.log(err.message);
   //   else console.log("course bundle table created");
   // });
+
+
+  // const managerTable = `
+    //   CREATE TABLE IF NOT EXISTS manager (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     first_name VARCHAR(50) NOT NULL,
+    //     last_name VARCHAR(50) NOT NULL,
+    //     email VARCHAR(50) NOT NULL UNIQUE,
+    //     password VARCHAR(500) NOT NULL,
+    //     country VARCHAR(50) NOT NULL,
+    //     city VARCHAR(50) NOT NULL,
+    //     phone VARCHAR(15) NOT NULL,
+    //     company_name VARCHAR(100) DEFAULT NULL,
+    //     joined DATETIME DEFAULT NOW(),
+    //     profile_image VARCHAR(300) DEFAULT NULL,
+    //     block BOOLEAN DEFAULT FALSE
+    //   );`;
+
+    // db.query(managerTable, (err, result) => {
+    //   if (err) console.log(err);
+    //   else console.log("user table created");
+    // });
 
     return done();
   });
