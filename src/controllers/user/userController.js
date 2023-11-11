@@ -140,7 +140,7 @@ export const userController = {
             })
             .catch((err) => {
               res.status(406).json({
-                success: true,
+                success: false,
                 data: {
                   code: 406,
                   message: "value not acceptable",
@@ -151,7 +151,7 @@ export const userController = {
         })
         .catch((err) => {
           res.status(406).json({
-            success: true,
+            success: false,
             data: {
               code: 406,
               message: "value not acceptable",
@@ -189,7 +189,7 @@ export const userController = {
         })
         .catch((err) => {
           res.status(406).json({
-            success: true,
+            success: false,
             data: {
               code: 406,
               message: "some error occur",
@@ -228,7 +228,7 @@ export const userController = {
             })
             .catch((err) => {
               res.status(406).json({
-                success: true,
+                success: false,
                 data: {
                   code: 406,
                   message: "some error occur",
@@ -239,7 +239,7 @@ export const userController = {
         })
         .catch((err) => {
           res.status(406).json({
-            success: true,
+            success: false,
             data: {
               code: 406,
               message: "value not acceptable",
@@ -278,7 +278,7 @@ export const userController = {
             })
             .catch((err) => {
               res.status(406).json({
-                success: true,
+                success: false,
                 data: {
                   code: 406,
                   message: "some error occur",
@@ -289,7 +289,7 @@ export const userController = {
         })
         .catch((err) => {
           res.status(406).json({
-            success: true,
+            success: false,
             data: {
               code: 406,
               message: "value not acceptable",
@@ -331,7 +331,7 @@ export const userController = {
             })
             .catch((err) => {
               res.status(406).json({
-                success: true,
+                success: false,
                 data: {
                   code: 406,
                   message: "value not acceptable",
@@ -342,7 +342,7 @@ export const userController = {
         })
         .catch((err) => {
           res.status(406).json({
-            success: true,
+            success: false,
             data: {
               code: 406,
               message: "value not acceptable",
@@ -380,7 +380,7 @@ export const userController = {
         })
         .catch((err) => {
           res.status(406).json({
-            success: true,
+            success: false,
             data: {
               code: 406,
               message: "value not acceptable",
