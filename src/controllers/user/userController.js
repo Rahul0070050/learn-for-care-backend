@@ -32,7 +32,7 @@ export const userController = {
           data: {
             code: 200,
             message: "got user",
-            response: { ...result },
+            response: result,
           },
         });
       })
