@@ -113,7 +113,7 @@ export const onGoingCourseController = {
   getAllOnGoingCourseById: (req, res) => {
     try {
       let user = getUser(req);
-      getAllOnGoingCourseByUserIdFromDb(user.id)
+      getAllOnGoingCourseByUserIdFromDb(user.id,user.type_of_account)
         .then((result) => {
           res.status(200).json({
             success: true,
