@@ -1,5 +1,5 @@
-import { getSubUserById } from "../../db/mysql/subAdmin/subUser";
-import { getUser } from "../../utils/auth";
+import { getSubUserById } from "../../db/mysql/subAdmin/subUser.js";
+import { getUser } from "../../utils/auth.js";
 
 export const subUserInfoController = {
   getInfo: (req, res) => {
