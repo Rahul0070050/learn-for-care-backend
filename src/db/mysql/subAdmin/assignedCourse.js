@@ -4,7 +4,7 @@ export function getAllAssignedCourses(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `
-      SELECT *
+      SELECT assigned_course.id AS assignedCourseId, *
       FROM assigned_course
       INNER JOIN course ON assigned_course.course_id = course.id
       WHERE assigned_course.sub_user_id = ?;`;
