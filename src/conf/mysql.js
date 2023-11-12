@@ -192,6 +192,7 @@ export function mySqlConnect(done) {
         first_name VARCHAR(250) NOT NULL,
         last_name VARCHAR(250) NOT NULL,
         password VARCHAR(250) NOT NULL,
+        type_of_account VARCHAR(250) NOT NULL DEFAULT 'sub_user',
         email VARCHAR(250) NOT NULL UNIQUE,
         phone INT DEFAULT NULL,
         city VARCHAR(250) NOT NULL,
@@ -214,6 +215,7 @@ export function mySqlConnect(done) {
         course_id INT NOT NULL,
         sub_user_id INT NOT NULL,
         progress INT NOT NULL DEFAULT 0,
+        course_count INT NOT NULL DEFAULT 1,
         color VARCHAR(15) NOT NULL DEFAULT 'red',
         validity VARCHAR(15) NOT NULL
       );

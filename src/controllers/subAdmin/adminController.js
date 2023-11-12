@@ -1,6 +1,9 @@
 import { getSubAdminByEmail } from "../../db/mysql/subAdmin/auth.js";
 
-import { createTokenForSubAdmin } from "../../helpers/jwt.js";
+import {
+  createTokenForAdmin,
+  createTokenForSubAdmin,
+} from "../../helpers/jwt.js";
 import { validateSubAdminLoginReqBody } from "../../helpers/subAdmin/validateAuthReqData.js";
 import { validatePassword } from "../../helpers/validatePasswords.js";
 
@@ -29,7 +32,7 @@ export const subAdminController = {
                 validatePassword(loginInfo.password, adminData.password).then(
                   (result) => {
                     if (result) {
-                      createTokenForSubAdmin(adminData)
+                      createTokenForAdmin({ adminData, type: "sub_admin" })
                         .then((token) => {
                           res.status(200).json({
                             success: true,
@@ -114,5 +117,5 @@ export const subAdminController = {
         errorType: "server",
       });
     }
-  }
+  },
 };

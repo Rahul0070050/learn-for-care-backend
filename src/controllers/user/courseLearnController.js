@@ -1,6 +1,10 @@
 import { downloadFromS3 } from "../../AWS/S3.js";
-import { getOnGoingCourseByIdFromDb } from "../../db/mysql/users/onGoingCourse.js";
+import {
+  getAllOnGoingCourseByUserIdFromDb,
+  getOnGoingCourseByIdFromDb,
+} from "../../db/mysql/users/onGoingCourse.js";
 import { checkGetOnGoingCourseByIdReqData } from "../../helpers/user/validateOnGoingCourseReqData.js";
+import { getUser } from "../../utils/auth.js";
 
 export const onGoingCourseController = {
   getOnGoingCourseById: (req, res) => {
@@ -89,6 +93,49 @@ export const onGoingCourseController = {
               },
             ],
             errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllOnGoingCourseById: (req, res) => {
+    try {
+      let user = getUser(req);
+      getAllOnGoingCourseByUserIdFromDb(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: `got one course`,
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message:
+                  "some error occurred in the server try again after some times",
+                error: err,
+              },
+            ],
+            errorType: "server",
           });
         });
     } catch (error) {

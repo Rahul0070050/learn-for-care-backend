@@ -89,50 +89,6 @@ export function validateAdminJwtToken(token) {
   });
 }
 
-// ========== sub user token =========== //
-
-export function createTokenForSubUser(userData) {
-  return new Promise((resolve, reject) => {
-    try {
-      userData.password = "";
-      jwt.sign(
-        { ...userData },
-        process.env.JWT_RF_KEY_FOR_SUB_USER || "",
-        { expiresIn: "365d" },
-        (err, reFreshToken) => {
-          if (err) return reject(err?.message);
-          jwt.sign(
-            { ...userData },
-            process.env.JWT_ACC_KEY_FOR_SUB_USER || "",
-            { expiresIn: "15d" },
-            (err, accessToken) => {
-              if (err) return reject(err?.message);
-              else return resolve({ reFreshToken, accessToken });
-            }
-          );
-        }
-      );
-    } catch (error) {
-      reject(error?.message);
-    }
-  });
-}
-
-export function validateSubUserJwtToken(token) {
-  return new Promise((resolve, reject) => {
-    try {
-      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_SUB_USER || "", (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve({});
-      });
-    } catch (error) {
-      reject(error?.message);
-    }
-  });
-}
-
-// ========== sub user token =========== //
-
 // ========== sub admin token =========== //
 
 export function createTokenForSubAdmin(userData) {
@@ -178,13 +134,29 @@ export function validateSubAdminJwtToken(token) {
 // ========== sub admin token =========== //
 
 // ========== company user token =========== //
+export function validateAdminPrivilegeJwtToken(token) {
+  return new Promise((resolve, reject) => {
+    try {
+      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_ADMIN || "", (err, result) => {
+        if (err) return reject(err?.message);
+        if(result?.type_of_account === "admin") {
+          return resolve({});
+        } else {
+          reject("you don't have company privilege")
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
 
 export function checkCompanyUserPrivileges(token) {
   return new Promise((resolve, reject) => {
     try {
       jwt.verify(token, process.env.JWT_ACC_KEY_FOR_USER || "", (err, result) => {
         if (err) return reject(err?.message);
-        if(result.type_of_account === "company") {
+        if(result?.type_of_account === "company") {
           return resolve({});
         } else {
           reject("you don't have company privilege")

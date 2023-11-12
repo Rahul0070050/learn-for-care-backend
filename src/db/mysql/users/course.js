@@ -1,4 +1,6 @@
 import { db } from "../../../conf/mysql.js";
+import { getUser } from "../../../utils/auth.js";
+import { getAssignedCourseById } from "./assignedCourse.js";
 
 export function getCourseByIdFromDb(id) {
   return new Promise((resolve, reject) => {
@@ -117,25 +119,43 @@ export function getPurchasedCourseById(id) {
   });
 }
 
-export function decrementTheCourseCount(id) {
+export function decrementTheCourseCount(id,userType) {
   return new Promise(async (resolve, reject) => {
-    console.log(id);
     try {
-      let decrementTheCourseCountQuery = `
+      let decrementTheCourseCountQuery = ''
+      if(userType === "company" || userType === "individual") {
+        decrementTheCourseCountQuery = `
         UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;
-      `;
+        `;
+        let getPurchasedCourse = await getPurchasedCourseById(id);
+        db.query(decrementTheCourseCountQuery, [id], (err, result) => {
+          if (err) {
+            return reject(err?.message);
+          } else {
+            return resolve({
+              validity: getPurchasedCourse[0].validity,
+              id: getPurchasedCourse[0].course_id,
+            });
+          }
+        });
+      } else {
+        decrementTheCourseCountQuery = `
+        UPDATE assigned_course SET course_count = course_count - 1 WHERE id = ?;
+        `;
 
-      let getPurchasedCourse = await getPurchasedCourseById(id);
-      db.query(decrementTheCourseCountQuery, [id], (err, result) => {
-        if (err) {
-          return reject(err?.message);
-        } else {
-          return resolve({
-            validity: getPurchasedCourse[0].validity,
-            id: getPurchasedCourse[0].course_id,
-          });
-        }
-      });
+        let getAssignedCourse = await getAssignedCourseById(id);
+        db.query(decrementTheCourseCountQuery, [id], (err, result) => {
+          if (err) {
+            return reject(err?.message);
+          } else {
+            return resolve({
+              validity: getAssignedCourse[0].validity,
+              id: getAssignedCourse[0].course_id,
+            });
+          }
+        });
+      }
+
     } catch (error) {
       reject(error?.message);
     }

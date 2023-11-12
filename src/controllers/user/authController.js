@@ -308,11 +308,11 @@ export const userAuthController = {
           getUserByEmail(loginInfo)
             .then((userData) => {
               if (userData.length <= 0) {
-                res.status(404).json({
+                res.status(406).json({
                   success: false,
                   errors: [
                     {
-                      code: 404,
+                      code: 406,
                       message: "you provided an in valid email",
                       error: "this email is not exist in our database",
                     },

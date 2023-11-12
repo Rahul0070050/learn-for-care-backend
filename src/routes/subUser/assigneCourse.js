@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { subUserController } from "../../controllers/subUser/authController.js";
-import { validateSubUser } from "../../middlewares/checkSubUser.js";
+import { validateUser } from "../../middlewares/userAuth.js";
 
 const route = Router();
 
 // user auth routes
 route.get(
   "/get-assigned-course",
-  validateSubUser,
+  validateUser,
   subUserController.getAssignedCourse
 );
 // route.post("/login", subUserController.login);

@@ -5,7 +5,10 @@ import {
   getOtpFromDB,
   getAdminByEmail,
 } from "../../db/mysql/admin/auth.js";
-import { hashPassword, validatePassword } from "../../helpers/validatePasswords.js";
+import {
+  hashPassword,
+  validatePassword,
+} from "../../helpers/validatePasswords.js";
 import { createTokenForAdmin } from "../../helpers/jwt.js";
 import { getAdminEmail } from "../../db/mysql/admin/auth.js";
 import {
@@ -17,7 +20,7 @@ export const adminAuthController = {
   login: (req, res) => {
     try {
       validateAdminLoginReqBody(req.body)
-      .then((loginInfo) => {
+        .then((loginInfo) => {
           getAdminByEmail(loginInfo?.email)
             .then((adminData) => {
               if (adminData?.length <= 0) {
@@ -38,7 +41,7 @@ export const adminAuthController = {
                 validatePassword(loginInfo.password, adminData.password).then(
                   (result) => {
                     if (result) {
-                      createTokenForAdmin(adminData)
+                      createTokenForAdmin({ adminData, type: "admin" })
                         .then((token) => {
                           res.status(200).json({
                             success: true,

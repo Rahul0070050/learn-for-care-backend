@@ -1,7 +1,7 @@
 import { getAllAssignedCourses } from "../../db/mysql/subAdmin/assignedCourse.js";
 import { getSubUserByEmail } from "../../db/mysql/subUser/auth.js";
 
-import { createTokenForSubUser } from "../../helpers/jwt.js";
+import { createTokenForUser } from "../../helpers/jwt.js";
 import { validateSubUserLoginReqBody } from "../../helpers/subUser/validateAuthReqData.js";
 import { validatePassword } from "../../helpers/validatePasswords.js";
 import { getUser } from "../../utils/auth.js";
@@ -12,8 +12,8 @@ export const subUserController = {
       validateSubUserLoginReqBody(req.body)
         .then((loginInfo) => {
           getSubUserByEmail(loginInfo?.email)
-            .then((adminData) => {
-              if (adminData?.length <= 0) {
+            .then((userData) => {
+              if (userData?.length <= 0) {
                 res.status(406).json({
                   success: false,
                   errors: [
@@ -27,11 +27,11 @@ export const subUserController = {
                   errorType: "client",
                 });
               } else {
-                adminData = adminData[0];
-                validatePassword(loginInfo.password, adminData.password).then(
+                userData = userData[0];
+                validatePassword(loginInfo.password, userData.password).then(
                   (result) => {
                     if (result) {
-                      createTokenForSubUser(adminData)
+                      createTokenForUser(userData)
                         .then((token) => {
                           res.status(200).json({
                             success: true,
@@ -39,6 +39,7 @@ export const subUserController = {
                               code: 200,
                               jwt_access_token: token.accessToken,
                               jwt_re_fresh_token: token.reFreshToken,
+                              userType: userData.type_of_account,
                               message: "login successful",
                             },
                           });

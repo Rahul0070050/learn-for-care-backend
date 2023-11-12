@@ -1,18 +1,18 @@
 import { Router } from "express";
 
 import { subAdminController } from "../../controllers/admin/adminController.js";
-import { validateAdmin } from "../../middlewares/adminAuth.js";
+import { validateAdmin, validateAdminPrivilege } from "../../middlewares/adminAuth.js";
 
 const route = Router();
 
 route.post(
   "/create-sub-admin",
-  validateAdmin,
+  validateAdminPrivilege,
   subAdminController.createSubAdmin
 );
 route.delete(
   "/delete-sub-admin",
-  validateAdmin,
+  validateAdminPrivilege,
   subAdminController.deleteSubAdmin
 );
 route.post(
