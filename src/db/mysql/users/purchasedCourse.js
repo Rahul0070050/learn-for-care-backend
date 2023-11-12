@@ -4,7 +4,7 @@ export function saveToPurchasedCourse(course) {
   return new Promise((resolve, reject) => {
     try {
       let insertPurchasedCourseQuery =
-        "INSERT INTO purchased_course(user_id, course_id, amount, course_count, fake_course_count, validity, user_type) VALUES (?,?,?,?,?,?,?);";
+        "INSERT INTO purchased_course(user_id, course_id, amount, course_count, fake_course_count, validity) VALUES (?,?,?,?,?,?);";
       let date = new Date();
       date.setFullYear(date.getFullYear() + 1);
       // TODO: year: 1/5/2023 to 01/05/2023 // add '0' to frond of everyone
@@ -18,7 +18,6 @@ export function saveToPurchasedCourse(course) {
           course.course_count,
           course.course_count,
           year,
-          course.type
         ],
         (err, result) => {
           if (err) {
