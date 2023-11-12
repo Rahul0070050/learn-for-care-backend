@@ -1,5 +1,4 @@
 import { db } from "../../../conf/mysql.js";
-import { getUser } from "../../../utils/auth.js";
 import { getAssignedCourseById } from "./assignedCourse.js";
 
 export function getCourseByIdFromDb(id) {
