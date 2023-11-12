@@ -193,7 +193,7 @@ export const cartController = {
           } else {
             price = await getCourseBundleById(result.courseId);
           }
-          price = price[0].price;
+          price = price[0].price
           updateCourseCountInTheCart(result, price, result.id)
             .then((result) => {
               res.status(200).json({
@@ -459,12 +459,12 @@ export const cartController = {
                 .then((cartItems) => {
                   Promise.all(
                     cartItems.map((item) => {
+                      console.log(item);
                       saveToPurchasedCourse({
                         user_id: item.user_id,
                         course_id: item.course_id,
                         amount: item.amount,
                         course_count: item.product_count,
-                        type: user.type_of_account,
                       });
                     })
                   )
