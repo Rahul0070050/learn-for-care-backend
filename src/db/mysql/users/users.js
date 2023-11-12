@@ -1,5 +1,6 @@
 import { db } from "../../../conf/mysql.js";
 import { generatorOtp } from "../../../utils/auth.js";
+import { getSubUserByEmail } from "../subUser/auth.js";
 
 export const insertUser = (user, otp) => {
   return new Promise((resolve, reject) => {
@@ -70,8 +71,17 @@ export function getUserByEmail(info) {
     try {
       let getQuery = `SELECT * FROM users WHERE email = ?;`;
       db.query(getQuery, [info.email], (err, result) => {
-        if (err) return reject(err.message);
-        else return resolve(result);
+        if (err) {
+          return reject(err.message);
+        } else {
+          if(result.length <= 0) {
+            getSubUserByEmail(info.email).then(result => {
+              resolve(result)
+            })
+          } else {
+            return resolve(result);
+          }
+        }
       });
     } catch (error) {
       reject(error?.message);

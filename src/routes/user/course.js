@@ -11,6 +11,7 @@ route.get("/get-course-by-limit/:limit",courseController.getCoursesByLimit);
 route.post("/get-course-by-category",courseController.getCourseByCategory);
 route.get("/get-bought-course",validateUser, courseController.getBoughtCourses);
 route.get("/get-all-bought-course",validateUser, courseController.getAllBoughtCourses);
+route.get("/get-all-pending-course",validateUser, courseController.getAllPendingCourses);
 route.get("/start-course/:id",validateUser, courseController.startCourse);
 
 export default route;

@@ -7,6 +7,7 @@ import {
 import {
   decrementTheCourseCount,
   getAllCoursesFromDb,
+  getAllPendingCourseFromDb,
   getAllPurchasedCourseByUserId,
   getCourseByCategory,
   getCourseByIdFromDb,
@@ -488,6 +489,47 @@ export const courseController = {
     try {
       let userId = getUser(req).id;
       getAllPurchasedCourseByUserId(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all courses",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "some error occurred please try again later",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllPendingCourses: (req, res) => {
+    try {
+      let user = getUser(req);
+      getAllPendingCourseFromDb(user.id, user.type_of_account)
         .then((result) => {
           res.status(200).json({
             success: true,

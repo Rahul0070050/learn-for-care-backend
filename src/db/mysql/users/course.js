@@ -98,6 +98,25 @@ export function getAllPurchasedCourseByUserId(id) {
   });
 }
 
+export function getAllPendingCourseFromDb(id,type) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getPurchasedCourseByIdDataQuery = `
+        SELECT * FROM purchased_course WHERE user_id = ? AND user_type = ?;
+      `;
+
+      db.query(getPurchasedCourseByIdDataQuery, [id,type], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
 export function getPurchasedCourseById(id) {
   return new Promise((resolve, reject) => {
     try {
