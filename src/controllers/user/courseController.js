@@ -534,7 +534,7 @@ export const courseController = {
           decrementTheCourseCount(result.id, user?.type_of_account)
             .then((course) => {
               addCourseToEnrolledCourse(
-                course.course_id,
+                course.id,
                 user.id,
                 course.validity,
                 user.type_of_account
