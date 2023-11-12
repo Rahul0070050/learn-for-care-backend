@@ -1,3 +1,5 @@
+import { getUser } from "../../utils/auth";
+
 export const subUserInfoController = {
   getInfo: (req, res) => {
     let user = getUser(req);
