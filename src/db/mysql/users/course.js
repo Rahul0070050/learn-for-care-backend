@@ -129,7 +129,6 @@ export function decrementTheCourseCount(id,userType) {
         let getPurchasedCourse = await getPurchasedCourseById(id);
         db.query(decrementTheCourseCountQuery, [id], (err, result) => {
           if (err) {
-            console.log(err);
             return reject(err?.message);
           } else {
             return resolve({
@@ -144,9 +143,9 @@ export function decrementTheCourseCount(id,userType) {
         `;
 
         let getAssignedCourse = await getAssignedCourseById(id);
+        console.log(getAssignedCourse);
         db.query(decrementTheCourseCountQuery, [id], (err, result) => {
           if (err) {
-            console.log(err);
             return reject(err?.message);
           } else {
             return resolve({
@@ -158,7 +157,6 @@ export function decrementTheCourseCount(id,userType) {
       }
 
     } catch (error) {
-      console.log(error);
       reject(error?.message);
     }
   });

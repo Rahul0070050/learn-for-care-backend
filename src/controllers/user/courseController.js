@@ -367,10 +367,7 @@ export const courseController = {
             .then(async (courseResult) => {
               let newResult = await courseResult.course.map(
                 async (course, i) => {
-                  let thumbnail = await downloadFromS3(
-                    i,
-                    course.thumbnail
-                  );
+                  let thumbnail = await downloadFromS3(i, course.thumbnail);
 
                   course["thumbnail"] = thumbnail?.url;
 
@@ -487,7 +484,7 @@ export const courseController = {
       });
     }
   },
-  getAllBoughtCourses:(req,res) => {
+  getAllBoughtCourses: (req, res) => {
     try {
       let userId = getUser(req).id;
       getAllPurchasedCourseByUserId(userId)
@@ -528,62 +525,72 @@ export const courseController = {
       });
     }
   },
-  startCourse:(req,res) => {
+  startCourse: (req, res) => {
     try {
-      req.params.id = Number(req.params.id)
-      checkStartCourseReqData(req.params).then(result => {
-      let user = getUser(req)
-        decrementTheCourseCount(result.id,user?.type_of_account).then((course) => {
-          addCourseToEnrolledCourse(course.course_id,user.id,course.validity,user.type_of_account).then((result) => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: "success",
-                response: {id: result.id},
-              },
+      req.params.id = Number(req.params.id);
+      checkStartCourseReqData(req.params)
+        .then((result) => {
+          let user = getUser(req);
+          decrementTheCourseCount(result.id, user?.type_of_account)
+            .then((course) => {
+              addCourseToEnrolledCourse(
+                course.course_id,
+                user.id,
+                course.validity,
+                user.type_of_account
+              )
+                .then((result) => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "success",
+                      response: { id: result.id },
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 500,
+                        message: "some error occurred please try again later",
+                        error: err,
+                      },
+                    ],
+                    errorType: "server",
+                  });
+                });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message: "some error occurred please try again later",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
+              });
             });
-          }).catch(err => {
-            res.status(500).json({
-              success: false,
-              errors: [
-                {
-                  code: 500,
-                  message: "some error occurred please try again later",
-                  error: err,
-                },
-              ],
-              errorType: "server",
-            });
-          })
-        }).catch(err => {
-          res.status(500).json({
+        })
+        .catch((err) => {
+          res.status(406).json({
             success: false,
             errors: [
               {
-                code: 500,
-                message: "some error occurred please try again later",
+                code: 406,
+                message: "value not acceptable",
                 error: err,
               },
             ],
-            errorType: "server",
+            errorType: "client",
           });
-        })
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "value not acceptable",
-              error: err,
-            },
-          ],
-          errorType: "client",
         });
-      })
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         success: false,
         errors: [
@@ -596,5 +603,5 @@ export const courseController = {
         errorType: "server",
       });
     }
-  }
+  },
 };
