@@ -127,6 +127,7 @@ export function mySqlConnect(done) {
   //       course_count INT NOT NULL,
   //       fake_course_count INT NOT NULL,
   //       user_type VARCHAR(20) NOT NULL,
+  //       status VARCHAR(20) NOT NULL DEFAULT 'not started',
   //       validity VARCHAR(10) NOT NULL,
   //       date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   //     );

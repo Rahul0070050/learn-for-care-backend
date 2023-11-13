@@ -79,9 +79,8 @@ export function getAllPurchasedCourseByUserId(id) {
   return new Promise((resolve, reject) => {
     try {
       let getPurchasedCourseDataQuery = `
-        SELECT purchased_course.id, Name, description, course_count, course_id, category, validity 
-        FROM purchased_course INNER JOIN course ON 
-        purchased_course.course_id = course.id
+        SELECT purchased_course.id, Name, description, course_count, course_id, category, validity FROM purchased_course 
+        INNER JOIN course ON purchased_course.course_id = course.id
         WHERE purchased_course.user_id = ?;
       `;
 
@@ -143,7 +142,7 @@ export function decrementTheCourseCount(id,userType) {
       let decrementTheCourseCountQuery = ''
       if(userType === "company" || userType === "individual") {
         decrementTheCourseCountQuery = `
-        UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;
+        UPDATE purchased_course SET course_count = course_count - 1, status = 'started' WHERE id = ?;
         `;
         let getPurchasedCourse = await getPurchasedCourseById(id);
         db.query(decrementTheCourseCountQuery, [id], (err, result) => {
