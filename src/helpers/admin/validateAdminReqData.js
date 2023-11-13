@@ -50,7 +50,7 @@ export function checkValidateOtpReqBody(otpReqInfo) {
   });
 }
 
-export function checkValidateGetUserByIdReqBody(id) {
+export function checkValidateGetUserByIdReqBody(data) {
   return new Promise((resolve, reject) => {
     let template = object({
       id: number().required("please provide id"),
