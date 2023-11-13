@@ -157,6 +157,8 @@ export function decrementTheCourseCount(id,userType) {
           }
         });
       } else {
+
+        // sub-user get their course id from assigned_course table they don't have purchase option
         decrementTheCourseCountQuery = `
         UPDATE assigned_course SET course_count = course_count - 1 WHERE id = ?;
         `;

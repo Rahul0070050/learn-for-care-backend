@@ -41,6 +41,7 @@ export const subAdminController = {
                               jwt_access_token: token.accessToken,
                               jwt_re_fresh_token: token.reFreshToken,
                               message: "login successful",
+                              adminType: "aub-admin"
                             },
                           });
                         })
