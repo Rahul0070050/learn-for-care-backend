@@ -329,7 +329,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
