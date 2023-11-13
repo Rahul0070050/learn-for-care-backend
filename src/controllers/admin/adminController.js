@@ -282,7 +282,7 @@ export const subAdminController = {
   getUserDataById: (req, res) => {
     try {
       req.params.id = Number(req.params.id);
-      checkValidateGetUserByIdReqBody(id)
+      checkValidateGetUserByIdReqBody(req.params)
         .then((result) => {
           getUserByIdFromDb(result.id)
             .then((result) => {
