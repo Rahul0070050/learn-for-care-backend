@@ -1,4 +1,5 @@
 import { db } from "../../../conf/mysql.js";
+import { getAllPurchasedCourseByUserId } from "../users/course.js";
 
 export const insertUser = (user, otp) => {
   return new Promise((resolve, reject) => {
@@ -58,13 +59,15 @@ export function getAllUsersFromDb() {
 }
 
 export function getUserByIdFromDb(id) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async(resolve, reject) => {
     try {
+      let courses = await getAllPurchasedCourseByUserId(id)
       let getUsersQuery = `SELECT * FROM users WHERE id = ?`;
       db.query(getUsersQuery, [id], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
+          result[0].course = courses
           resolve(result);
         }
       });

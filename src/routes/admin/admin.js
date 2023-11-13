@@ -22,7 +22,7 @@ route.get(
 );
 route.post("/create-user", validateAdmin, subAdminController.createUser);
 route.get("/get-all-users", validateAdmin, subAdminController.getAllUsers);
-route.get("/get-user-by-id/:id", validateAdmin, subAdminController.getUserDataById);
+route.get("/get-user-data-by-id/:id", validateAdmin, subAdminController.getUserDataById);
 route.get("/block-user/:id", validateAdmin, subAdminController.blockUser);
 route.get("/unblock-user/:id", validateAdmin, subAdminController.unBlockUser);
 
