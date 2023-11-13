@@ -1,4 +1,4 @@
-import { object, string } from "yup";
+import { number, object, string } from "yup";
 
 export function checkCreateSubAdminReqData(info) {
   return new Promise((resolve, reject) => {
