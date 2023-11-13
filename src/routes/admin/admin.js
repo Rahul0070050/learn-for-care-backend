@@ -15,12 +15,13 @@ route.delete(
   validateAdminPrivilege,
   subAdminController.deleteSubAdmin
 );
-route.post(
+route.get(
   "/list-all-sub-admin",
   validateAdmin,
   subAdminController.listSubAdmin
 );
 route.post("/create-user", validateAdmin, subAdminController.createUser);
+route.get("/get-all-users", validateAdmin, subAdminController.getAllUsers);
 route.get("/block-user/:id", validateAdmin, subAdminController.blockUser);
 route.get("/unblock-user/:id", validateAdmin, subAdminController.unBlockUser);
 

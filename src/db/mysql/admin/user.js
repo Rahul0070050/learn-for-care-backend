@@ -40,6 +40,23 @@ export const insertUser = (user, otp) => {
   });
 };
 
+export function getAllUsersFromDb() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getUsersQuery = `SELECT * FROM users`;
+      db.query(getUsersQuery, (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function blockUserFromAdmin(id) {
   return new Promise((resolve, reject) => {
     try {

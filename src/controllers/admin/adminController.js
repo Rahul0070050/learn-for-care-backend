@@ -3,7 +3,12 @@ import {
   saveNewSubAdminToDb,
   getAllSubAdminFomDb,
 } from "../../db/mysql/admin/subAdmin.js";
-import { blockUserFromAdmin, insertUser, unBlockUserFromAdmin } from "../../db/mysql/admin/user.js";
+import {
+  blockUserFromAdmin,
+  getAllUsersFromDb,
+  insertUser,
+  unBlockUserFromAdmin,
+} from "../../db/mysql/admin/user.js";
 import {
   validateBlockUserInfo,
   validateCreateUserInfo,
@@ -204,6 +209,46 @@ export const subAdminController = {
                 errorType: "server",
               });
             });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllUsers: (req, res) => {
+    try {
+      getAllUsersFromDb()
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all users",
+              response: result,
+            },
+          });
         })
         .catch((err) => {
           res.status(406).json({
