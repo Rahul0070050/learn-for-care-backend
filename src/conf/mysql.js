@@ -231,6 +231,7 @@ export function mySqlConnect(done) {
   //   CREATE TABLE IF NOT EXISTS sub_admin (
   //     id INT AUTO_INCREMENT PRIMARY KEY,
   //     email VARCHAR(150) NOT NULL UNIQUE,
+  //     name VARCHAR(150) NOT NULL,
   //     password VARCHAR(150) NOT NULL,
   //     block BOOLEAN DEFAULT FALSE
   //   );

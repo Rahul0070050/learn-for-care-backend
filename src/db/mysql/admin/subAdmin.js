@@ -40,7 +40,7 @@ export function deleteSubAdminFomDb(id) {
 export function getAllSubAdminFomDb() {
   return new Promise((resolve, reject) => {
     try {
-      let getAllQuery = `SELECT id,email,block FROM sub_admin;`;
+      let getAllQuery = `SELECT id,name,email,block FROM sub_admin;`;
       db.query(getAllQuery, (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);

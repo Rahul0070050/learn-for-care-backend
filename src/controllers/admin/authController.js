@@ -41,7 +41,7 @@ export const adminAuthController = {
                 validatePassword(loginInfo.password, adminData.password).then(
                   (result) => {
                     if (result) {
-                      createTokenForAdmin({ adminData, type: "admin" })
+                      createTokenForAdmin({ adminData, type_of_account: "admin" })
                         .then((token) => {
                           res.status(200).json({
                             success: true,

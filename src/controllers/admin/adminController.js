@@ -128,7 +128,7 @@ export const subAdminController = {
             success: true,
             data: {
               code: 200,
-              message: "delete sub admin",
+              message: "get all sub admin",
               response: result,
             },
           });
