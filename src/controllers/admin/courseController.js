@@ -378,6 +378,9 @@ export const courseController = {
       });
     }
   },
+  getCoursesByUserBy:(req,res) => {
+
+  },
   getAllCourses: (req, res) => {
     try {
       getAllCoursesFromDb()

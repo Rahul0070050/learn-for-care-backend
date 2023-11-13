@@ -97,7 +97,6 @@ app.use("/api/admin/auth", adminAuth);
 app.use("/api/admin/category", category);
 app.use("/api/admin/course", adminCourse);
 app.use("/api/admin/blog", adminBlog);
-app.use("/api/admin/blog", adminBlog);
 app.use("/api/admin/exam", adminExam);
 app.use("/api/admin/info", admin);
 app.use("/api/admin/bundle", bundle);
