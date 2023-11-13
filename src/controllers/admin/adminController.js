@@ -6,10 +6,12 @@ import {
 import {
   blockUserFromAdmin,
   getAllUsersFromDb,
+  getUserByIdFromDb,
   insertUser,
   unBlockUserFromAdmin,
 } from "../../db/mysql/admin/user.js";
 import {
+  checkValidateGetUserByIdReqBody,
   validateBlockUserInfo,
   validateCreateUserInfo,
   validateUnBlockUserInfo,
@@ -261,6 +263,63 @@ export const subAdminController = {
               },
             ],
             errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getUserDataById: (req, res) => {
+    try {
+      let id = Number(req.params.id);
+      checkValidateGetUserByIdReqBody(id)
+        .then((result) => {
+          getUserByIdFromDb(result.id)
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "got user info",
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message: "some error occurred please try again later",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "some error occurred please try again later",
+                error: err,
+              },
+            ],
+            errorType: "server",
           });
         });
     } catch (error) {

@@ -50,6 +50,27 @@ export function checkValidateOtpReqBody(otpReqInfo) {
   });
 }
 
+export function checkValidateGetUserByIdReqBody(data) {
+  return new Promise((resolve, reject) => {
+    let template = object({
+      id: number().required("please provide id"),
+    });
+
+    try {
+      template
+        .validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function validateBlockUserInfo(data) {
   return new Promise((resolve, reject) => {
     let dataTemplate = object({

@@ -57,6 +57,23 @@ export function getAllUsersFromDb() {
   });
 }
 
+export function getUserByIdFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getUsersQuery = `SELECT * FROM users WHERE id = ?`;
+      db.query(getUsersQuery, [id], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function blockUserFromAdmin(id) {
   return new Promise((resolve, reject) => {
     try {
