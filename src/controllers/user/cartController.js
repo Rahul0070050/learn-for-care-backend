@@ -449,20 +449,21 @@ export const cartController = {
           break;
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
-          console.log(chargeSucceeded);
+          // console.log(chargeSucceeded);
           // console.log(chargeSucceeded.billing_details.email);
-          console.log(chargeSucceeded.billing_details.email);
+          // console.log(chargeSucceeded.billing_details.email);
           getUserByEmail(
             { email: chargeSucceeded.billing_details.email } || { email: "" }
           )
             .then((user) => {
               let userId = user[0].id;
+              console.log("userId ", userId);
               getCartItemsByUserId(userId)
                 .then((cartItems) => {
+                  console.log("cart item ", cartItems[0]);
                   Promise.all(
                     cartItems.map((item) => {
-                      console.log(item);
-                      saveToPurchasedCourse({
+                      return saveToPurchasedCourse({
                         user_id: item.user_id,
                         course_id: item.course_id,
                         amount: item.amount,
@@ -483,6 +484,7 @@ export const cartController = {
                       res.send();
                     })
                     .catch((err) => {
+                      console.log(err);
                       res.status(406).send();
                     });
                 })
@@ -528,7 +530,7 @@ export const cartController = {
               data: {
                 code: 200,
                 message: `get invoice`,
-                response: invoiceResult
+                response: invoiceResult,
               },
             });
           })
@@ -544,7 +546,8 @@ export const cartController = {
               ],
               errorType: "server",
             });
-          }).catch(err => {
+          })
+          .catch((err) => {
             res.status(500).json({
               success: false,
               errors: [
