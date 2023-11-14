@@ -27,7 +27,7 @@ export function getAllPurchasedCourseByUserId(id) {
 export function getAllPurchasedCourseFromDb() {
   return new Promise((resolve, reject) => {
     try {
-      let getPurchasedCourseDataQuery = `SELECT id, amount, validity, date, fake_course_count FROM purchased_course;`;
+      let getPurchasedCourseDataQuery = `SELECT * FROM purchased_course;`;
 
       db.query(getPurchasedCourseDataQuery, (err, result) => {
         if (err) {
