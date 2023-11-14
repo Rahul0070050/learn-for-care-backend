@@ -3,13 +3,14 @@ import { getNewBlogs } from "./blog.js";
 import { geCountOfAllCertificates } from "./certificate.js";
 import { geCountOfAllCourse } from "./course.js";
 import { getAllPurchasedCourseFromDb } from "./purchasedCourse.js";
-import { geCountOfAllCompanyUsers, geCountOfAllIndividualUsers, getNewUsers } from "./user.js";
+import { geCountOfAllCompanyUsers, geCountOfAllIndividualUsers, getNewCompanyUsers, getNewUsers } from "./user.js";
 
 export function getDashboardData() {
   return new Promise(async (resolve, reject) => {
     try {
       let purchasedCourse = await getAllPurchasedCourseFromDb();
       let newUsers = await getNewUsers();
+      let newCompanyUsers = await getNewCompanyUsers();
       let newBlogs = await getNewBlogs();
       let company_users_count = await geCountOfAllCompanyUsers();
       let individual_users_count = await geCountOfAllIndividualUsers();
@@ -25,6 +26,7 @@ export function getDashboardData() {
             purchasedCourse: purchasedCourse,
             newUsers: newUsers,
             newBlogs: newBlogs,
+            ['new_company_users']: newCompanyUsers,
             purchasedCourse: result,
             company_users_count: company_users_count[0]["COUNT(*)"],
             individual_users_count: individual_users_count[0]["COUNT(*)"],

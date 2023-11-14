@@ -117,9 +117,28 @@ export function getNewUsers() {
       let getQuery = `
         SELECT id, first_name, last_name, profile_image 
         FROM users
-        WHERE type_of_account = 'individual' AND joined >= CURDATE() - INTERVAL 1 WEEK
-        ORDER BY id DESC
-        LIMIT 2;
+        WHERE type_of_account = 'individual' AND joined >= CURDATE() - INTERVAL 1 WEEK;
+      ;`;
+      db.query(getQuery, (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getNewCompanyUsers() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+        SELECT id, first_name, last_name, profile_image 
+        FROM users
+        WHERE type_of_account = 'company' AND joined >= CURDATE() - INTERVAL 1 WEEK;
       ;`;
       db.query(getQuery, (err, result) => {
         if (err) {
@@ -140,7 +159,7 @@ export function geCountOfAllCompanyUsers() {
       let getQuery = `
       SELECT COUNT(*)
       FROM users
-      WHERE type_of_account = 'individual'
+      WHERE type_of_account = 'company'
       ;`;
       db.query(getQuery, (err, result) => {
         if (err) {
@@ -161,7 +180,7 @@ export function geCountOfAllIndividualUsers() {
       let getQuery = `
       SELECT COUNT(*)
       FROM users
-      WHERE type_of_account = 'company'
+      WHERE type_of_account = 'individual'
       ;`;
       db.query(getQuery, (err, result) => {
         if (err) {
