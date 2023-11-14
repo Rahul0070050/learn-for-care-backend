@@ -48,3 +48,21 @@ export function getAllCertificateFromDb() {
     }
   });
 }
+
+export function geCountOfAllCertificates() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT COUNT(*) FROM certificate;`;
+      db.query(getQuery, (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
