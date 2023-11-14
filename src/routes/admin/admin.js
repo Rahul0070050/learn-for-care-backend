@@ -25,6 +25,7 @@ route.get("/get-all-users", validateAdmin, subAdminController.getAllUsers);
 route.get("/get-user-data-by-id/:id", validateAdmin, subAdminController.getUserDataById);
 route.get("/block-user/:id", validateAdmin, subAdminController.blockUser);
 route.get("/unblock-user/:id", validateAdmin, subAdminController.unBlockUser);
+route.get("/super-admin-dashboard-data", validateAdmin, subAdminController.superAdminDashboard);
 
 
 export default route;

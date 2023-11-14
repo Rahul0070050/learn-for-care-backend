@@ -11,5 +11,7 @@ route.patch("/update-cart-count",validateUser, cartController.updateCartCount);
 route.delete("/delete-cart-item",validateUser, cartController.deleteCourseFromCart);
 route.get("/get",validateUser, cartController.getAllCartItems);
 route.post("/checkout", validateUser, cartController.checkout);
+route.get("/get-invoice/:id", validateUser, cartController.getInvoiceById);
+// ch_3OCIb5SDSvRnSaLU1aGdgqMx
 
 export default route;

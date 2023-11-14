@@ -1,3 +1,4 @@
+import { getDashboardData } from "../../db/mysql/admin/admin.js";
 import {
   deleteSubAdminFomDb,
   saveNewSubAdminToDb,
@@ -448,4 +449,42 @@ export const subAdminController = {
       });
     }
   },
+  superAdminDashboard:(req,res) => {
+    try {
+      getDashboardData().then(result => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: "successfully unblocked",
+            response: result,
+          },
+        });
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "values not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
 };

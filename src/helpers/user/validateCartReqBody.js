@@ -84,3 +84,24 @@ export function checkDeleteCorseFromCartReqBody(body) {
     }
   });
 }
+
+export function checkGetInvoiceByIdReqBody(body) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      id: string().required("please provide invoice id"),
+    });
+    try {
+      bodyTemplate
+        .validate(body)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+

@@ -59,15 +59,15 @@ export function getAllUsersFromDb() {
 }
 
 export function getUserByIdFromDb(id) {
-  return new Promise(async(resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      let courses = await getAllPurchasedCourseByUserId(id)
+      let courses = await getAllPurchasedCourseByUserId(id);
       let getUsersQuery = `SELECT * FROM users WHERE id = ?`;
       db.query(getUsersQuery, [id], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
-          result[0].course = courses
+          result[0].course = courses;
           resolve(result);
         }
       });
@@ -99,6 +99,71 @@ export function unBlockUserFromAdmin(id) {
     try {
       let updateQuery = `UPDATE users SET block = ? WHERE id = ?;`;
       db.query(updateQuery, [false, id], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getNewUsers() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+        SELECT id, first_name, last_name, profile_image 
+        FROM users
+        WHERE type_of_account = 'individual'
+        ORDER BY id DESC
+        LIMIT 2;
+      ;`;
+      db.query(getQuery, (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function geCountOfAllCompanyUsers() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT COUNT(*)
+      FROM users
+      WHERE type_of_account = 'individual'
+      ;`;
+      db.query(getQuery, (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function geCountOfAllIndividualUsers() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT COUNT(*)
+      FROM users
+      WHERE type_of_account = 'company'
+      ;`;
+      db.query(getQuery, (err, result) => {
         if (err) {
           reject(err?.message);
         } else {

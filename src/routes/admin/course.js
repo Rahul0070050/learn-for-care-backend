@@ -9,6 +9,7 @@ route.post("/create-course", validateAdmin, courseController.createCourse);
 route.get("/get-single-course/:id",validateAdmin,courseController.getCourseById);
 route.get("/get-all-course",validateAdmin,courseController.getAllCourses);
 route.post("/get-course-by-category",validateAdmin,courseController.getCourseByCategory);
+route.get("/get-all-purchased-course",validateAdmin,courseController.getAllPurchasedCourse); // get all purchased course
 route.post("/update-course-video",validateAdmin,courseController.updateCourseVideo);
 route.post("/update-course-ppt",validateAdmin,courseController.updateCoursePpt);
 route.post("/update-course-resource",validateAdmin,courseController.updateCourseResource);

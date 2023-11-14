@@ -3,6 +3,7 @@ import {
   checkAddBundleToCartReqBody,
   checkAddToCartReqBody,
   checkDeleteCorseFromCartReqBody,
+  checkGetInvoiceByIdReqBody,
   checkUpdateCartCountReqBody,
 } from "../../helpers/user/validateCartReqBody.js";
 import { getUser } from "../../utils/auth.js";
@@ -19,6 +20,7 @@ import { getStripeUrl, stripeObj } from "../../conf/stripe.js";
 import { getUserByEmail } from "../../db/mysql/users/users.js";
 import { saveToPurchasedCourse } from "../../db/mysql/users/purchasedCourse.js";
 import { getCourseBundleById } from "../../db/mysql/users/courseBundle.js";
+import { getInvoice } from "../../helpers/getInvoice.js";
 config("../../../.env");
 export const cartController = {
   addCourseToCart: (req, res) => {
@@ -193,7 +195,7 @@ export const cartController = {
           } else {
             price = await getCourseBundleById(result.courseId);
           }
-          price = price[0].price
+          price = price[0].price;
           updateCourseCountInTheCart(result, price, result.id)
             .then((result) => {
               res.status(200).json({
@@ -503,6 +505,60 @@ export const cartController = {
     } catch (err) {
       console.log(err.message);
       // console.log(err.message);
+      res.status(400).json({
+        success: false,
+        errors: [
+          {
+            code: 400,
+            message: "some error occurred please try again later",
+            error: err?.message ? err?.message : error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getInvoiceById: (req, res) => {
+    try {
+      checkGetInvoiceByIdReqBody(req.params).then((result) => {
+        getInvoice(result.id)
+          .then((invoiceResult) => {
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: `get invoice`,
+                response: invoiceResult
+              },
+            });
+          })
+          .catch((err) => {
+            res.status(500).json({
+              success: false,
+              errors: [
+                {
+                  code: 500,
+                  message: "something went wrong try again after some times",
+                  error: err,
+                },
+              ],
+              errorType: "server",
+            });
+          }).catch(err => {
+            res.status(500).json({
+              success: false,
+              errors: [
+                {
+                  code: 500,
+                  message: "something went wrong try again after some times",
+                  error: err,
+                },
+              ],
+              errorType: "server",
+            });
+          });
+      });
+    } catch (error) {
       res.status(400).json({
         success: false,
         errors: [

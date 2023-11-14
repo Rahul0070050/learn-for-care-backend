@@ -8,6 +8,7 @@ import {
   updateCourseSingleFieldMediaById,
   deleteCourseFromDb,
 } from "../../db/mysql/admin/course.js";
+import { getAllPurchasedCourseFromDb } from "../../db/mysql/admin/purchasedCourse.js";
 import {
   checkAddCourseReqBodyAndFile,
   checkGetCourseByCategoryBody,
@@ -449,6 +450,48 @@ export const courseController = {
                 errorType: "server",
               });
             });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message:
+                  "some error occurred in the server try again after some times",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllPurchasedCourse: (req, res) => {
+    try {
+      getAllPurchasedCourseFromDb()
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all courses",
+              response: result,
+            },
+          });
         })
         .catch((err) => {
           res.status(500).json({
@@ -982,7 +1025,6 @@ export const courseController = {
         .then((result) => {
           deleteCourseFromDb(result)
             .then(async (course) => {
-
               await removeFromS3(course?.thumbnail || "");
               await removeFromS3(course?.video || "");
               await removeFromS3(course?.ppt || "");
@@ -991,7 +1033,6 @@ export const courseController = {
               course?.resource?.forEach(async (url) => {
                 await removeFromS3(url.file);
               });
-
 
               res.status(200).json({
                 success: true,
