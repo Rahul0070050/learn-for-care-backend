@@ -8,7 +8,6 @@ import { geCountOfAllCompanyUsers, geCountOfAllIndividualUsers, getNewCompanyUse
 export function getDashboardData() {
   return new Promise(async (resolve, reject) => {
     try {
-      let purchasedCourse = await getAllPurchasedCourseFromDb();
       let newUsers = await getNewUsers();
       let newCompanyUsers = await getNewCompanyUsers();
       let newBlogs = await getNewBlogs();
@@ -17,7 +16,7 @@ export function getDashboardData() {
       let certificates_count = await geCountOfAllCertificates()
       let course_count = await geCountOfAllCourse()
       
-      let getQuery = `SELECT id, amount, fake_course_count FROM purchased_course;`;
+      let getQuery = `SELECT id, amount, fake_course_count, date FROM purchased_course;`;
       db.query(getQuery, (err, result) => {
         if (err) {
           return reject(err.message)
