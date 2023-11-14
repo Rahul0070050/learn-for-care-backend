@@ -22,6 +22,7 @@ import adminBlog from "./routes/admin/blog.js";
 import adminExam from "./routes/admin/exam.js";
 import admin from "./routes/admin/admin.js";
 import bundle from "./routes/admin/bundle.js";
+import adminCertificate from "./routes/admin/certificate.js";
 
 import subUserAuth from "./routes/subUser/auth.js";
 import subUserCourse from "./routes/subUser/assigneCourse.js";
@@ -100,6 +101,7 @@ app.use("/api/admin/blog", adminBlog);
 app.use("/api/admin/exam", adminExam);
 app.use("/api/admin/info", admin);
 app.use("/api/admin/bundle", bundle);
+app.use("/api/admin/certificate", adminCertificate);
 
 app.use("/api/admin/sub-admin", subAdminAuth);
 
