@@ -121,9 +121,21 @@ export function getNewBlogs() {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `SELECT id, header, img FROM blogs ORDER BY id DESC LIMIT 3;`;
-      db.query(getQuery, (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve(result);
+      db.query(getQuery, async (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          let fileResponses = result.map((item) =>
+            downloadFromS3(item.id, item.img)
+          );
+
+          let SignedUrl = await Promise.all(fileResponses);
+
+          result.forEach((item) => {
+            item.img = SignedUrl.find((url) => url.id == item.id).url;
+          });
+          return resolve(result);
+        }
       });
     } catch (error) {
       reject(error?.message);
