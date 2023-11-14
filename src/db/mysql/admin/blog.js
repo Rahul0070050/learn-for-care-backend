@@ -120,7 +120,7 @@ export function deleteBlogById(id) {
 export function getNewBlogs() {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT id, header, img FROM blogs WHERE date >= CURDATE() - INTERVAL 1 WEEK;`;
+      let getQuery = `SELECT id, header, img FROM blogs ORDER BY id DESC LIMIT 3;`;
       db.query(getQuery, (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);

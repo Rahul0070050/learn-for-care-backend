@@ -117,7 +117,7 @@ export function getNewUsers() {
       let getQuery = `
         SELECT id, first_name, last_name, profile_image 
         FROM users
-        WHERE type_of_account = 'individual' AND joined >= CURDATE() - INTERVAL 1 WEEK;
+        WHERE type_of_account = 'individual' AND joined >= CURDATE() - INTERVAL 1 WEEK
       ;`;
       db.query(getQuery, (err, result) => {
         if (err) {
