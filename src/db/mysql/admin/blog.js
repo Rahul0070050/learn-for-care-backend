@@ -1,3 +1,4 @@
+import { downloadFromS3 } from "../../../AWS/S3.js";
 import { db } from "../../../conf/mysql.js";
 
 export function insertNewBlog(blog) {
