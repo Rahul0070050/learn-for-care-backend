@@ -22,7 +22,6 @@ export function getDashboardData() {
           return reject(err.message)
         }else {
           let response = {
-            purchasedCourse: purchasedCourse,
             newUsers: newUsers,
             newBlogs: newBlogs,
             ['new_company_users']: newCompanyUsers,
