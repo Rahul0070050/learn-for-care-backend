@@ -136,7 +136,7 @@ export function getNewCompanyUsers() {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `
-        SELECT id, first_name, last_name, profile_image 
+        SELECT * 
         FROM users
         WHERE type_of_account = 'company' AND joined >= CURDATE() - INTERVAL 1 WEEK;
       ;`;
