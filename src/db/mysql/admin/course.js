@@ -126,23 +126,26 @@ export function updateCourseData(courseInfo) {
 export function getCourseByLimitFromDb(limit) {
   return new Promise((resolve, reject) => {
     try {
-      let getCourseDataByLimitQuery =
-        `SELECT id, thumbnail, name, price, description, category
+      let getCourseDataByLimitQuery = `SELECT id, thumbnail, name, price, description, category
         FROM course
         LIMIT ? , ?;`;
       let getCourseCountQuery = "SELECT COUNT(id) FROM course;";
 
-      let maxLimit = Number(limit) + 11
-      db.query(getCourseDataByLimitQuery, [Number(limit), maxLimit], (err, course) => {
-        if (err) {
-          reject(err?.message);
-        } else {
-          db.query(getCourseCountQuery, (err, count) => {
-            if (err) return reject(err?.message);
-            resolve({ course: course, count: count[0]['COUNT(id)'] });
-          });
+      let maxLimit = Number(limit) + 11;
+      db.query(
+        getCourseDataByLimitQuery,
+        [Number(limit), maxLimit],
+        (err, course) => {
+          if (err) {
+            reject(err?.message);
+          } else {
+            db.query(getCourseCountQuery, (err, count) => {
+              if (err) return reject(err?.message);
+              resolve({ course: course, count: count[0]["COUNT(id)"] });
+            });
+          }
         }
-      });
+      );
     } catch (error) {
       reject(error?.message);
     }
@@ -164,6 +167,23 @@ export function deleteCourseFromDb(id) {
             result[0].resource = JSON.parse(result[0].resource);
             return resolve(result[0]);
           });
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function geCountOfAllCourse() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FROM course;`;
+      db.query(getQuery, (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
         }
       });
     } catch (error) {
