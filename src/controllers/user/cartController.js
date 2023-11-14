@@ -457,10 +457,8 @@ export const cartController = {
           )
             .then((user) => {
               let userId = user[0].id;
-              console.log("userId ", userId);
               getCartItemsByUserId(userId)
                 .then((cartItems) => {
-                  console.log("cart item ", cartItems[0]);
                   Promise.all(
                     cartItems.map((item) => {
                       return saveToPurchasedCourse({

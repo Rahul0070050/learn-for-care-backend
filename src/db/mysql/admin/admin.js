@@ -16,7 +16,7 @@ export function getDashboardData() {
       let certificates_count = await geCountOfAllCertificates()
       let course_count = await geCountOfAllCourse()
       
-      let getQuery = `SELECT * FROM purchased_course;`;
+      let getQuery = `SELECT * FROM purchased_course ORDER BY id DESC;`;
       db.query(getQuery, (err, result) => {
         if (err) {
           return reject(err.message)
