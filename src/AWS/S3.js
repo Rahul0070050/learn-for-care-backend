@@ -34,7 +34,7 @@ export function uploadFileToS3(dir, file) {
             ContentType: file.mimetype,
           })
           .promise();
-        fs.unlinkSync(uploadPath);
+        // fs.unlinkSync(uploadPath);
 
         resolve({
           ok: true,
