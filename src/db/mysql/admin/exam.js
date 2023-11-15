@@ -6,7 +6,7 @@ export function insertQuestionsToExam({
   return new Promise((resolve, reject) => {
     try {
       console.log(info);
-      console.log(info?.questions);
+      console.log(info.questions);
       let exam = JSON.stringify(info.questions);
       let insertQuestionsQuery =
         "INSERT INTO exams(course_id, exam) VALUES(?,?);";

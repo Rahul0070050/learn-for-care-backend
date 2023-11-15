@@ -13,7 +13,6 @@ export const examController = {
       checkAddExamReqBody(req.body)
         .then((result) => {
           console.log('from controller',result);
-          console.log('from controller',result.questions);
           insertQuestionsToExam(result)
             .then(() => {
               res.status(201).json({
