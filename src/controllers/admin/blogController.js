@@ -19,6 +19,7 @@ import {
 export const blogController = {
   createBlog: (req, res) => {
     try {
+      console.log(req.body, req.files)
       checkCreateBlogReqBody(req.body, req.files)
         .then(async (result) => {
           let tags = result[0].tags.split(",").map((tag) => "#" + tag);
