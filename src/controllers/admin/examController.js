@@ -1,4 +1,7 @@
-import { getAllExam, insertQuestionsToExam } from "../../db/mysql/admin/exam.js";
+import {
+  getAllExam,
+  insertQuestionsToExam,
+} from "../../db/mysql/admin/exam.js";
 import {
   checkAddExamReqBody,
   checkGetExamReqBody,
@@ -17,8 +20,29 @@ export const examController = {
               });
             })
           )
-            .then((result) => {})
-            .catch((err) => {});
+            .then((result) => {
+              res.status(201).json({
+                success: true,
+                data: {
+                  code: 201,
+                  message: "exam assigned",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
         })
         .catch((err) => {});
     } catch (error) {
@@ -56,7 +80,7 @@ export const examController = {
               {
                 code: 406,
                 message: "value not acceptable",
-                error: error,
+                error: err,
               },
             ],
             errorType: "client",
@@ -97,7 +121,7 @@ export const examController = {
               {
                 code: 406,
                 message: "value not acceptable",
-                error: error,
+                error: err,
               },
             ],
             errorType: "client",
