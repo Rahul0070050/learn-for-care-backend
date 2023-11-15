@@ -9,8 +9,16 @@ export function insertQuestionsToExam(info) {
       let insertQuestionsQuery =
         "INSERT INTO exams (course_id, exam) VALUES(?,?);";
       db.query(insertQuestionsQuery, [info.course_id, exam], (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve(result);
+        if (err) {
+          if (
+            err.message ===
+            `ER_DUP_ENTRY: Duplicate entry '${info.course_id}' for key 'exams.course_id'`
+          ) {
+            return reject("already the course has exam assigned to it");
+          } else {
+            return reject(err?.message);
+          }
+        } else return resolve(result);
       });
     } catch (error) {
       reject(error?.message);
