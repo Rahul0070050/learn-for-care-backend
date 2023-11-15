@@ -1,8 +1,6 @@
 import { db } from "../../../conf/mysql.js";
 
-export function insertQuestionsToExam({
-  info
-}) {
+export function insertQuestionsToExam(info) {
   return new Promise((resolve, reject) => {
     try {
       console.log(info);
@@ -10,14 +8,10 @@ export function insertQuestionsToExam({
       let exam = JSON.stringify(info.questions);
       let insertQuestionsQuery =
         "INSERT INTO exams(course_id, exam) VALUES(?,?);";
-      db.query(
-        insertQuestionsQuery,
-        [info.course_id,exam],
-        (err, result) => {
-          if (err) return reject(err?.message);
-          else return resolve(result);
-        }
-      );
+      db.query(insertQuestionsQuery, [info.course_id, exam], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }
@@ -27,7 +21,8 @@ export function insertQuestionsToExam({
 export function getQuestionsForExamByCourseId(course_id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 10;";
+      let getQuestionsQuery =
+        "SELECT * FROM exams WHERE course_id = ? LIMIT 10;";
       db.query(getQuestionsQuery, [course_id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
