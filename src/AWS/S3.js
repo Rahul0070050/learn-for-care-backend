@@ -13,8 +13,7 @@ export function uploadFileToS3(dir, file) {
     try {
       let fileName = uuid() + file.name.split(" ").join("");
 
-      let uploadPath = path.join(__dirname, "../uploads/", fileName);
-
+      let uploadPath = path.join(__dirname, "../../uploads/", fileName);
       file.mv(uploadPath, async function (err) {
         if (err) {
           reject(err?.message);
