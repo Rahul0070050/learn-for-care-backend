@@ -10,7 +10,7 @@ import {
 export const examController = {
   createExam: (req, res) => {
     try {
-      checkAddExamReqBody(req.body)
+      checkAddExamReqBody(req.body.data)
         .then((result) => {
           insertQuestionsToExam(result)
             .then(() => {
