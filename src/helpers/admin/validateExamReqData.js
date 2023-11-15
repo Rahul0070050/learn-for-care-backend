@@ -24,6 +24,7 @@ export function checkAddExamReqBody(body) {
 
       bodyData
         .then((result) => {
+          console.log('from validation ',result);
           resolve(result);
         })
         .catch((err) => {
