@@ -112,3 +112,40 @@ export function validateUnBlockUserInfo(data) {
     }
   });
 }
+
+export function validateSetAdminInfoReqData(info) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      employee_id: number().required("please provide employee_id"),
+      employee_name: string().required("please provide employee_name"),
+      designation: string().required("please provide designation"),
+      email: string().email().required("please provide email"),
+      department: string().required("please provide department"),
+      phone: number().required("please provide phone"),
+      contact_no: number().required("please provide contact_no"),
+      gender: string().required("please provide gender"),
+      date_of_birth: string().required("please provide date_of_birth"),
+      next_to_kin: string().required("please provide next_to_kin"),
+      payroll_reference_number: number().required("please provide payroll_reference_number"),
+      medical_details: string().required("please provide medical_details"),
+      national_insurance_number: number().required("please provide national_insurance_number"),
+      contract_type: string().required("please provide contract_type"),
+      date_of_joining: string().required("please provide date_of_joining"),
+      correspondence_address: string().required("please provide correspondence_address"),
+      brief_profile: string().required("please provide brief_profile"),
+    });
+
+    try {
+      dataTemplate
+        .validate(info)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

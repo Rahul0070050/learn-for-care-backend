@@ -156,18 +156,18 @@ export function mySqlConnect(done) {
     //     else console.log("enrolled_course table created");
     //   });
 
-      const ExamTable = `
-        CREATE TABLE IF NOT EXISTS exams (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          course_id INT NOT NULL UNIQUE,
-          exam TEXT NOT NULL
-        );
-      `;
+    // const ExamTable = `
+    //     CREATE TABLE IF NOT EXISTS exams (
+    //       id INT AUTO_INCREMENT PRIMARY KEY,
+    //       course_id INT NOT NULL UNIQUE,
+    //       exam TEXT NOT NULL
+    //     );
+    //   `;
 
-      db.query(ExamTable, (err, result) => {
-        if (err) console.log(err.message);
-        else console.log("exam table created");
-      });
+    // db.query(ExamTable, (err, result) => {
+    //   if (err) console.log(err.message);
+    //   else console.log("exam table created");
+    // });
 
     //   const ExamAttemptsTable = `
     //     CREATE TABLE IF NOT EXISTS exam_attempts (
@@ -185,39 +185,39 @@ export function mySqlConnect(done) {
     //     else console.log("exam_attempts table created");
     //   });
 
-    const subUserTable = `
-      CREATE TABLE IF NOT EXISTS sub_user (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        first_name VARCHAR(250) NOT NULL,
-        last_name VARCHAR(250) NOT NULL,
-        password VARCHAR(250) NOT NULL,
-        type_of_account VARCHAR(250) NOT NULL DEFAULT 'sub_user',
-        email VARCHAR(250) NOT NULL UNIQUE,
-        phone INT DEFAULT NULL,
-        city VARCHAR(250) NOT NULL,
-        country VARCHAR(250) NOT NULL,
-        created_by INT NOT NULL,
-        block BOOLEAN NOT NULL DEFAULT FALSE
-      );
-    `;
+    // const subUserTable = `
+    //   CREATE TABLE IF NOT EXISTS sub_user (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     first_name VARCHAR(250) NOT NULL,
+    //     last_name VARCHAR(250) NOT NULL,
+    //     password VARCHAR(250) NOT NULL,
+    //     type_of_account VARCHAR(250) NOT NULL DEFAULT 'sub_user',
+    //     email VARCHAR(250) NOT NULL UNIQUE,
+    //     phone INT DEFAULT NULL,
+    //     city VARCHAR(250) NOT NULL,
+    //     country VARCHAR(250) NOT NULL,
+    //     created_by INT NOT NULL,
+    //     block BOOLEAN NOT NULL DEFAULT FALSE
+    //   );
+    // `;
 
-    db.query(subUserTable, (err, result) => {
-      if (err) console.log(err.message);
-      else console.log("sub_user table created");
-    });
+    // db.query(subUserTable, (err, result) => {
+    //   if (err) console.log(err.message);
+    //   else console.log("sub_user table created");
+    // });
 
-    const assignedCourseTable = `
-      CREATE TABLE IF NOT EXISTS assigned_course (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        company_id INT NOT NULL,
-        course_id INT NOT NULL,
-        sub_user_id INT NOT NULL,
-        progress INT NOT NULL DEFAULT 0,
-        course_count INT NOT NULL DEFAULT 1,
-        color VARCHAR(15) NOT NULL DEFAULT 'red',
-        validity VARCHAR(15) NOT NULL
-      );
-    `;
+    // const assignedCourseTable = `
+    //   CREATE TABLE IF NOT EXISTS assigned_course (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     company_id INT NOT NULL,
+    //     course_id INT NOT NULL,
+    //     sub_user_id INT NOT NULL,
+    //     progress INT NOT NULL DEFAULT 0,
+    //     course_count INT NOT NULL DEFAULT 1,
+    //     color VARCHAR(15) NOT NULL DEFAULT 'red',
+    //     validity VARCHAR(15) NOT NULL
+    //   );
+    // `;
 
     //   db.query(assignedCourseTable, (err, result) => {
     //     if (err) console.log(err.message);
@@ -275,21 +275,82 @@ export function mySqlConnect(done) {
     //     else console.log("user table created");
     //   });
 
-    const certificateTable = `
-        CREATE TABLE IF NOT EXISTS certificate (
+    // const certificateTable = `
+    //     CREATE TABLE IF NOT EXISTS certificate (
+    //       id INT AUTO_INCREMENT PRIMARY KEY,
+    //       user_id INT NOT NULL,
+    //       course_name VARCHAR(50) NOT NULL,
+    //       user_name VARCHAR(50) NOT NULL,
+    //       date DATETIME NOT NULL DEFAULT NOW(),
+    //       percentage INT NOT NULL,
+    //       image VARCHAR(300) DEFAULT NULL
+    //     ) AUTO_INCREMENT = 10000;
+    //   `;
+
+    // db.query(certificateTable, (err, result) => {
+    //   if (err) console.log(err);
+    //   else console.log("user table created");
+    // });
+
+      const adminInfoTable = `
+      CREATE TABLE IF NOT EXISTS admin_info (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        admin_id INT NOT NULL UNIQUE,
+        employee_id INT NOT NULL,
+        employee_name VARCHAR(100) NOT NULL,
+        email VARCHAR(100) NOT NULL UNIQUE,
+        designation VARCHAR(250) NOT NULL,
+        department VARCHAR(100) NOT NULL,
+        phone INT NOT NULL,
+        contact_no INT NOT NULL,
+        gender VARCHAR(20) NOT NULL,
+        date_of_birth VARCHAR(25) NOT NULL,
+        next_to_kin VARCHAR(150) NOT NULL,
+        payroll_reference_number INT NOT NULL,
+        medical_details VARCHAR(250) NOT NULL,
+        national_insurance_number INT NOT NULL,
+        contract_type VARCHAR(150) NOT NULL,
+        date_of_joining DATETIME NOT NULL,
+        correspondence_address VARCHAR(250) NOT NULL,
+        brief_profile TEXT NOT NULL
+      )
+    `;
+
+        db.query(adminInfoTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("user table admin_info");
+    });
+
+    const qualificationsTable = `
+        CREATE TABLE IF NOT EXISTS qualifications (
           id INT AUTO_INCREMENT PRIMARY KEY,
-          user_id INT NOT NULL,
-          course_name VARCHAR(50) NOT NULL,
-          user_name VARCHAR(50) NOT NULL,
-          date DATETIME NOT NULL DEFAULT NOW(),
-          percentage INT NOT NULL,
-          image VARCHAR(300) DEFAULT NULL
-        ) AUTO_INCREMENT = 10000;
-`;
+          admin_id INT NOT NULL,
+          University VARCHAR(100) NOT NULL,
+          note VARCHAR(100) NOT NULL,
+          doc VARCHAR(300) DEFAULT NULL
+        );
+      `;
+
+    db.query(qualificationsTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("user table qualifications");
+    });
+
+    const certificateTable = `
+        CREATE TABLE IF NOT EXISTS experience (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          admin_id INT NOT NULL,
+          organization VARCHAR(100) NOT NULL,
+          position VARCHAR(50) NOT NULL,
+          no_of_years INT NOT NULL,
+          note VARCHAR(100) NOT NULL,
+          doc VARCHAR(300) DEFAULT NULL
+        );
+      `;
 
     db.query(certificateTable, (err, result) => {
       if (err) console.log(err);
-      else console.log("user table created");
+      else console.log("user table experience");
     });
 
     return done();

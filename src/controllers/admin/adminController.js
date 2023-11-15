@@ -1,4 +1,4 @@
-import { getDashboardData } from "../../db/mysql/admin/admin.js";
+import { getDashboardData, setAdminInfoToDb } from "../../db/mysql/admin/admin.js";
 import {
   deleteSubAdminFomDb,
   saveNewSubAdminToDb,
@@ -15,6 +15,7 @@ import {
   checkValidateGetUserByIdReqBody,
   validateBlockUserInfo,
   validateCreateUserInfo,
+  validateSetAdminInfoReqData,
   validateUnBlockUserInfo,
 } from "../../helpers/admin/validateAdminReqData.js";
 import {
@@ -449,30 +450,32 @@ export const subAdminController = {
       });
     }
   },
-  superAdminDashboard:(req,res) => {
+  superAdminDashboard: (req, res) => {
     try {
-      getDashboardData().then(result => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "successfully unblocked",
-            response: result,
-          },
-        });
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "values not acceptable",
-              error: err,
+      getDashboardData(req.data)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "successfully unblocked",
+              response: result,
             },
-          ],
-          errorType: "client",
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -486,5 +489,60 @@ export const subAdminController = {
         errorType: "server",
       });
     }
-  }
+  },
+  setAdminInfo: (req, res) => {
+    try {
+      validateSetAdminInfoReqData(req.body)
+        .then((result) => {
+          let admin = getUser(req);
+          setAdminInfoToDb({ ...result, admin_id: admin.id }).then(() => {
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "admin info",
+                response: "",
+              },
+            });
+          }).catch(err => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "some error occurs while saving data",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });            
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
 };
