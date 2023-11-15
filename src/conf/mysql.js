@@ -160,7 +160,7 @@ export function mySqlConnect(done) {
         CREATE TABLE IF NOT EXISTS exams (
           id INT AUTO_INCREMENT PRIMARY KEY,
           course_id INT NOT NULL UNIQUE,
-          exam TEXT NOT NULL,
+          exam TEXT NOT NULL
         );
       `;
 

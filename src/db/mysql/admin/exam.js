@@ -7,7 +7,7 @@ export function insertQuestionsToExam(info) {
       console.log(info.questions);
       let exam = JSON.stringify(info.questions);
       let insertQuestionsQuery =
-        "INSERT INTO exams(course_id, exam) VALUES(?,?);";
+        "INSERT INTO exams (course_id, exam) VALUES(?,?);";
       db.query(insertQuestionsQuery, [info.course_id, exam], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
