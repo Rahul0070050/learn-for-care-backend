@@ -12,15 +12,9 @@ export const examController = {
     try {
       checkAddExamReqBody(req.body)
         .then((result) => {
-          Promise.all(
-            result.questions.map(async (question) => {
-              return await insertQuestionsToExam({
-                ...question,
-                course_id: result.course_id,
-              });
-            })
-          )
-            .then((result) => {
+          console.log(result);
+          insertQuestionsToExam(result)
+            .then(() => {
               res.status(201).json({
                 success: true,
                 data: {
@@ -44,7 +38,19 @@ export const examController = {
               });
             });
         })
-        .catch((err) => {});
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
     } catch (error) {
       res.status(500).json({
         success: false,

@@ -156,20 +156,18 @@ export function mySqlConnect(done) {
     //     else console.log("enrolled_course table created");
     //   });
 
-    //   const ExamTable = `
-    //     CREATE TABLE IF NOT EXISTS exams (
-    //       id INT AUTO_INCREMENT PRIMARY KEY,
-    //       course_id INT NOT NULL,
-    //       question TEXT NOT NULL,
-    //       options TEXT NOT NULL,
-    //       answer VARCHAR(250) NOT NULL
-    //     );
-    //   `;
+      const ExamTable = `
+        CREATE TABLE IF NOT EXISTS exams (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          course_id INT NOT NULL UNIQUE,
+          exam TEXT NOT NULL,
+        );
+      `;
 
-    //   db.query(ExamTable, (err, result) => {
-    //     if (err) console.log(err.message);
-    //     else console.log("exam table created");
-    //   });
+      db.query(ExamTable, (err, result) => {
+        if (err) console.log(err.message);
+        else console.log("exam table created");
+      });
 
     //   const ExamAttemptsTable = `
     //     CREATE TABLE IF NOT EXISTS exam_attempts (

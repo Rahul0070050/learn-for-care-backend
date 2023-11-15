@@ -1,19 +1,16 @@
 import { db } from "../../../conf/mysql.js";
 
 export function insertQuestionsToExam({
-  course_id,
-  question,
-  options,
-  answer,
+  info
 }) {
   return new Promise((resolve, reject) => {
     try {
-      let option = JSON.stringify(options);
+      let exam = JSON.stringify(info.exam);
       let insertQuestionsQuery =
-        "INSERT INTO exams(course_id, question, options, answer) VALUES(?,?,?,?);";
+        "INSERT INTO exams(course_id, exam) VALUES(?,?);";
       db.query(
         insertQuestionsQuery,
-        [course_id, question, option, answer],
+        [info.course_id,exam],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
