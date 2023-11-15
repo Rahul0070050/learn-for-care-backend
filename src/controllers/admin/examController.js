@@ -10,7 +10,6 @@ import {
 export const examController = {
   createExam: (req, res) => {
     try {
-      console.log(req.body)
       checkAddExamReqBody(req.body)
         .then((result) => {
           console.log(result);
