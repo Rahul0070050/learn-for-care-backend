@@ -1,7 +1,6 @@
 import yup from "yup";
 
 export function checkAddExamReqBody(body) {
-  console.log(body);
   return new Promise((resolve, reject) => {
     try {
       let bodyTemplate = yup.object().shape({
