@@ -65,13 +65,27 @@ export function updateCouponToDb(data) {
             ) {
               resolve();
             } else {
-                reject(err?.message);
+              reject(err?.message);
             }
           } else {
             resolve(result);
           }
         }
       );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function deleteCoupon(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let deleteQuery = "DELETE FROM coupons WHERE id = ?;";
+      db.query(deleteQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }

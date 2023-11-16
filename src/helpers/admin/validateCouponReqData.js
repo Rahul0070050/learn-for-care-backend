@@ -28,12 +28,7 @@ export function validateCreateCouponInfo(body) {
 export function validateEditCouponInfo(body) {
     return new Promise((resolve, reject) => {
       let bodyTemplate = object({
-        coupon_id: number().required("please enter id"),
-        coupon_code: string().required("please enter coupon code"),
-        valid_till: string().required("please enter valid till"),
-        coupon_type: string().required("please enter coupon type"),
-        minimum_purchase: number().required("please enter minimum purchase"),
-        amount: number().required("please enter amount")
+        id: number().required("please enter id"),
       });
   
       try {
