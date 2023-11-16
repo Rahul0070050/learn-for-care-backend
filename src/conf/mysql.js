@@ -394,7 +394,7 @@ export function mySqlConnect(done) {
       );
     `;
 
-    db.query(volumeCouponTable, (err, result) => {
+    db.query(offerTextTable, (err, result) => {
       if (err) console.log(err);
       else console.log("created table volume coupons");
     });
