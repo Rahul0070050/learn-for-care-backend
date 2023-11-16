@@ -69,15 +69,44 @@ export function updateBlogData(blogInfo) {
   return new Promise((resolve, reject) => {
     try {
       let updateBlogInfoQuery =
-        "UPDATE blogs SET header = ?, content = ? WHERE id = ?;";
+        "UPDATE blogs SET header = ?, content = ?, tags = ? WHERE id = ?;";
       db.query(
         updateBlogInfoQuery,
-        [blogInfo.header, blogInfo.content, blogInfo.blog_id],
+        [blogInfo.header, blogInfo.content, blogInfo.tags, blogInfo.blog_id],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
         }
       );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function setOneViewToBlog(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      console.log(id);
+      let updateBlogInfoQuery = `UPDATE blogs SET views = views + ? WHERE id = ?;`;
+      db.query(updateBlogInfoQuery, [1,id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getInactiveBlogs() {
+  return new Promise((resolve, reject) => {
+    try {
+      let updateBlogInfoQuery = `SELECT * FROM blogs WHERE active = ?;`;
+      db.query(updateBlogInfoQuery, [false], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }
@@ -111,6 +140,20 @@ export function deleteBlogById(id) {
       db.query(deleteBlogByIdQuery, [id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result[0]);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function setBlogInactivate(id, status) {
+  return new Promise((resolve, reject) => {
+    try {
+      let updateQuery = "UPDATE blogs SET active = ? WHERE id = ?;";
+      db.query(updateQuery, [status, id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve();
       });
     } catch (error) {
       reject(error?.message);

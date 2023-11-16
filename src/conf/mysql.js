@@ -85,22 +85,23 @@ export function mySqlConnect(done) {
     //     else console.log("course table created");
     //   });
 
-    // const createBlogTable = `
-    //   CREATE TABLE IF NOT EXISTS blogs (
-    //   id INT AUTO_INCREMENT PRIMARY KEY,
-    //   header VARCHAR(150) NOT NULL,
-    //   img VARCHAR(200) NOT NULL,
-    //   content TEXT NOT NULL,
-    //   author VARCHAR(200) NOT NULL,
-    //   tags VARCHAR(200) NOT NULL,
-    //   views INT NOT NULL,
-    //   date DATETIME DEFAULT NOW()
-    // );`;
+    const createBlogTable = `
+      CREATE TABLE IF NOT EXISTS blogs (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      header VARCHAR(150) NOT NULL,
+      img VARCHAR(200) NOT NULL,
+      content TEXT NOT NULL,
+      author VARCHAR(200) NOT NULL,
+      tags VARCHAR(200) NOT NULL,
+      views INT NOT NULL DEFAULT 0,
+      active BOOLEAN NOT NULL DEFAULT FALSE,
+      date DATETIME DEFAULT NOW()
+    );`;
 
-    // db.query(createBlogTable, (err, result) => {
-    //   if (err) console.log(err);
-    //   else console.log("blog table created");
-    // });
+    db.query(createBlogTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("blog table created");
+    });
 
     // const createCartTable = `
     // CREATE TABLE IF NOT EXISTS cart (

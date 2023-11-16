@@ -33,6 +33,28 @@ export function checkCreateBlogReqBody(body, file) {
   });
 }
 
+export function checkUpdateBlogStatusReqBody(data) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      id: string().required("please provide valid id"),
+      status: number().required("please provide status")
+    });
+
+    
+    try {
+      bodyTemplate.validate(data).then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function checkGetBlogByIdReqDate(id) {
   return new Promise((resolve, reject) => { 
     try {
@@ -86,6 +108,28 @@ export function checkUpdateBlogDataReqBody(body) {
       blog_id: number().required("please provide valid blog id"),
       header: string().required("please provide valid header"),
       content: string().required("please provide valid content"),
+      tags: string().required("please provide valid tags")
+    });
+
+    let bodyResult = bodyTemplate.validate(body);
+    try {
+      Promise.all([bodyResult])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkUpdateBlogViewCountReqBody(body) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      blog_id: number().required("please provide valid blog id"),
     });
 
     let bodyResult = bodyTemplate.validate(body);

@@ -4,6 +4,8 @@ import {
   checkGetBlogByIdReqDate,
   checkUpDateBlogImageBodyAndFile,
   checkUpdateBlogDataReqBody,
+  checkUpdateBlogStatusReqBody,
+  checkUpdateBlogViewCountReqBody,
 } from "../../helpers/admin/validateBlogReqData.js";
 import { downloadFromS3, removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
@@ -11,7 +13,10 @@ import {
   getAllBlogs,
   getBlogById,
   getBlogByIdFromDb,
+  getInactiveBlogs,
   insertNewBlog,
+  setBlogInactivate,
+  setOneViewToBlog,
   updateBlogData,
   updateBlogImage,
 } from "../../db/mysql/admin/blog.js";
@@ -19,11 +24,11 @@ import {
 export const blogController = {
   createBlog: (req, res) => {
     try {
-      console.log(req.body, req.files)
+      console.log(req.body, req.files);
       checkCreateBlogReqBody(req.body, req.files)
         .then(async (result) => {
           let tags = result[0].tags.split(",").map((tag) => "#" + tag);
-          result[0].tags = JSON.stringify(tags)
+          result[0].tags = JSON.stringify(tags);
           const blogImage = await uploadFileToS3("/blogs", result[1][0]?.image);
           insertNewBlog({ ...result[0], image: blogImage.file })
             .then((result) => {
@@ -52,7 +57,160 @@ export const blogController = {
             });
         })
         .catch((err) => {
-          console.log(err);
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateViewCount: (req, res) => {
+    try {
+      checkUpdateBlogViewCountReqBody(req.body)
+        .then((result) => {
+          setOneViewToBlog(result[0].blog_id)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `blog view count updated`,
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "err from db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllInactiveBlogs:(req,res) => {
+    try {
+      getInactiveBlogs().then(result => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: `blog view count updated`,
+            response: result,
+          },
+        });
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "value not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateBlogStatus: (req, res) => {
+    // seting active or inactive
+    try {
+      checkUpdateBlogStatusReqBody(req.body)
+        .then((result) => {
+          setBlogInactivate(result.id, result.status)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `blog status updated`,
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "error from db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
           res.status(406).json({
             success: false,
             errors: [
@@ -195,8 +353,10 @@ export const blogController = {
   },
   updateBlogImage: (req, res) => {
     try {
+      console.log(req.files);
       checkUpDateBlogImageBodyAndFile(req.body, req.files)
-        .then((result) => {
+      .then((result) => {
+          console.log(result);
           getBlogById(result[0].blog_id)
             .then(async (blogImage) => {
               blogImage = blogImage.img.split("//").pop();
@@ -279,6 +439,8 @@ export const blogController = {
     try {
       checkUpdateBlogDataReqBody(req.body)
         .then((result) => {
+          let tags = result[0].tags.split(",").map((tag) => "#" + tag);
+          result[0].tags = JSON.stringify(tags);
           updateBlogData(result[0])
             .then((result) => {
               res.status(200).json({
