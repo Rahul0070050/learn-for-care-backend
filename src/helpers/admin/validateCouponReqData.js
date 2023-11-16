@@ -69,3 +69,28 @@ export function validateCreateVolumeCouponInfo(body) {
     }
   });
 }
+
+export function validateUpdateVolumeCouponInfo(data) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      coupon_id: number().required("please enter coupon id"),
+      coupon_code: string().required("please enter coupon_code"),
+      max_val: string().required("please enter max_val"),
+      min_val: string().required("please enter min_val"),
+      amount: number().required("please enter amount"),
+    });
+
+    try {
+      bodyTemplate
+        .validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

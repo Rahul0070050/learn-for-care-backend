@@ -109,7 +109,7 @@ export function getAllCoupons() {
 export function saveToVolumeCoupon(data) {
   return new Promise((resolve, reject) => {
     try {
-      const {coupon_code, max_val, min_val, amount} = data
+      const { coupon_code, max_val, min_val, amount } = data;
       let insertQuery =
         "INSERT INTO volume_coupons (coupon_code, max_val, min_val, amount) VALUES (?,?,?,?);";
       db.query(
@@ -125,4 +125,21 @@ export function saveToVolumeCoupon(data) {
     }
   });
 }
-
+export function updateVolumeCoupon(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const { coupon_id, coupon_code, max_val, min_val, amount } = data;
+      let updateQuery = `UPDATE volume_coupons SET coupon_code = ?, max_val = ?, min_val = ?, amount = ? WHERE id = ?`;
+      db.query(
+        updateQuery,
+        [coupon_code, max_val, min_val, amount, coupon_id],
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

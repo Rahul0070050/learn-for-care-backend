@@ -10,5 +10,6 @@ route.patch("/edit-coupon", validateAdmin, couponController.editCoupon);
 route.delete("/delete-coupon/:id", validateAdmin, couponController.deleteCoupon);
 route.get("/list-coupons", validateAdmin, couponController.getAllCoupons);
 route.post("/create-volume-coupon", validateAdmin, couponController.createVolumeCoupon);
+route.patch("/update-volume-coupon", validateAdmin, couponController.updateVolumeCoupon);
 
 export default route;

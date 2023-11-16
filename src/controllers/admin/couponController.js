@@ -4,11 +4,13 @@ import {
   saveCouponToDb,
   saveToVolumeCoupon,
   updateCouponToDb,
+  updateVolumeCoupon,
 } from "../../db/mysql/admin/coupons.js";
 import {
   validateCreateCouponInfo,
   validateCreateVolumeCouponInfo,
   validateEditCouponInfo,
+  validateUpdateVolumeCouponInfo,
 } from "../../helpers/admin/validateCouponReqData.js";
 import { generatorOtp, getUser } from "../../utils/auth.js";
 
@@ -228,7 +230,7 @@ export const couponController = {
                 success: true,
                 data: {
                   code: 201,
-                  message: "volume coupons inserted"
+                  message: "volume coupons inserted",
                 },
               });
             })
@@ -239,6 +241,61 @@ export const couponController = {
                   {
                     code: 406,
                     message: "error from db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateVolumeCoupon: (req, res) => {
+    try {
+      validateUpdateVolumeCouponInfo(req.body)
+        .then((result) => {
+          updateVolumeCoupon(result)
+            .then(() => {
+              res.status(201).json({
+                success: true,
+                data: {
+                  code: 201,
+                  message: "volume coupons updated",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
                     error: err,
                   },
                 ],
