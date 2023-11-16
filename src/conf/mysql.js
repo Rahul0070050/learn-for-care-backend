@@ -303,7 +303,7 @@ export function mySqlConnect(done) {
         designation VARCHAR(250) NOT NULL,
         department VARCHAR(100) NOT NULL,
         phone VARCHAR(15) NOT NULL,
-        contact_no INT NOT NULL,
+        contact_no VARCHAR(15) NOT NULL,
         gender VARCHAR(20) NOT NULL,
         date_of_birth VARCHAR(25) NOT NULL,
         next_to_kin VARCHAR(150) NOT NULL,
