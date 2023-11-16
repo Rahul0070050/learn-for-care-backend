@@ -104,6 +104,7 @@ export function checkUpDateBlogImageBodyAndFile(
 
 export function checkUpdateBlogDataReqBody(body) {
   return new Promise((resolve, reject) => {
+    console.log(body);
     let bodyTemplate = object({
       blog_id: number().required("please provide valid blog id"),
       header: string().required("please provide valid header"),
