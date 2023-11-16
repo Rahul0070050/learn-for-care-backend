@@ -28,6 +28,7 @@ route.get("/block-user/:id", validateAdmin, subAdminController.blockUser);
 route.get("/unblock-user/:id", validateAdmin, subAdminController.unBlockUser);
 route.get("/super-admin-dashboard-data", validateAdmin, subAdminController.superAdminDashboard);
 route.put("/set-admin-info", validateAdmin, subAdminController.setAdminInfo);
+route.get("/get-admin-info", validateAdmin, subAdminController.getAdminInfo);
 route.post("/set-qualification", validateAdmin, subAdminController.setAdminQualification);
 route.post("/set-experience", validateAdmin, subAdminController.setAdminExperience);
 route.patch("/update-qualification/:id", validateAdmin, subAdminController.updateAdminQualificationDoc);
@@ -36,7 +37,7 @@ route.patch("/update-experience-data", validateAdmin, subAdminController.updateA
 route.patch("/update-qualification-data", validateAdmin, subAdminController.updateAdminQualificationData);
 
 route.delete("/update-experience/:id", validateAdmin, subAdminController.delateAdminExperience);
-// route.delete("/update-qualification/:id", validateAdmin, subAdminController.delateAdminQualification);
+route.delete("/update-qualification/:id", validateAdmin, subAdminController.delateAdminQualification);
 
 
 export default route;

@@ -46,7 +46,7 @@ export function getDashboardData() {
 }
 
 export function setAdminInfoToDb(userData) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       const {
         admin_id,
@@ -89,6 +89,8 @@ export function setAdminInfoToDb(userData) {
         correspondence_address,
         brief_profile
       ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+
+      await deleteAdminInfo(admin_id);
       db.query(
         setQuery,
         [
@@ -134,6 +136,16 @@ export function setAdminInfoToDb(userData) {
     } catch (error) {
       reject(error?.message);
     }
+  });
+}
+
+function deleteAdminInfo(id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = "DELETE FROM admin_info WHERE admin_id = ?";
+    db.query(insertQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
   });
 }
 export function saveNewQualifications(data) {
@@ -292,6 +304,16 @@ export function getAdminExperiencesDocs(id) {
     db.query(insertQuery, [id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result.flat());
+    });
+  });
+}
+
+export function getAdminInfoFromDb(id) {
+  return new Promise((resolve, reject) => {
+    let getQuery = "SELECT * FROM admin_info WHERE admin_id = ?;";
+    db.query(getQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
     });
   });
 }

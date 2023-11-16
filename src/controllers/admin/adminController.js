@@ -1,6 +1,7 @@
 import { removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
   deleteExperienceFromDb,
+  getAdminInfoFromDb,
   getAdminQualificationsDocs,
   getDashboardData,
   getExperienceDocFromDbByAdminIdAndDocId,
@@ -558,6 +559,45 @@ export const subAdminController = {
             errorType: "client",
           });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAdminInfo:(req,res) => {
+    try {
+      let admin = getUser(req)
+      getAdminInfoFromDb(admin.id).then(result => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: "get admin info",
+            response: result,
+          },
+        });
+      }).catch(err => {
+        res.status(500).json({
+          success: false,
+          errors: [
+            {
+              code: 500,
+              message: "some error occurred please try again later",
+              error: err,
+            },
+          ],
+          errorType: "server",
+        });
+      })
     } catch (error) {
       res.status(500).json({
         success: false,
