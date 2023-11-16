@@ -34,3 +34,46 @@ export function saveCouponToDb(data) {
     }
   });
 }
+
+export function updateCouponToDb(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const {
+        coupon_id,
+        coupon_code,
+        valid_till,
+        coupon_type,
+        minimum_purchase,
+        amount,
+      } = data;
+      let updateQuery = `UPDATE coupons SET coupon_code = ?, valid_till = ?, coupon_type = ?, minimum_purchase = ?, amount = ? WHERE id = ?`;
+      db.query(
+        updateQuery,
+        [
+          coupon_code,
+          new Date(valid_till),
+          coupon_type,
+          minimum_purchase,
+          amount,
+          coupon_id,
+        ],
+        (err, result) => {
+          if (err) {
+            if (
+              err.message ==
+              `ER_DUP_ENTRY: Duplicate entry '${coupon_code}' for key 'coupons.coupon_code'`
+            ) {
+              resolve();
+            } else {
+                reject(err?.message);
+            }
+          } else {
+            resolve(result);
+          }
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

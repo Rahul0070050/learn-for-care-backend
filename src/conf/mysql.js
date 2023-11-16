@@ -357,7 +357,7 @@ export function mySqlConnect(done) {
     const couponTable = `
         CREATE TABLE IF NOT EXISTS coupons (
           id INT AUTO_INCREMENT PRIMARY KEY,
-          coupon_code VARCHAR(20) NOT NULL UNIQUE,
+          coupon_code VARCHAR(20) NOT NULL,
           valid_till DATETIME NOT NULL,
           coupon_type VARCHAR(50) NOT NULL,
           minimum_purchase INT NOT NULL,
