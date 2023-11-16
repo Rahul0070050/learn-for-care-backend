@@ -24,6 +24,7 @@ import admin from "./routes/admin/admin.js";
 import bundle from "./routes/admin/bundle.js";
 import adminCertificate from "./routes/admin/certificate.js";
 import adminInvoice from "./routes/admin/invoice.js";
+import adminCoupon from "./routes/admin/coupon.js";
 
 import subUserAuth from "./routes/subUser/auth.js";
 import subUserCourse from "./routes/subUser/assigneCourse.js";
@@ -104,6 +105,7 @@ app.use("/api/admin/info", admin);
 app.use("/api/admin/invoice", adminInvoice);
 app.use("/api/admin/bundle", bundle);
 app.use("/api/admin/certificate", adminCertificate);
+app.use("/api/admin/coupon", adminCoupon);
 
 app.use("/api/admin/sub-admin", subAdminAuth);
 
