@@ -28,6 +28,8 @@ route.get("/block-user/:id", validateAdmin, subAdminController.blockUser);
 route.get("/unblock-user/:id", validateAdmin, subAdminController.unBlockUser);
 route.get("/super-admin-dashboard-data", validateAdmin, subAdminController.superAdminDashboard);
 route.put("/set-admin-info", validateAdmin, subAdminController.setAdminInfo);
+route.post("/set-qualification", validateAdmin, subAdminController.setAdminQualifications);
+route.post("/set-experience", validateAdmin, subAdminController.setAdminExperience);
 
 
 export default route;

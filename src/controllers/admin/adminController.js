@@ -1,4 +1,10 @@
-import { getDashboardData, setAdminInfoToDb } from "../../db/mysql/admin/admin.js";
+import { uploadFileToS3 } from "../../AWS/S3.js";
+import {
+  getDashboardData,
+  saveNewExperience,
+  saveNewQualifications,
+  setAdminInfoToDb,
+} from "../../db/mysql/admin/admin.js";
 import {
   deleteSubAdminFomDb,
   saveNewSubAdminToDb,
@@ -15,7 +21,9 @@ import {
   checkValidateGetUserByIdReqBody,
   validateBlockUserInfo,
   validateCreateUserInfo,
+  validateSetAdminExperienceReqData,
   validateSetAdminInfoReqData,
+  validateSetAdminQualificationsReqBody,
   validateUnBlockUserInfo,
 } from "../../helpers/admin/validateAdminReqData.js";
 import {
@@ -24,7 +32,7 @@ import {
 } from "../../helpers/admin/validateSubAdminReqData.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import { hashPassword } from "../../helpers/validatePasswords.js";
-import { generatorOtp } from "../../utils/auth.js";
+import { generatorOtp, getUser } from "../../utils/auth.js";
 
 export const subAdminController = {
   createSubAdmin: (req, res) => {
@@ -495,28 +503,31 @@ export const subAdminController = {
       validateSetAdminInfoReqData(req.body)
         .then((result) => {
           let admin = getUser(req);
-          setAdminInfoToDb({ ...result, admin_id: admin.id }).then(() => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: "admin info",
-                response: "",
-              },
-            });
-          }).catch(err => {
-            res.status(406).json({
-              success: false,
-              errors: [
-                {
-                  code: 406,
-                  message: "some error occurs while saving data",
-                  error: err,
+          console.log(admin);
+          setAdminInfoToDb({ ...result, admin_id: admin.id })
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "set admin info",
+                  response: "",
                 },
-              ],
-              errorType: "client",
-            });            
-          });
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "some error occurs while saving data",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
         })
         .catch((err) => {
           res.status(406).json({
@@ -545,4 +556,145 @@ export const subAdminController = {
       });
     }
   },
+  setAdminQualifications: (req, res) => {
+    try {
+      validateSetAdminQualificationsReqBody(req.body, req.files)
+        .then((result) => {
+          result = result.flat();
+          console.log(result);
+          uploadFileToS3("/qualifications", result[0].pdf).then(
+            (pdfSavedResult) => {
+              console.log(pdfSavedResult.file);
+              let admin = getUser(req);
+              saveNewQualifications({
+                admin_id: admin.id,
+                university: result[1].university,
+                note: result[1].note,
+                doc: pdfSavedResult.file,
+              })
+                .then(() => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "set admin qualification",
+                      response: "",
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(406).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 406,
+                        message: "values not acceptable",
+                        error: err,
+                      },
+                    ],
+                    errorType: "client",
+                  });
+                });
+            }
+          );
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+      // setNewExperience
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  setAdminExperience: (req, res) => {
+    try {
+      validateSetAdminExperienceReqData(req.body, req.files)
+        .then((result) => {
+          result = result.flat();
+          console.log(result);
+          uploadFileToS3("/experience", result[0].pdf).then(
+            (pdfSavedResult) => {
+              let admin = getUser(req);
+              saveNewExperience({
+                admin_id: admin.id,
+                organization: result[1].organization,
+                position: result[1].position,
+                no_of_years: result[1].no_of_years,
+                note: result[1].note,
+                doc: pdfSavedResult.file,
+              })
+                .then(() => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "set admin qualification",
+                      response: "",
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(406).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 406,
+                        message: "values not acceptable",
+                        error: err,
+                      },
+                    ],
+                    errorType: "client",
+                  });
+                });
+            }
+          );
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+      // setNewExperience
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
 };

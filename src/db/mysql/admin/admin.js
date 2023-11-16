@@ -107,17 +107,55 @@ export function setAdminInfoToDb(userData) {
           medical_details,
           national_insurance_number,
           contract_type,
-          date_of_joining,
+          new Date(date_of_joining),
           correspondence_address,
           brief_profile,
         ],
         (err, result) => {
-          if (err) return reject(err?.message);
-          else return resolve(result);
+          if (err) {
+            if (
+              err.message ==
+              `ER_DUP_ENTRY: Duplicate entry '${admin_id}' for key 'admin_info.admin_id'`
+            ) {
+              reject("admin already have the information");
+            } else if (
+              err.message ==
+              `ER_DUP_ENTRY: Duplicate entry '${email}' for key 'admin_info.email'`
+            ) {
+              reject("this email already exist");
+            } else {
+              reject(err?.message);
+            }
+          } else {
+            return resolve(result);
+          }
         }
       );
     } catch (error) {
       reject(error?.message);
     }
+  });
+}
+export function saveNewQualifications(data) {
+  return new Promise((resolve, reject) => {
+    const {admin_id, university, note, doc} = data;
+    let insertQuery =
+      "INSERT INTO qualifications (admin_id, university, note, doc) VALUE (?,?,?,?)";
+    db.query(insertQuery, [admin_id, university, note, doc], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+
+export function saveNewExperience(data) {
+  return new Promise((resolve, reject) => {
+    const {admin_id, organization, position, no_of_years, note, doc} = data;
+    let insertQuery =
+      "INSERT INTO experience (admin_id, organization, position, no_of_years, note, doc) VALUE (?,?,?,?,?,?)";
+    db.query(insertQuery, [admin_id, organization, position, no_of_years, note, doc], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
   });
 }
