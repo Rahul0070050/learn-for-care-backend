@@ -293,34 +293,34 @@ export function mySqlConnect(done) {
     //   else console.log("user table created");
     // });
 
-      const adminInfoTable = `
-      CREATE TABLE IF NOT EXISTS admin_info (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        admin_id INT NOT NULL UNIQUE,
-        employee_id INT NOT NULL,
-        employee_name VARCHAR(100) NOT NULL,
-        email VARCHAR(100) NOT NULL UNIQUE,
-        designation VARCHAR(250) NOT NULL,
-        department VARCHAR(100) NOT NULL,
-        phone VARCHAR(15) NOT NULL,
-        contact_no VARCHAR(15) NOT NULL,
-        gender VARCHAR(20) NOT NULL,
-        date_of_birth VARCHAR(25) NOT NULL,
-        next_to_kin VARCHAR(150) NOT NULL,
-        payroll_reference_number INT NOT NULL,
-        medical_details VARCHAR(250) NOT NULL,
-        national_insurance_number INT NOT NULL,
-        contract_type VARCHAR(150) NOT NULL,
-        date_of_joining DATETIME NOT NULL,
-        correspondence_address VARCHAR(250) NOT NULL,
-        brief_profile TEXT NOT NULL
-      )
-    `;
+    //   const adminInfoTable = `
+    //   CREATE TABLE IF NOT EXISTS admin_info (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     admin_id INT NOT NULL UNIQUE,
+    //     employee_id INT NOT NULL,
+    //     employee_name VARCHAR(100) NOT NULL,
+    //     email VARCHAR(100) NOT NULL UNIQUE,
+    //     designation VARCHAR(250) NOT NULL,
+    //     department VARCHAR(100) NOT NULL,
+    //     phone VARCHAR(15) NOT NULL,
+    //     contact_no VARCHAR(15) NOT NULL,
+    //     gender VARCHAR(20) NOT NULL,
+    //     date_of_birth VARCHAR(25) NOT NULL,
+    //     next_to_kin VARCHAR(150) NOT NULL,
+    //     payroll_reference_number INT NOT NULL,
+    //     medical_details VARCHAR(250) NOT NULL,
+    //     national_insurance_number INT NOT NULL,
+    //     contract_type VARCHAR(150) NOT NULL,
+    //     date_of_joining DATETIME NOT NULL,
+    //     correspondence_address VARCHAR(250) NOT NULL,
+    //     brief_profile TEXT NOT NULL
+    //   )
+    // `;
 
-        db.query(adminInfoTable, (err, result) => {
-      if (err) console.log(err);
-      else console.log("user table admin_info");
-    });
+    // db.query(adminInfoTable, (err, result) => {
+    //   if (err) console.log(err);
+    //   else console.log("user table admin_info");
+    // });
 
     const qualificationsTable = `
         CREATE TABLE IF NOT EXISTS qualifications (
@@ -352,6 +352,22 @@ export function mySqlConnect(done) {
     db.query(certificateTable, (err, result) => {
       if (err) console.log(err);
       else console.log("user table experience");
+    });
+
+    const couponTable = `
+        CREATE TABLE IF NOT EXISTS coupons (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          coupon_code VARCHAR(20) NOT NULL UNIQUE,
+          valid_till DATETIME NOT NULL,
+          coupon_type VARCHAR(50) NOT NULL,
+          minimum_purchase INT NOT NULL,
+          amount INT NOT NULL
+        );
+      `;
+
+    db.query(couponTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("created table coupons");
     });
 
     return done();
