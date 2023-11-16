@@ -93,6 +93,7 @@ export function mySqlConnect(done) {
     //   content TEXT NOT NULL,
     //   author VARCHAR(200) NOT NULL,
     //   tags VARCHAR(200) NOT NULL,
+    //   views INT NOT NULL,
     //   date DATETIME DEFAULT NOW()
     // );`;
 

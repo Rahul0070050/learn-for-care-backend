@@ -1,4 +1,4 @@
-import { number, object, string } from "yup";
+import { date, number, object, string } from "yup";
 import { validateFile } from "../validateFileTypes.js";
 
 export function validateCreateUserInfo(userData) {
@@ -158,17 +158,17 @@ export function validateSetAdminInfoReqData(info) {
   });
 }
 
-export function validateSetAdminQualificationsReqBody(body,files) {
+export function validateSetAdminQualificationsReqBody(body, files) {
   return new Promise((resolve, reject) => {
     let dataTemplate = object({
       university: string().required("please provide University"),
-      note: string().required("please provide note")
+      note: string().required("please provide note"),
     });
 
     let doc = validateFile([{ pdf: files.doc }], "pdf");
-    let bodyResponse = dataTemplate.validate(body)
+    let bodyResponse = dataTemplate.validate(body);
     try {
-      Promise.all([doc,bodyResponse])
+      Promise.all([doc, bodyResponse])
         .then((result) => {
           resolve(result);
         })
@@ -181,19 +181,149 @@ export function validateSetAdminQualificationsReqBody(body,files) {
   });
 }
 
-export function validateSetAdminExperienceReqData(body,files) {
+export function validateSetAdminExperienceReqData(body, files) {
   return new Promise((resolve, reject) => {
     let dataTemplate = object({
       note: string().required("please provide note"),
       organization: string().required("please provide organization"),
       position: string().required("please provide position"),
-      no_of_years: number().required("please provide no_of_years")
+      no_of_years: number().required("please provide no_of_years"),
     });
 
     let doc = validateFile([{ pdf: files.doc }], "pdf");
-    let bodyResponse = dataTemplate.validate(body)
+    let bodyResponse = dataTemplate.validate(body);
     try {
-      Promise.all([doc,bodyResponse])
+      Promise.all([doc, bodyResponse])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkUpdateQualificationDocReqData(file, data) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      id: number().required("please provide id"),
+    });
+
+    let doc = validateFile([{ pdf: file.doc }], "pdf");
+    let bodyResponse = dataTemplate.validate(data);
+    try {
+      Promise.all([doc, bodyResponse])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkUpdateAdminExperienceDocReqData(file, data) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      id: number().required("please provide id"),
+    });
+
+    let doc = validateFile([{ pdf: file.doc }], "pdf");
+    let bodyResponse = dataTemplate.validate(data);
+    try {
+      Promise.all([doc, bodyResponse])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function validateUpdateExperienceReqData(data) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      doc_id: number().required("please provide id"),
+      note: string().required("please provide note"),
+      organization: string().required("please provide organization"),
+      position: string().required("please provide position"),
+      no_of_years: number().required("please provide no_of_years"),
+    });
+
+    try {
+      dataTemplate
+        .validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function validateUpdateQualificationReqData(data) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      doc_id: number().required("please provide doc id"),
+      university: string().required("please provide University"),
+      note: string().required("please provide note"),
+    });
+
+    try {
+      dataTemplate.validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function validateDeleteExperienceReqData(data) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      id: number().required("please provide doc id"),
+    });
+
+    try {
+      dataTemplate.validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+export function validateDeleteQualificationReqData(data) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      id: number().required("please provide doc id"),
+    });
+
+    try {
+      dataTemplate.validate(data)
         .then((result) => {
           resolve(result);
         })

@@ -138,7 +138,7 @@ export function setAdminInfoToDb(userData) {
 }
 export function saveNewQualifications(data) {
   return new Promise((resolve, reject) => {
-    const {admin_id, university, note, doc} = data;
+    const { admin_id, university, note, doc } = data;
     let insertQuery =
       "INSERT INTO qualifications (admin_id, university, note, doc) VALUE (?,?,?,?)";
     db.query(insertQuery, [admin_id, university, note, doc], (err, result) => {
@@ -150,12 +150,148 @@ export function saveNewQualifications(data) {
 
 export function saveNewExperience(data) {
   return new Promise((resolve, reject) => {
-    const {admin_id, organization, position, no_of_years, note, doc} = data;
+    const { admin_id, organization, position, no_of_years, note, doc } = data;
     let insertQuery =
       "INSERT INTO experience (admin_id, organization, position, no_of_years, note, doc) VALUE (?,?,?,?,?,?)";
-    db.query(insertQuery, [admin_id, organization, position, no_of_years, note, doc], (err, result) => {
+    db.query(
+      insertQuery,
+      [admin_id, organization, position, no_of_years, note, doc],
+      (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      }
+    );
+  });
+}
+
+export function getQualificationDocFromDbByAdminIdAndDocId(id, adminId) {
+  return new Promise((resolve, reject) => {
+    let insertQuery =
+      "SELECT * FROM qualifications WHERE id = ? AND admin_id = ?;";
+    db.query(insertQuery, [id, adminId], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);
+    });
+  });
+}
+
+export function updateQualificationDocDbByAdminIdAndDocId(id, adminId, doc) {
+  return new Promise((resolve, reject) => {
+    let insertQuery =
+      "UPDATE qualifications SET doc = ? WHERE id = ? AND admin_id = ?;";
+    db.query(insertQuery, [doc, id, adminId], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve();
+    });
+  });
+}
+
+export function getExperienceDocFromDbByAdminIdAndDocId(id, adminId) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = "SELECT * FROM experience WHERE id = ? AND admin_id = ?;";
+    db.query(insertQuery, [id, adminId], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+
+export function updateExperienceDocDbByAdminIdAndDocId(id, adminId, doc) {
+  return new Promise((resolve, reject) => {
+    let insertQuery =
+      "UPDATE experience SET doc = ? WHERE id = ? AND admin_id = ?;";
+    db.query(insertQuery, [doc, id, adminId], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve();
+    });
+  });
+}
+
+//
+export function updateAdminExperienceToDb(info) {
+  return new Promise((resolve, reject) => {
+    const { doc_id, organization, position, no_of_years, note } = info;
+    let updateQuery =
+      "UPDATE experience SET organization = ?, position = ?, no_of_years = ?, note = ? WHERE id = ?";
+    db.query(
+      updateQuery,
+      [organization, position, no_of_years, note, doc_id],
+      (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve();
+      }
+    );
+  });
+}
+
+export function updateAdminQualificationToDb(data) {
+  return new Promise((resolve, reject) => {
+    const { doc_id, university, note } = data;
+    let updateQuery =
+      "UPDATE qualifications SET university = ?, note = ? WHERE id = ?";
+    db.query(updateQuery, [university, note, doc_id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve();
+    });
+  });
+}
+//
+//  ================
+export function getExperienceDocFromDbById(id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = "SELECT * FROM experience WHERE id = ?;";
+    db.query(insertQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+
+export function getQualificationDocFromDbById(id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = "SELECT * FROM experience WHERE id = ?;";
+    db.query(insertQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+
+export function deleteExperienceFromDb(id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = "DELETE FROM experience WHERE id = ?;";
+    db.query(insertQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+
+export function deleteQualificationFromDb(id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = "DELETE FROM qualifications WHERE id = ?;";
+    db.query(insertQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+//  ================
+export function getAdminQualificationsDocs(id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = "SELECT * FROM qualifications WHERE admin_id = ?;";
+    db.query(insertQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result.flat());
+    });
+  });
+}
+export function getAdminExperiencesDocs(id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery = "SELECT * FROM experience WHERE admin_id = ?;";
+    db.query(insertQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result.flat());
     });
   });
 }

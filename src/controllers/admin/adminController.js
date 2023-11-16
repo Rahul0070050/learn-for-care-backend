@@ -1,9 +1,19 @@
-import { uploadFileToS3 } from "../../AWS/S3.js";
+import { removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
+  deleteExperienceFromDb,
+  getAdminQualificationsDocs,
   getDashboardData,
+  getExperienceDocFromDbByAdminIdAndDocId,
+  getExperienceDocFromDbById,
+  getQualificationDocFromDbByAdminIdAndDocId,
+  getQualificationDocFromDbById,
   saveNewExperience,
   saveNewQualifications,
   setAdminInfoToDb,
+  updateAdminExperienceToDb,
+  updateAdminQualificationToDb,
+  updateExperienceDocDbByAdminIdAndDocId,
+  updateQualificationDocDbByAdminIdAndDocId,
 } from "../../db/mysql/admin/admin.js";
 import {
   deleteSubAdminFomDb,
@@ -18,13 +28,19 @@ import {
   unBlockUserFromAdmin,
 } from "../../db/mysql/admin/user.js";
 import {
+  checkUpdateAdminExperienceDocReqData,
+  checkUpdateQualificationDocReqData,
   checkValidateGetUserByIdReqBody,
   validateBlockUserInfo,
   validateCreateUserInfo,
+  validateDeleteExperienceReqData,
+  validateDeleteQualificationReqData,
   validateSetAdminExperienceReqData,
   validateSetAdminInfoReqData,
   validateSetAdminQualificationsReqBody,
   validateUnBlockUserInfo,
+  validateUpdateExperienceReqData,
+  validateUpdateQualificationReqData,
 } from "../../helpers/admin/validateAdminReqData.js";
 import {
   checkCreateSubAdminReqData,
@@ -556,7 +572,7 @@ export const subAdminController = {
       });
     }
   },
-  setAdminQualifications: (req, res) => {
+  setAdminQualification: (req, res) => {
     try {
       validateSetAdminQualificationsReqBody(req.body, req.files)
         .then((result) => {
@@ -696,5 +712,411 @@ export const subAdminController = {
         errorType: "server",
       });
     }
-  }
+  },
+  updateAdminQualificationDoc: (req, res) => {
+    try {
+      checkUpdateQualificationDocReqData(req.files, req.params)
+        .then((result) => {
+          result = result.flat();
+          let admin = getUser(req);
+          console.log(result);
+          getQualificationDocFromDbByAdminIdAndDocId(result[1].id, admin.id)
+            .then(async (docResult) => {
+              console.log(docResult);
+              await removeFromS3(docResult[0].doc);
+              let docUploadedResult = await uploadFileToS3(
+                "/qualifications",
+                result[0].pdf
+              );
+              updateQualificationDocDbByAdminIdAndDocId(
+                result[1].id,
+                admin.id,
+                docUploadedResult.file
+              )
+                .then(() => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "updated admin qualification",
+                      response: "",
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(406).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 406,
+                        message: "values not acceptable",
+                        error: err,
+                      },
+                    ],
+                    errorType: "client",
+                  });
+                });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "values not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateAdminExperience: (req, res) => {
+    try {
+      checkUpdateAdminExperienceDocReqData(req.files, req.params)
+        .then((result) => {
+          result = result.flat();
+          let admin = getUser(req);
+          getExperienceDocFromDbByAdminIdAndDocId(result[1].id, admin.id)
+            .then(async (docResult) => {
+              console.log("result ", docResult);
+              await removeFromS3(docResult[0].doc);
+              let docUploadedResult = await uploadFileToS3(
+                "/experience",
+                result[0].pdf
+              );
+              updateExperienceDocDbByAdminIdAndDocId(
+                result[1].id,
+                admin.id,
+                docUploadedResult.file
+              )
+                .then(() => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "updated admin experience",
+                      response: "",
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(406).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 406,
+                        message: "values not acceptable",
+                        error: err,
+                      },
+                    ],
+                    errorType: "client",
+                  });
+                });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "values not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateAdminExperienceData: (req, res) => {
+    try {
+      validateUpdateExperienceReqData(req.body)
+        .then((result) => {
+          updateAdminExperienceToDb(result)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "updated admin experience data",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "values not acceptable while saving data",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateAdminQualificationData: (req, res) => {
+    try {
+      validateUpdateQualificationReqData(req.body)
+        .then((result) => {
+          updateAdminQualificationToDb(result)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "updated admin qualification data",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "values not acceptable while saving data",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  delateAdminExperience: (req, res) => {
+    try {
+      validateDeleteExperienceReqData(req.params)
+        .then((result) => {
+          getExperienceDocFromDbById(result.id)
+            .then(async (experienceDoc) => {
+              await removeFromS3(experienceDoc[0].doc);
+              deleteExperienceFromDb(experienceDoc[0].id).then(() => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "experience deleted",
+                    response: "",
+                  },
+                });
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "error from get experience from db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+          // getQualificationDocFromDbById;
+          // deleteAdminExperienceFromDb
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  delateAdminQualification: (req, res) => {
+    try {
+      validateDeleteQualificationReqData(req.params)
+        .then((result) => {
+          getQualificationDocFromDbById(result.id)
+            .then(async (qualificationDoc) => {
+              await removeFromS3(qualificationDoc[0].doc);
+              deleteExperienceFromDb(qualificationDoc[0].id).then(() => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "qualification deleted",
+                    response: "",
+                  },
+                });
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "error from get qualification from db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllAdminQualifications: (req, res) => {
+    let admin = getUser(req);
+    getAdminQualificationsDocs(admin.id).then((result) => {});
+    // getAdminExperiencesDocs
+  },
 };
