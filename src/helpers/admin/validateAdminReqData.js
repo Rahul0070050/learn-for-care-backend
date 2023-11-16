@@ -113,7 +113,7 @@ export function validateUnBlockUserInfo(data) {
   });
 }
 
-export function validateSetAdminInfoReqData(info) {
+export function   validateSetAdminInfoReqData(info) {
   return new Promise((resolve, reject) => {
     let dataTemplate = object({
       employee_id: number().required("please provide employee_id"),

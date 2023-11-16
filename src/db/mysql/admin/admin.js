@@ -47,6 +47,7 @@ export function getDashboardData() {
 
 export function setAdminInfoToDb(userData) {
   return new Promise(async (resolve, reject) => {
+    console.log(userData);
     try {
       const {
         admin_id,
