@@ -385,6 +385,20 @@ export function mySqlConnect(done) {
         else console.log("created table volume coupons");
       });
 
+      const offerTextTable = `
+      CREATE TABLE IF NOT EXISTS offer_text (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        offer_text TEXT NOT NULL,
+        hight_light_text VARCHAR(250) NOT NULL,
+        is_active BOOLEAN NOT NULL
+      );
+    `;
+
+    db.query(volumeCouponTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("created table volume coupons");
+    });
+
     return done();
   });
 }

@@ -143,3 +143,71 @@ export function updateVolumeCoupon(data) {
     }
   });
 }
+
+export function deleteVolumeCoupon(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let deleteQuery = "DELETE FROM volume_coupons WHERE id = ?;";
+      db.query(deleteQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function saveOfferText(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const { offer_text, hight_light_text, is_active } = data;
+      let deleteQuery =
+        "INSERT INTO offer_text (offer_text, hight_light_text, is_active) VALUES (?,?,?)";
+      db.query(
+        deleteQuery,
+        [offer_text, hight_light_text, is_active],
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function deleteOfferText(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let deleteQuery = "DELETE FROM offer_text WHERE id = ?;";
+      db.query(deleteQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function changeActiveStatus(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const { offer_text, hight_light_text, is_active } = data;
+      let deleteQuery =
+        "INSERT INTO offer_text (offer_text, hight_light_text, is_active) VALUES (?,?,?)";
+      db.query(
+        deleteQuery,
+        [offer_text, hight_light_text, is_active],
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
