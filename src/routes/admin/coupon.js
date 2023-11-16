@@ -8,5 +8,6 @@ const route = Router();
 route.post("/create-coupon", validateAdmin, couponController.createCoupon);
 route.patch("/edit-coupon", validateAdmin, couponController.editCoupon);
 route.delete("/delete-coupon/:id", validateAdmin, couponController.deleteCoupon);
+route.get("/list-coupons", validateAdmin, couponController.getAllCoupons);
 
 export default route;

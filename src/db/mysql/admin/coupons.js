@@ -91,3 +91,17 @@ export function deleteCoupon(id) {
     }
   });
 }
+
+export function getAllCoupons() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = "SELECT * FROM coupons;";
+      db.query(getQuery, (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
