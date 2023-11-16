@@ -105,3 +105,24 @@ export function getAllCoupons() {
     }
   });
 }
+
+export function saveToVolumeCoupon(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const {coupon_code, max_val, min_val, amount} = data
+      let insertQuery =
+        "INSERT INTO volume_coupons (coupon_code, max_val, min_val, amount) VALUES (?,?,?,?);";
+      db.query(
+        insertQuery,
+        [coupon_code, max_val, min_val, amount],
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+

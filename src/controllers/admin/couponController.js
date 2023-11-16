@@ -2,10 +2,12 @@ import {
   deleteCoupon,
   getAllCoupons,
   saveCouponToDb,
+  saveToVolumeCoupon,
   updateCouponToDb,
 } from "../../db/mysql/admin/coupons.js";
 import {
   validateCreateCouponInfo,
+  validateCreateVolumeCouponInfo,
   validateEditCouponInfo,
 } from "../../helpers/admin/validateCouponReqData.js";
 import { generatorOtp, getUser } from "../../utils/auth.js";
@@ -185,9 +187,64 @@ export const couponController = {
             data: {
               code: 201,
               message: "got all coupons",
-              response: result
+              response: result,
             },
           });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  createVolumeCoupon: (req, res) => {
+    try {
+      validateCreateVolumeCouponInfo(req.body)
+        .then((result) => {
+          saveToVolumeCoupon(result)
+            .then(() => {
+              res.status(201).json({
+                success: true,
+                data: {
+                  code: 201,
+                  message: "volume coupons inserted"
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "error from db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
         })
         .catch((err) => {
           res.status(406).json({

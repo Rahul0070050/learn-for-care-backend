@@ -370,6 +370,21 @@ export function mySqlConnect(done) {
       else console.log("created table coupons");
     });
 
+    const volumeCouponTable = `
+        CREATE TABLE IF NOT EXISTS volume_coupons (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          coupon_code VARCHAR(20) NOT NULL,
+          max_val INT NOT NULL,
+          min_val INT NOT NULL,
+          amount INT NOT NULL
+        );
+      `;
+
+      db.query(volumeCouponTable, (err, result) => {
+        if (err) console.log(err);
+        else console.log("created table volume coupons");
+      });
+
     return done();
   });
 }
