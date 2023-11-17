@@ -226,6 +226,8 @@ export function checkUpdateCourseIntroVideoReqBodyAndFile(file, body) {
 export function checkUpdateCourseThumbnailReqBodyAndFile(file, body) {
   return new Promise((resolve, reject) => {
     try {
+      console.log(file);
+      console.log(body);
       let bodyTemplate = object({
         course_id: number().required("please provide valid course id"),
       });
