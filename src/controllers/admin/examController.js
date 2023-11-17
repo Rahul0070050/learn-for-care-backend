@@ -10,9 +10,9 @@ import {
 export const examController = {
   createExam: (req, res) => {
     try {
+      console.log('from controller',req.body);
       checkAddExamReqBody(req.body)
         .then((result) => {
-          console.log('from controller',result);
           insertQuestionsToExam(result)
             .then(() => {
               res.status(201).json({
