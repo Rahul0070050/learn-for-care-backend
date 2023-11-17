@@ -135,6 +135,7 @@ export function mySqlConnect(done) {
     //     );
     //   `;
 
+
     //   db.query(purchasedCourseTable, (err, result) => {
     //     if (err) console.log(err.message);
     //     else console.log("purchasedCourse table created");
