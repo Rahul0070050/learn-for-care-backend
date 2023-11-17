@@ -45,7 +45,21 @@ export function getAllExam() {
   return new Promise((resolve, reject) => {
     try {
       let getAllQuestionsQuery = "SELECT * FROM exams;";
-      db.query(getAllQuestionsQuery, [course_id], (err, result) => {
+      db.query(getAllQuestionsQuery, (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function deleteFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let deleteQuery = "DELETE FROM exams WHERE id = ?;";
+      db.query(deleteQuery, [id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
       });

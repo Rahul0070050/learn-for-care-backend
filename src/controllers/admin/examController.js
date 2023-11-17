@@ -1,17 +1,19 @@
 import {
+  deleteFromDb,
   getAllExam,
   insertQuestionsToExam,
 } from "../../db/mysql/admin/exam.js";
 import {
   checkAddExamReqBody,
+  checkDeleteExamReqBody,
   checkGetExamReqBody,
 } from "../../helpers/admin/validateExamReqData.js";
 
 export const examController = {
   createExam: (req, res) => {
     try {
-      req.body.questions = JSON.parse(req.body.questions)
-      console.log(req.body.questions)
+      req.body.questions = JSON.parse(req.body.questions);
+      console.log(req.body.questions);
       checkAddExamReqBody(req.body)
         .then((result) => {
           insertQuestionsToExam(result)
@@ -120,6 +122,61 @@ export const examController = {
               response: result,
             },
           });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  deleteExam: (req, res) => {
+    try {
+      checkDeleteExamReqBody(req.params)
+        .then((result) => {
+          deleteFromDb(result.id).then(() => {
+            res.status(201).json({
+              success: true,
+              data: {
+                code: 201,
+                message: "deleted exam",
+                response: result,
+              },
+            });
+          }).catch(err => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "error form db",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
+          })
         })
         .catch((err) => {
           res.status(406).json({

@@ -120,20 +120,20 @@ export function mySqlConnect(done) {
     //   else console.log("cart table created");
     // });
 
-    //   const purchasedCourseTable = `
-    //     CREATE TABLE IF NOT EXISTS purchased_course (
-    //       id INT AUTO_INCREMENT PRIMARY KEY,
-    //       user_id INT NOT NULL,
-    //       course_id INT NOT NULL,
-    //       amount TEXT NOT NULL,
-    //       course_count INT NOT NULL,
-    //       fake_course_count INT NOT NULL,
-    //       user_type VARCHAR(20) NOT NULL,
-    //       status VARCHAR(20) NOT NULL DEFAULT 'not started',
-    //       validity VARCHAR(10) NOT NULL,
-    //       date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    //     );
-    //   `;
+      // const purchasedCourseTable = `
+      //   CREATE TABLE IF NOT EXISTS purchased_course (
+      //     id INT AUTO_INCREMENT PRIMARY KEY,
+      //     user_id INT NOT NULL,
+      //     course_id INT NOT NULL,
+      //     amount TEXT NOT NULL,
+      //     course_count INT NOT NULL,
+      //     fake_course_count INT NOT NULL,
+      //     user_type VARCHAR(20) NOT NULL,
+      //     status VARCHAR(20) NOT NULL DEFAULT 'not started',
+      //     validity VARCHAR(10) NOT NULL,
+      //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      //   );
+      // `;
 
 
     //   db.query(purchasedCourseTable, (err, result) => {

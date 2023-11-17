@@ -56,3 +56,25 @@ export function checkGetExamReqBody(body) {
     }
   });
 }
+
+export function checkDeleteExamReqBody(body) {
+  return new Promise((resolve, reject) => {
+    try {
+      let bodyTemplate = yup.object().shape({
+        id: yup.number().required("invalid exam id")
+      });
+
+      let bodyData = bodyTemplate.validate(body);
+
+      bodyData
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
