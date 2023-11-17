@@ -2,6 +2,7 @@ import { number, object, string } from "yup";
 import { validateFile } from "../validateFileTypes.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
+  console.log(files);
   return new Promise((resolve, reject) => {
     let resources = files["resource[]"]
     delete files["resource[]"]
