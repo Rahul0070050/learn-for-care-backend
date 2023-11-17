@@ -3,6 +3,7 @@ import { validateFile } from "../validateFileTypes.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
+    console.log(files);
     let resources = files["resource[]"]
     delete files["resource[]"]
     if(!resources) {
@@ -158,6 +159,7 @@ export function checkUpdateCourseResourceReqBodyAndFile(files, body) {
 
       let resourceFile = [];
 
+      console.log(files?.resource);
       if (Array.isArray(files?.resource)) {
         files.resource.forEach((file) =>
           resourceFile.push(validateFile([{ resource: file }], "resource"))
