@@ -665,7 +665,10 @@ export const courseController = {
                   resourceFiles = [resourceFiles];
                 }
 
-                let resource = JSON.parse(course.resource);
+                let resource = []
+                if(course.resource) {
+                  resource = JSON.parse(course.resource);
+                }
 
                 resource.forEach((file) => {
                   let key = file.file;
