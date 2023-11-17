@@ -45,7 +45,7 @@ export function getAllPurchasedCourseFromDb() {
 export function getReportFromDb() {
   return new Promise((resolve, reject) => {
     try {
-      let getPurchasedCourseDataQuery = `SELECT DATE(date) AS day, COUNT(*) AS count
+      let getPurchasedCourseDataQuery = `SELECT DATE(date) AS day, COUNT(*), * AS count
       FROM purchased_course
       GROUP BY day;
       `;
