@@ -11,6 +11,7 @@ import {
 import {
   getAllPurchasedCourseFromDb,
   getReportFromDb,
+  getReportFromDbGroupByYear,
 } from "../../db/mysql/admin/purchasedCourse.js";
 import {
   checkAddCourseReqBodyAndFile,
@@ -527,7 +528,7 @@ export const courseController = {
   },
   getAllPurchasedCourseReportGroupBy: (req, res) => {
     try {
-      getReportFromDb()
+      getReportFromDbGroupByYear()
         .then((result) => {
           res.status(200).json({
             success: true,
