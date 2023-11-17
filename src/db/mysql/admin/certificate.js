@@ -3,13 +3,13 @@ import { db } from "../../../conf/mysql.js";
 export function insertNewCertificate(info) {
   return new Promise((resolve, reject) => {
     try {
-      let { user_id, course_name, user_name, percentage } =
+      let { user_id, course_name, user_name, percentage, date} =
         info;
       let insertQuery =
-        "INSERT INTO certificate (user_id, course_name, user_name, percentage) VALUES (?, ?, ?, ?);";
+        "INSERT INTO certificate (user_id, course_name, user_name, percentage, date) VALUES (?, ?, ?, ?, ?);";
       db.query(
         insertQuery,
-        [user_id, course_name, user_name, percentage],
+        [user_id, course_name, user_name, percentage, date],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve();

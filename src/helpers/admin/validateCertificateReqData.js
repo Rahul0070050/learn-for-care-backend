@@ -5,7 +5,9 @@ export function validateCreateCertificateInfo(userData) {
     let user = object({
       user_id: number().required("please provide email user id"),
       course_name: string().required("please provide course name"),
+      category: string().required("please provide user name"),
       user_name: string().required("please provide user name"),
+      date: string().required("please provide date"),
       percentage: number().required("please provide percentage"),
     });
 
