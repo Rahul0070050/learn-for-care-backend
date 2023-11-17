@@ -656,6 +656,7 @@ export const courseController = {
     try {
       checkUpdateCourseResourceReqBodyAndFile(req.files, req.body)
         .then((result) => {
+          console.log(req.body);
           getCourseByIdFromDb(req.body.course_id)
             .then(async (course) => {
               let resourceFiles = req.files.resource;
