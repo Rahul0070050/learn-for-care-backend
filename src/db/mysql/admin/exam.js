@@ -45,7 +45,7 @@ export function getAllExam() {
   return new Promise((resolve, reject) => {
     try {
       let getAllQuestionsQuery = `
-      SELECT course.name AS course_name, course.category AS course_category, exams.* FROM exams 
+      SELECT course.name AS course_name, course.id AS course_id, course.description AS course_description, exams.id AS exam_id, course.category AS course_category, exams.* FROM exams 
       INNER JOIN course ON course.id = exams.course_id
       ;`;
       db.query(getAllQuestionsQuery, (err, result) => {
