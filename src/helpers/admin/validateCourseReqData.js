@@ -159,7 +159,8 @@ export function checkUpdateCourseResourceReqBodyAndFile(files, body) {
 
       let resourceFile = [];
 
-      console.log('files?.resource ',files?.resource);
+      console.log(files);
+      console.log(files?.resource);
       if (Array.isArray(files?.resource)) {
         files.resource.forEach((file) =>
           resourceFile.push(validateFile([{ resource: file }], "resource"))
@@ -228,8 +229,6 @@ export function checkUpdateCourseIntroVideoReqBodyAndFile(file, body) {
 export function checkUpdateCourseThumbnailReqBodyAndFile(file, body) {
   return new Promise((resolve, reject) => {
     try {
-      console.log(file);
-      console.log(body);
       let bodyTemplate = object({
         course_id: number().required("please provide valid course id"),
       });
