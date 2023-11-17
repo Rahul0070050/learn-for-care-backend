@@ -23,7 +23,6 @@ export function getAllPurchasedCourseByUserId(id) {
   });
 }
 
-
 export function getAllPurchasedCourseFromDb() {
   return new Promise((resolve, reject) => {
     try {
@@ -45,23 +44,68 @@ export function getAllPurchasedCourseFromDb() {
 export function getReportFromDb() {
   return new Promise((resolve, reject) => {
     try {
-      let getPurchasedCourseDataQuery = `
-      SELECT
+      let getPurchasedCourseDataQuery = `SELECT
       DATE(date) AS day,
-      YEAR(date) AS year,
-      MONTH(date) AS month,
       SUM(amount) AS total_amount,
       SUM(course_count) AS total_course_count
       FROM purchased_course
-      GROUP BY day, year, month
-      ORDER BY year, month, day;
-      `;
+      GROUP BY day;
+    `;
 
       db.query(getPurchasedCourseDataQuery, (err, result) => {
         if (err) {
           return reject(err?.message);
         } else {
           return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+export function getReportFromDbGroupByMonth() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getPurchasedCourseDataQuery = `SELECT
+      MONTH(date) AS month,
+      SUM(amount) AS total_amount,
+      SUM(course_count) AS total_course_count
+      FROM purchased_course
+      GROUP BY month;
+    `;
+
+      db.query(getPurchasedCourseDataQuery, (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+export function getReportFromDbGroupByYear() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getPurchasedCourseDataQuery = `SELECT
+      YEAR(date) AS year,
+      SUM(amount) AS total_amount,
+      SUM(course_count) AS total_course_count
+      FROM purchased_course
+      GROUP BY year;
+    `;
+
+      db.query(getPurchasedCourseDataQuery, async (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          let groupByYear = result;
+          let groupByMonth = await getReportFromDbGroupByMonth();
+          let groupByDay = await getReportFromDb();
+          return resolve({ groupByYear, groupByMonth, groupByDay });
         }
       });
     } catch (error) {
