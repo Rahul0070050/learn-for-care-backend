@@ -11,6 +11,7 @@ export const examController = {
   createExam: (req, res) => {
     try {
       req.body.questions = JSON.parse(req.body.questions)
+      console.log(req.body.questions)
       checkAddExamReqBody(req.body)
         .then((result) => {
           insertQuestionsToExam(result)
