@@ -656,63 +656,66 @@ export const courseController = {
     try {
       checkUpdateCourseResourceReqBodyAndFile(req.files, req.body)
         .then((result) => {
-          console.log(req.body);
           getCourseByIdFromDb(Number(req.body.course_id))
             .then(async (course) => {
-              let resourceFiles = req.files.resource;
+              try {
+                let resourceFiles = req.files.resource;
 
-              if (!Array.isArray(resourceFiles)) {
-                resourceFiles = [resourceFiles];
-              }
+                if (!Array.isArray(resourceFiles)) {
+                  resourceFiles = [resourceFiles];
+                }
 
-              let resource = JSON.parse(course.resource);
+                let resource = JSON.parse(course.resource);
 
-              resource.forEach((file) => {
-                let key = file.file;
-                removeFromS3(key);
-              });
-
-              let uploadedFileArray = resourceFiles.map((file) =>
-                uploadFileToS3("/course/resource", file)
-              );
-
-              let files = await Promise.all(uploadedFileArray);
-
-              let resourceFilesS3Links = files.map((file) => {
-                return { file: file.file };
-              });
-
-              resource = JSON.stringify(resourceFilesS3Links);
-
-              updateCourseSingleFieldMediaById(
-                req.body.course_id,
-                resource,
-                "resource"
-              )
-                .then(() => {
-                  res.status(200).json({
-                    success: true,
-                    data: {
-                      code: 200,
-                      message: "course resource file updated",
-                      response: "",
-                    },
-                  });
-                })
-                .catch((err) => {
-                  res.status(406).json({
-                    success: false,
-                    errors: [
-                      {
-                        code: 500,
-                        message:
-                          "some error occurred in the server try again after some times",
-                        error: err,
-                      },
-                    ],
-                    errorType: "client",
-                  });
+                resource.forEach((file) => {
+                  let key = file.file;
+                  removeFromS3(key);
                 });
+
+                let uploadedFileArray = resourceFiles.map((file) =>
+                  uploadFileToS3("/course/resource", file)
+                );
+
+                let files = await Promise.all(uploadedFileArray);
+
+                let resourceFilesS3Links = files.map((file) => {
+                  return { file: file.file };
+                });
+
+                resource = JSON.stringify(resourceFilesS3Links);
+
+                updateCourseSingleFieldMediaById(
+                  req.body.course_id,
+                  resource,
+                  "resource"
+                )
+                  .then(() => {
+                    res.status(200).json({
+                      success: true,
+                      data: {
+                        code: 200,
+                        message: "course resource file updated",
+                        response: "",
+                      },
+                    });
+                  })
+                  .catch((err) => {
+                    res.status(406).json({
+                      success: false,
+                      errors: [
+                        {
+                          code: 500,
+                          message:
+                            "some error occurred in the server try again after some times",
+                          error: err,
+                        },
+                      ],
+                      errorType: "client",
+                    });
+                  });
+              } catch (error) {
+                console.log(error);
+              }
             })
             .catch((err) => {
               res.status(406).json({
