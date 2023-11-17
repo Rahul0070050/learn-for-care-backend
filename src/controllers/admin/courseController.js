@@ -8,7 +8,10 @@ import {
   updateCourseSingleFieldMediaById,
   deleteCourseFromDb,
 } from "../../db/mysql/admin/course.js";
-import { getAllPurchasedCourseFromDb } from "../../db/mysql/admin/purchasedCourse.js";
+import {
+  getAllPurchasedCourseFromDb,
+  getReportFromDb,
+} from "../../db/mysql/admin/purchasedCourse.js";
 import {
   checkAddCourseReqBodyAndFile,
   checkGetCourseByCategoryBody,
@@ -499,6 +502,48 @@ export const courseController = {
             errors: [
               {
                 code: 500,
+                message:
+                  "some error occurred in the server try again after some times",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllPurchasedCourseReportGroupBy: (req, res) => {
+    try {
+      getReportFromDb()
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "get group by",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
                 message:
                   "some error occurred in the server try again after some times",
                 error: err,

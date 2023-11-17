@@ -41,3 +41,21 @@ export function getAllPurchasedCourseFromDb() {
     }
   });
 }
+
+export function getReportFromDb() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getPurchasedCourseDataQuery = `SELECT DATE(timestamp) AS day, * FROM your_table GROUP BY day;`;
+
+      db.query(getPurchasedCourseDataQuery, (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
