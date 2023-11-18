@@ -69,10 +69,10 @@ export function updateBlogData(blogInfo) {
   return new Promise((resolve, reject) => {
     try {
       let updateBlogInfoQuery =
-        "UPDATE blogs SET header = ?, content = ?, tags = ? WHERE id = ?;";
+        "UPDATE blogs SET header = ?, content = ?, author = ?, tags = ? WHERE id = ?;";
       db.query(
         updateBlogInfoQuery,
-        [blogInfo.header, blogInfo.content, blogInfo.tags, blogInfo.blog_id],
+        [blogInfo.header, blogInfo.content, blogInfo.author, blogInfo.tags, blogInfo.blog_id],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);

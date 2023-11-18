@@ -109,6 +109,7 @@ export function checkUpdateBlogDataReqBody(body) {
       blog_id: number().required("please provide valid blog id"),
       header: string().required("please provide valid header"),
       content: string().required("please provide valid content"),
+      author: string().required("please provide valid content"),
       tags: string().required("please provide valid tags")
     });
 
