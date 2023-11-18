@@ -78,7 +78,7 @@ export function validateCreateVolumeCouponInfo(body) {
       coupon_code: string().required("please enter coupon_code"),
       max_val: string().required("please enter max_val"),
       min_val: string().required("please enter min_val"),
-      amount: number().required("please enter amount"),
+      percent: number().required("please enter amount"),
     });
 
     try {

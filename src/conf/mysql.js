@@ -378,7 +378,7 @@ export function mySqlConnect(done) {
           coupon_code VARCHAR(20) NOT NULL,
           max_val INT NOT NULL,
           min_val INT NOT NULL,
-          amount INT NOT NULL
+          percent INT NOT NULL
         );
       `;
 
