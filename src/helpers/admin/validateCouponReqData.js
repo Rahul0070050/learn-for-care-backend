@@ -1,4 +1,4 @@
-import { number, object, string } from "yup";
+import { number, object, string, boolean } from "yup";
 
 export function validateCreateCouponInfo(body) {
   return new Promise((resolve, reject) => {
@@ -126,7 +126,7 @@ export function validateCreateOfferTextInfo(body) {
     let bodyTemplate = object({
       offer_text: string().required("please enter offer text"),
       hight_light_text: string().required("please enter hight_light_text"),
-      is_active: string().required("please provide is active status"),
+      is_active: boolean().required("please provide is active status"),
     });
 
     try {
