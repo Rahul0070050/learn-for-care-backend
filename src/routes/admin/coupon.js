@@ -11,6 +11,7 @@ route.delete("/delete-coupon/:id", validateAdmin, couponController.deleteCoupon)
 route.get("/list-coupons", validateAdmin, couponController.getAllCoupons);
 route.post("/create-volume-coupon", validateAdmin, couponController.createVolumeCoupon);
 route.patch("/update-volume-coupon", validateAdmin, couponController.updateVolumeCoupon);
+route.get("/list-volume-coupon", validateAdmin, couponController.getAllVolumeCoupon);
 route.delete("/delete-volume-coupon/:id", validateAdmin, couponController.deleteVolumeCoupon);
 
 route.post("/create-offer-text", validateAdmin, couponController.createOfferText);

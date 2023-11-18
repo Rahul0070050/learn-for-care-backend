@@ -3,6 +3,7 @@ import {
   deleteOfferText,
   deleteVolumeCoupon,
   getAllCoupons,
+  getAllVolumeCoupon,
   saveCouponToDb,
   saveOfferText,
   saveToVolumeCoupon,
@@ -322,6 +323,43 @@ export const couponController = {
             errorType: "client",
           });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllVolumeCoupon:(req,res) => {
+    try {
+      getAllVolumeCoupon().then(result => {
+        res.status(201).json({
+          success: true,
+          data: {
+            code: 201,
+            message: "got volume coupons",
+          },
+        });
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "err from db",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
     } catch (error) {
       res.status(500).json({
         success: false,

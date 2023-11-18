@@ -144,6 +144,20 @@ export function updateVolumeCoupon(data) {
   });
 }
 
+export function getAllVolumeCoupon() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = "SELECT * FROM volume_coupons;";
+      db.query(getQuery,(err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function deleteVolumeCoupon(id) {
   return new Promise((resolve, reject) => {
     try {
