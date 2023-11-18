@@ -345,6 +345,7 @@ export const couponController = {
           data: {
             code: 201,
             message: "got volume coupons",
+            response: result
           },
         });
       }).catch(err => {
