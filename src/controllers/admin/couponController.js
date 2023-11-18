@@ -3,6 +3,7 @@ import {
   deleteOfferText,
   deleteVolumeCoupon,
   getAllCoupons,
+  getAllOfferTextFromDb,
   getAllVolumeCoupon,
   saveCouponToDb,
   saveOfferText,
@@ -478,7 +479,45 @@ export const couponController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllOfferText:(req,res) => {
+    try {
+      getAllOfferTextFromDb().then(result => {
+        res.status(201).json({
+          success: true,
+          data: {
+            code: 201,
+            message: "got all offer text",
+            response: result
+          },
+        });
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "error from db",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
           },
         ],
         errorType: "server",
@@ -533,7 +572,7 @@ export const couponController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",

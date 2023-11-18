@@ -158,6 +158,20 @@ export function getAllVolumeCoupon() {
   });
 }
 
+export function getAllOfferTextFromDb() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = "SELECT * FROM offer_text;";
+      db.query(getQuery,(err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function deleteVolumeCoupon(id) {
   return new Promise((resolve, reject) => {
     try {
