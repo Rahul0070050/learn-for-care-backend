@@ -117,4 +117,61 @@ export const blogController = {
       });
     }
   },
+  updateViewCount: (req, res) => {
+    try {
+      checkUpdateBlogViewCountReqBody(req.body)
+        .then((result) => {
+          setOneViewToBlog(result[0].blog_id)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `blog view count updated`,
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "err from db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
 };

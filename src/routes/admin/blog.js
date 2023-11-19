@@ -12,7 +12,6 @@ route.post("/update-blog-image", validateAdmin, blogController.updateBlogImage);
 route.post("/update-blog-data", validateAdmin, blogController.updateBlogData);
 route.delete("/delete-blog", validateAdmin, blogController.deleteBlog);
 route.post("/update-blog-status", validateAdmin, blogController.updateBlogStatus);
-route.post("/update-blog-view-count", validateAdmin, blogController.updateViewCount);
 route.post("/get-all-inactive", validateAdmin, blogController.getAllInactiveBlogs);
 
 export default route;
