@@ -1,5 +1,5 @@
 import { downloadFromS3 } from "../../AWS/S3.js";
-import { getAllBlogs, getBlogByIdFromDb } from "../../db/mysql/users/blogs.js";
+import { getAllBlogs, getBlogByIdFromDb, setOneViewToBlog } from "../../db/mysql/users/blogs.js";
 import { checkGetBlogByIdReqDate, checkUpdateBlogViewCountReqBody } from "../../helpers/user/validateBlogReqData.js";
 
 export const blogController = {

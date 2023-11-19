@@ -84,20 +84,6 @@ export function updateBlogData(blogInfo) {
   });
 }
 
-export function setOneViewToBlog(id) {
-  return new Promise((resolve, reject) => {
-    try {
-      console.log(id);
-      let updateBlogInfoQuery = `UPDATE blogs SET views = views + ? WHERE id = ?;`;
-      db.query(updateBlogInfoQuery, [1,id], (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve(result);
-      });
-    } catch (error) {
-      reject(error?.message);
-    }
-  });
-}
 
 export function getInactiveBlogs() {
   return new Promise((resolve, reject) => {

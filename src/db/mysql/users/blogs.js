@@ -13,6 +13,21 @@ export function getBlogByIdFromDb(id) {
       }
     });
   }
+
+  export function setOneViewToBlog(id) {
+    return new Promise((resolve, reject) => {
+      try {
+        console.log(id);
+        let updateBlogInfoQuery = `UPDATE blogs SET views = views + ? WHERE id = ?;`;
+        db.query(updateBlogInfoQuery, [1,id], (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        });
+      } catch (error) {
+        reject(error?.message);
+      }
+    });
+  }
   
   export function getAllBlogs() {
     return new Promise((resolve, reject) => {

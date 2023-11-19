@@ -15,7 +15,6 @@ import {
   getInactiveBlogs,
   insertNewBlog,
   setBlogInactivate,
-  setOneViewToBlog,
   updateBlogData,
   updateBlogImage,
 } from "../../db/mysql/admin/blog.js";
