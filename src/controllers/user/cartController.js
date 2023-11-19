@@ -450,12 +450,13 @@ export const cartController = {
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
           // console.log(chargeSucceeded);
-          console.log(chargeSucceeded);
+          console.log(chargeSucceeded.metadata);
+          let meta_data = chargeSucceeded.metadata
           // console.log(chargeSucceeded.billing_details.email);
           getUserByEmail(
             {
               email: chargeSucceeded.billing_details.email,
-              type_of_user: chargeSucceeded.billing_details.text,
+              user_type: meta_data.user_type,
             } || { email: "", type_of_user: "" }
           )
             .then((user) => {
