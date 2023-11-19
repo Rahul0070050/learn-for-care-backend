@@ -26,7 +26,7 @@ export async function getStripeUrl(items = [], user) {
     success_url: "https://test.learnforcare.co.uk/success",
     cancel_url: "https://test.learnforcare.co.uk/failed",
     metadata: {
-      user_type: `${user?.type_of_account}`,
+      custom_field1: `${user?.type_of_account}`,
     },
   });
 
