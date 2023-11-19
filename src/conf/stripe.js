@@ -11,7 +11,6 @@ export async function getStripeUrl(items = [], user) {
     payment_method_types: ["card"],
     mode: "payment",
     customer_email: user.email,
-    client_reference_id: `${user.type_of_account}`,
     line_items: items.map((item) => {
       return {
         price_data: {
@@ -26,6 +25,9 @@ export async function getStripeUrl(items = [], user) {
     }),
     success_url: "https://test.learnforcare.co.uk/success",
     cancel_url: "https://test.learnforcare.co.uk/failed",
+    metadata: {
+      user_type: `${user?.type_of_account}`,
+    },
   });
 
   return session;
