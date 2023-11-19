@@ -390,7 +390,7 @@ export const cartController = {
           errorType: "client",
         });
       } else {
-        let session = await getStripeUrl(cart, user.email);
+        let session = await getStripeUrl(cart, user);
         res.status(200).json({
           success: true,
           data: {
@@ -450,10 +450,13 @@ export const cartController = {
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
           // console.log(chargeSucceeded);
-          // console.log(chargeSucceeded.billing_details.email);
+          console.log(chargeSucceeded.billing_details);
           // console.log(chargeSucceeded.billing_details.email);
           getUserByEmail(
-            { email: chargeSucceeded.billing_details.email } || { email: "" }
+            {
+              email: chargeSucceeded.billing_details.email,
+              type_of_user: chargeSucceeded.billing_details.text,
+            } || { email: "", type_of_user: "" }
           )
             .then((user) => {
               let userId = user[0].id;

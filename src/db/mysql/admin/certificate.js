@@ -3,19 +3,25 @@ import { db } from "../../../conf/mysql.js";
 export function insertNewCertificate(info) {
   return new Promise((resolve, reject) => {
     try {
-      let { user_id, course_name, user_name, percentage, date} =
-        info;
+      let { user_id, course_name, user_name, percentage, date, image } = info;
+
+      console.log(info);
       let insertQuery =
-        "INSERT INTO certificate (user_id, course_name, user_name, percentage, date) VALUES (?, ?, ?, ?, ?);";
+        "INSERT INTO certificate (user_id, course_name, user_name, percentage, date, image) VALUES (?, ?, ?, ?, ?, ?);";
       db.query(
         insertQuery,
-        [user_id, course_name, user_name, percentage, date],
+        [user_id, course_name, user_name, percentage, new Date(date), image],
         (err, result) => {
-          if (err) return reject(err?.message);
-          else return resolve();
+          if (err) {
+            console.log(err);
+            return reject(err?.message);
+          } else {
+            return resolve();
+          }
         }
       );
     } catch (error) {
+      console.log(error);
       reject(error?.message);
     }
   });

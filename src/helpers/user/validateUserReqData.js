@@ -118,3 +118,31 @@ export function checkAssignCourseToSubUserReqData(body) {
     }
   });
 }
+
+export function checkCreateManagerReqBody(body) {
+  return new Promise((resolve, reject) => {
+    try {
+      const schema = yup.object({
+        first_name: yup.string().required("please provide valid first_name"),
+        last_name: yup.string().required("please provide valid last_name"),
+        password: yup.string().required("please provide valid password"),
+        email: yup.string().email().required("please provide valid email"),
+        city: yup.string().required("please provide valid city"),
+        country: yup.string().required("please provide valid country"),
+        phone: yup.number().required("please provide valid phone"),
+      });
+
+      let value = schema.validate(body);
+
+      value
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+}

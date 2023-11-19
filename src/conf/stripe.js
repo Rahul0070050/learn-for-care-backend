@@ -5,14 +5,13 @@ config();
 
 export const stripeObj = new Stripe(process.env.STRIP_PRIVAT_KEY);
 
-export async function getStripeUrl(items = [], email) {
+export async function getStripeUrl(items = [], user) {
   console.log(items);
   let session = await stripeObj.checkout.sessions.create({
-
     payment_method_types: ["card"],
-
     mode: "payment",
-    customer_email: email,
+    customer_email: user.email,
+    custom_text: `${user.type_of_account}`,
     line_items: items.map((item) => {
       return {
         price_data: {

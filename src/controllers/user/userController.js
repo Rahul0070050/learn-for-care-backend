@@ -4,8 +4,10 @@ import {
   blockSubUserBySubUserId,
   getAllAssignedCourseProgressFromDb,
   getAllBlockedUser,
+  getAllMAnagers,
   getAllSubUsersFrom,
   getUserById,
+  saveAManagerToDb,
   saveASubUserToDb,
   unBlockSubUserBySubUserId,
   updateUserData,
@@ -15,6 +17,7 @@ import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassTo
 import {
   checkAssignCourseToSubUserReqData,
   checkBlockSubUserRewData,
+  checkCreateManagerReqBody,
   checkCreateSubUSerReqBody,
   checkUnBlockSubUserRewData,
   validateUpdateUserInfo,
@@ -423,6 +426,96 @@ export const userController = {
             data: {
               code: 406,
               message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  createManager: (req, res) => {
+    try {
+      checkCreateManagerReqBody(req.body)
+        .then(async (result) => {
+          let userId = getUser(req).id;
+          let password = await hashPassword(result.password);
+          saveAManagerToDb({ ...result, password, userId })
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "manager created",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "value not acceptable",
+                  response: err,
+                },
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllManagers: (req, res) => {
+    try {
+      let userId = getUser(req).id;
+      getAllMAnagers(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all managers",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "some error occur",
               response: err,
             },
           });

@@ -30,6 +30,8 @@ import subUserAuth from "./routes/subUser/auth.js";
 import subUserCourse from "./routes/subUser/assigneCourse.js";
 import subUserInfo from "./routes/subUser/subUser.js";
 
+import managerAuth from "./routes/manager/auth.js";
+
 import subAdminAuth from "./routes/subAdmin/auth.js";
 
 import { mySqlConnect } from "./conf/mysql.js";
@@ -90,6 +92,8 @@ app.use("/api/user/exam", exam);
 app.use("/api/user/bundle", userBundle);
 app.use("/api/user/course", course);
 app.use("/api/user/on-going-course", onGoingCourse);
+
+app.use("/api/user/manager/auth", managerAuth);
 
 app.use("/api/user/sub-user", subUserAuth);
 app.use("/api/user/sub-user/course", subUserCourse);

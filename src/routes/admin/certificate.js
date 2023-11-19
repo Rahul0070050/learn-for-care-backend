@@ -5,7 +5,7 @@ import { validateAdmin } from "../../middlewares/adminAuth.js";
 
 const route = Router();
 
-route.post("/create-certificate",validateAdmin, certificateController.createCategory);
+route.post("/create-certificate",validateAdmin, certificateController.createCertificate);
 route.get("/get-certificate-by-id/:id",validateAdmin, certificateController.getCertificateById);
 route.get("/get-all-certificates",validateAdmin, certificateController.getAllCertificates);
 

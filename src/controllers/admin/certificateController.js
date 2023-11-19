@@ -1,3 +1,5 @@
+import { uploadPdfToS3 } from "../../AWS/S3.js";
+import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
 import {
   getAllCertificateFromDb,
   getCertificateByIdFromDb,
@@ -6,15 +8,20 @@ import {
 import {
   validateCreateCertificateInfo,
   validateGetCertificateByIdInfo,
-} from "../../helpers/admin/validateCertificateReqData.js"
+  validateSaveCertificateByUserIdInfo,
+} from "../../helpers/admin/validateCertificateReqData.js";
+import { v4 as uuid} from "uuid";
 
 export const certificateController = {
-  createCategory: (req, res) => {
+  createCertificate: (req, res) => {
     try {
       validateCreateCertificateInfo(req.body)
-        .then((result) => {
-          insertNewCertificate(result)
-            .then((result) => {
+        .then(async (result) => {
+          let filePath = uuid() + ".pdf"
+          await convertHtmlToPdf(filePath);
+          let url = await uploadPdfToS3(filePath)
+          insertNewCertificate({...result,image: url.file})
+            .then(async (result) => {
               res.status(201).json({
                 success: true,
                 data: {
@@ -29,7 +36,7 @@ export const certificateController = {
                 errors: [
                   {
                     code: 406,
-                    message: "value not acceptable",
+                    message: "error from db acceptable",
                     error: error,
                   },
                 ],
@@ -140,6 +147,40 @@ export const certificateController = {
                 code: 406,
                 message: "value not acceptable",
                 error: error,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  saveCertificateImage: (req, res) => {
+    try {
+      validateSaveCertificateByUserIdInfo(req.files, req.body)
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
               },
             ],
             errorType: "client",

@@ -167,3 +167,30 @@ export function checkCompanyUserPrivileges(token) {
     }
   });
 }
+
+export function createTokenForManager(userData) {
+  return new Promise((resolve, reject) => {
+    try {
+      userData.password = "";
+      jwt.sign(
+        { ...userData },
+        process.env.JWT_RF_KEY_FOR_MANAGER || "",
+        { expiresIn: "365d" },
+        (err, reFreshToken) => {
+          if (err) return reject(err?.message);
+          jwt.sign(
+            { ...userData },
+            process.env.JWT_ACC_KEY_FOR_MANAGER || "",
+            { expiresIn: "15d" },
+            (err, accessToken) => {
+              if (err) return reject(err?.message);
+              else return resolve({ reFreshToken, accessToken });
+            }
+          );
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

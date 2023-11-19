@@ -273,6 +273,20 @@ export function getAllSubUsersFrom(userId) {
   });
 }
 
+export function getAllMAnagers(userId) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getAllSubUsersQuery = `SELECT * FROM manager WHERE created_by = ?;`;
+      db.query(getAllSubUsersQuery, [userId], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function assignCourseToSubUserDb(data) {
   return new Promise((resolve, reject) => {
     try {
@@ -325,6 +339,45 @@ export function getAllAssignedCourseProgressFromDb(id) {
         if (err) return reject(err.message);
         else return resolve(result);
       });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function saveAManagerToDb(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const {
+        first_name,
+        last_name,
+        email,
+        password,
+        country,
+        city,
+        phone,
+        userId,
+      } = data;
+      const createSubUserQuery = `INSERT INTO manager (first_name, last_name, email, password, country, city, phone, company_id) VALUES (?,?,?,?,?,?,?,?);`;
+      db.query(
+        createSubUserQuery,
+        [first_name, last_name, email, password, country, city, phone, userId],
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            if (
+              err.message ===
+              `ER_DUP_ENTRY: Duplicate entry '${email}' for key 'manager.email'`
+            ) {
+              return reject("email already exist");
+            } else {
+              return reject(err.message);
+            }
+          } else {
+            return resolve(result);
+          }
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }
