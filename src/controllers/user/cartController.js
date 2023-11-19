@@ -450,7 +450,7 @@ export const cartController = {
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
           // console.log(chargeSucceeded);
-          console.log(chargeSucceeded.billing_details);
+          console.log(chargeSucceeded);
           // console.log(chargeSucceeded.billing_details.email);
           getUserByEmail(
             {
