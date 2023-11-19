@@ -130,7 +130,7 @@ export function checkCreateManagerReqBody(body) {
         city: yup.string().required("please provide valid city"),
         country: yup.string().required("please provide valid country"),
         phone: yup.number().required("please provide valid phone"),
-        user_type: yup.number().required("please provide valid type of user"),
+        user_type: yup.string().required("please provide valid type of user"),
       });
 
       let value = schema.validate(body);
@@ -160,7 +160,7 @@ export function checkCreateManagerIndividualReqBody(body) {
         city: yup.string().required("please provide valid city"),
         country: yup.string().required("please provide valid country"),
         phone: yup.number().required("please provide valid phone"),
-        user_type: yup.number().required("please provide valid type of user"),
+        user_type: yup.string().required("please provide valid type of user"),
       });
 
       let value = schema.validate(body);
