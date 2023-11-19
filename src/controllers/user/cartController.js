@@ -390,7 +390,7 @@ export const cartController = {
           errorType: "client",
         });
       } else {
-        let session = await getStripeUrl(cart, user);
+        let session = await getStripeUrl(cart, user.email);
         res.status(200).json({
           success: true,
           data: {
@@ -426,7 +426,6 @@ export const cartController = {
       );
       // "whsec_c2c28348c7abca18d7df195514b505a057decd9956e7e237eaae28c3b29c8c7e"
 
-      console.log("hi", event.type);
       // Handle the event
       switch (event.type) {
         case "payment_intent.created":
@@ -450,14 +449,10 @@ export const cartController = {
         case "charge.succeeded":
           const chargeSucceeded = event.data.object;
           // console.log(chargeSucceeded);
-          console.log(chargeSucceeded.metadata);
-          let meta_data = chargeSucceeded.metadata
+          // console.log(chargeSucceeded.billing_details.email);
           // console.log(chargeSucceeded.billing_details.email);
           getUserByEmail(
-            {
-              email: chargeSucceeded.billing_details.email,
-              user_type: meta_data.user_type,
-            } || { email: "", type_of_user: "" }
+            { email: chargeSucceeded.billing_details.email } || { email: "" }
           )
             .then((user) => {
               let userId = user[0].id;

@@ -257,27 +257,6 @@ export function mySqlConnect(done) {
     //   else console.log("course bundle table created");
     // });
 
-    const managerTable = `
-        CREATE TABLE IF NOT EXISTS manager (
-          id INT AUTO_INCREMENT PRIMARY KEY,
-          first_name VARCHAR(50) NOT NULL,
-          last_name VARCHAR(50) NOT NULL,
-          email VARCHAR(50) NOT NULL UNIQUE,
-          password VARCHAR(500) NOT NULL,
-          country VARCHAR(50) NOT NULL,
-          city VARCHAR(50) NOT NULL,
-          phone VARCHAR(15) NOT NULL,
-          company_id INT DEFAULT NULL,
-          joined DATETIME DEFAULT NOW(),
-          profile_image VARCHAR(300) DEFAULT NULL,
-          block BOOLEAN DEFAULT FALSE
-        );`;
-
-      db.query(managerTable, (err, result) => {
-        if (err) console.log(err);
-        else console.log("user table created");
-      });
-
     // const certificateTable = `
     //     CREATE TABLE IF NOT EXISTS certificate (
     //       id INT AUTO_INCREMENT PRIMARY KEY,

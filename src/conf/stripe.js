@@ -5,12 +5,12 @@ config();
 
 export const stripeObj = new Stripe(process.env.STRIP_PRIVAT_KEY);
 
-export async function getStripeUrl(items = [], user) {
+export async function getStripeUrl(items = [], email) {
   console.log(items);
   let session = await stripeObj.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
-    customer_email: user.email,
+    customer_email: email,
     line_items: items.map((item) => {
       return {
         price_data: {
@@ -25,9 +25,6 @@ export async function getStripeUrl(items = [], user) {
     }),
     success_url: "https://test.learnforcare.co.uk/success",
     cancel_url: "https://test.learnforcare.co.uk/failed",
-    metadata: {
-      custom_field1: `${user?.type_of_account}`,
-    },
   });
 
   return session;
