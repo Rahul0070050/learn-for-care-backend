@@ -37,7 +37,7 @@ export function checkUpdateBlogStatusReqBody(data) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       id: string().required("please provide valid id"),
-      status: number().required("please provide status")
+      status: string().required("please provide status")
     });
 
     

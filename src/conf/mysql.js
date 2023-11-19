@@ -94,8 +94,7 @@ export function mySqlConnect(done) {
       content TEXT NOT NULL,
       author VARCHAR(200) NOT NULL,
       tags VARCHAR(200) NOT NULL,
-      views INT NOT NULL DEFAULT 0,
-      active BOOLEAN NOT NULL DEFAULT FALSE,
+      state VARCHAR(15) NOT NULL DEFAULT 'published',
       date DATETIME DEFAULT NOW()
     );`;
 

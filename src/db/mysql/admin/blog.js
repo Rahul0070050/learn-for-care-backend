@@ -136,7 +136,7 @@ export function deleteBlogById(id) {
 export function setBlogInactivate(id, status) {
   return new Promise((resolve, reject) => {
     try {
-      let updateQuery = "UPDATE blogs SET active = ? WHERE id = ?;";
+      let updateQuery = "UPDATE blogs SET state = ? WHERE id = ?;";
       db.query(updateQuery, [status, id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve();
