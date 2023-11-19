@@ -1,4 +1,3 @@
-import puppeteer from "puppeteer";
 import fs from "fs";
 import path from "path";
 import { __dirname } from "../utils/filePath.js";
