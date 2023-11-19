@@ -28,7 +28,6 @@
     "nodemailer": "^6.9.4",
     "otp-generator": "^4.0.1",
     "pdfkit": "^0.14.0",
-    "puppeteer": "^21.5.2",
     "stripe": "^14.1.0",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.1",
