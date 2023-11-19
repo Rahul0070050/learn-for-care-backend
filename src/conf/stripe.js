@@ -11,7 +11,7 @@ export async function getStripeUrl(items = [], user) {
     payment_method_types: ["card"],
     mode: "payment",
     customer_email: user.email,
-    custom_text: `${user.type_of_account}`,
+    customer: `${user.type_of_account}`,
     line_items: items.map((item) => {
       return {
         price_data: {
