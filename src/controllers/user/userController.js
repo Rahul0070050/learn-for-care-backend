@@ -17,6 +17,7 @@ import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassTo
 import {
   checkAssignCourseToSubUserReqData,
   checkBlockSubUserRewData,
+  checkCreateManagerIndividualReqBody,
   checkCreateManagerReqBody,
   checkCreateSubUSerReqBody,
   checkUnBlockSubUserRewData,
@@ -534,4 +535,56 @@ export const userController = {
       });
     }
   },
+  createManagerIndividual:(req,res) => {
+    try {
+      checkCreateManagerIndividualReqBody(req.body)
+        .then(async (result) => {
+          let userId = getUser(req).id;
+          let password = await hashPassword(result.password);
+          saveAManagerToDb({ ...result, password, userId })
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "manager individual created",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "value not acceptable",
+                  response: err,
+                },
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
 };

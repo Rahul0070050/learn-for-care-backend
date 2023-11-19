@@ -357,11 +357,12 @@ export function saveAManagerToDb(data) {
         city,
         phone,
         userId,
+        user_type
       } = data;
       const insertQuery = `INSERT INTO users (first_name, last_name, email, password, country, city, phone, created_by, type_of_account) VALUES (?,?,?,?,?,?,?,?,?);`;
       db.query(
         insertQuery,
-        [first_name, last_name, email, password, country, city, phone, userId, 'manager'],
+        [first_name, last_name, email, password, country, city, phone, userId, user_type],
         (err, result) => {
           if (err) {
             console.log(err);
