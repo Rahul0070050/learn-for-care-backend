@@ -17,29 +17,30 @@ export function mySqlConnect(done) {
   db.getConnection((err) => {
     if (err) return done(err);
 
-    // const userTable = `
-    //   CREATE TABLE IF NOT EXISTS users (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     first_name VARCHAR(50) NOT NULL,
-    //     last_name VARCHAR(50) NOT NULL,
-    //     email VARCHAR(50) NOT NULL UNIQUE,
-    //     type_of_account VARCHAR(50) NOT NULL,
-    //     password VARCHAR(500) NOT NULL,
-    //     country VARCHAR(50) NOT NULL,
-    //     city VARCHAR(50) NOT NULL,
-    //     phone VARCHAR(15) NOT NULL,
-    //     company_name VARCHAR(100) DEFAULT NULL,
-    //     otp INT DEFAULT NULL,
-    //     joined DATETIME DEFAULT NOW(),
-    //     profile_image VARCHAR(300) DEFAULT NULL,
-    //     activate BOOLEAN DEFAULT FALSE,
-    //     block BOOLEAN DEFAULT FALSE
-    //   );`;
+    const userTable = `
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        first_name VARCHAR(50) NOT NULL,
+        last_name VARCHAR(50) NOT NULL,
+        email VARCHAR(50) NOT NULL UNIQUE,
+        type_of_account VARCHAR(50) NOT NULL,
+        password VARCHAR(500) NOT NULL,
+        country VARCHAR(50) NOT NULL,
+        city VARCHAR(50) NOT NULL,
+        phone VARCHAR(15) NOT NULL,
+        company_name VARCHAR(100) DEFAULT NULL,
+        otp INT DEFAULT NULL,
+        joined DATETIME DEFAULT NOW(),
+        created_by INT DEFAULT NULL,
+        profile_image VARCHAR(300) DEFAULT NULL,
+        activate BOOLEAN DEFAULT FALSE,
+        block BOOLEAN DEFAULT FALSE
+      );`;
 
-    // db.query(userTable, (err, result) => {
-    //   if (err) console.log(err);
-    //   else console.log("user table created");
-    // });
+    db.query(userTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("user table created");
+    });
 
     //   const createAdminTable = `
     //       CREATE TABLE IF NOT EXISTS admin (

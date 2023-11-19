@@ -95,9 +95,9 @@ app.use("/api/user/on-going-course", onGoingCourse);
 
 app.use("/api/user/manager/auth", managerAuth);
 
-app.use("/api/user/sub-user", subUserAuth);
-app.use("/api/user/sub-user/course", subUserCourse);
-app.use("/api/user/sub-user/info", subUserInfo);
+// app.use("/api/user/sub-user", subUserAuth);
+// app.use("/api/user/sub-user/course", subUserCourse);
+// app.use("/api/user/sub-user/info", subUserInfo);
 
 // admin routes
 app.use("/api/admin/auth", adminAuth);

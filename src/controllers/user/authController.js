@@ -324,6 +324,7 @@ export const userAuthController = {
                 validatePassword(loginInfo.password, userData.password)
                   .then(async (result) => {
                     if (result) {
+                      console.log(result);
                       let token = await createTokenForUser(userData);
                       res.status(200).json({
                         success: true,

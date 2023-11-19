@@ -358,10 +358,10 @@ export function saveAManagerToDb(data) {
         phone,
         userId,
       } = data;
-      const createSubUserQuery = `INSERT INTO manager (first_name, last_name, email, password, country, city, phone, company_id) VALUES (?,?,?,?,?,?,?,?);`;
+      const insertQuery = `INSERT INTO users (first_name, last_name, email, password, country, city, phone, created_by, type_of_account) VALUES (?,?,?,?,?,?,?,?,?);`;
       db.query(
-        createSubUserQuery,
-        [first_name, last_name, email, password, country, city, phone, userId],
+        insertQuery,
+        [first_name, last_name, email, password, country, city, phone, userId, 'manager'],
         (err, result) => {
           if (err) {
             console.log(err);
