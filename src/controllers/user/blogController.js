@@ -121,7 +121,7 @@ export const blogController = {
     try {
       checkUpdateBlogViewCountReqBody(req.body)
         .then((result) => {
-          setOneViewToBlog(result[0].blog_id)
+          setOneViewToBlog(result.blog_id)
             .then(() => {
               res.status(200).json({
                 success: true,
