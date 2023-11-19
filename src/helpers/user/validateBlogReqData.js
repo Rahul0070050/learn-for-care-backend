@@ -1,4 +1,4 @@
-import {number} from 'yup'
+import {number, object} from 'yup'
 export function checkGetBlogByIdReqDate(id) {
   return new Promise((resolve, reject) => {
     try {
@@ -24,10 +24,8 @@ export function checkUpdateBlogViewCountReqBody(body) {
       blog_id: number().required("please provide valid blog id"),
     });
 
-    let bodyResult = bodyTemplate.validate(body);
     try {
-      Promise.all([bodyResult])
-        .then((result) => {
+      bodyTemplate.validate(body).then((result) => {
           resolve(result);
         })
         .catch((err) => {
