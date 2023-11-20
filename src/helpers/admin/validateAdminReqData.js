@@ -179,6 +179,7 @@ export function validateSetAdminQualificationsReqBody(body, files) {
   return new Promise((resolve, reject) => {
     let dataTemplate = object({
       university: string().required("please provide University"),
+      course_name: string().required("please provide course name"),
       note: string().required("please provide note"),
     });
 
@@ -354,6 +355,22 @@ export function validateDeleteQualificationReqData(data) {
 }
 
 export function checkSetAdminProfileBannerReqData(file) {
+  return new Promise((resolve, reject) => {
+    let image = validateFile([{ image: file.image }], "image");
+    try {
+      image.then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkSetAdminProfileImageReqData(file) {
   return new Promise((resolve, reject) => {
     let image = validateFile([{ image: file.image }], "image");
     try {

@@ -144,10 +144,10 @@ export function setAdminInfoToDb(userData) {
 
 export function saveNewQualifications(data) {
   return new Promise((resolve, reject) => {
-    const { admin_id, university, note, doc } = data;
+    const { admin_id, university, note, doc, course_name } = data;
     let insertQuery =
-      "INSERT INTO qualifications (admin_id, university, note, doc) VALUE (?,?,?,?)";
-    db.query(insertQuery, [admin_id, university, note, doc], (err, result) => {
+      "INSERT INTO qualifications (admin_id, university, note, doc, course_name) VALUE (?,?,?,?,?)";
+    db.query(insertQuery, [admin_id, university, note, doc, course_name], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);
     });
@@ -327,6 +327,16 @@ export function saveBannerToDb(id, banner) {
   return new Promise((resolve, reject) => {
     let updateQuery = "UPDATE admin SET profile_banner = ? WHERE id = ?";
     db.query(updateQuery, [banner, id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve();
+    });
+  });
+}
+
+export function saveImageToDb(id, image) {
+  return new Promise((resolve, reject) => {
+    let updateQuery = "UPDATE admin SET profile_image = ? WHERE id = ?";
+    db.query(updateQuery, [image, id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve();
     });

@@ -14,6 +14,7 @@ import {
   getQualificationDocFromDbByAdminIdAndDocId,
   getQualificationDocFromDbById,
   saveBannerToDb,
+  saveImageToDb,
   saveNewExperience,
   saveNewQualifications,
   setAdminInfoToDb,
@@ -37,6 +38,7 @@ import {
 } from "../../db/mysql/admin/user.js";
 import {
   checkSetAdminProfileBannerReqData,
+  checkSetAdminProfileImageReqData,
   checkUpdateAdminExperienceDocReqData,
   checkUpdateQualificationDocReqData,
   checkValidateGetUserByIdReqBody,
@@ -687,6 +689,7 @@ export const subAdminController = {
                 admin_id: admin.id,
                 university: result[1].university,
                 note: result[1].note,
+                course_name: result[1].course_name,
                 doc: pdfSavedResult.file,
               })
                 .then(() => {
@@ -1100,7 +1103,7 @@ export const subAdminController = {
       checkSetAdminProfileBannerReqData(req.files, req.body)
         .then(async (result) => {
           let docUploadedResult = await uploadFileToS3(
-            "/experience",
+            "/banner",
             result[0].image
           );
           let user = getUser(req);
@@ -1111,6 +1114,67 @@ export const subAdminController = {
                 data: {
                   code: 200,
                   message: "updated admin profile banner",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "values not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateAdminProfileImage: (req, res) => {
+    try {
+      checkSetAdminProfileImageReqData(req.files, req.body)
+        .then(async (result) => {
+          let docUploadedResult = await uploadFileToS3(
+            "/profile",
+            result[0].image
+          );
+          let user = getUser(req);
+          saveImageToDb(user.id, docUploadedResult.url)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "updated admin profile image",
                   response: "",
                 },
               });

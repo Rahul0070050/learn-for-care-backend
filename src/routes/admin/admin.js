@@ -38,7 +38,7 @@ route.patch("/update-experience-data", validateAdmin, subAdminController.updateA
 route.patch("/update-qualification-data", validateAdmin, subAdminController.updateAdminQualificationData);
 
 route.post("/update-admin-profile-banner", validateAdmin, subAdminController.updateAdminProfileBanner);
-// route.patch("/update-qualification-data", validateAdmin, subAdminController.updateAdminQualificationData);
+route.patch("/update-admin-profile-image", validateAdmin, subAdminController.updateAdminProfileImage);
 
 route.delete("/update-experience/:id", validateAdmin, subAdminController.delateAdminExperience);
 route.delete("/update-qualification/:id", validateAdmin, subAdminController.delateAdminQualification);
