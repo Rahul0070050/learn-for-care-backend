@@ -23,7 +23,6 @@ export const adminAuthController = {
         .then((loginInfo) => {
           getAdminByEmail(loginInfo?.email)
             .then((adminData) => {
-              console.log('adminData ',adminData);
               if (adminData?.length <= 0) {
                 res.status(406).json({
                   success: false,
@@ -38,11 +37,13 @@ export const adminAuthController = {
                   errorType: "client",
                 });
               } else {
-                adminData = {...adminData[0]};
+                console.log('-----------------',adminData);
+                let admin = adminData[0]
+                console.log('-----------------',admin);
                 validatePassword(loginInfo.password, adminData.password).then(
                   (result) => {
                     if (result) {
-                      createTokenForAdmin({ ...adminData, type_of_account: "admin" })
+                      createTokenForAdmin({ ...admin, type_of_account: "admin" })
                         .then((token) => {
                           res.status(200).json({
                             success: true,
