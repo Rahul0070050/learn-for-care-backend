@@ -133,3 +133,28 @@ export function downloadFromS3(id, key) {
     }
   });
 }
+
+
+export function downloadFile(key = "") {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let signedUrl = await s3.getSignedUrlPromise("getObject", {
+        Bucket: process.env.AWS_S3_NAME || "",
+        Key: key,
+        Expires: 100 * 60,
+      });
+
+      resolve({ id, url: signedUrl });
+    } catch (error) {
+      console.log(error);
+      if (
+        error.message ===
+        `Expected uri parameter to have length >= 1, but found "" for params.Key`
+      ) {
+        resolve({ id, url: "" });
+      } else {
+        reject(error?.message);
+      }
+    }
+  });
+}

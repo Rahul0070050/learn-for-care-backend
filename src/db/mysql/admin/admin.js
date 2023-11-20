@@ -73,6 +73,9 @@ export function setAdminInfoToDb(userData) {
         account_no,
         sort_code,
         roll_number,
+        recent_qualification,
+        next_to_kin_number,
+        permanent_address,
       } = userData;
       let setQuery = `
       UPDATE admin
@@ -81,6 +84,7 @@ export function setAdminInfoToDb(userData) {
       payroll_reference_number = ?, medical_details = ?, national_insurance_number = ?,
       contract_type = ?, date_of_joining = ?, correspondence_address = ?, brief_profile = ?,
       bank_holder_name = ?, bank_name = ?, account_no = ?, sort_code = ?, roll_number = ?
+      recent_qualification = ?, next_to_kin_number = ?, permanent_address = ?
       WHERE id = ?`;
 
       db.query(
@@ -107,7 +111,10 @@ export function setAdminInfoToDb(userData) {
           account_no,
           sort_code,
           roll_number,
-          admin_id
+          recent_qualification,
+          next_to_kin_number,
+          permanent_address,
+          admin_id,
         ],
         (err, result) => {
           if (err) {
@@ -134,7 +141,6 @@ export function setAdminInfoToDb(userData) {
     }
   });
 }
-
 
 export function saveNewQualifications(data) {
   return new Promise((resolve, reject) => {
@@ -307,7 +313,7 @@ export function getAdminInfoFromDb(id) {
 }
 
 export function setStaffCVToDb(data) {
-  const {file,adminId} = data
+  const { file, adminId } = data;
   return new Promise((resolve, reject) => {
     let getQuery = "UPDATE admin SET staff_cv = ? WHERE id = ?;";
     db.query(getQuery, [file, adminId], (err, result) => {
