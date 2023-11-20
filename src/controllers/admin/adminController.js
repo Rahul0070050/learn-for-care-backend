@@ -522,8 +522,9 @@ export const subAdminController = {
       validateSetAdminInfoReqData(req.body)
         .then((result) => {
           let admin = getUser(req);
-          admin = {...admin, ...admin.adminData}
-          admin.adminData = ""
+          console.log(admin);
+          // admin = {...admin, ...admin.adminData}
+          // admin.adminData = ""
           setAdminInfoToDb({ ...result, admin_id: admin.id })
             .then(() => {
               res.status(200).json({
