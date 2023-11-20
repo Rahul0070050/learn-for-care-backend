@@ -602,7 +602,7 @@ export const subAdminController = {
             data: {
               code: 200,
               message: "get admin info",
-              response: result,
+              response: newResult,
             },
           });
         })
