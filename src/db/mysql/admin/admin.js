@@ -83,7 +83,7 @@ export function setAdminInfoToDb(userData) {
       phone = ?, contact_no = ?, gender = ?, date_of_birth = ?, next_to_kin = ?,
       payroll_reference_number = ?, medical_details = ?, national_insurance_number = ?,
       contract_type = ?, date_of_joining = ?, correspondence_address = ?, brief_profile = ?,
-      bank_holder_name = ?, bank_name = ?, account_no = ?, sort_code = ?, roll_number = ?
+      bank_holder_name = ?, bank_name = ?, account_no = ?, sort_code = ?, roll_number = ?,
       recent_qualification = ?, next_to_kin_number = ?, permanent_address = ?
       WHERE id = ?`;
 
