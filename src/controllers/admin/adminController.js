@@ -1425,7 +1425,7 @@ export const subAdminController = {
                 errors: [
                   {
                     code: 406,
-                    message: "error from get qualification from db",
+                    message: "error from from db",
                     error: err,
                   },
                 ],
