@@ -335,6 +335,7 @@ export function saveBannerToDb(id, banner) {
 
 export function saveImageToDb(id, image) {
   return new Promise((resolve, reject) => {
+    console.log(id, image);
     let updateQuery = "UPDATE admin SET profile_image = ? WHERE id = ?";
     db.query(updateQuery, [image, id], (err, result) => {
       if (err) return reject(err?.message);
