@@ -298,7 +298,7 @@ export function getAdminExperiencesDocs(id) {
 
 export function getAdminInfoFromDb(id) {
   return new Promise((resolve, reject) => {
-    let getQuery = "SELECT * FROM admin WHERE admin_id = ?;";
+    let getQuery = "SELECT * FROM admin WHERE id = ?;";
     db.query(getQuery, [id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);

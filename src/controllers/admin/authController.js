@@ -37,9 +37,7 @@ export const adminAuthController = {
                   errorType: "client",
                 });
               } else {
-                console.log('-----------------',adminData);
                 let admin = adminData[0]
-                console.log('-----------------',admin);
                 validatePassword(loginInfo.password, admin.password).then(
                   (result) => {
                     if (result) {
