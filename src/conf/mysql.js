@@ -301,6 +301,7 @@ export function mySqlConnect(done) {
         CREATE TABLE IF NOT EXISTS qualifications (
           id INT AUTO_INCREMENT PRIMARY KEY,
           admin_id INT NOT NULL UNIQUE,
+          course_name VARCHAR(100) NOT NULL,
           university VARCHAR(100) NOT NULL,
           note VARCHAR(100) NOT NULL,
           doc VARCHAR(300) DEFAULT NULL

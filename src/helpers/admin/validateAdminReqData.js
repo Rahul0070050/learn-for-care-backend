@@ -180,7 +180,7 @@ export function validateSetAdminQualificationsReqBody(body, files) {
     let dataTemplate = object({
       university: string().required("please provide University"),
       course_name: string().required("please provide course name"),
-      note: string().required("please provide note"),
+      content: string().required("please provide note"),
     });
 
     let doc = validateFile([{ pdf: files.doc }], "pdf");
