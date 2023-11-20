@@ -1,3 +1,4 @@
+import { uploadFileToS3 } from "../../AWS/S3.js";
 import { getPurchasedCourseById } from "../../db/mysql/users/purchasedCourse.js";
 import {
   assignCourseToSubUserDb,
@@ -9,6 +10,7 @@ import {
   getUserById,
   saveAManagerToDb,
   saveASubUserToDb,
+  saveUserProfileImage,
   unBlockSubUserBySubUserId,
   updateUserData,
 } from "../../db/mysql/users/users.js";
@@ -20,6 +22,7 @@ import {
   checkCreateManagerIndividualReqBody,
   checkCreateManagerReqBody,
   checkCreateSubUSerReqBody,
+  checkSetUserProfileImageReqData,
   checkUnBlockSubUserRewData,
   validateUpdateUserInfo,
 } from "../../helpers/user/validateUserReqData.js";
@@ -535,7 +538,7 @@ export const userController = {
       });
     }
   },
-  createManagerIndividual:(req,res) => {
+  createManagerIndividual: (req, res) => {
     try {
       checkCreateManagerIndividualReqBody(req.body)
         .then(async (result) => {
@@ -580,11 +583,63 @@ export const userController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
       });
     }
-  }
+  },
+  setProfileImage: (req, res) => {
+    try {
+      checkSetUserProfileImageReqData(req.files)
+        .then(async (result) => {
+          let user = getUser(req);
+          let uploadedResult = await uploadFileToS3('/user-profile',result[0].image);
+          saveUserProfileImage(user.id, uploadedResult.file)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "profile image updated",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "error from db",
+                  response: err,
+                },
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
 };

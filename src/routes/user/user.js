@@ -8,6 +8,7 @@ const route = Router();
 
 route.get("/data", validateUser, userController.getUserData);
 route.post("/update-user-data", validateUser, userController.updateUserData);
+route.post("/set-profile-image", validateUser, userController.setProfileImage);
 // sub-user
 route.post("/create-sub-user", validateCompanyUserUser, userController.createSubUser);
 route.get("/get-all-sub-users", validateCompanyUserUser, userController.getSubUser);

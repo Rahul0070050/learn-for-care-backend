@@ -1,4 +1,5 @@
 import yup, {object,number,string} from "yup";
+import { validateFile } from "../validateFileTypes.js";
 
 export function validateUpdateUserInfo(userInfo) {
   return new Promise((resolve, reject) => {
@@ -174,6 +175,22 @@ export function checkCreateManagerIndividualReqBody(body) {
         });
     } catch (error) {
       reject(error.message);
+    }
+  });
+}
+
+export function checkSetUserProfileImageReqData(file) {
+  return new Promise((resolve, reject) => {
+    let image = validateFile([{ image: file.image }], "image");
+    try {
+      image.then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
     }
   });
 }

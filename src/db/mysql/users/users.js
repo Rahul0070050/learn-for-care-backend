@@ -384,3 +384,20 @@ export function saveAManagerToDb(data) {
     }
   });
 }
+
+export function saveUserProfileImage(id,file) {
+  return new Promise((resolve, reject) => { 
+    try {
+      let updateQuery = "UPDATE users SET profile_image = ? WHERE id = ?"
+      db.query(updateQuery,[file,id],(err,result) => {
+        if(err){
+          reject(err.message);
+        } else {
+          resolve();
+        }
+      })
+    } catch (error) {
+      reject(error?.message)
+    }
+   })
+}
