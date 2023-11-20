@@ -589,11 +589,12 @@ export const subAdminController = {
       let admin = getUser(req);
       getAdminInfoFromDb(admin.id)
         .then((result) => {
-          result.forEach(async (item) => {
+          let newResult = result.map(async (item) => {
             if (item.staff_cv) {
               let url = await downloadFromS3(item.staff_cv, "pdf");
               item.staff_cv = url.url;
             }
+            return item;
           });
           res.status(200).json({
             success: true,
