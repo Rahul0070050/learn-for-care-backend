@@ -591,8 +591,12 @@ export const subAdminController = {
       let admin = getUser(req);
       getAdminInfoFromDb(admin.id)
         .then(async (result) => {
-          let url = await downloadFromS3("", result[0]?.staff_cv || "");
-          result[0].staff_cv = url.url;
+          let staff_cv = await downloadFromS3("", result[0]?.staff_cv || "");
+          let banner = await downloadFromS3("", result[0]?.profile_banner || "");
+          let profile = await downloadFromS3("", result[0]?.profile_image || "");                    
+          result[0].profile_banner = banner.url;
+          result[0].profile_image = profile.url;
+          result[0].staff_cv = staff_cv.url;
           res.status(200).json({
             success: true,
             data: {
@@ -1163,13 +1167,11 @@ export const subAdminController = {
     try {
       checkSetAdminProfileImageReqData(req.files, req.body)
         .then(async (result) => {
-          console.log(result);
           let docUploadedResult = await uploadFileToS3(
             "/profile",
             result[0].image
           );
           let user = getUser(req);
-          console.log(user);
           saveImageToDb(user.id, docUploadedResult.url)
             .then(() => {
               res.status(200).json({
