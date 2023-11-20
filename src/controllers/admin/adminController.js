@@ -1,4 +1,4 @@
-import { removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
+import { removeFromS3, uploadFileToS3, uploadPdfToS3 } from "../../AWS/S3.js";
 import {
   deleteExperienceFromDb,
   getAdminInfoFromDb,
@@ -12,6 +12,7 @@ import {
   saveNewExperience,
   saveNewQualifications,
   setAdminInfoToDb,
+  setStaffCVToDb,
   updateAdminExperienceToDb,
   updateAdminQualificationToDb,
   updateExperienceDocDbByAdminIdAndDocId,
@@ -42,6 +43,7 @@ import {
   validateSetAdminInfoReqData,
   validateSetAdminQualificationsReqBody,
   validateUnBlockUserInfo,
+  validateUpdateAdminQualificationsReqBody,
   validateUpdateExperienceReqData,
   validateUpdateQualificationReqData,
 } from "../../helpers/admin/validateAdminReqData.js";
@@ -611,7 +613,50 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateStaffCV: (req, res) => {
+    try {
+      validateUpdateAdminQualificationsReqBody(req.files)
+        .then(async (result) => {
+          let uploadedResult = await uploadFileToS3("/staff-cv",result[0].pdf);
+          let admin = getUser(req);
+          await setStaffCVToDb({file: uploadedResult.file,adminId: admin.id,});
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "staff cv updated",
+              response: "",
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
           },
         ],
         errorType: "server",
@@ -681,7 +726,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
@@ -752,7 +797,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",

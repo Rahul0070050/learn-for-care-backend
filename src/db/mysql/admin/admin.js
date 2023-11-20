@@ -306,6 +306,17 @@ export function getAdminInfoFromDb(id) {
   });
 }
 
+export function setStaffCVToDb(data) {
+  const {file,adminId} = data
+  return new Promise((resolve, reject) => {
+    let getQuery = "UPDATE admin SET staff_cv = ? WHERE id = ?;";
+    db.query(getQuery, [file, adminId], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+
 export function saveBannerToDb(id, banner) {
   return new Promise((resolve, reject) => {
     let updateQuery = "UPDATE admin SET profile_banner = ? WHERE id = ?";

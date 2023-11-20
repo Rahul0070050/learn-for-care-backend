@@ -63,6 +63,7 @@ export function mySqlConnect(done) {
             date_of_joining DATETIME DEFAULT NULL,
             profile_image VARCHAR(200) DEFAULT NULL,
             profile_banner VARCHAR(200) DEFAULT NULL,
+            staff_cv VARCHAR(150) DEFAULT NULL,
             correspondence_address VARCHAR(250) DEFAULT NULL,
             bank_holder_name VARCHAR(100) DEFAULT NULL,
             bank_name	VARCHAR(100) DEFAULT NULL,

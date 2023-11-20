@@ -157,7 +157,23 @@ export function validateSetAdminInfoReqData(info) {
       reject(error?.message);
     }
   });
-}
+  }
+
+  export function validateUpdateAdminQualificationsReqBody(files) {
+    return new Promise((resolve, reject) => {
+      let doc = validateFile([{ pdf: files.pdf }], "pdf");
+      try {
+        doc.then((result) => {
+            resolve(result);
+          })
+          .catch((err) => {
+            reject(err?.message);
+          });
+      } catch (error) {
+        reject(error?.message);
+      }
+    });
+  }
 
 export function validateSetAdminQualificationsReqBody(body, files) {
   return new Promise((resolve, reject) => {

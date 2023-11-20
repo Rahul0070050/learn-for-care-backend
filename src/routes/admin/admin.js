@@ -28,6 +28,7 @@ route.get("/block-user/:id", validateAdmin, subAdminController.blockUser);
 route.get("/unblock-user/:id", validateAdmin, subAdminController.unBlockUser);
 route.get("/super-admin-dashboard-data", validateAdmin, subAdminController.superAdminDashboard);
 route.put("/set-admin-info", validateAdmin, subAdminController.setAdminInfo);
+route.post("/set-staff-cv", validateAdmin, subAdminController.updateStaffCV);
 route.get("/get-admin-info", validateAdmin, subAdminController.getAdminInfo);
 route.post("/set-qualification", validateAdmin, subAdminController.setAdminQualification);
 route.post("/set-experience", validateAdmin, subAdminController.setAdminExperience);
