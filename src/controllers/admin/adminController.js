@@ -1163,11 +1163,13 @@ export const subAdminController = {
     try {
       checkSetAdminProfileImageReqData(req.files, req.body)
         .then(async (result) => {
+          console.log(result);
           let docUploadedResult = await uploadFileToS3(
             "/profile",
             result[0].image
           );
           let user = getUser(req);
+          console.log(user);
           saveImageToDb(user.id, docUploadedResult.url)
             .then(() => {
               res.status(200).json({
@@ -1180,6 +1182,7 @@ export const subAdminController = {
               });
             })
             .catch((err) => {
+              console.log(err);
               res.status(406).json({
                 success: false,
                 errors: [
