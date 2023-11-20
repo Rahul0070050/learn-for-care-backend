@@ -185,6 +185,7 @@ export function validateSetAdminQualificationsReqBody(body, files) {
 
     let doc = validateFile([{ pdf: files.doc }], "pdf");
     let bodyResponse = dataTemplate.validate(body);
+    console.log(body, files);
     try {
       Promise.all([doc, bodyResponse])
         .then((result) => {
