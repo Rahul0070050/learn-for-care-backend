@@ -40,7 +40,7 @@ export const adminAuthController = {
                 console.log('-----------------',adminData);
                 let admin = adminData[0]
                 console.log('-----------------',admin);
-                validatePassword(loginInfo.password, adminData.password).then(
+                validatePassword(loginInfo.password, admin.password).then(
                   (result) => {
                     if (result) {
                       createTokenForAdmin({ ...admin, type_of_account: "admin" })
