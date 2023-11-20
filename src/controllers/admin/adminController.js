@@ -588,13 +588,14 @@ export const subAdminController = {
     try {
       let admin = getUser(req);
       getAdminInfoFromDb(admin.id)
-        .then(async(result) => {
-          result.forEach(async (item) => {
+        .then(async (result) => {
+          let newResult = await result.map(async (item) => {
             if (item.staff_cv) {
-              let url = await downloadFromS3("",item.staff_cv);
+              let url = await downloadFromS3("", item.staff_cv);
               console.log(url);
               item.staff_cv = url.url;
             }
+            return item;
           });
           res.status(200).json({
             success: true,
