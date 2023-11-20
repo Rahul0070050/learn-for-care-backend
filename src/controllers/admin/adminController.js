@@ -1172,6 +1172,7 @@ export const subAdminController = {
             result[0].image
           );
           let user = getUser(req);
+          console.log(user);
           saveImageToDb(user.id, docUploadedResult.url)
             .then(() => {
               res.status(200).json({
