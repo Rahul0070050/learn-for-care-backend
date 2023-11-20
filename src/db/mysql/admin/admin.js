@@ -68,38 +68,27 @@ export function setAdminInfoToDb(userData) {
         date_of_joining,
         correspondence_address,
         brief_profile,
+        bank_holder_name,
+        bank_name,
+        account_no,
+        sort_code,
+        roll_number,
       } = userData;
       let setQuery = `
-      INSERT INTO admin_info (
-        admin_id,
-        employee_id,
-        employee_name,
-        designation,
-        email,
-        department,
-        phone,
-        contact_no,
-        gender,
-        date_of_birth,
-        next_to_kin,
-        payroll_reference_number,
-        medical_details,
-        national_insurance_number,
-        contract_type,
-        date_of_joining,
-        correspondence_address,
-        brief_profile
-      ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+      UPDATE admin
+      SET employee_id = ?, employee_name = ?, designation = ?, department = ?,
+      phone = ?, contact_no = ?, gender = ?, date_of_birth = ?, next_to_kin = ?,
+      payroll_reference_number = ?, medical_details = ?, national_insurance_number = ?,
+      contract_type = ?, date_of_joining = ?, correspondence_address = ?, brief_profile = ?,
+      bank_holder_name = ?, bank_name = ?, account_no = ?, sort_code = ?, roll_number = ?
+      WHERE id = ?`;
 
-      await deleteAdminInfo(admin_id);
       db.query(
         setQuery,
         [
-          admin_id,
           employee_id,
           employee_name,
           designation,
-          email,
           department,
           phone,
           contact_no,
@@ -113,17 +102,23 @@ export function setAdminInfoToDb(userData) {
           new Date(date_of_joining),
           correspondence_address,
           brief_profile,
+          bank_holder_name,
+          bank_name,
+          account_no,
+          sort_code,
+          roll_number,
+          admin_id
         ],
         (err, result) => {
           if (err) {
             if (
               err.message ==
-              `ER_DUP_ENTRY: Duplicate entry '${admin_id}' for key 'admin_info.admin_id'`
+              `ER_DUP_ENTRY: Duplicate entry '${admin_id}' for key 'admin.admin_id'`
             ) {
               reject("admin already have the information");
             } else if (
               err.message ==
-              `ER_DUP_ENTRY: Duplicate entry '${email}' for key 'admin_info.email'`
+              `ER_DUP_ENTRY: Duplicate entry '${email}' for key 'admin.email'`
             ) {
               reject("this email already exist");
             } else {
@@ -140,15 +135,7 @@ export function setAdminInfoToDb(userData) {
   });
 }
 
-function deleteAdminInfo(id) {
-  return new Promise((resolve, reject) => {
-    let insertQuery = "DELETE FROM admin_info WHERE admin_id = ?";
-    db.query(insertQuery, [id], (err, result) => {
-      if (err) return reject(err?.message);
-      else return resolve(result);
-    });
-  });
-}
+
 export function saveNewQualifications(data) {
   return new Promise((resolve, reject) => {
     const { admin_id, university, note, doc } = data;
@@ -311,10 +298,20 @@ export function getAdminExperiencesDocs(id) {
 
 export function getAdminInfoFromDb(id) {
   return new Promise((resolve, reject) => {
-    let getQuery = "SELECT * FROM admin_info WHERE admin_id = ?;";
+    let getQuery = "SELECT * FROM admin WHERE admin_id = ?;";
     db.query(getQuery, [id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);
+    });
+  });
+}
+
+export function saveBannerToDb(id, banner) {
+  return new Promise((resolve, reject) => {
+    let updateQuery = "UPDATE admin SET profile_banner = ? WHERE id = ?";
+    db.query(updateQuery, [banner, id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve();
     });
   });
 }

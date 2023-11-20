@@ -8,6 +8,7 @@ import {
   getExperienceDocFromDbById,
   getQualificationDocFromDbByAdminIdAndDocId,
   getQualificationDocFromDbById,
+  saveBannerToDb,
   saveNewExperience,
   saveNewQualifications,
   setAdminInfoToDb,
@@ -29,6 +30,7 @@ import {
   unBlockUserFromAdmin,
 } from "../../db/mysql/admin/user.js";
 import {
+  checkSetAdminProfileBannerReqData,
   checkUpdateAdminExperienceDocReqData,
   checkUpdateQualificationDocReqData,
   checkValidateGetUserByIdReqBody,
@@ -520,7 +522,6 @@ export const subAdminController = {
       validateSetAdminInfoReqData(req.body)
         .then((result) => {
           let admin = getUser(req);
-          console.log(admin);
           setAdminInfoToDb({ ...result, admin_id: admin.id })
             .then(() => {
               res.status(200).json({
@@ -573,31 +574,33 @@ export const subAdminController = {
       });
     }
   },
-  getAdminInfo:(req,res) => {
+  getAdminInfo: (req, res) => {
     try {
-      let admin = getUser(req)
-      getAdminInfoFromDb(admin.id).then(result => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "get admin info",
-            response: result,
-          },
-        });
-      }).catch(err => {
-        res.status(500).json({
-          success: false,
-          errors: [
-            {
-              code: 500,
-              message: "some error occurred please try again later",
-              error: err,
+      let admin = getUser(req);
+      getAdminInfoFromDb(admin.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "get admin info",
+              response: result,
             },
-          ],
-          errorType: "server",
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "some error occurred please try again later",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -1000,6 +1003,67 @@ export const subAdminController = {
                   {
                     code: 406,
                     message: "values not acceptable while saving data",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  updateAdminProfileBanner: (req, res) => {
+    try {
+      checkSetAdminProfileBannerReqData(req.files, req.body)
+        .then(async (result) => {
+          let docUploadedResult = await uploadFileToS3(
+            "/experience",
+            result[0].image
+          );
+          let user = getUser(req);
+          saveBannerToDb(user.id, docUploadedResult.url)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "updated admin profile banner",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "values not acceptable",
                     error: err,
                   },
                 ],

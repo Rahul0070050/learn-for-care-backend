@@ -39,7 +39,6 @@ export function checkUpdateBlogStatusReqBody(data) {
       id: string().required("please provide valid id"),
       status: string().required("please provide status")
     });
-
     
     try {
       bodyTemplate.validate(data).then((result) => {

@@ -113,13 +113,14 @@ export function validateUnBlockUserInfo(data) {
   });
 }
 
-export function   validateSetAdminInfoReqData(info) {
+
+
+export function validateSetAdminInfoReqData(info) {
   return new Promise((resolve, reject) => {
     let dataTemplate = object({
       employee_id: number().required("please provide employee_id"),
       employee_name: string().required("please provide employee_name"),
       designation: string().required("please provide designation"),
-      email: string().email().required("please provide email"),
       department: string().required("please provide department"),
       phone: string().required("please provide phone"),
       contact_no: number().required("please provide contact_no"),
@@ -325,6 +326,22 @@ export function validateDeleteQualificationReqData(data) {
     try {
       dataTemplate.validate(data)
         .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkSetAdminProfileBannerReqData(file) {
+  return new Promise((resolve, reject) => {
+    let image = validateFile([{ image: file.image }], "image");
+    try {
+      image.then((result) => {
           resolve(result);
         })
         .catch((err) => {

@@ -42,18 +42,40 @@ export function mySqlConnect(done) {
       else console.log("user table created");
     });
 
-    //   const createAdminTable = `
-    //       CREATE TABLE IF NOT EXISTS admin (
-    //       email VARCHAR(50) NOT NULL,
-    //       password VARCHAR(300) NOT NULL,
-    //       activate BOOLEAN DEFAULT FALSE,
-    //       otp INT(6) DEFAULT NULL
-    //   );`;
+      const createAdminTable = `
+          CREATE TABLE IF NOT EXISTS admin (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(100) NOT NULL UNIQUE,
+            password VARCHAR(200) NOT NULL,
+            employee_id INT DEFAULT NULL,
+            employee_name VARCHAR(100) DEFAULT NULL,
+            designation VARCHAR(250) DEFAULT NULL,
+            department VARCHAR(100) DEFAULT NULL,
+            phone VARCHAR(15) DEFAULT NULL,
+            contact_no VARCHAR(15) DEFAULT NULL,
+            gender VARCHAR(20) DEFAULT NULL,
+            date_of_birth VARCHAR(25) DEFAULT NULL,
+            next_to_kin VARCHAR(150) DEFAULT NULL,
+            payroll_reference_number INT DEFAULT NULL,
+            medical_details VARCHAR(250) DEFAULT NULL,
+            national_insurance_number INT DEFAULT NULL,
+            contract_type VARCHAR(150) DEFAULT NULL,
+            date_of_joining DATETIME DEFAULT NULL,
+            profile_image VARCHAR(200) DEFAULT NULL,
+            profile_banner VARCHAR(200) DEFAULT NULL,
+            correspondence_address VARCHAR(250) DEFAULT NULL,
+            bank_holder_name VARCHAR(100) DEFAULT NULL,
+            bank_name	VARCHAR(100) DEFAULT NULL,
+            account_no VARCHAR(100) DEFAULT NULL,
+            sort_code	VARCHAR(100) DEFAULT NULL,
+            roll_number VARCHAR(100) DEFAULT NULL,
+            brief_profile TEXT DEFAULT NULL
+      );`;
 
-    //   db.query(createAdminTable, (err, result) => {
-    //     if (err) console.log(err);
-    //     else console.log("admin table created");
-    //   });
+      db.query(createAdminTable, (err, result) => {
+        if (err) console.log(err);
+        else console.log("admin table created");
+      });
 
     //   const createCategoryTable = `
     //     CREATE TABLE IF NOT EXISTS category (
@@ -272,35 +294,6 @@ export function mySqlConnect(done) {
     // db.query(certificateTable, (err, result) => {
     //   if (err) console.log(err);
     //   else console.log("user table created");
-    // });
-
-    //   const adminInfoTable = `
-    //   CREATE TABLE IF NOT EXISTS admin_info (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     admin_id INT NOT NULL UNIQUE,
-    //     employee_id INT NOT NULL,
-    //     employee_name VARCHAR(100) NOT NULL,
-    //     email VARCHAR(100) NOT NULL UNIQUE,
-    //     designation VARCHAR(250) NOT NULL,
-    //     department VARCHAR(100) NOT NULL,
-    //     phone VARCHAR(15) NOT NULL,
-    //     contact_no VARCHAR(15) NOT NULL,
-    //     gender VARCHAR(20) NOT NULL,
-    //     date_of_birth VARCHAR(25) NOT NULL,
-    //     next_to_kin VARCHAR(150) NOT NULL,
-    //     payroll_reference_number INT NOT NULL,
-    //     medical_details VARCHAR(250) NOT NULL,
-    //     national_insurance_number INT NOT NULL,
-    //     contract_type VARCHAR(150) NOT NULL,
-    //     date_of_joining DATETIME NOT NULL,
-    //     correspondence_address VARCHAR(250) NOT NULL,
-    //     brief_profile TEXT NOT NULL
-    //   )
-    // `;
-
-    // db.query(adminInfoTable, (err, result) => {
-    //   if (err) console.log(err);
-    //   else console.log("user table admin_info");
     // });
 
     const qualificationsTable = `

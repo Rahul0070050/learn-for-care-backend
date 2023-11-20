@@ -23,6 +23,7 @@ export const adminAuthController = {
         .then((loginInfo) => {
           getAdminByEmail(loginInfo?.email)
             .then((adminData) => {
+              console.log('adminData ',adminData);
               if (adminData?.length <= 0) {
                 res.status(406).json({
                   success: false,
