@@ -692,7 +692,7 @@ export const subAdminController = {
               saveNewQualifications({
                 admin_id: admin.id,
                 university: result[1].university,
-                note: result[1].note,
+                content: result[1].content,
                 course_name: result[1].course_name,
                 doc: pdfSavedResult.file,
               })

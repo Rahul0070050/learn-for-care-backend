@@ -144,7 +144,7 @@ export function setAdminInfoToDb(userData) {
 
 export function saveNewQualifications(data) {
   return new Promise((resolve, reject) => {
-    const { admin_id, university, note, doc, course_name } = data;
+    const { admin_id, university, content, doc, course_name } = data;
     let insertQuery =
       "INSERT INTO qualifications (admin_id, university, content, doc, course_name) VALUE (?,?,?,?,?)";
     db.query(insertQuery, [admin_id, university, content, doc, course_name], (err, result) => {
