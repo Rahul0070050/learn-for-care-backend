@@ -6,6 +6,7 @@ import {
 } from "../../AWS/S3.js";
 import {
   deleteExperienceFromDb,
+  deleteQualificationFromDb,
   getAdminInfoFromDb,
   getAdminQualificationsDocs,
   getAllQualificationsFromDB,
@@ -1407,8 +1408,9 @@ export const subAdminController = {
         .then((result) => {
           getQualificationDocFromDbById(result.id)
             .then(async (qualificationDoc) => {
+              console.log(qualificationDoc);
               await removeFromS3(qualificationDoc[0].doc);
-              deleteExperienceFromDb(qualificationDoc[0].id).then(() => {
+              deleteQualificationFromDb(result.id).then(() => {
                 res.status(200).json({
                   success: true,
                   data: {
@@ -1416,6 +1418,18 @@ export const subAdminController = {
                     message: "qualification deleted",
                     response: "",
                   },
+                });
+              }).catch(err => {
+                res.status(406).json({
+                  success: false,
+                  errors: [
+                    {
+                      code: 406,
+                      message: "error from from db",
+                      error: err,
+                    },
+                  ],
+                  errorType: "client",
                 });
               });
             })
