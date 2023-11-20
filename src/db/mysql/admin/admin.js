@@ -146,8 +146,8 @@ export function saveNewQualifications(data) {
   return new Promise((resolve, reject) => {
     const { admin_id, university, note, doc, course_name } = data;
     let insertQuery =
-      "INSERT INTO qualifications (admin_id, university, note, doc, course_name) VALUE (?,?,?,?,?)";
-    db.query(insertQuery, [admin_id, university, note, doc, course_name], (err, result) => {
+      "INSERT INTO qualifications (admin_id, university, content, doc, course_name) VALUE (?,?,?,?,?)";
+    db.query(insertQuery, [admin_id, university, content, doc, course_name], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);
     });
