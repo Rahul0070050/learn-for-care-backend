@@ -1,4 +1,9 @@
-import { removeFromS3, uploadFileToS3, uploadPdfToS3 } from "../../AWS/S3.js";
+import {
+  downloadFromS3,
+  removeFromS3,
+  uploadFileToS3,
+  uploadPdfToS3,
+} from "../../AWS/S3.js";
 import {
   deleteExperienceFromDb,
   getAdminInfoFromDb,
@@ -584,6 +589,12 @@ export const subAdminController = {
       let admin = getUser(req);
       getAdminInfoFromDb(admin.id)
         .then((result) => {
+          result.forEach(async (item) => {
+            if (item.staff_cv) {
+              let url = await downloadFromS3(item.staff_cv, "pdf");
+              item.staff_cv = url.url;
+            }
+          });
           res.status(200).json({
             success: true,
             data: {
@@ -624,9 +635,12 @@ export const subAdminController = {
     try {
       validateUpdateAdminQualificationsReqBody(req.files)
         .then(async (result) => {
-          let uploadedResult = await uploadFileToS3("/staff-cv",result[0].pdf);
+          let uploadedResult = await uploadFileToS3("/staff-cv", result[0].pdf);
           let admin = getUser(req);
-          await setStaffCVToDb({file: uploadedResult.file,adminId: admin.id,});
+          await setStaffCVToDb({
+            file: uploadedResult.file,
+            adminId: admin.id,
+          });
           res.status(200).json({
             success: true,
             data: {
