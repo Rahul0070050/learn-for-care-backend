@@ -8,6 +8,7 @@ import {
   deleteExperienceFromDb,
   getAdminInfoFromDb,
   getAdminQualificationsDocs,
+  getAllQualificationsFromDB,
   getDashboardData,
   getExperienceDocFromDbByAdminIdAndDocId,
   getExperienceDocFromDbById,
@@ -46,6 +47,7 @@ import {
   validateCreateUserInfo,
   validateDeleteExperienceReqData,
   validateDeleteQualificationReqData,
+  validateGetQualificationReqData,
   validateSetAdminExperienceReqData,
   validateSetAdminInfoReqData,
   validateSetAdminQualificationsReqBody,
@@ -592,8 +594,14 @@ export const subAdminController = {
       getAdminInfoFromDb(admin.id)
         .then(async (result) => {
           let staff_cv = await downloadFromS3("", result[0]?.staff_cv || "");
-          let banner = await downloadFromS3("", result[0]?.profile_banner || "");
-          let profile = await downloadFromS3("", result[0]?.profile_image || "");                    
+          let banner = await downloadFromS3(
+            "",
+            result[0]?.profile_banner || ""
+          );
+          let profile = await downloadFromS3(
+            "",
+            result[0]?.profile_image || ""
+          );
           result[0].profile_banner = banner.url;
           result[0].profile_image = profile.url;
           result[0].staff_cv = staff_cv.url;
@@ -807,6 +815,112 @@ export const subAdminController = {
           });
         });
       // setNewExperience
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAdminQualification: (req, res) => {
+    try {
+      let admin = getUser(req);
+      getAllQualificationsFromDB(admin.id)
+        .then(async (result) => {
+          let newResult = await result.map(async (qualification, i) => {
+            let downloadFile = await downloadFromS3(i, qualification.doc);
+
+            qualification["doc"] = downloadFile?.url;
+
+            return qualification;
+          });
+
+          Promise.all(newResult)
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "got qualifications",
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "some error happens in db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "some error happens in db",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAdminExperience: (req, res) => {
+    try {
+      let admin = getUser(req);
+      getAllExperiencesData(admin.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got experience",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "some error happens in db",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
     } catch (error) {
       res.status(500).json({
         success: false,

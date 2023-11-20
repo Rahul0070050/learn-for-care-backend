@@ -335,6 +335,27 @@ export function validateDeleteExperienceReqData(data) {
     }
   });
 }
+
+export function validateGetQualificationReqData(data) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      id: number().required("please provide doc id"),
+    });
+
+    try {
+      dataTemplate.validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function validateDeleteQualificationReqData(data) {
   return new Promise((resolve, reject) => {
     let dataTemplate = object({

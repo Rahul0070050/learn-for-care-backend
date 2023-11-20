@@ -153,6 +153,27 @@ export function saveNewQualifications(data) {
     });
   });
 }
+export function getAllQualificationsFromDB(admin_id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery =
+      "SELECT * FROM qualifications WHERE admin_id = ?;"
+    db.query(insertQuery, [admin_id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+
+export function getAllExperiencesData(admin_id) {
+  return new Promise((resolve, reject) => {
+    let insertQuery =
+      "SELECT * FROM experience WHERE admin_id = ?;"
+    db.query(insertQuery, [admin_id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
 
 export function saveNewExperience(data) {
   return new Promise((resolve, reject) => {
@@ -169,7 +190,6 @@ export function saveNewExperience(data) {
     );
   });
 }
-
 export function getQualificationDocFromDbByAdminIdAndDocId(id, adminId) {
   return new Promise((resolve, reject) => {
     let insertQuery =

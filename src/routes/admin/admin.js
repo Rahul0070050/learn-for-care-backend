@@ -31,7 +31,9 @@ route.put("/set-admin-info", validateAdmin, subAdminController.setAdminInfo);
 route.post("/set-staff-cv", validateAdmin, subAdminController.updateStaffCV);
 route.get("/get-admin-info", validateAdmin, subAdminController.getAdminInfo);
 route.post("/set-qualification", validateAdmin, subAdminController.setAdminQualification);
-route.post("/set-experience", validateAdmin, subAdminController.setAdminExperience);
+route.get("/set-experience", validateAdmin, subAdminController.setAdminExperience);
+route.get("/get-qualification", validateAdmin, subAdminController.getAdminQualification);
+route.post("/get-experience", validateAdmin, subAdminController.getAdminExperience);
 route.patch("/update-qualification/:id", validateAdmin, subAdminController.updateAdminQualificationDoc);
 route.patch("/update-experience/:id", validateAdmin, subAdminController.updateAdminExperience);
 route.patch("/update-experience-data", validateAdmin, subAdminController.updateAdminExperienceData);
@@ -40,8 +42,8 @@ route.patch("/update-qualification-data", validateAdmin, subAdminController.upda
 route.post("/update-admin-profile-banner", validateAdmin, subAdminController.updateAdminProfileBanner);
 route.patch("/update-admin-profile-image", validateAdmin, subAdminController.updateAdminProfileImage);
 
-route.delete("/update-experience/:id", validateAdmin, subAdminController.delateAdminExperience);
-route.delete("/update-qualification/:id", validateAdmin, subAdminController.delateAdminQualification);
+route.delete("/delete-experience/:id", validateAdmin, subAdminController.delateAdminExperience);
+route.delete("/delete-qualification/:id", validateAdmin, subAdminController.delateAdminQualification);
 
 
 export default route;
