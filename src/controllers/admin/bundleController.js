@@ -8,8 +8,6 @@ import {
 export const bundleController = {
   createBundle: (req, res) => {
     try {
-      let courseId = req.body.courses.split(",").map((item) => Number(item));
-      req.body.courses = courseId;
       checkCreateBundleReqBody(req.body, req.files)
         .then(async (result) => {
           const blogImage = await uploadFileToS3("/blogs", result[1][0]?.image);
