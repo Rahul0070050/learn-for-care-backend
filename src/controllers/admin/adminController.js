@@ -900,7 +900,39 @@ export const subAdminController = {
     try {
       let admin = getUser(req);
       getAllExperiencesData(admin.id)
-        .then((result) => {
+        .then(async (result) => {
+          let newResult = await result.map(async (experience, i) => {
+            let downloadFile = await downloadFromS3(i, experience.doc);
+
+            experience["doc"] = downloadFile?.url;
+
+            return experience;
+          });
+
+          Promise.all(newResult)
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "got experience",
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "some error happens in db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
           res.status(200).json({
             success: true,
             data: {
