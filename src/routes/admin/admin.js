@@ -33,7 +33,7 @@ route.get("/get-admin-info", validateAdmin, subAdminController.getAdminInfo);
 route.post("/set-qualification", validateAdmin, subAdminController.setAdminQualification);
 route.post("/set-experience", validateAdmin, subAdminController.setAdminExperience);
 route.get("/get-qualification", validateAdmin, subAdminController.getAdminQualification);
-route.post("/get-experience", validateAdmin, subAdminController.getAdminExperience);
+route.get("/get-experience", validateAdmin, subAdminController.getAdminExperience);
 route.patch("/update-qualification/:id", validateAdmin, subAdminController.updateAdminQualificationDoc);
 route.patch("/update-experience/:id", validateAdmin, subAdminController.updateAdminExperience);
 route.patch("/update-experience-data", validateAdmin, subAdminController.updateAdminExperienceData);
