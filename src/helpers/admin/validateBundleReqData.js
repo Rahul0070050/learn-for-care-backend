@@ -16,7 +16,7 @@ export function checkCreateBundleReqBody(body, file) {
       file = { image: file?.image[0] };
     }
 
-    let image = validateFile([{ image: files.image }], "image");
+    let image = validateFile([{ image: file.image }], "image");
     let bodyResult = bodyTemplate.validate(body);
 
     try {
