@@ -9,6 +9,7 @@ import {
   deleteQualificationFromDb,
   getAdminInfoFromDb,
   getAdminQualificationsDocs,
+  getAllExperiencesData,
   getAllQualificationsFromDB,
   getDashboardData,
   getExperienceDocFromDbByAdminIdAndDocId,
