@@ -47,7 +47,8 @@ export function getDashboardData() {
 
 export function setAdminInfoToDb(userData) {
   return new Promise(async (resolve, reject) => {
-    console.log(userData);
+    console.log("userData ", userData);
+    console.log("contact_no ", userData.contact_no);
     try {
       const {
         admin_id,
@@ -179,8 +180,14 @@ export function getAllExperiencesData(admin_id) {
 
 export function saveNewExperience(data) {
   return new Promise((resolve, reject) => {
-    const { admin_id, organization_name, designation, no_of_years, content, doc } =
-      data;
+    const {
+      admin_id,
+      organization_name,
+      designation,
+      no_of_years,
+      content,
+      doc,
+    } = data;
     let insertQuery =
       "INSERT INTO experience (admin_id, organization_name, designation, no_of_years, content, doc) VALUE (?,?,?,?,?,?)";
     db.query(
