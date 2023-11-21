@@ -3,7 +3,6 @@ import { validateFile } from "../validateFileTypes.js";
 
 export function checkCreateBundleReqBody(body, file) {
   return new Promise((resolve, reject) => {
-    
     let bodyTemplate = object({
       name: string().required("please provide valid name"),
       description: string().required("please provide valid description"),
@@ -11,9 +10,9 @@ export function checkCreateBundleReqBody(body, file) {
       price: string().required("please provide valid price"),
     });
 
-    if(Array.isArray(file?.image)) {
-      file = {image: file?.image[0]}
-    };
+    if (Array.isArray(file?.image)) {
+      file = { image: file?.image[0] };
+    }
 
     let imageFile = validateFile([file], "image");
     let bodyResult = bodyTemplate.validate(body);
@@ -33,19 +32,70 @@ export function checkCreateBundleReqBody(body, file) {
   });
 }
 
-export function checkGetBlogByIdReqDate(id) {
-  return new Promise((resolve, reject) => { 
+export function validateDeleteBundle(body) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      id: string().required("please provide valid id"),
+    });
+
+    let bodyResult = bodyTemplate.validate(body);
+
     try {
-      let blog_id = number().required("please provide valid blog id")
-      
-      blog_id.validate(id).then((result) => {
-        resolve(result);
-      })
-      .catch((err) => {
-        reject(err?.message);
-      });
+      bodyResult
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err?.message);
+        });
     } catch (error) {
-      reject(error?.message)
+      reject(error?.message);
     }
-   })
+  });
+}
+export function validateEditBundle(data) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      id: number().required("please provide valid id"),
+      name: string().required("please provide valid name"),
+      description: string().required("please provide valid description"),
+      courses: array().of(number()).required("please provide valid course"),
+      price: string().required("please provide valid price"),
+    });
+
+    let bodyResult = bodyTemplate.validate(data);
+
+    try {
+      bodyResult
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkGetBlogByIdReqDate(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let blog_id = number().required("please provide valid blog id");
+
+      blog_id
+        .validate(id)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
 }

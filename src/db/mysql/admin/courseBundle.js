@@ -37,3 +37,48 @@ export function getCourseBundleById(id) {
     }
   });
 }
+
+export function getAllBundles() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getBundleQuery = "SELECT * FROM course_bundle;";
+
+      db.query(getBundleQuery, (err, bundle) => {
+        if (err) reject(err?.message);
+        else resolve(bundle);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function deleteBundleFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let deleteQuery = "DELETE FROM course_bundle WHERE id = ?;";
+
+      db.query(deleteQuery, [id], (err, bundle) => {
+        if (err) reject(err?.message);
+        else resolve(bundle);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function EditBundleFromDb(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      let deleteQuery = "DELETE FROM course_bundle WHERE id = ?;";
+
+      db.query(deleteQuery, [id], (err, bundle) => {
+        if (err) reject(err?.message);
+        else resolve(bundle);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

@@ -8,6 +8,8 @@ export function checkAddToCartReqBody(ids) {
         id: yup.number().required("ID is required"),
       })
     );
+
+    console.log(ids);
     try {
       course
         .validate(ids)

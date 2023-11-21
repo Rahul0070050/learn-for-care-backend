@@ -1,6 +1,12 @@
-import { checkCreateBundleReqBody } from "../../helpers/admin/validateBundleReqData.js";
+import {
+  checkCreateBundleReqBody,
+  validateDeleteBundle,
+  validateEditBundle,
+} from "../../helpers/admin/validateBundleReqData.js";
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
+  deleteBundleFromDb,
+  getAllBundles,
   getCourseBundleById,
   insertNewBundle,
 } from "../../db/mysql/admin/courseBundle.js";
@@ -38,7 +44,6 @@ export const bundleController = {
             });
         })
         .catch((err) => {
-          console.log(err);
           res.status(406).json({
             success: false,
             errors: [
@@ -65,5 +70,160 @@ export const bundleController = {
         errorType: "server",
       });
     }
-  }
+  },
+  getAllCourseBundles: (req, res) => {
+    try {
+      getAllBundles()
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: `got all bundle`,
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  deleteBundle: (req, res) => {
+    try {
+      validateDeleteBundle(req.params)
+        .then((result) => {
+          deleteBundleFromDb(result.id)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `bundle deleted`,
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  editBundleInfo: (req, res) => {
+    try {
+      validateEditBundle(req.body)
+        .then((result) => {
+          EditBundleFromDb(result.id)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `bundle deleted`,
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
 };
