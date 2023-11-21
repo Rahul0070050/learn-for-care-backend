@@ -8,8 +8,7 @@ export function checkAddToCartReqBody(ids) {
         id: yup.number().required("ID is required"),
       })
     );
-
-    console.log(ids);
+    ids = JSON.parse(ids);
     try {
       course
         .validate(ids)
@@ -106,4 +105,3 @@ export function checkGetInvoiceByIdReqBody(body) {
     }
   });
 }
-
