@@ -3,7 +3,6 @@ import { db } from "../../../conf/mysql.js";
 export function insertNewBundle(bundle) {
   console.log(bundle);
   let { name, description, courses, price, image } = bundle;
-  courses = JSON.stringify(courses);
   return new Promise((resolve, reject) => {
     try {
       let insertBundleQuery =
