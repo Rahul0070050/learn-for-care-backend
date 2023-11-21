@@ -765,14 +765,13 @@ export const subAdminController = {
       validateSetAdminExperienceReqData(req.body, req.files)
         .then((result) => {
           result = result.flat();
-          console.log(result);
           uploadFileToS3("/experience", result[0].pdf).then(
             (pdfSavedResult) => {
               let admin = getUser(req);
               console.log(result);
               saveNewExperience({
                 admin_id: admin.id,
-                course_name: result[1].course_name,
+                organization_name: result[1].organization,
                 designation: result[1].designation,
                 no_of_years: result[1].no_of_years,
                 content: result[1].content,

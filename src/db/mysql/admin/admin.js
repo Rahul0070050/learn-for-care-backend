@@ -179,13 +179,13 @@ export function getAllExperiencesData(admin_id) {
 
 export function saveNewExperience(data) {
   return new Promise((resolve, reject) => {
-    const { admin_id, course_name, designation, no_of_years, content, doc } =
+    const { admin_id, organization_name, designation, no_of_years, content, doc } =
       data;
     let insertQuery =
-      "INSERT INTO experience (admin_id, course_name, designation, no_of_years, content, doc) VALUE (?,?,?,?,?,?)";
+      "INSERT INTO experience (admin_id, organization_name, designation, no_of_years, content, doc) VALUE (?,?,?,?,?,?)";
     db.query(
       insertQuery,
-      [admin_id, course_name, designation, no_of_years, content, doc],
+      [admin_id, organization_name, designation, no_of_years, content, doc],
       (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
