@@ -592,6 +592,7 @@ export const userController = {
   },
   setProfileImage: (req, res) => {
     try {
+      console.log(req.files);
       checkSetUserProfileImageReqData(req.files)
         .then(async (result) => {
           let user = getUser(req);
