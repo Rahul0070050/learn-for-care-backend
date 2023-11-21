@@ -1,4 +1,4 @@
-import { uploadFileToS3 } from "../../AWS/S3.js";
+import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import { getPurchasedCourseById } from "../../db/mysql/users/purchasedCourse.js";
 import {
   assignCourseToSubUserDb,
@@ -33,7 +33,9 @@ export const userController = {
   getUserData: (req, res) => {
     let user = getUser(req);
     getUserById(user.id)
-      .then((result) => {
+      .then(async (result) => {
+        let url = await downloadFromS3("", result[0].profile_image);
+        result[0].profile_image = url.url
         res.status(200).json({
           success: true,
           data: {
@@ -598,7 +600,10 @@ export const userController = {
           let user = getUser(req);
           console.log(result);
           console.log(user);
-          let uploadedResult = await uploadFileToS3('/user-profile',result[0].image);
+          let uploadedResult = await uploadFileToS3(
+            "/user-profile",
+            result[0].image
+          );
           saveUserProfileImage(user.id, uploadedResult.file)
             .then(() => {
               res.status(200).json({
