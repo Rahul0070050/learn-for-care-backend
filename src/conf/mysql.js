@@ -265,20 +265,20 @@ export function mySqlConnect(done) {
     //   else console.log("assigned course table created");
     // });
 
-    // const courseBundleTable = `
-    //   CREATE TABLE IF NOT EXISTS course_bundle (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     name VARCHAR(150) NOT NULL,
-    //     price INT NOT NULL,
-    //     courses VARCHAR(150) NOT NULL,
-    //     description TEXT NOT NULL
-    //   );
-    // `;
+    const courseBundleTable = `
+      CREATE TABLE IF NOT EXISTS course_bundle (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(150) NOT NULL,
+        price INT NOT NULL,
+        courses VARCHAR(150) NOT NULL,
+        description TEXT NOT NULL
+      );
+    `;
 
-    // db.query(courseBundleTable, (err, result) => {
-    //   if (err) console.log(err.message);
-    //   else console.log("course bundle table created");
-    // });
+    db.query(courseBundleTable, (err, result) => {
+      if (err) console.log(err.message);
+      else console.log("course bundle table created");
+    });
 
     // const certificateTable = `
     //     CREATE TABLE IF NOT EXISTS certificate (
