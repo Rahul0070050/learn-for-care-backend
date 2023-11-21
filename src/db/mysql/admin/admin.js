@@ -147,16 +147,19 @@ export function saveNewQualifications(data) {
     const { admin_id, university, content, doc, course_name } = data;
     let insertQuery =
       "INSERT INTO qualifications (admin_id, university, content, doc, course_name) VALUE (?,?,?,?,?)";
-    db.query(insertQuery, [admin_id, university, content, doc, course_name], (err, result) => {
-      if (err) return reject(err?.message);
-      else return resolve(result);
-    });
+    db.query(
+      insertQuery,
+      [admin_id, university, content, doc, course_name],
+      (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      }
+    );
   });
 }
 export function getAllQualificationsFromDB(admin_id) {
   return new Promise((resolve, reject) => {
-    let insertQuery =
-      "SELECT * FROM qualifications WHERE admin_id = ?;"
+    let insertQuery = "SELECT * FROM qualifications WHERE admin_id = ?;";
     db.query(insertQuery, [admin_id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);
@@ -166,8 +169,7 @@ export function getAllQualificationsFromDB(admin_id) {
 
 export function getAllExperiencesData(admin_id) {
   return new Promise((resolve, reject) => {
-    let insertQuery =
-      "SELECT * FROM experience WHERE admin_id = ?;"
+    let insertQuery = "SELECT * FROM experience WHERE admin_id = ?;";
     db.query(insertQuery, [admin_id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);
@@ -177,12 +179,13 @@ export function getAllExperiencesData(admin_id) {
 
 export function saveNewExperience(data) {
   return new Promise((resolve, reject) => {
-    const { admin_id, organization, position, no_of_years, note, doc } = data;
+    const { admin_id, course_name, designation, no_of_years, content, doc } =
+      data;
     let insertQuery =
       "INSERT INTO experience (admin_id, course_name, designation, no_of_years, content, doc) VALUE (?,?,?,?,?,?)";
     db.query(
       insertQuery,
-      [admin_id, organization, position, no_of_years, note, doc],
+      [admin_id, course_name, designation, no_of_years, content, doc],
       (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);

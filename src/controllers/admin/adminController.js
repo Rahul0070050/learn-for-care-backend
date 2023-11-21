@@ -768,6 +768,7 @@ export const subAdminController = {
           uploadFileToS3("/experience", result[0].pdf).then(
             (pdfSavedResult) => {
               let admin = getUser(req);
+              console.log(result);
               saveNewExperience({
                 admin_id: admin.id,
                 course_name: result[1].course_name,
@@ -1410,28 +1411,30 @@ export const subAdminController = {
             .then(async (qualificationDoc) => {
               console.log(qualificationDoc);
               await removeFromS3(qualificationDoc[0].doc);
-              deleteQualificationFromDb(result.id).then(() => {
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    message: "qualification deleted",
-                    response: "",
-                  },
-                });
-              }).catch(err => {
-                res.status(406).json({
-                  success: false,
-                  errors: [
-                    {
-                      code: 406,
-                      message: "error from from db",
-                      error: err,
+              deleteQualificationFromDb(result.id)
+                .then(() => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "qualification deleted",
+                      response: "",
                     },
-                  ],
-                  errorType: "client",
+                  });
+                })
+                .catch((err) => {
+                  res.status(406).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 406,
+                        message: "error from from db",
+                        error: err,
+                      },
+                    ],
+                    errorType: "client",
+                  });
                 });
-              });
             })
             .catch((err) => {
               res.status(406).json({
