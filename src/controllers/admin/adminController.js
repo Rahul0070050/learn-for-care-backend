@@ -762,6 +762,7 @@ export const subAdminController = {
   },
   setAdminExperience: (req, res) => {
     try {
+      console.log(req.body);
       validateSetAdminExperienceReqData(req.body, req.files)
         .then((result) => {
           result = result.flat();
