@@ -594,29 +594,36 @@ export const userController = {
     try {
       checkSetUserProfileImageReqData(req.files)
         .then(async (result) => {
-          let user = getUser(req);
-          let uploadedResult = await uploadFileToS3('/user-profile',result[0].image);
-          saveUserProfileImage(user.id, uploadedResult.file)
-            .then(() => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "profile image updated",
-                  response: "",
-                },
+          try {
+            let user = getUser(req);
+            let uploadedResult = await uploadFileToS3(
+              "/user-profile",
+              result[0].image
+            );
+            saveUserProfileImage(user.id, uploadedResult.file)
+              .then(() => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "profile image updated",
+                    response: "",
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "error from db",
+                    response: err,
+                  },
+                });
               });
-            })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "error from db",
-                  response: err,
-                },
-              });
-            });
+          } catch (error) {
+            console.log(error);
+          }
         })
         .catch((err) => {
           res.status(406).json({
