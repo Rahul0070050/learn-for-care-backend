@@ -1245,13 +1245,15 @@ export const subAdminController = {
   },
   updateAdminProfileBanner: (req, res) => {
     try {
-      checkSetAdminProfileBannerReqData(req.files, req.body)
+      checkSetAdminProfileBannerReqData(req.files)
         .then(async (result) => {
           let docUploadedResult = await uploadFileToS3(
             "/banner",
             result[0].image
           );
           let user = getUser(req);
+          console.log(docUploadedResult);
+          console.log(user);
           saveBannerToDb(user.id, docUploadedResult.url)
             .then(() => {
               res.status(200).json({
