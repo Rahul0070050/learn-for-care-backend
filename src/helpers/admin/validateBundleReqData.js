@@ -11,6 +11,7 @@ export function checkCreateBundleReqBody(body, file) {
     });
 
     body.courses = JSON.stringify(body.courses);
+    console.log(body);
 
     if (Array.isArray(file?.image)) {
       file = { image: file?.image[0] };
