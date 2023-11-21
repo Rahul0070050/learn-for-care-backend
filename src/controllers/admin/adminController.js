@@ -933,14 +933,6 @@ export const subAdminController = {
                 errorType: "client",
               });
             });
-          res.status(200).json({
-            success: true,
-            data: {
-              code: 200,
-              message: "got experience",
-              response: result,
-            },
-          });
         })
         .catch((err) => {
           res.status(406).json({
