@@ -1252,9 +1252,7 @@ export const subAdminController = {
             result[0].image
           );
           let user = getUser(req);
-          console.log(docUploadedResult);
-          console.log(user);
-          saveBannerToDb(user.id, docUploadedResult.url)
+          saveBannerToDb(user.id, docUploadedResult.file)
             .then(() => {
               res.status(200).json({
                 success: true,
