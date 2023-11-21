@@ -70,13 +70,19 @@ export function deleteBundleFromDb(id) {
 
 export function EditBundleFromDb(data) {
   return new Promise((resolve, reject) => {
+    const { id, name, description, courses, price } = data;
     try {
-      let deleteQuery = "DELETE FROM course_bundle WHERE id = ?;";
+      let deleteQuery =
+        "UPDATE course_bundle SET name = ?, description = ?, courses = ?, price = ? WHERE id = ?;";
 
-      db.query(deleteQuery, [id], (err, bundle) => {
-        if (err) reject(err?.message);
-        else resolve(bundle);
-      });
+      db.query(
+        deleteQuery,
+        [name, description, courses, price, id],
+        (err, bundle) => {
+          if (err) reject(err?.message);
+          else resolve(bundle);
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }

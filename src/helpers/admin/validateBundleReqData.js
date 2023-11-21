@@ -6,19 +6,21 @@ export function checkCreateBundleReqBody(body, file) {
     let bodyTemplate = object({
       name: string().required("please provide valid name"),
       description: string().required("please provide valid description"),
-      courses: array().of(number()).required("please provide valid course"),
+      courses: string().required("please provide valid course"),
       price: string().required("please provide valid price"),
     });
+
+    body.courses = JSON.stringify(body.courses);
 
     if (Array.isArray(file?.image)) {
       file = { image: file?.image[0] };
     }
 
-    let imageFile = validateFile([file], "image");
+    let image = validateFile([{ image: files.image }], "image");
     let bodyResult = bodyTemplate.validate(body);
 
     try {
-      Promise.all([bodyResult, imageFile])
+      Promise.all([bodyResult, image])
         .then((result) => {
           resolve(result);
         })
@@ -68,6 +70,30 @@ export function validateEditBundle(data) {
 
     try {
       bodyResult
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function validateEditBundleImage(data, files) {
+  return new Promise((resolve, reject) => {
+    let bodyTemplate = object({
+      id: number().required("please provide valid id"),
+    });
+
+    let bodyResult = bodyTemplate.validate(data);
+    let image = validateFile([{ image: files.image }], "image");
+
+    try {
+      Promise.all([bodyResult, image])
         .then((result) => {
           resolve(result);
         })

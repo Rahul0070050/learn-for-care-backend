@@ -2,9 +2,11 @@ import {
   checkCreateBundleReqBody,
   validateDeleteBundle,
   validateEditBundle,
+  validateEditBundleImage,
 } from "../../helpers/admin/validateBundleReqData.js";
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
+  EditBundleFromDb,
   deleteBundleFromDb,
   getAllBundles,
   getCourseBundleById,
@@ -173,13 +175,13 @@ export const bundleController = {
     try {
       validateEditBundle(req.body)
         .then((result) => {
-          EditBundleFromDb(result.id)
+          EditBundleFromDb(result)
             .then(() => {
               res.status(200).json({
                 success: true,
                 data: {
                   code: 200,
-                  message: `bundle deleted`,
+                  message: `bundle updated`,
                   response: result,
                 },
               });
@@ -226,4 +228,61 @@ export const bundleController = {
       });
     }
   },
+  // editBundleImage: (req, res) => {
+  //   try {
+  //     validateEditBundleImage(req.body,req.files)
+  //       .then((result) => {
+  //         EditBundleFromDb(result)
+  //           .then(() => {
+  //             res.status(200).json({
+  //               success: true,
+  //               data: {
+  //                 code: 200,
+  //                 message: `bundle updated`,
+  //                 response: result,
+  //               },
+  //             });
+  //           })
+  //           .catch((err) => {
+  //             res.status(406).json({
+  //               success: false,
+  //               errors: [
+  //                 {
+  //                   code: 406,
+  //                   message: "value not acceptable",
+  //                   error: err,
+  //                 },
+  //               ],
+  //               errorType: "client",
+  //             });
+  //           });
+  //       })
+  //       .catch((err) => {
+  //         res.status(406).json({
+  //           success: false,
+  //           errors: [
+  //             {
+  //               code: 406,
+  //               message: "value not acceptable",
+  //               error: err,
+  //             },
+  //           ],
+  //           errorType: "client",
+  //         });
+  //       });
+  //   } catch (error) {
+  //     res.status(500).json({
+  //       success: false,
+  //       errors: [
+  //         {
+  //           code: 500,
+  //           message:
+  //             "some error occurred in the server try again after some times",
+  //           error: error?.message,
+  //         },
+  //       ],
+  //       errorType: "server",
+  //     });
+  //   }
+  // },
 };
