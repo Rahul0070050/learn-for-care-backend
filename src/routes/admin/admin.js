@@ -31,7 +31,7 @@ route.put("/set-admin-info", validateAdmin, subAdminController.setAdminInfo);
 route.post("/set-staff-cv", validateAdmin, subAdminController.updateStaffCV);
 route.get("/get-admin-info", validateAdmin, subAdminController.getAdminInfo);
 route.post("/set-qualification", validateAdmin, subAdminController.setAdminQualification);
-route.get("/set-experience", validateAdmin, subAdminController.setAdminExperience);
+route.post("/set-experience", validateAdmin, subAdminController.setAdminExperience);
 route.get("/get-qualification", validateAdmin, subAdminController.getAdminQualification);
 route.post("/get-experience", validateAdmin, subAdminController.getAdminExperience);
 route.patch("/update-qualification/:id", validateAdmin, subAdminController.updateAdminQualificationDoc);
