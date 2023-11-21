@@ -770,10 +770,10 @@ export const subAdminController = {
               let admin = getUser(req);
               saveNewExperience({
                 admin_id: admin.id,
-                organization: result[1].organization,
-                position: result[1].position,
+                course_name: result[1].course_name,
+                designation: result[1].designation,
                 no_of_years: result[1].no_of_years,
-                note: result[1].note,
+                content: result[1].content,
                 doc: pdfSavedResult.file,
               })
                 .then(() => {

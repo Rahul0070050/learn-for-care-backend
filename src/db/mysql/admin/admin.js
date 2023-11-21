@@ -179,7 +179,7 @@ export function saveNewExperience(data) {
   return new Promise((resolve, reject) => {
     const { admin_id, organization, position, no_of_years, note, doc } = data;
     let insertQuery =
-      "INSERT INTO experience (admin_id, organization, position, no_of_years, note, doc) VALUE (?,?,?,?,?,?)";
+      "INSERT INTO experience (admin_id, course_name, designation, no_of_years, content, doc) VALUE (?,?,?,?,?,?)";
     db.query(
       insertQuery,
       [admin_id, organization, position, no_of_years, note, doc],

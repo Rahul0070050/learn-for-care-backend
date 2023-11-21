@@ -203,10 +203,10 @@ export function validateSetAdminQualificationsReqBody(body, files) {
 export function validateSetAdminExperienceReqData(body, files) {
   return new Promise((resolve, reject) => {
     let dataTemplate = object({
-      note: string().required("please provide note"),
-      organization: string().required("please provide organization"),
-      position: string().required("please provide position"),
-      no_of_years: number().required("please provide no_of_years"),
+      course_name: string().required("please provide course_name"),
+      designation: string().required("please provide designation"),
+      no_of_years: string().required("please provide no_of_years"),
+      content: string().required("please provide content"),
     });
 
     let doc = validateFile([{ pdf: files.doc }], "pdf");

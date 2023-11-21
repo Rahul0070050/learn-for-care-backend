@@ -317,10 +317,10 @@ export function mySqlConnect(done) {
         CREATE TABLE IF NOT EXISTS experience (
           id INT AUTO_INCREMENT PRIMARY KEY,
           admin_id INT NOT NULL UNIQUE,
-          organization VARCHAR(100) NOT NULL,
-          position VARCHAR(50) NOT NULL,
+          course_name VARCHAR(100) NOT NULL,
+          designation VARCHAR(50) NOT NULL,
           no_of_years INT NOT NULL,
-          note VARCHAR(100) NOT NULL,
+          content VARCHAR(100) NOT NULL,
           doc VARCHAR(300) DEFAULT NULL
         );
       `;
