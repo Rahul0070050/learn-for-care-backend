@@ -119,15 +119,15 @@ export const cartController = {
             courses.map(async (courseBundle) => {
               let item = courseIds.find((item) => item.id == courseBundle.id);
               console.log(courseBundle);
-              // return await addCourseToCart(
-              //   courseBundle[0].id,
-              //   courseBundle[0].price,
-              //   courseBundle[0].image,
-              //   user.id,
-              //   courseBundle[0].name,
-              //   item.count,
-              //   "bundle"
-              // );
+              return await addCourseToCart(
+                courseBundle.id,
+                courseBundle.price,
+                courseBundle.image,
+                user.id,
+                courseBundle.name,
+                item.count,
+                "bundle"
+              );
             })
           )
             .then(() => {
