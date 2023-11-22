@@ -151,7 +151,8 @@ export function mySqlConnect(done) {
       //     amount TEXT NOT NULL,
       //     course_count INT NOT NULL,
       //     fake_course_count INT NOT NULL,
-      //     user_type VARCHAR(20) NOT NULL,
+      //     user_type VARCHAR(20) DEFAULT NULL,
+      //     course_type VARCHAR(20) NOT NULL,
       //     status VARCHAR(20) NOT NULL DEFAULT 'not started',
       //     validity VARCHAR(10) NOT NULL,
       //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -249,6 +250,24 @@ export function mySqlConnect(done) {
     //     if (err) console.log(err.message);
     //     else console.log("assigned course table created");
     //   });
+
+  //   const assignedCourseTable = `
+  //   CREATE TABLE IF NOT EXISTS assigned_course (
+  //     id INT AUTO_INCREMENT PRIMARY KEY,
+  //     company_id INT NOT NULL,
+  //     course_id INT NOT NULL,
+  //     sub_user_id INT NOT NULL,
+  //     progress INT NOT NULL DEFAULT 0,
+  //     course_count INT NOT NULL DEFAULT 1,
+  //     color VARCHAR(15) NOT NULL DEFAULT 'red',
+  //     validity VARCHAR(15) NOT NULL
+  //   );
+  // `;
+
+  //   db.query(assignedCourseTable, (err, result) => {
+  //     if (err) console.log(err.message);
+  //     else console.log("assigned course table created");
+  //   });
 
     // const subAdminTable = `
     //   CREATE TABLE IF NOT EXISTS sub_admin (

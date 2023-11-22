@@ -463,6 +463,7 @@ export const cartController = {
                         course_id: item.course_id,
                         amount: item.amount,
                         course_count: item.product_count,
+                        type: item.item_type
                       });
                     })
                   )
