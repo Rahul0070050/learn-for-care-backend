@@ -24,12 +24,18 @@ export function checkAddToCartReqBody(ids) {
   });
 }
 
-export function checkAddBundleToCartReqBody(id) {
+export function checkAddBundleToCartReqBody(ids) {
   return new Promise((resolve, reject) => {
-    let bundleId = number().required("bundleId is required");
+    let course = yup.array().of(
+      yup.object().shape({
+        count: yup.number().required("Count is required"),
+        id: yup.number().required("ID is required"),
+      })
+    );
+    ids = JSON.parse(ids);
     try {
-      bundleId
-        .validate(id)
+      course
+        .validate(ids)
         .then((res) => {
           resolve(res);
         })

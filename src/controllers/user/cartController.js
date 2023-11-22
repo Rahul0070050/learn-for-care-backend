@@ -103,59 +103,55 @@ export const cartController = {
   },
   addBundleToCart: (req, res) => {
     try {
-      checkAddBundleToCartReqBody(req.body.bundleId)
-        .then(async (courseId) => {
+      checkAddBundleToCartReqBody(req.body.course)
+        .then(async (courseIds) => {
           let user = getUser(req);
 
-          let courseBundle = await getCourseBundleById(courseId);
+          let allCourses = courseIds.map(async (item) => {
+            return await getCourseBundleById(item.id);
+          });
 
-          console.log(courseBundle);
-          if (courseBundle.length) {
-            await addCourseToCart(
-              courseBundle[0].id,
-              courseBundle[0].price,
-              courseBundle[0].image,
-              user.id,
-              courseBundle[0].name,
-              1,
-              "bundle"
-            )
-              .then(() => {
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    message: `product added to the cart`,
-                  },
-                });
-              })
-              .catch((err) => {
-                res.status(500).json({
-                  success: false,
-                  errors: [
-                    {
-                      code: 500,
-                      message:
-                        "something went wrong try again after some times",
-                      error: err,
-                    },
-                  ],
-                  errorType: "server",
-                });
-              });
-          } else {
-            res.status(406).json({
-              success: false,
-              errors: [
-                {
-                  code: 406,
-                  message: "product is not exist",
-                  error: err,
+          let courses = await Promise.all(allCourses);
+
+          courses = courses.flat(1);
+
+          Promise.all(
+            courses.map(async (courseBundle) => {
+              let item = courseIds.find((item) => item.id == courseBundle.id);
+              console.log(courseBundle);
+              // return await addCourseToCart(
+              //   courseBundle[0].id,
+              //   courseBundle[0].price,
+              //   courseBundle[0].image,
+              //   user.id,
+              //   courseBundle[0].name,
+              //   item.count,
+              //   "bundle"
+              // );
+            })
+          )
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `product added to the cart`,
                 },
-              ],
-              errorType: "server",
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message: "something went wrong try again after some times",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
+              });
             });
-          }
         })
         .catch((err) => {
           res.status(406).json({
