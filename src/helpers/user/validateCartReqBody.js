@@ -9,6 +9,7 @@ export function checkAddToCartReqBody(ids) {
       })
     );
     ids = JSON.parse(ids);
+    console.log(ids);
     try {
       course
         .validate(ids)
@@ -33,6 +34,7 @@ export function checkAddBundleToCartReqBody(ids) {
       })
     );
     ids = JSON.parse(ids);
+    console.log(ids);
     try {
       course
         .validate(ids)
