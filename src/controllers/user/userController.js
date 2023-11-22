@@ -1,5 +1,5 @@
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
-import { getPurchasedCourseById } from "../../db/mysql/users/purchasedCourse.js";
+import { getPurchasedCourseById, getPurchasedCourseFromDbByUserId } from "../../db/mysql/users/purchasedCourse.js";
 import {
   assignCourseToSubUserDb,
   blockSubUserBySubUserId,
@@ -650,4 +650,40 @@ export const userController = {
       });
     }
   },
+  getPurchasedBundles:(req,res) => {
+    try {
+      let user = getUser(req)
+      getPurchasedCourseFromDbByUserId(user.id).then(result => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: "got all purchased bundles",
+            response: result,
+          },
+        });
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          data: {
+            code: 406,
+            message: "value not acceptable",
+            response: err,
+          },
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
 };

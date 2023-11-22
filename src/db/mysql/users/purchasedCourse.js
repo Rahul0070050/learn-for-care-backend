@@ -51,3 +51,20 @@ export function getPurchasedCourseById(id) {
     }
   });
 }
+
+export function getPurchasedCourseFromDbByUserId(id) {
+  return new Promise((resolve, reject) => { 
+    try {
+      let getQuery = "SELECT * FROM purchased_course WHERE course_type = ? AND course_id = ?;"
+      db.query(getQuery,['bundle',id],(err,result) => {
+        if(err){
+          reject(err.message);
+        } else {
+          resolve(result);
+        }
+      })
+    } catch (error) {
+      reject(error?.message)
+    }
+   })
+}
