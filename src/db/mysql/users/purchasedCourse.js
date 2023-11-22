@@ -55,6 +55,7 @@ export function getPurchasedCourseById(id) {
 export function getPurchasedCourseFromDbByUserId(id) {
   return new Promise((resolve, reject) => { 
     try {
+      // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
           SELECT purchased_course.* , purchased_course.course_id AS bundle_id, course_bundle.name AS bundle_name 
           FROM purchased_course

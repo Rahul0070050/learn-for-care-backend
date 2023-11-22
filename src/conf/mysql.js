@@ -42,7 +42,7 @@ export function mySqlConnect(done) {
       else console.log("user table created");
     });
 
-      const createAdminTable = `
+    const createAdminTable = `
           CREATE TABLE IF NOT EXISTS admin (
             id INT AUTO_INCREMENT PRIMARY KEY,
             email VARCHAR(100) NOT NULL UNIQUE,
@@ -73,10 +73,10 @@ export function mySqlConnect(done) {
             brief_profile TEXT DEFAULT NULL
       );`;
 
-      db.query(createAdminTable, (err, result) => {
-        if (err) console.log(err);
-        else console.log("admin table created");
-      });
+    db.query(createAdminTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("admin table created");
+    });
 
     //   const createCategoryTable = `
     //     CREATE TABLE IF NOT EXISTS category (
@@ -130,7 +130,7 @@ export function mySqlConnect(done) {
     // CREATE TABLE IF NOT EXISTS cart (
     //   id INT AUTO_INCREMENT PRIMARY KEY,
     //   user_id INT NOT NULL,
-      // course_id INT NOT NULL, // TODO: course id some times predated as bundle id
+    // course_id INT NOT NULL, // TODO: course id some times predated as bundle id
     //   product_count INT NOT NULL,
     //   thumbnail VARCHAR(255) NOT NULL,
     //   name VARCHAR(255) NOT NULL,
@@ -143,22 +143,21 @@ export function mySqlConnect(done) {
     //   else console.log("cart table created");
     // });
 
-      // const purchasedCourseTable = `
-      //   CREATE TABLE IF NOT EXISTS purchased_course (
-      //     id INT AUTO_INCREMENT PRIMARY KEY,
-      //     user_id INT NOT NULL,
-      //     course_id INT NOT NULL,
-      //     amount TEXT NOT NULL,
-      //     course_count INT NOT NULL,
-      //     fake_course_count INT NOT NULL,
-      //     user_type VARCHAR(20) DEFAULT NULL,
-      //     course_type VARCHAR(20) NOT NULL,
-      //     status VARCHAR(20) NOT NULL DEFAULT 'not started',
-      //     validity VARCHAR(10) NOT NULL,
-      //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      //   );
-      // `;
-
+    // const purchasedCourseTable = `
+    //   CREATE TABLE IF NOT EXISTS purchased_course (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     user_id INT NOT NULL,
+    //     course_id INT NOT NULL,
+    //     amount TEXT NOT NULL,
+    //     course_count INT NOT NULL,
+    //     fake_course_count INT NOT NULL,
+    //     user_type VARCHAR(20) DEFAULT NULL,
+    //     course_type VARCHAR(20) NOT NULL,
+    //     status VARCHAR(20) NOT NULL DEFAULT 'not started',
+    //     validity VARCHAR(10) NOT NULL,
+    //     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    //   );
+    // `;
 
     //   db.query(purchasedCourseTable, (err, result) => {
     //     if (err) console.log(err.message);
@@ -195,6 +194,23 @@ export function mySqlConnect(done) {
     //   if (err) console.log(err.message);
     //   else console.log("exam table created");
     // });
+
+    const assignedToManagerTable = `
+      CREATE TABLE IF NOT EXISTS course_assigned_manager (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        course_id INT NOT NULL,
+        manager_id INT NOT NULL,
+        course_type VARCHAR(25) NOT NULL,
+        fake_count INT NOT NULL,
+        count INT NOT NULL,
+        validity DATETIME NOT NULL
+      );
+    `;
+
+    db.query(assignedToManagerTable, (err, result) => {
+      if (err) console.log(err.message);
+      else console.log("exam table created");
+    });
 
     //   const ExamAttemptsTable = `
     //     CREATE TABLE IF NOT EXISTS exam_attempts (
@@ -236,6 +252,23 @@ export function mySqlConnect(done) {
     // const assignedCourseTable = `
     //   CREATE TABLE IF NOT EXISTS assigned_course (
     //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     manager_id INT NOT NULL,
+    //     course_id INT NOT NULL,
+    //     course_type VARCHAR(20) NOT NULL,
+    //     user_id INT NOT NULL DEFAULT 0,
+    //     validity VARCHAR(15) NOT NULL,
+    //     date DATETIME NOT NULL DEFAULT NOW()
+    //   );
+    // `;
+
+    //   db.query(assignedCourseTable, (err, result) => {
+    //     if (err) console.log(err.message);
+    //     else console.log("assigned course table created");
+    //   });
+    // =================> NOT THIS
+    //  const assignedCourseTable = `
+    //   CREATE TABLE IF NOT EXISTS assigned_course (
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
     //     company_id INT NOT NULL,
     //     course_id INT NOT NULL,
     //     sub_user_id INT NOT NULL,
@@ -250,34 +283,18 @@ export function mySqlConnect(done) {
     //     if (err) console.log(err.message);
     //     else console.log("assigned course table created");
     //   });
+    // =================>
 
-  //   const assignedCourseTable = `
-  //   CREATE TABLE IF NOT EXISTS assigned_course (
-  //     id INT AUTO_INCREMENT PRIMARY KEY,
-  //     company_id INT NOT NULL,
-  //     course_id INT NOT NULL,
-  //     sub_user_id INT NOT NULL,
-  //     progress INT NOT NULL DEFAULT 0,
-  //     course_count INT NOT NULL DEFAULT 1,
-  //     color VARCHAR(15) NOT NULL DEFAULT 'red',
-  //     validity VARCHAR(15) NOT NULL
-  //   );
-  // `;
-
-  //   db.query(assignedCourseTable, (err, result) => {
-  //     if (err) console.log(err.message);
-  //     else console.log("assigned course table created");
-  //   });
-
+    
     // const subAdminTable = `
     //   CREATE TABLE IF NOT EXISTS sub_admin (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     name VARCHAR(150) NOT NULL,
-    //     email VARCHAR(150) NOT NULL UNIQUE,
-    //     password VARCHAR(150) NOT NULL,
-    //     block BOOLEAN DEFAULT FALSE
-    //   );
-    // `;
+      //     id INT AUTO_INCREMENT PRIMARY KEY,
+      //     name VARCHAR(150) NOT NULL,
+      //     email VARCHAR(150) NOT NULL UNIQUE,
+      //     password VARCHAR(150) NOT NULL,
+      //     block BOOLEAN DEFAULT FALSE
+      //   );
+      // `;
 
     // db.query(subAdminTable, (err, result) => {
     //   if (err) console.log(err.message);
@@ -376,12 +393,12 @@ export function mySqlConnect(done) {
         );
       `;
 
-      db.query(volumeCouponTable, (err, result) => {
-        if (err) console.log(err);
-        else console.log("created table volume coupons");
-      });
+    db.query(volumeCouponTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("created table volume coupons");
+    });
 
-      const offerTextTable = `
+    const offerTextTable = `
       CREATE TABLE IF NOT EXISTS offer_text (
         id INT AUTO_INCREMENT PRIMARY KEY,
         offer_text TEXT NOT NULL,

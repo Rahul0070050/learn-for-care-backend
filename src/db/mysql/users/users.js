@@ -276,8 +276,8 @@ export function getAllSubUsersFrom(userId) {
 export function getAllMAnagers(userId) {
   return new Promise((resolve, reject) => {
     try {
-      let getAllSubUsersQuery = `SELECT * FROM manager WHERE created_by = ?;`;
-      db.query(getAllSubUsersQuery, [userId], (err, result) => {
+      let getAllSubUsersQuery = `SELECT * FROM users WHERE created_by = ?, type_of_account = ?;`;
+      db.query(getAllSubUsersQuery, [userId,"manager"], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
       });
