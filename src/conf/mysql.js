@@ -271,6 +271,7 @@ export function mySqlConnect(done) {
         name VARCHAR(150) NOT NULL,
         price INT NOT NULL,
         courses VARCHAR(150) NOT NULL,
+        image VARCHAR(150) NOT NULL,
         description TEXT NOT NULL
       );
     `;
