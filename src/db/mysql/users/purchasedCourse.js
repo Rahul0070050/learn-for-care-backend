@@ -55,7 +55,12 @@ export function getPurchasedCourseById(id) {
 export function getPurchasedCourseFromDbByUserId(id) {
   return new Promise((resolve, reject) => { 
     try {
-      let getQuery = "SELECT * FROM purchased_course WHERE course_type = ? AND user_id = ?;"
+      let getQuery = `
+          SELECT purchased_course.*, course.name AS course_name 
+          FROM purchased_course
+          INNER JOIN course ON purchased_course.course_id = course.id
+          WHERE purchased_course.course_type = ? AND purchased_course.user_id = ?;
+        `
       db.query(getQuery,['bundle',id],(err,result) => {
         if(err){
           reject(err.message);
