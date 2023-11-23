@@ -29,7 +29,7 @@ route.post("/assign-course-to-manager", validateCompanyUserUser, userController.
 // manager
 route.post("/create-manager-individual", validateCompanyOrManagerUser, userController.createManagerIndividual);
 // route.post("/assign-course-to-manager-individual", validateCompanyUserUser, userController.assignCourseToManagerIndividual);
-route.get("/get-assigned-bundle", validateCompanyOrManagerUser, userController.getAssignedBundles);
+route.get("/get-assigned-bundle", validateUser, userController.getAssignedBundles);
 route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
 route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);
 route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);
