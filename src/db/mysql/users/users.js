@@ -245,6 +245,21 @@ export function blockSubUserBySubUserId(subUserId) {
   });
 }
 
+
+export function getAssignedBundleToManagerFromDb(userId) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT *, true AS from_assigned_table FROM course_assigned_manager WHERE manager_id = ?;`;
+      db.query(getQuery, [userId], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function unBlockSubUserBySubUserId(subUserId) {
   return new Promise((resolve, reject) => {
     try {
@@ -332,7 +347,6 @@ export function assignCourseToMAnagerIndividual(data) {
     try {
       const {
         course_id,
-        count,
         receiverId,
         realCourse_id,
         realCourse_type,

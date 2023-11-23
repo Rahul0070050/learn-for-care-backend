@@ -120,6 +120,31 @@ export function checkAssignCourseToManagerReqData(body) {
   });
 }
 
+
+export function checkAssignCourseToManagerIndividualReqData(body) {
+  return new Promise((resolve, reject) => {
+    try {
+      const schema = yup.object({
+        course_id: yup.number().required("please provide valid purchased id"), // purchased course primary key
+        userId: yup.number().required("please provide valid sub-user id"), // user id
+        count: yup.number().required("please provide valid sub-user id"), // course count
+      });
+
+      let value = schema.validate(body);
+
+      value
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+}
+
 export function checkCreateManagerReqBody(body) {
   return new Promise((resolve, reject) => {
     try {

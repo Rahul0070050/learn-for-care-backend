@@ -1,5 +1,8 @@
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
-import { getPurchasedCourseById, getPurchasedCourseFromDbByUserId } from "../../db/mysql/users/purchasedCourse.js";
+import {
+  getPurchasedCourseById,
+  getPurchasedCourseFromDbByUserId,
+} from "../../db/mysql/users/purchasedCourse.js";
 import {
   assignCourseToMAnager,
   assignCourseToMAnagerIndividual,
@@ -9,6 +12,7 @@ import {
   getAllMAnagers,
   getAllManagerIndividualFromDb,
   getAllSubUsersFrom,
+  getAssignedBundleToManagerFromDb,
   getUserById,
   saveAManagerToDb,
   saveASubUserToDb,
@@ -19,6 +23,7 @@ import {
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
 import {
+  checkAssignCourseToManagerIndividualReqData,
   checkAssignCourseToManagerReqData,
   checkBlockSubUserRewData,
   checkCreateManagerIndividualReqBody,
@@ -37,7 +42,7 @@ export const userController = {
     getUserById(user.id)
       .then(async (result) => {
         let url = await downloadFromS3("", result[0]?.profile_image || "");
-        result[0].profile_image = url?.url
+        result[0].profile_image = url?.url;
         res.status(200).json({
           success: true,
           data: {
@@ -273,6 +278,44 @@ export const userController = {
       });
     }
   },
+  getAssignedBundles: (req, res) => {
+    try {
+      let user = getUser(req)
+      getAssignedBundleToManagerFromDb(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all assigned Bundles",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "some error occur",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
   unBlockSubUser: (req, res) => {
     try {
       checkUnBlockSubUserRewData(req.body)
@@ -327,16 +370,22 @@ export const userController = {
     try {
       checkAssignCourseToManagerReqData(req.body)
         .then(async (result) => {
-          result.receiverId = result.userId
-          delete result.userId
+          result.receiverId = result.userId;
+          delete result.userId;
 
           let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tablses id
 
-          let realCourse_id = course[0].course_id
-          let realCourse_type = course[0].course_type
-          let realValidity = course[0].validity
+          let realCourse_id = course[0].course_id;
+          let realCourse_type = course[0].course_type;
+          let realValidity = course[0].validity;
           let userId = getUser(req).id;
-          assignCourseToMAnager({ ...result, userId, realCourse_id, realCourse_type, realValidity})
+          assignCourseToMAnager({
+            ...result,
+            userId,
+            realCourse_id,
+            realCourse_type,
+            realValidity,
+          })
             .then((result) => {
               res.status(200).json({
                 success: true,
@@ -384,18 +433,24 @@ export const userController = {
   },
   assignCourseToManagerIndividual: (req, res) => {
     try {
-      checkAssignCourseToManagerReqData(req.body)
+      checkAssignCourseToManagerIndividualReqData(req.body)
         .then(async (result) => {
-          result.receiverId = result.userId
-          delete result.userId
-          
-          let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tablses id
+          result.receiverId = result.userId;
+          delete result.userId;
 
-          let realCourse_id = course[0].course_id
-          let realCourse_type = course[0].course_type
-          let realValidity = course[0].validity
+          let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tables id
+
+          let realCourse_id = course[0].course_id;
+          let realCourse_type = course[0].course_type;
+          let realValidity = course[0].validity;
           let userId = getUser(req).id;
-          assignCourseToMAnagerIndividual({ ...result, userId, realCourse_id, realCourse_type, realValidity})
+          assignCourseToMAnagerIndividual({
+            ...result,
+            userId,
+            realCourse_id,
+            realCourse_type,
+            realValidity,
+          })
             .then((result) => {
               res.status(200).json({
                 success: true,
@@ -659,28 +714,30 @@ export const userController = {
       });
     }
   },
-  getAllManagerIndividual:(req,res) => {
+  getAllManagerIndividual: (req, res) => {
     try {
-      let user = getUser(req)
-      getAllManagerIndividualFromDb(user.id).then(result => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "got all manager individual",
-            response: result,
-          },
+      let user = getUser(req);
+      getAllManagerIndividualFromDb(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all manager individual",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
         });
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          data: {
-            code: 406,
-            message: "value not acceptable",
-            response: err,
-          },
-        });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -753,28 +810,30 @@ export const userController = {
       });
     }
   },
-  getPurchasedBundles:(req,res) => {
+  getPurchasedBundles: (req, res) => {
     try {
-      let user = getUser(req)
-      getPurchasedCourseFromDbByUserId(user.id).then(result => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "got all purchased bundles",
-            response: result,
-          },
+      let user = getUser(req);
+      getPurchasedCourseFromDbByUserId(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all purchased bundles",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
         });
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          data: {
-            code: 406,
-            message: "value not acceptable",
-            response: err,
-          },
-        });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -788,5 +847,5 @@ export const userController = {
         errorType: "server",
       });
     }
-  }
+  },
 };
