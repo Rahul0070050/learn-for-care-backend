@@ -250,7 +250,7 @@ export function getAssignedBundleToManagerFromDb(userId) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `
-      SELECT *, true AS from_assigned_table FROM
+      SELECT course_bundle.price AS amount, course_bundle.name AS bundle_name, course_bundle.id AS bundle_id, course_assigned_manager.count AS course_count, true AS from_assigned_table FROM
       course_assigned_manager 
       INNER JOIN course_bundle ON course_bundle.id = course_assigned_manager.course_id 
       WHERE course_assigned_manager.manager_id = ?;`;
