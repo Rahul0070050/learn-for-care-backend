@@ -217,7 +217,7 @@ export function checkCompanyUserOrManagerUserPrivileges(token) {
         process.env.JWT_ACC_KEY_FOR_USER || "",
         (err, result) => {
           if (err) return reject(err?.message);
-          if (result?.type_of_account === "manager" || result?.type_of_account === "manager") {
+          if (result?.type_of_account === "manager" || result?.type_of_account === "company") {
             return resolve({});
           } else {
             reject("you don't have manager privilege");
