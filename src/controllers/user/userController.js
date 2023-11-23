@@ -438,11 +438,7 @@ export const userController = {
           result.receiverId = result.userId;
           delete result.userId;
 
-          console.log("req data ", result);
-          console.log("course_id ", result.course_id);
-          
           let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tables id
-          console.log("course ", course);
 
           let realCourse_id = course[0].course_id;
           let realCourse_type = course[0].course_type;

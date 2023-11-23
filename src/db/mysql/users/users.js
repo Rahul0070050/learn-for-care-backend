@@ -245,7 +245,6 @@ export function blockSubUserBySubUserId(subUserId) {
   });
 }
 
-
 export function getAssignedBundleToManagerFromDb(userId) {
   return new Promise((resolve, reject) => {
     try {
@@ -316,7 +315,7 @@ export function assignCourseToMAnager(data) {
         realCourse_id,
         realCourse_type,
         realValidity,
-        userId
+        userId,
       } = data;
 
       let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;`;
@@ -333,7 +332,7 @@ export function assignCourseToMAnager(data) {
           count,
           count,
           new Date(realValidity),
-          userId
+          userId,
         ],
         (err, result) => {
           if (err) return reject(err.message);
@@ -355,18 +354,15 @@ export function assignCourseToMAnagerIndividual(data) {
         realCourse_id,
         realCourse_type,
         realValidity,
-        userId
+        userId,
       } = data;
 
-      let decreaseQuery = ""
-      if(data?.from_assigned_table) {
-        decreaseQuery = `UPDATE course_assigned_manager SET count = count - 1 WHERE manager_id = ?;`;
-      } else {
-        decreaseQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;`;
-      }
+      let decreaseQuery = "";
+      // decreaseQuery = `UPDATE course_assigned_manager SET count = count - 1 WHERE manager_id = ?;`;
+      decreaseQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;`;
 
       db.query(decreaseQuery, [course_id], (err, result) => {
-        if(err) console.log(err);
+        if (err) console.log(err);
       });
 
       let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
