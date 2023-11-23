@@ -312,7 +312,7 @@ export function assignCourseToMAnager(data) {
           realCourse_type,
           count,
           count,
-          realValidity,
+          new Date(realValidity),
         ],
         (err, result) => {
           if (err) return reject(err.message);
