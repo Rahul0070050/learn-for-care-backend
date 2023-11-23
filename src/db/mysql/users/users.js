@@ -249,7 +249,11 @@ export function blockSubUserBySubUserId(subUserId) {
 export function getAssignedBundleToManagerFromDb(userId) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT *, true AS from_assigned_table FROM course_assigned_manager WHERE manager_id = ?;`;
+      let getQuery = `
+      SELECT *, true AS from_assigned_table FROM
+      course_assigned_manager 
+      INNER JOIN course_bundle ON course_bundle.id = course_assigned_manager.course_id 
+      WHERE course_assigned_manager.manager_id = ?;`;
       db.query(getQuery, [userId], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
