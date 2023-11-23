@@ -1,5 +1,7 @@
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
+import { getAssignedCourseById } from "../../db/mysql/users/assignedCourse.js";
 import {
+  getAssignedCourseToManagerById,
   getPurchasedCourseById,
   getPurchasedCourseFromDbByUserId,
 } from "../../db/mysql/users/purchasedCourse.js";
@@ -496,14 +498,14 @@ export const userController = {
       });
     }
   },
-  assignCourseToManagerIndividualFromManager: (req, res) => {
+  assignCourseToManagerIndividualFromManager:(req, res) => {
     try {
       checkAssignCourseToManagerIndividualReqData(req.body)
         .then(async (result) => {
           result.receiverId = result.userId;
           delete result.userId;
 
-          let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
+          let course = await getAssignedCourseToManagerById(result.course_id); // course_id is purchased courses tables id
 
           console.log(course);
           let realCourse_id = course[0].course_id;
