@@ -342,7 +342,7 @@ export function assignCourseToMAnagerIndividual(data) {
 
       db.query(decreaseQuery, [course_id], (err, result) => {});
 
-      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?,?);`;
+      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
       db.query(
         assignCourseToManagerQuery,
         [
