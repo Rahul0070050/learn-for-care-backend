@@ -23,6 +23,7 @@ route.get("/get-purchased-bundles", validateUser, userController.getPurchasedBun
 //company
 route.get("/get-all-manager-individual", validateCompanyUserUser, userController.getAllManagerIndividual);
 route.post("/assign-course-to-manager-individual", validateCompanyUserUser, userController.assignCourseToManagerIndividual);
+route.post("/assign-course-to-manager", validateCompanyUserUser, userController.assignCourseToManager);
 
 // manager
 route.post("/create-manager-individual", validateCompanyOrManagerUser, userController.createManagerIndividual);
