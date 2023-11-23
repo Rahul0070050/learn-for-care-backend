@@ -276,7 +276,7 @@ export function getAllSubUsersFrom(userId) {
 export function getAllMAnagers(userId) {
   return new Promise((resolve, reject) => {
     try {
-      let getAllSubUsersQuery = `SELECT city ,phone ,email ,first_name ,id ,joined ,last_name FROM users WHERE created_by = ? AND type_of_account = ?;`;
+      let getAllSubUsersQuery = `SELECT city ,phone ,email ,first_name ,id ,joined ,last_name,type_of_account FROM users WHERE created_by = ? AND type_of_account = ?;`;
       db.query(getAllSubUsersQuery, [userId, "manager"], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
@@ -399,7 +399,7 @@ export function getAllManagerIndividualFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery =
-        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name FROM users WHERE created_by = ? AND type_of_account = ?";
+        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, type_of_account FROM users WHERE created_by = ? AND type_of_account = ?";
       db.query(getQuery, [id, "individual"], (err, result) => {
         if (err) {
           reject(err.message);
