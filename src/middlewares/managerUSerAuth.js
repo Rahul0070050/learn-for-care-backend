@@ -1,11 +1,10 @@
-import { checkCompanyUserPrivileges } from "../helpers/jwt.js";
-import { getUser } from "../utils/auth.js";
+import { checkManagerUserPrivileges } from "../helpers/jwt.js";
 
-export function validateCompanyUserUser(req, res, next) {
+export function validateManagerUser(req, res, next) {
   const { authorization } = req.headers;
   const token = authorization?.split(" ")[1] || "";
 
-  checkCompanyUserPrivileges(token)
+  checkManagerUserPrivileges(token)
     .then((result) => {
       next();
     })

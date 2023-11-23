@@ -35,10 +35,14 @@ export const createTokenForUser = (userData) => {
 export function validateUserJwtToken(token) {
   return new Promise((resolve, reject) => {
     try {
-      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_USER || "", (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve({});
-      });
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_KEY_FOR_USER || "",
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve({});
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }
@@ -79,10 +83,14 @@ export const createTokenForAdmin = (userData) => {
 export function validateAdminJwtToken(token) {
   return new Promise((resolve, reject) => {
     try {
-      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_ADMIN || "", (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve({});
-      });
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_KEY_FOR_ADMIN || "",
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve({});
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }
@@ -121,10 +129,14 @@ export function createTokenForSubAdmin(userData) {
 export function validateSubAdminJwtToken(token) {
   return new Promise((resolve, reject) => {
     try {
-      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_SUB_ADMIN || "", (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve({});
-      });
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_KEY_FOR_SUB_ADMIN || "",
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve({});
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }
@@ -137,14 +149,18 @@ export function validateSubAdminJwtToken(token) {
 export function validateAdminPrivilegeJwtToken(token) {
   return new Promise((resolve, reject) => {
     try {
-      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_ADMIN || "", (err, result) => {
-        if (err) return reject(err?.message);
-        if(result?.type_of_account === "admin") {
-          return resolve({});
-        } else {
-          reject("you don't have company privilege")
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_KEY_FOR_ADMIN || "",
+        (err, result) => {
+          if (err) return reject(err?.message);
+          if (result?.type_of_account === "admin") {
+            return resolve({});
+          } else {
+            reject("you don't have company privilege");
+          }
         }
-      });
+      );
     } catch (error) {
       reject(error?.message);
     }
@@ -154,14 +170,60 @@ export function validateAdminPrivilegeJwtToken(token) {
 export function checkCompanyUserPrivileges(token) {
   return new Promise((resolve, reject) => {
     try {
-      jwt.verify(token, process.env.JWT_ACC_KEY_FOR_USER || "", (err, result) => {
-        if (err) return reject(err?.message);
-        if(result?.type_of_account === "company") {
-          return resolve({});
-        } else {
-          reject("you don't have company privilege")
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_KEY_FOR_USER || "",
+        (err, result) => {
+          if (err) return reject(err?.message);
+          if (result?.type_of_account === "company") {
+            return resolve({});
+          } else {
+            reject("you don't have company privilege");
+          }
         }
-      });
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkManagerUserPrivileges(token) {
+  return new Promise((resolve, reject) => {
+    try {
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_KEY_FOR_USER || "",
+        (err, result) => {
+          if (err) return reject(err?.message);
+          if (result?.type_of_account === "manager") {
+            return resolve({});
+          } else {
+            reject("you don't have manager privilege");
+          }
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function checkCompanyUserOrManagerUserPrivileges(token) {
+  return new Promise((resolve, reject) => {
+    try {
+      jwt.verify(
+        token,
+        process.env.JWT_ACC_KEY_FOR_USER || "",
+        (err, result) => {
+          if (err) return reject(err?.message);
+          if (result?.type_of_account === "manager" || result?.type_of_account === "manager") {
+            return resolve({});
+          } else {
+            reject("you don't have manager privilege");
+          }
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }

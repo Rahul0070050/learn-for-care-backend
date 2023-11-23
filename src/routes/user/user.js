@@ -1,6 +1,7 @@
 import { Router } from "express";
 
-import { validateUser } from "../../middlewares/userAuth.js";
+import { validateCompanyOrManagerUser, validateUser } from "../../middlewares/userAuth.js";
+import { validateManagerUser } from "../../middlewares/managerUSerAuth.js";
 import { userController } from "../../controllers/user/userController.js";
 import { validateCompanyUserUser } from "../../middlewares/compayUserAuth.js";
 
@@ -20,8 +21,8 @@ route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.g
 route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userController.getAllAssignedCourseProgress);
 
 // manager-individual
-route.post("/create-manager-individual", validateCompanyUserUser, userController.createManagerIndividual);
-route.get("/get-all-manager-individual", validateCompanyUserUser, userController.getAllManagerIndividual);
+route.post("/create-manager-individual", validateManagerUser, userController.createManagerIndividual);
+route.get("/get-all-manager-individual", validateCompanyOrManagerUser, userController.getAllManagerIndividual);
 route.post("/assign-course-to-sub-user", validateCompanyUserUser, userController.assignCourseToSubUser);
 route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
 route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);
