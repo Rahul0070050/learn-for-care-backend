@@ -297,13 +297,14 @@ export function assignCourseToMAnager(data) {
         realCourse_id,
         realCourse_type,
         realValidity,
+        userId
       } = data;
 
       let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;`;
 
       db.query(decreaseQuery, [course_id], (err, result) => {});
 
-      let assignCourseToManagerQuery = `INSERT INTO course_assigned_manager (course_id, manager_id, course_type, fake_count, count, validity) VALUES (?,?,?,?,?,?);`;
+      let assignCourseToManagerQuery = `INSERT INTO course_assigned_manager (course_id, manager_id, course_type, fake_count, count, validity,owner) VALUES (?,?,?,?,?,?,?);`;
       db.query(
         assignCourseToManagerQuery,
         [
@@ -313,6 +314,7 @@ export function assignCourseToMAnager(data) {
           count,
           count,
           new Date(realValidity),
+          userId
         ],
         (err, result) => {
           if (err) return reject(err.message);

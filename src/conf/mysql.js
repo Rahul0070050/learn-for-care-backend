@@ -237,6 +237,7 @@ export function mySqlConnect(done) {
         id INT AUTO_INCREMENT PRIMARY KEY,
         course_id INT NOT NULL,
         manager_id INT NOT NULL,
+        owner INT NOT NULL,
         course_type VARCHAR(25) NOT NULL,
         fake_count INT NOT NULL,
         count INT NOT NULL,
@@ -258,7 +259,7 @@ export function mySqlConnect(done) {
         course_id INT NOT NULL,
         course_type VARCHAR(20) NOT NULL,
         user_id INT NOT NULL DEFAULT 0,
-        validity VARCHAR(15) NOT NULL,
+        validity DATETIME NOT NULL,
         date DATETIME NOT NULL DEFAULT NOW()
       );
     `;
