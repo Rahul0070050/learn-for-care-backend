@@ -503,8 +503,9 @@ export const userController = {
           result.receiverId = result.userId;
           delete result.userId;
 
-          let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tables id
+          let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
 
+          console.log(course);
           let realCourse_id = course[0].course_id;
           let realCourse_type = course[0].course_type;
           let realValidity = course[0].validity;
@@ -515,6 +516,7 @@ export const userController = {
             realCourse_id,
             realCourse_type,
             realValidity,
+            assigned:true
           })
             .then((result) => {
               res.status(200).json({
