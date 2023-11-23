@@ -21,7 +21,7 @@ route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userCont
 
 // manager-individual
 route.post("/create-manager-individual", validateCompanyUserUser, userController.createManagerIndividual);
-route.get("/get-all-sub-users", validateCompanyUserUser, userController.getSubUser);
+route.get("/get-all-manager-individual", validateCompanyUserUser, userController.getAllManagerIndividual);
 route.post("/assign-course-to-sub-user", validateCompanyUserUser, userController.assignCourseToSubUser);
 route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
 route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);

@@ -385,6 +385,23 @@ export function saveAManagerToDb(data) {
   });
 }
 
+export function getAllManagerIndividualFromDb(id) {
+  return new Promise((resolve, reject) => { 
+    try {
+      let getQuery = "SELECT * FROM users WHERE created_by = ?"
+      db.query(getQuery,[id],(err,result) => {
+        if(err){
+          reject(err.message);
+        } else {
+          resolve(result);
+        }
+      })
+    } catch (error) {
+      reject(error?.message)
+    }
+   })
+}
+
 export function saveUserProfileImage(id,file) {
   return new Promise((resolve, reject) => { 
     try {
