@@ -325,6 +325,44 @@ export function assignCourseToMAnager(data) {
   });
 }
 
+export function assignCourseToMAnagerIndividual(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const {
+        course_id,
+        count,
+        receiverId,
+        realCourse_id,
+        realCourse_type,
+        realValidity,
+        userId
+      } = data;
+
+      let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;`;
+
+      db.query(decreaseQuery, [course_id], (err, result) => {});
+
+      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?,?);`;
+      db.query(
+        assignCourseToManagerQuery,
+        [
+          userId,
+          realCourse_id,
+          realCourse_type,
+          receiverId,
+          new Date(realValidity),
+        ],
+        (err, result) => {
+          if (err) return reject(err.message);
+          else return resolve(result);
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getAllBlockedUser(id) {
   return new Promise((resolve, reject) => {
     try {

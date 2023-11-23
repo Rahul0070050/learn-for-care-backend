@@ -328,7 +328,7 @@ export const userController = {
         .then(async (result) => {
           result.receiverId = result.userId
           delete result.userId
-          
+
           let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tablses id
 
           let realCourse_id = course[0].course_id
@@ -336,6 +336,65 @@ export const userController = {
           let realValidity = course[0].validity
           let userId = getUser(req).id;
           assignCourseToMAnager({ ...result, userId, realCourse_id, realCourse_type, realValidity})
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "assigned successfully",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "value not acceptable",
+                  response: err,
+                },
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  assignCourseToManagerIndividual: (req, res) => {
+    try {
+      checkAssignCourseToManagerReqData(req.body)
+        .then(async (result) => {
+          result.receiverId = result.userId
+          delete result.userId
+          
+          let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tablses id
+
+          let realCourse_id = course[0].course_id
+          let realCourse_type = course[0].course_type
+          let realValidity = course[0].validity
+          let userId = getUser(req).id;
+          assignCourseToMAnagerIndividual({ ...result, userId, realCourse_id, realCourse_type, realValidity})
             .then((result) => {
               res.status(200).json({
                 success: true,

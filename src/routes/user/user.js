@@ -22,10 +22,10 @@ route.get("/get-purchased-bundles", validateUser, userController.getPurchasedBun
 
 //company
 route.get("/get-all-manager-individual", validateCompanyUserUser, userController.getAllManagerIndividual);
+route.post("/assign-course-to-manager-individual", validateCompanyUserUser, userController.assignCourseToManagerIndividual);
 
 // manager
 route.post("/create-manager-individual", validateCompanyOrManagerUser, userController.createManagerIndividual);
-route.post("/assign-course-to-manager", validateCompanyUserUser, userController.assignCourseToManager);
 route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
 route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);
 route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);

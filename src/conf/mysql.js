@@ -250,10 +250,11 @@ export function mySqlConnect(done) {
       else console.log("exam table created");
     });
 
+    // owner is who assigned the course to the user (company or manager)
     const assignedCourseTable = `
       CREATE TABLE IF NOT EXISTS assigned_course (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        owner INT NOT NULL,
+        owner INT NOT NULL, 
         course_id INT NOT NULL,
         course_type VARCHAR(20) NOT NULL,
         user_id INT NOT NULL DEFAULT 0,
