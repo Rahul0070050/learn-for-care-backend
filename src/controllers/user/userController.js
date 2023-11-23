@@ -496,6 +496,71 @@ export const userController = {
       });
     }
   },
+  assignCourseToManagerIndividualFromManager: (req, res) => {
+    try {
+      checkAssignCourseToManagerIndividualReqData(req.body)
+        .then(async (result) => {
+          result.receiverId = result.userId;
+          delete result.userId;
+
+          let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tables id
+
+          let realCourse_id = course[0].course_id;
+          let realCourse_type = course[0].course_type;
+          let realValidity = course[0].validity;
+          let userId = getUser(req).id;
+          assignCourseToMAnagerIndividual({
+            ...result,
+            userId,
+            realCourse_id,
+            realCourse_type,
+            realValidity,
+          })
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "assigned successfully",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "value not acceptable",
+                  response: err,
+                },
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
   getBlocked: (req, res) => {
     try {
       let user = getUser(req);
