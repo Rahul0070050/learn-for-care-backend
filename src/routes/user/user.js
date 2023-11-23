@@ -21,7 +21,7 @@ route.get("/get-purchased-bundles", validateUser, userController.getPurchasedBun
 // route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userController.getAllAssignedCourseProgress);
 
 //company
-route.get("/get-all-manager-individual", validateCompanyUserUser, userController.getAllManagerIndividual);
+route.get("/get-all-manager-individual", validateCompanyOrManagerUser, userController.getAllManagerIndividual);
 route.post("/assign-course-to-manager-individual", validateCompanyUserUser, userController.assignCourseToManagerIndividual);
 route.post("/assign-course-to-manager", validateCompanyUserUser, userController.assignCourseToManager);
 
