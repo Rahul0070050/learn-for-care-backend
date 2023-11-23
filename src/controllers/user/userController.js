@@ -2,6 +2,7 @@ import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import { getPurchasedCourseById, getPurchasedCourseFromDbByUserId } from "../../db/mysql/users/purchasedCourse.js";
 import {
   assignCourseToMAnager,
+  assignCourseToMAnagerIndividual,
   blockSubUserBySubUserId,
   getAllAssignedCourseProgressFromDb,
   getAllBlockedUser,
