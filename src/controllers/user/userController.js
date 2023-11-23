@@ -440,6 +440,7 @@ export const userController = {
 
           console.log("req data ", result);
           console.log("course_id ", result.course_id);
+          
           let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tables id
           console.log("course ", course);
 
