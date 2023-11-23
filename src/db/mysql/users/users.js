@@ -357,6 +357,7 @@ export function assignCourseToMAnagerIndividual(data) {
         realValidity,
         userId
       } = data;
+      console.log(data)
 
       let decreaseQuery = ""
       if(data?.from_assigned_table) {
