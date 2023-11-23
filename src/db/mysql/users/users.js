@@ -277,7 +277,7 @@ export function getAllMAnagers(userId) {
   return new Promise((resolve, reject) => {
     try {
       let getAllSubUsersQuery = `SELECT city ,phone ,email ,first_name ,id ,joined ,last_name FROM users WHERE created_by = ? AND type_of_account = ?;`;
-      db.query(getAllSubUsersQuery, [userId,"manager"], (err, result) => {
+      db.query(getAllSubUsersQuery, [userId, "manager"], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
       });
@@ -357,12 +357,22 @@ export function saveAManagerToDb(data) {
         city,
         phone,
         userId,
-        user_type
+        user_type,
       } = data;
       const insertQuery = `INSERT INTO users (first_name, last_name, email, password, country, city, phone, created_by, type_of_account) VALUES (?,?,?,?,?,?,?,?,?);`;
       db.query(
         insertQuery,
-        [first_name, last_name, email, password, country, city, phone, userId, user_type],
+        [
+          first_name,
+          last_name,
+          email,
+          password,
+          country,
+          city,
+          phone,
+          userId,
+          user_type,
+        ],
         (err, result) => {
           if (err) {
             console.log(err);
@@ -386,35 +396,36 @@ export function saveAManagerToDb(data) {
 }
 
 export function getAllManagerIndividualFromDb(id) {
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT * FROM users WHERE created_by = ?"
-      db.query(getQuery,[id],(err,result) => {
-        if(err){
+      let getQuery =
+        "SELECT * FROM users WHERE created_by = ? AND type_of_account = ?";
+      db.query(getQuery, [id, "individual"], (err, result) => {
+        if (err) {
           reject(err.message);
         } else {
           resolve(result);
         }
-      })
+      });
     } catch (error) {
-      reject(error?.message)
+      reject(error?.message);
     }
-   })
+  });
 }
 
-export function saveUserProfileImage(id,file) {
-  return new Promise((resolve, reject) => { 
+export function saveUserProfileImage(id, file) {
+  return new Promise((resolve, reject) => {
     try {
-      let updateQuery = "UPDATE users SET profile_image = ? WHERE id = ?"
-      db.query(updateQuery,[file,id],(err,result) => {
-        if(err){
+      let updateQuery = "UPDATE users SET profile_image = ? WHERE id = ?";
+      db.query(updateQuery, [file, id], (err, result) => {
+        if (err) {
           reject(err.message);
         } else {
           resolve();
         }
-      })
+      });
     } catch (error) {
-      reject(error?.message)
+      reject(error?.message);
     }
-   })
+  });
 }
