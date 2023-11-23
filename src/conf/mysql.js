@@ -195,23 +195,6 @@ export function mySqlConnect(done) {
     //   else console.log("exam table created");
     // });
 
-    const assignedToManagerTable = `
-      CREATE TABLE IF NOT EXISTS course_assigned_manager (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        course_id INT NOT NULL,
-        manager_id INT NOT NULL,
-        course_type VARCHAR(25) NOT NULL,
-        fake_count INT NOT NULL,
-        count INT NOT NULL,
-        validity DATETIME NOT NULL
-      );
-    `;
-
-    db.query(assignedToManagerTable, (err, result) => {
-      if (err) console.log(err.message);
-      else console.log("exam table created");
-    });
-
     //   const ExamAttemptsTable = `
     //     CREATE TABLE IF NOT EXISTS exam_attempts (
     //       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -249,22 +232,40 @@ export function mySqlConnect(done) {
     //   else console.log("sub_user table created");
     // });
 
-    // const assignedCourseTable = `
-    //   CREATE TABLE IF NOT EXISTS assigned_course (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     manager_id INT NOT NULL,
-    //     course_id INT NOT NULL,
-    //     course_type VARCHAR(20) NOT NULL,
-    //     user_id INT NOT NULL DEFAULT 0,
-    //     validity VARCHAR(15) NOT NULL,
-    //     date DATETIME NOT NULL DEFAULT NOW()
-    //   );
-    // `;
+    const assignedToManagerTable = `
+      CREATE TABLE IF NOT EXISTS course_assigned_manager (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        course_id INT NOT NULL,
+        manager_id INT NOT NULL,
+        course_type VARCHAR(25) NOT NULL,
+        fake_count INT NOT NULL,
+        count INT NOT NULL,
+        validity DATETIME NOT NULL,
+        date DATETIME NOT NULL DEFAULT NOW()
+      );
+    `;
 
-    //   db.query(assignedCourseTable, (err, result) => {
-    //     if (err) console.log(err.message);
-    //     else console.log("assigned course table created");
-    //   });
+    db.query(assignedToManagerTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("exam table created");
+    });
+
+    const assignedCourseTable = `
+      CREATE TABLE IF NOT EXISTS assigned_course (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        owner INT NOT NULL,
+        course_id INT NOT NULL,
+        course_type VARCHAR(20) NOT NULL,
+        user_id INT NOT NULL DEFAULT 0,
+        validity VARCHAR(15) NOT NULL,
+        date DATETIME NOT NULL DEFAULT NOW()
+      );
+    `;
+
+      db.query(assignedCourseTable, (err, result) => {
+        if (err) console.log(err);
+        else console.log("assigned course table created");
+      });
     // =================> NOT THIS
     //  const assignedCourseTable = `
     //   CREATE TABLE IF NOT EXISTS assigned_course (

@@ -96,13 +96,13 @@ export function checkUnBlockSubUserRewData(body) {
   });
 }
 
-export function checkAssignCourseToSubUserReqData(body) {
+export function checkAssignCourseToManagerReqData(body) {
   return new Promise((resolve, reject) => {
     try {
       const schema = yup.object({
-        sub_user_id: yup.string().required("please provide valid sub-user id"),
-        course_id: yup.string().required("please provide valid sub-user id"),
-        purchased_course_id: yup.string().required("please provide valid purchased course id"),
+        course_id: yup.number().required("please provide valid purchased id"), // purchased course primary key
+        userId: yup.number().required("please provide valid sub-user id"), // manager id
+        count: yup.number().required("please provide valid sub-user id"), // course count
       });
 
       let value = schema.validate(body);

@@ -287,20 +287,33 @@ export function getAllMAnagers(userId) {
   });
 }
 
-export function assignCourseToSubUserDb(data) {
+export function assignCourseToMAnager(data) {
   return new Promise((resolve, reject) => {
     try {
-      const { sub_user_id, course_id, userId, validity, purchased_course_id } =
-        data;
+      const {
+        course_id,
+        count,
+        receiverId,
+        realCourse_id,
+        realCourse_type,
+        realValidity,
+      } = data;
 
       let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;`;
 
-      db.query(decreaseQuery, [purchased_course_id], (err, result) => {});
+      db.query(decreaseQuery, [course_id], (err, result) => {});
 
-      let assignCourseToSubUserQuery = `INSERT INTO assigned_course (company_id,course_id,sub_user_id,validity) VALUES (?,?,?,?);`;
+      let assignCourseToManagerQuery = `INSERT INTO course_assigned_manager (course_id, manager_id, course_type, fake_count, count, validity) VALUES (?,?,?,?,?,?);`;
       db.query(
-        assignCourseToSubUserQuery,
-        [userId, course_id, sub_user_id, validity],
+        assignCourseToManagerQuery,
+        [
+          realCourse_id,
+          receiverId,
+          realCourse_type,
+          count,
+          count,
+          realValidity,
+        ],
         (err, result) => {
           if (err) return reject(err.message);
           else return resolve(result);

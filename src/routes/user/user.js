@@ -20,10 +20,12 @@ route.get("/get-purchased-bundles", validateUser, userController.getPurchasedBun
 // route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);
 // route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userController.getAllAssignedCourseProgress);
 
-// manager-individual
-route.post("/create-manager-individual", validateCompanyOrManagerUser, userController.createManagerIndividual);
+//company
 route.get("/get-all-manager-individual", validateCompanyUserUser, userController.getAllManagerIndividual);
-route.post("/assign-course-to-sub-user", validateCompanyUserUser, userController.assignCourseToSubUser);
+
+// manager
+route.post("/create-manager-individual", validateCompanyOrManagerUser, userController.createManagerIndividual);
+route.post("/assign-course-to-manager", validateCompanyUserUser, userController.assignCourseToManager);
 route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
 route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);
 route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);
@@ -32,7 +34,7 @@ route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userCont
 // manager
 route.post("/create-manager", validateCompanyUserUser, userController.createManager);
 route.get("/get-all-managers", validateCompanyUserUser, userController.getAllManagers);
-route.post("/assign-course-to-sub-user", validateCompanyUserUser, userController.assignCourseToSubUser);
+// route.post("/assign-course-to-sub-user", validateCompanyUserUser, userController.assignCourseToSubUser);
 route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
 route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);
 route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);

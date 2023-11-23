@@ -1,7 +1,7 @@
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import { getPurchasedCourseById, getPurchasedCourseFromDbByUserId } from "../../db/mysql/users/purchasedCourse.js";
 import {
-  assignCourseToSubUserDb,
+  assignCourseToMAnager,
   blockSubUserBySubUserId,
   getAllAssignedCourseProgressFromDb,
   getAllBlockedUser,
@@ -18,7 +18,7 @@ import {
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
 import {
-  checkAssignCourseToSubUserReqData,
+  checkAssignCourseToManagerReqData,
   checkBlockSubUserRewData,
   checkCreateManagerIndividualReqBody,
   checkCreateManagerReqBody,
@@ -322,14 +322,20 @@ export const userController = {
       });
     }
   },
-  assignCourseToSubUser: (req, res) => {
+  assignCourseToManager: (req, res) => {
     try {
-      checkAssignCourseToSubUserReqData(req.body)
+      checkAssignCourseToManagerReqData(req.body)
         .then(async (result) => {
-          let course = await getPurchasedCourseById(result.purchased_course_id);
-          let validity = course[0].validity;
+          result.receiverId = result.userId
+          delete result.userId
+          
+          let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tablses id
+
+          let realCourse_id = course[0].course_id
+          let realCourse_type = course[0].course_type
+          let realValidity = course[0].validity
           let userId = getUser(req).id;
-          assignCourseToSubUserDb({ ...result, userId, validity })
+          assignCourseToMAnager({ ...result, userId, realCourse_id, realCourse_type, realValidity})
             .then((result) => {
               res.status(200).json({
                 success: true,
