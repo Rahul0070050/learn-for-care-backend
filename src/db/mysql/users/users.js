@@ -323,10 +323,8 @@ export function assignCourseToMAnager(data) {
 
       let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
 
-      console.log(count);
-
-      db.query(decreaseQuery, [course_id,count], (err, result) => {
-        if(err) console.log(err);
+      db.query(decreaseQuery, [count, course_id], (err, result) => {
+        if (err) console.log(err);
       });
 
       let assignCourseToManagerQuery = `INSERT INTO course_assigned_manager (course_id, manager_id, course_type, fake_count, count, validity,owner) VALUES (?,?,?,?,?,?,?);`;
@@ -362,18 +360,17 @@ export function assignCourseToMAnagerIndividual(data) {
         realCourse_type,
         realValidity,
         userId,
-        count
+        count,
       } = data;
 
       let decreaseQuery = "";
-      if(data?.assigned) {
-        console.log(data?.assigned,course_id);
+      if (data?.assigned) {
         decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
       } else {
         decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
       }
 
-      db.query(decreaseQuery, [course_id,count], (err, result) => {
+      db.query(decreaseQuery, [count, course_id], (err, result) => {
         if (err) console.log(err);
       });
 
