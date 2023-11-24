@@ -146,7 +146,7 @@ export function setAdminInfoToDb(userData) {
 export function getAllIndividualsAndCompaniesFromDb() {
   return new Promise((resolve, reject) => {
     let getQuery =
-      "SELECT id,first_name,last_name,email FROM users WHERE type_of_account = 'individual' OR type_of_account = 'company'";
+      "SELECT id, first_name, last_name, email, type_of_account FROM users WHERE type_of_account = 'individual' OR type_of_account = 'company'";
     db.query(getQuery, (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);
