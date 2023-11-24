@@ -259,6 +259,7 @@ export function mySqlConnect(done) {
         course_id INT NOT NULL,
         course_type VARCHAR(20) NOT NULL,
         user_id INT NOT NULL DEFAULT 0,
+        status VARCHAR(20) NOT NULL DEFAULT 'not started',
         validity DATETIME NOT NULL,
         date DATETIME NOT NULL DEFAULT NOW()
       );

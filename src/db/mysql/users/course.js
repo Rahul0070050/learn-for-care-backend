@@ -97,14 +97,14 @@ export function getAllPurchasedCourseByUserId(id) {
   });
 }
 
-export function getAllPendingCourseFromDb(id,type) {
+export function getAllPendingCourseFromDb(id, type) {
   return new Promise((resolve, reject) => {
     try {
       let getPurchasedCourseByIdDataQuery = `
         SELECT * FROM purchased_course WHERE user_id = ? AND user_type = ?;
       `;
 
-      db.query(getPurchasedCourseByIdDataQuery, [id,type], (err, result) => {
+      db.query(getPurchasedCourseByIdDataQuery, [id, type], (err, result) => {
         if (err) {
           return reject(err?.message);
         } else {
@@ -136,46 +136,21 @@ export function getPurchasedCourseById(id) {
   });
 }
 
-export function decrementTheCourseCount(id,userType) {
+export function decrementTheCourseCount(id, userType) {
   return new Promise(async (resolve, reject) => {
     try {
-      let decrementTheCourseCountQuery = ''
-      if(userType === "company" || userType === "individual") {
-        decrementTheCourseCountQuery = `
-        UPDATE purchased_course SET course_count = course_count - 1, status = 'started' WHERE id = ?;
-        `;
-        let getPurchasedCourse = await getPurchasedCourseById(id);
-        db.query(decrementTheCourseCountQuery, [id], (err, result) => {
-          if (err) {
-            return reject(err?.message);
-          } else {
-            return resolve({
-              validity: getPurchasedCourse[0].validity,
-              id: getPurchasedCourse[0].course_id,
-            });
-          }
-        });
-      } else {
-
-        // sub-user get their course id from assigned_course table they don't have purchase option
-        decrementTheCourseCountQuery = `
-        UPDATE assigned_course SET course_count = course_count - 1 WHERE id = ?;
-        `;
-
-        let getAssignedCourse = await getAssignedCourseById(id);
-        console.log(getAssignedCourse);
-        db.query(decrementTheCourseCountQuery, [id], (err, result) => {
-          if (err) {
-            return reject(err?.message);
-          } else {
-            return resolve({
-              validity: getAssignedCourse[0].validity,
-              id: getAssignedCourse[0].course_id,
-            });
-          }
-        });
-      }
-
+      let decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1, status = 'started' WHERE id = ?`;
+      let getPurchasedCourse = await getPurchasedCourseById(id);
+      db.query(decrementTheCourseCountQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          return resolve({
+            validity: getPurchasedCourse[0].validity,
+            id: getPurchasedCourse[0].course_id,
+          });
+        }
+      });
     } catch (error) {
       reject(error?.message);
     }
