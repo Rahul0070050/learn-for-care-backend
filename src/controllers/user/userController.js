@@ -5,6 +5,7 @@ import {
   getAssignedCourseToManagerById,
   getPurchasedCourseById,
   getPurchasedCourseBundlesFromDbByUserId,
+  getAssignedBundlesFromDbByCompanyId,
 } from "../../db/mysql/users/purchasedCourse.js";
 import {
   assignCourseToMAnager,

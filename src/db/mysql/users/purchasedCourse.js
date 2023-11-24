@@ -135,6 +135,7 @@ export function getAssignedBundlesFromDbByCompanyId(userId) {
         }
       })
     } catch (error) {
+      console.log(error);
       reject(error?.message)
     }
    })
