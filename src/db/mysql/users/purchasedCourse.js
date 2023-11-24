@@ -97,7 +97,12 @@ export function getAssignedBundlesFromDbByUserId(userId) {
   return new Promise((resolve, reject) => { 
     try {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
-      let getQuery = `SELECT * FROM assigned_course INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id WHERE course_type = ? AND user_id = ?`
+      let getQuery = `
+      SELECT course_bundle.name AS name, assigned_course.validity AS validity, course_bundle.description AS description,
+      assigned_course.course_id bundle_id 
+      FROM assigned_course 
+      INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id 
+      WHERE course_type = ? AND user_id = ?`
       db.query(getQuery,['bundle',userId],(err,result) => {
         if(err){
           reject(err.message);
