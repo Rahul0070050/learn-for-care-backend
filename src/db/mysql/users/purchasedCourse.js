@@ -92,3 +92,21 @@ export function getPurchasedCourseFromDbByUserId(id) {
     }
    })
 }
+
+export function getAssignedBundlesFromDbByUserId(userId) {
+  return new Promise((resolve, reject) => { 
+    try {
+      // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
+      let getQuery = `SELECT * FORM assigned_course WHERE course_type = ? AND user_id = ?`
+      db.query(getQuery,['bundle',userId],(err,result) => {
+        if(err){
+          reject(err.message);
+        } else {
+          resolve(result);
+        }
+      })
+    } catch (error) {
+      reject(error?.message)
+    }
+   })
+}

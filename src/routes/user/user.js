@@ -11,6 +11,7 @@ route.get("/data", validateUser, userController.getUserData);
 route.post("/update-user-data", validateUser, userController.updateUserData);
 route.post("/set-profile-image", validateUser, userController.setProfileImage);
 route.get("/get-purchased-bundles", validateUser, userController.getPurchasedBundles);
+route.get("/get-individual-assigned-bundles", validateUser, userController.getAllAssignedBundlesForIndividuals);
 // sub-user
 // route.post("/create-sub-user", validateCompanyUserUser, userController.createSubUser);
 // route.get("/get-all-sub-users", validateCompanyUserUser, userController.getSubUser);
@@ -29,7 +30,7 @@ route.post("/assign-course-to-manager", validateCompanyUserUser, userController.
 // manager
 route.post("/create-manager-individual", validateCompanyOrManagerUser, userController.createManagerIndividual);
 // route.post("/assign-course-to-manager-individual", validateCompanyUserUser, userController.assignCourseToManagerIndividual);
-route.get("/get-assigned-bundle", validateUser, userController.getAssignedBundles);
+route.get("/get-assigned-bundle", validateCompanyOrManagerUser, userController.getAssignedBundles); // manager and company users
 route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
 route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);
 route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);
