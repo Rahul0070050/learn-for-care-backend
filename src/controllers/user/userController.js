@@ -4,7 +4,7 @@ import {
   getAssignedBundlesFromDbByUserId,
   getAssignedCourseToManagerById,
   getPurchasedCourseById,
-  getPurchasedCourseFromDbByUserId,
+  getPurchasedCourseBundlesFromDbByUserId,
 } from "../../db/mysql/users/purchasedCourse.js";
 import {
   assignCourseToMAnager,
@@ -883,7 +883,7 @@ export const userController = {
   getPurchasedBundles: (req, res) => {
     try {
       let user = getUser(req);
-      getPurchasedCourseFromDbByUserId(user.id)
+      getPurchasedCourseBundlesFromDbByUserId(user.id)
         .then((result) => {
           res.status(200).json({
             success: true,

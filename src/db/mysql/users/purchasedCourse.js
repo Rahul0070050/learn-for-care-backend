@@ -70,7 +70,7 @@ export function getAssignedCourseToManagerById(id) {
   });
 }
 
-export function getPurchasedCourseFromDbByUserId(id) {
+export function getPurchasedCourseBundlesFromDbByUserId(id) {
   return new Promise((resolve, reject) => { 
     try {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
