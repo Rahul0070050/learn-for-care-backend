@@ -136,10 +136,15 @@ export function getPurchasedCourseById(id) {
   });
 }
 
-export function decrementTheCourseCount(id, userType) {
+export function decrementTheCourseCount(data) {
   return new Promise(async (resolve, reject) => {
     try {
-      let decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1, status = 'started' WHERE id = ?`;
+      let decrementTheCourseCountQuery = '';
+      if(data.from_assigned) {
+        decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1, status = 'started' WHERE id = ?`;
+      } else {
+        decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1, status = 'started' WHERE id = ?`;
+      }
       let getPurchasedCourse = await getPurchasedCourseById(id);
       db.query(decrementTheCourseCountQuery, [id], (err, result) => {
         if (err) {

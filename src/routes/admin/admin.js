@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { subAdminController } from "../../controllers/admin/adminController.js";
+import { adminController } from "../../controllers/admin/adminController.js";
 import { validateAdmin, validateAdminPrivilege } from "../../middlewares/adminAuth.js";
 import { stripeObj } from "../../conf/stripe.js";
 
@@ -9,41 +9,43 @@ const route = Router();
 route.post(
   "/create-sub-admin",
   validateAdminPrivilege,
-  subAdminController.createSubAdmin
+  adminController.createSubAdmin
 );
 route.delete(
   "/delete-sub-admin",
   validateAdminPrivilege,
-  subAdminController.deleteSubAdmin
+  adminController.deleteSubAdmin
 );
 route.get(
   "/list-all-sub-admin",
   validateAdmin,
-  subAdminController.listSubAdmin
+  adminController.listSubAdmin
 );
-route.post("/create-user", validateAdmin, subAdminController.createUser);
-route.get("/get-all-users", validateAdmin, subAdminController.getAllUsers);
-route.get("/get-user-data-by-id/:id", validateAdmin, subAdminController.getUserDataById);
-route.get("/block-user/:id", validateAdmin, subAdminController.blockUser);
-route.get("/unblock-user/:id", validateAdmin, subAdminController.unBlockUser);
-route.get("/super-admin-dashboard-data", validateAdmin, subAdminController.superAdminDashboard);
-route.put("/set-admin-info", validateAdmin, subAdminController.setAdminInfo);
-route.post("/set-staff-cv", validateAdmin, subAdminController.updateStaffCV);
-route.get("/get-admin-info", validateAdmin, subAdminController.getAdminInfo);
-route.post("/set-qualification", validateAdmin, subAdminController.setAdminQualification);
-route.post("/set-experience", validateAdmin, subAdminController.setAdminExperience);
-route.get("/get-qualification", validateAdmin, subAdminController.getAdminQualification);
-route.get("/get-experience", validateAdmin, subAdminController.getAdminExperience);
-route.patch("/update-qualification/:id", validateAdmin, subAdminController.updateAdminQualificationDoc);
-route.patch("/update-experience/:id", validateAdmin, subAdminController.updateAdminExperience);
-route.patch("/update-experience-data", validateAdmin, subAdminController.updateAdminExperienceData);
-route.patch("/update-qualification-data", validateAdmin, subAdminController.updateAdminQualificationData);
+route.post("/create-user", validateAdmin, adminController.createUser);
+route.get("/get-all-users", validateAdmin, adminController.getAllUsers);
+route.get("/get-user-data-by-id/:id", validateAdmin, adminController.getUserDataById);
+route.get("/block-user/:id", validateAdmin, adminController.blockUser);
+route.get("/unblock-user/:id", validateAdmin, adminController.unBlockUser);
+route.get("/super-admin-dashboard-data", validateAdmin, adminController.superAdminDashboard);
+route.get("/get-individuals-and-managers", validateAdmin, adminController.getINdividualsAndManagers);
+route.put("/set-admin-info", validateAdmin, adminController.setAdminInfo);
+route.post("/set-staff-cv", validateAdmin, adminController.updateStaffCV);
+route.get("/get-admin-info", validateAdmin, adminController.getAdminInfo);
+route.post("/set-qualification", validateAdmin, adminController.setAdminQualification);
+route.post("/set-experience", validateAdmin, adminController.setAdminExperience);
+route.get("/get-qualification", validateAdmin, adminController.getAdminQualification);
+route.get("/get-experience", validateAdmin, adminController.getAdminExperience);
+route.patch("/update-qualification/:id", validateAdmin, adminController.updateAdminQualificationDoc);
+route.patch("/update-experience/:id", validateAdmin, adminController.updateAdminExperience);
+route.patch("/update-experience-data", validateAdmin, adminController.updateAdminExperienceData);
+route.patch("/update-qualification-data", validateAdmin, adminController.updateAdminQualificationData);
 
-route.post("/update-admin-profile-banner", validateAdmin, subAdminController.updateAdminProfileBanner);
-route.patch("/update-admin-profile-image", validateAdmin, subAdminController.updateAdminProfileImage);
+route.post("/update-admin-profile-banner", validateAdmin, adminController.updateAdminProfileBanner);
+route.patch("/update-admin-profile-image", validateAdmin, adminController.updateAdminProfileImage);
 
-route.delete("/delete-experience/:id", validateAdmin, subAdminController.delateAdminExperience);
-route.delete("/delete-qualification/:id", validateAdmin, subAdminController.delateAdminQualification);
+route.delete("/delete-experience/:id", validateAdmin, adminController.delateAdminExperience);
+route.delete("/delete-qualification/:id", validateAdmin, adminController.delateAdminQualification);
 
+route.post("/assign-bundle", validateAdmin, adminController.assignBundle);
 
 export default route;

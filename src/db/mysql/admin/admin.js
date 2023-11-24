@@ -143,6 +143,17 @@ export function setAdminInfoToDb(userData) {
   });
 }
 
+export function getAllIndividualsAndCompaniesFromDb() {
+  return new Promise((resolve, reject) => {
+    let getQuery =
+      "SELECT * FROM users WHERE type_of_account = 'individual' OR type_of_account = 'company'";
+    db.query(getQuery, (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
+  });
+}
+
 export function saveNewQualifications(data) {
   return new Promise((resolve, reject) => {
     const { admin_id, university, content, doc, course_name } = data;

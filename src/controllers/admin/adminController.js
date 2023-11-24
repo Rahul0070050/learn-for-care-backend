@@ -10,6 +10,7 @@ import {
   getAdminInfoFromDb,
   getAdminQualificationsDocs,
   getAllExperiencesData,
+  getAllIndividualsAndCompaniesFromDb,
   getAllQualificationsFromDB,
   getDashboardData,
   getExperienceDocFromDbByAdminIdAndDocId,
@@ -27,6 +28,7 @@ import {
   updateExperienceDocDbByAdminIdAndDocId,
   updateQualificationDocDbByAdminIdAndDocId,
 } from "../../db/mysql/admin/admin.js";
+import { assignBundleToUser } from "../../db/mysql/admin/bundle.js";
 import {
   deleteSubAdminFomDb,
   saveNewSubAdminToDb,
@@ -45,6 +47,7 @@ import {
   checkUpdateAdminExperienceDocReqData,
   checkUpdateQualificationDocReqData,
   checkValidateGetUserByIdReqBody,
+  validateAssignBundleReqData,
   validateBlockUserInfo,
   validateCreateUserInfo,
   validateDeleteExperienceReqData,
@@ -66,7 +69,7 @@ import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import { hashPassword } from "../../helpers/validatePasswords.js";
 import { generatorOtp, getUser } from "../../utils/auth.js";
 
-export const subAdminController = {
+export const adminController = {
   createSubAdmin: (req, res) => {
     try {
       checkCreateSubAdminReqData(req.body)
@@ -112,7 +115,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
@@ -199,7 +202,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
@@ -274,7 +277,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
@@ -314,7 +317,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
@@ -393,7 +396,7 @@ export const subAdminController = {
                 },
               });
             })
-            .catch(() => {
+            .catch((err) => {
               res.status(406).json({
                 success: false,
                 errors: [
@@ -427,7 +430,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
@@ -449,7 +452,7 @@ export const subAdminController = {
                 },
               });
             })
-            .catch(() => {
+            .catch((err) => {
               res.status(406).json({
                 success: false,
                 errors: [
@@ -483,7 +486,7 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
           },
         ],
         errorType: "server",
@@ -523,7 +526,47 @@ export const subAdminController = {
           {
             code: 500,
             message: "some error occurred please try again later",
-            error: err,
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getINdividualsAndManagers: (req, res) => {
+    try {
+      getAllIndividualsAndCompaniesFromDb()
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "get all users",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
           },
         ],
         errorType: "server",
@@ -1503,5 +1546,48 @@ export const subAdminController = {
     let admin = getUser(req);
     getAdminQualificationsDocs(admin.id).then((result) => {});
     // getAdminExperiencesDocs
+  },
+  assignBundle: (req, res) => {
+    try {
+      validateAssignBundleReqData(req.body).then((result) => {
+        let user = getUser(req);
+        assignBundleToUser({ result, adminId: user.id })
+          .then(() => {
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "bundle assigned",
+                response: "",
+              },
+            });
+          })
+          .catch((err) => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "values not acceptable",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
+          });
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
   },
 };

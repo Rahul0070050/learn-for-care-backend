@@ -569,11 +569,10 @@ export const courseController = {
   },
   startCourse: (req, res) => {
     try {
-      req.params.id = Number(req.params.id);
-      checkStartCourseReqData(req.params)
+      checkStartCourseReqData(req.body)
         .then((result) => {
           let user = getUser(req);
-          decrementTheCourseCount(result.id, user?.type_of_account)
+          decrementTheCourseCount(result, user?.type_of_account)
             .then((course) => {
               addCourseToEnrolledCourse(
                 course.id,
