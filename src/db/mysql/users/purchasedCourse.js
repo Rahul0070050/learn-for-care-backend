@@ -75,7 +75,8 @@ export function getPurchasedCourseFromDbByUserId(id) {
     try {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
-          SELECT purchased_course.* , purchased_course.course_id AS bundle_id, course_bundle.name AS bundle_name 
+          SELECT purchased_course.* , purchased_course.course_id AS bundle_id, course_bundle.name AS bundle_name, 
+          course_bundle.description AS description
           FROM purchased_course
           INNER JOIN course_bundle ON purchased_course.course_id = course_bundle.id
           WHERE purchased_course.course_type = ? AND purchased_course.user_id = ?;
@@ -99,7 +100,7 @@ export function getAssignedBundlesFromDbByUserId(userId) {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
       SELECT course_bundle.name AS name, assigned_course.validity AS validity, course_bundle.description AS description,
-      assigned_course.course_id bundle_id 
+      assigned_course.course_id AS course_id, assigned_course.id AS id
       FROM assigned_course 
       INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id 
       WHERE course_type = ? AND user_id = ?`
