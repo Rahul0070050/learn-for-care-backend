@@ -70,7 +70,7 @@ export function checkStartCourseReqData(data) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
       course_id: number().required("please enter valid id"),
-      from: number().required("please provide from field"),
+      from: string().required("please provide from field"),
     });
 
     try {
