@@ -922,6 +922,7 @@ export const userController = {
   getAssignedCourseForManager:(req,res) => {
     try {
       let user = getUser(req);
+      console.log(user.id);
       getAssignedCourseForManagerByManagerId(user.id)
         .then((result) => {
           res.status(200).json({
