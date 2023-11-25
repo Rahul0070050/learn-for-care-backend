@@ -56,7 +56,7 @@ export function getPurchasedCourseByUserId(id) {
   return new Promise((resolve, reject) => {
     try {
       let getPurchasedCourseDataQuery = `
-        SELECT purchased_course.id AS purchased_course_id, purchased_course.id AS id, Name, description, course_count, course_id, category, validity 
+        SELECT purchased_course.id AS purchased_course_id, purchased_course.id AS id, 1 AS from_purchased, Name, description, course_count, course_id, category, validity 
         FROM purchased_course INNER JOIN course ON 
         purchased_course.course_id = course.id
         WHERE purchased_course.user_id = ? AND purchased_course.course_count >= ?;
@@ -104,7 +104,7 @@ export function getAllAssignedCourseFromDb(id, type) {
   return new Promise((resolve, reject) => {
     try {
       let getAssignedCourseByIdDataQuery = `
-        SELECT * FROM assigned_course WHERE user_id = ? AND course_type = ?;
+        SELECT *, 0 AS from_purchased FROM assigned_course WHERE user_id = ? AND course_type = ?;
       `;
 
       db.query(getAssignedCourseByIdDataQuery, [id, "course"], (err, result) => {
