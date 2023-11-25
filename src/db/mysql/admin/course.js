@@ -4,6 +4,7 @@ export function addNewCourse(courseData) {
   return new Promise((resolve, reject) => {
     try {
       let resource = JSON.stringify(courseData.resource);
+      let ppt = JSON.stringify(courseData.ppt);
       let insertCourseQuery =
         "INSERT INTO course(name,description,category,price,intro_video,thumbnail,video,ppt,resource) VALUES(?,?,?,?,?,?,?,?,?);";
       db.query(
@@ -16,7 +17,7 @@ export function addNewCourse(courseData) {
           courseData.intro_video,
           courseData.thumbnail,
           courseData.video,
-          courseData.ppt,
+          ppt,
           resource,
         ],
         (err, result) => {

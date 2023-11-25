@@ -46,19 +46,23 @@ export const courseController = {
 
           let thumbnail = uploadFileToS3("/course/thumbnail", result.thumbnail);
 
-          let ppt = uploadFileToS3("/course/ppt", result.ppt);
+          //  = uploadFileToS3("/course/ppt", result.ppt);
 
+          let ppt = result.ppt.map((file) =>
+            uploadFileToS3("/course/ppt", file)
+          );
           let resource = result.resource.map((file) =>
             uploadFileToS3("/course/resource", file)
           );
 
-          Promise.all([video, introVideo, thumbnail, ppt, ...resource])
+          Promise.all([video, introVideo, thumbnail, ...ppt, ...resource])
             .then((uploadedResult) => {
               result.resource = [];
+              result.ppt = [];
               uploadedResult.forEach((file) => {
                 if (file.name == "resource") {
                   result[file.name].push({ type: file.type, file: file.file });
-                } else {
+                } else if (file.name == "ppt") {
                   result[file.name] = file.file;
                 }
               });
@@ -244,13 +248,20 @@ export const courseController = {
             .then(async (result) => {
               let newResult = await result.map(async (course, i) => {
                 let resources = JSON.parse(course.resource);
+                let ppt = JSON.parse(course.ppt);
 
                 delete course.resource;
+                delete course.ppt;
 
                 course[`resourceCount`] = resources.length;
+                course[`pptCount`] = resources.length;
 
                 resources.forEach((item, i) => {
                   course[`resource${i}`] = item.file;
+                });
+
+                ppt.forEach((item, i) => {
+                  course[`ppt-${i}`] = item.file;
                 });
 
                 for (let index = 0; index < resources.length; index++) {
@@ -277,12 +288,10 @@ export const courseController = {
 
                 let video = await downloadFromS3(course.id, course.video);
 
-                let ppt = await downloadFromS3(course.id, course.ppt);
-
                 course["intro_video"] = intro_video?.url;
                 course["thumbnail"] = thumbnail?.url;
                 course["video"] = video?.url;
-                course["ppt"] = ppt?.url;
+                // course["ppt"] = ppt;
 
                 return course;
               });
@@ -769,8 +778,8 @@ export const courseController = {
                   resourceFiles = [resourceFiles];
                 }
 
-                let resource = []
-                if(course.resource) {
+                let resource = [];
+                if (course.resource) {
                   resource = JSON.parse(course.resource);
                 }
 
