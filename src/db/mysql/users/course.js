@@ -159,6 +159,7 @@ export function decrementTheCourseCount(data) {
         course = await getPurchasedCourseById(data.id);
         decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
       }
+      console.log(course);
       db.query(decrementTheCourseCountQuery, [data.id], (err, result) => {
         if (err) {
           return reject(err?.message);
