@@ -436,6 +436,7 @@ export function assignCourseToMAnagerIndividualFromAssignedDb(data) {
         }
       );
     } catch (error) {
+      console.log(error);
       reject(error?.message);
     }
   });
