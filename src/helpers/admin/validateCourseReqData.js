@@ -35,7 +35,7 @@ export function checkAddCourseReqBodyAndFile(body, files) {
         "thumbnail"
       );
       let PdfFile = validateFile([{ resource: files.resource }], "resource");
-      let PptFile = validateFile([{ image: files.ppt }], "image");
+      let PptFile = validateFile([{ pdf: files.ppt }], "image");
 
       let bodyTemplate = object({
         description: string().required("please enter valid description"),
