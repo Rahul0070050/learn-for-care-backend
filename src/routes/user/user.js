@@ -29,6 +29,7 @@ route.post("/assign-course-to-manager-individual-from-manager", validateCompanyO
 route.post("/assign-course-to-manager", validateCompanyUserUser, userController.assignCourseToManager);
 route.post("/assign-course-to-manager-from-assigned", validateCompanyUserUser, userController.assignCourseToManagerFromAssigned);
 route.post("/assign-course-to-manager-individual-from-assigned", validateCompanyOrManagerUser, userController.assignCourseToManagerIndividualFromAssigned);
+route.post("/assign-course-to-manager-individual-from-manager-assigned", validateCompanyOrManagerUser, userController.assignCourseToManagerIndividualFromManagerAssigned);
 
 // manager
 route.get("/get-assigned-course-for-manager", validateCompanyOrManagerUser, userController.getAssignedCourseForManager);
