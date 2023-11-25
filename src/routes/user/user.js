@@ -32,6 +32,7 @@ route.post("/assign-course-to-manager-individual-from-assigned", validateCompany
 
 // manager
 route.post("/create-manager-individual", validateCompanyOrManagerUser, userController.createManagerIndividual);
+route.get("/get-assigned-course-for-manager", validateCompanyOrManagerUser, userController.getAssignedCourseForManager);
 // route.post("/assign-course-to-manager-individual", validateCompanyUserUser, userController.assignCourseToManagerIndividual);
 route.get("/get-assigned-bundle", validateCompanyOrManagerUser, userController.getAssignedBundles); // manager and company users
 // route.get("/get-purchased-course", validateCompanyUserUser, userController.blockSubUser);

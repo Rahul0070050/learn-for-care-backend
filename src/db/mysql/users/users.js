@@ -525,6 +525,22 @@ export function saveAManagerToDb(data) {
   });
 }
 
+export function getAssignedCourseForManagerByManagerId(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let updateQuery = "SELECT * FROM course_assigned_manager WHERE manager_id = ?";
+      db.query(updateQuery, [file, id], (err, result) => {
+        if (err) {
+          reject(err.message);
+        } else {
+          resolve();
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
 export function getAllManagerIndividualFromDb(id) {
   return new Promise((resolve, reject) => {
     try {

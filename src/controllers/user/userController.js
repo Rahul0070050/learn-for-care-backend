@@ -18,6 +18,7 @@ import {
   getAllManagerIndividualFromDb,
   getAllSubUsersFrom,
   getAssignedBundleToManagerFromDb,
+  getAssignedCourseForManagerByManagerId,
   getUserById,
   saveAManagerToDb,
   saveASubUserToDb,
@@ -893,6 +894,44 @@ export const userController = {
                 },
               });
             });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAssignedCourseForManager:(req,res) => {
+    try {
+      let user = getUser(req);
+      getAssignedCourseForManagerByManagerId(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all assigned bundles",
+              response: result,
+            },
+          });
         })
         .catch((err) => {
           res.status(406).json({

@@ -55,7 +55,6 @@ export function getAllCoursesFromDb() {
 export function getPurchasedCourseByUserId(id) {
   return new Promise((resolve, reject) => {
     try {
-      console.log(id);
       let getPurchasedCourseDataQuery = `
         SELECT purchased_course.id AS purchased_course_id, purchased_course.id AS id,
         1 AS from_purchased, Name, description, course_count,
