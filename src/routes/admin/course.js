@@ -5,7 +5,7 @@ import { validateAdmin } from "../../middlewares/adminAuth.js";
 
 const route = Router();
 
-route.post("/create-course", validateAdmin, courseController.createCourse);
+route.post("/create-course", validateAdmin, courseController.createCourseWithResourceImages);
 route.get("/get-single-course/:id",validateAdmin,courseController.getCourseById);
 route.get("/get-all-course",validateAdmin,courseController.getAllCourses);
 route.post("/get-course-by-category",validateAdmin,courseController.getCourseByCategory);

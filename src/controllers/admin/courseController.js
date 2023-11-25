@@ -27,6 +27,110 @@ import {
 } from "../../helpers/admin/validateCourseReqData.js";
 
 export const courseController = {
+  createCourseWithResourceImages: (req, res) => {
+    try {
+      checkAddCourseReqBodyAndFile(req.body, req.files)
+        .then((result) => {
+          let video = uploadFileToS3("/course/video", result.video);
+
+          let introVideo = null;
+
+          if (result?.intro_video?.mv) {
+            introVideo = uploadFileToS3(
+              "/course/intro_video",
+              result?.intro_video
+            );
+          } else {
+            introVideo = Promise.resolve({ name: "intro_video", file: "" });
+          }
+
+          let thumbnail = uploadFileToS3("/course/thumbnail", result.thumbnail);
+
+          let ppt = uploadFileToS3("/course/ppt", result.ppt);
+
+          let resource = result.resource.map((file) =>
+            uploadFileToS3("/course/resource", file)
+          );
+
+          Promise.all([video, introVideo, thumbnail, ppt, ...resource])
+            .then((uploadedResult) => {
+              result.resource = [];
+              uploadedResult.forEach((file) => {
+                if (file.name == "resource") {
+                  result[file.name].push({ type: file.type, file: file.file });
+                } else {
+                  result[file.name] = file.file;
+                }
+              });
+              addNewCourse(result)
+                .then(() => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "course successfully created",
+                      response: result[0],
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 500,
+                        message:
+                          "some error occurred while saving your data try again after some times",
+                        error: err,
+                      },
+                    ],
+                    errorType: "server",
+                  });
+                });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message:
+                      "some error occurred in the server try again after some times",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
   createCourse: (req, res) => {
     try {
       checkAddCourseReqBodyAndFile(req.body, req.files)
