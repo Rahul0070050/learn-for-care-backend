@@ -528,7 +528,7 @@ export function saveAManagerToDb(data) {
 export function getAssignedCourseForManagerByManagerId(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT * FROM course_assigned_manager WHERE manager_id = ?;";
+      let getQuery = "SELECT *, count AS course_count FROM course_assigned_manager WHERE manager_id = ?;";
       db.query(getQuery, [id], (err, result) => {
         if (err) {
           reject(err.message);
