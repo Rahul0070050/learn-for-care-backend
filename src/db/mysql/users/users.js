@@ -319,9 +319,15 @@ export function assignCourseToMAnager(data) {
         realCourse_type,
         realValidity,
         userId,
+        from
       } = data;
 
-      let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
+      let decreaseQuery = ""
+      if(from == "assigned") {
+        decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
+      } else {
+        decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
+      }
 
       db.query(decreaseQuery, [count, course_id], (err, result) => {
         if (err) console.log(err);

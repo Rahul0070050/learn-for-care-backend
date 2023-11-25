@@ -389,6 +389,7 @@ export const userController = {
             realCourse_id,
             realCourse_type,
             realValidity,
+            from: "purchased"
           })
             .then((result) => {
               res.status(200).json({
@@ -454,6 +455,7 @@ export const userController = {
             realCourse_id,
             realCourse_type,
             realValidity,
+            from: "assigned"
           })
             .then((result) => {
               res.status(200).json({
