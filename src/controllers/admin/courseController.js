@@ -63,7 +63,7 @@ export const courseController = {
                 if (file.name == "resource") {
                   result[file.name].push({ type: file.type, file: file.file });
                 } else if (file.name == "ppt") {
-                  result[file.name] = file.file;
+                  result[file.name].push({ type: file.type, file: file.file });
                 }
               });
               addNewCourse(result)
