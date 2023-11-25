@@ -111,7 +111,7 @@ export function getAllAssignedCourseFromDb(id, type) {
         SELECT *, 0 AS from_purchased, assigned_course.id AS id,
         1 AS from_purchased, Name, description, course_count,
         course_id, category, validity 
-        FROM INNER JOIN course ON assigned_course.course_id = course.id
+        FROM assigned_course INNER JOIN course ON assigned_course.course_id = course.id
         assigned_course WHERE user_id = ? AND course_type = ?;
       `;
 
