@@ -529,7 +529,7 @@ export function getAssignedCourseForManagerByManagerId(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `
-      SELECT *, count AS course_count 
+      SELECT *, count AS course_count, category
       FROM course_assigned_manager 
       INNER JOIN course ON course.id = course_assigned_manager.course_id
       WHERE manager_id = ?;`;
