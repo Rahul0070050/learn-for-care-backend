@@ -52,7 +52,7 @@ export const courseController = {
 
             //  = uploadFileToS3("/course/ppt", result.ppt);
 
-            let ppt = result.ppt.map((file) =>
+            let ppt = result.image.map((file) =>
               uploadFileToS3("/course/ppt", file)
             );
             let resource = result.resource.map((file) =>
