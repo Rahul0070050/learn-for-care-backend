@@ -10,6 +10,7 @@ import {
 import {
   assignCourseToMAnager,
   assignCourseToMAnagerIndividual,
+  assignCourseToMAnagerIndividualFromAssignedDb,
   blockSubUserBySubUserId,
   getAllAssignedCourseProgressFromDb,
   getAllBlockedUser,
@@ -389,7 +390,7 @@ export const userController = {
             realCourse_id,
             realCourse_type,
             realValidity,
-            from: "purchased"
+            from: "purchased",
           })
             .then((result) => {
               res.status(200).json({
@@ -436,7 +437,7 @@ export const userController = {
       });
     }
   },
-  assignCourseToManagerFromAssigned:(req,res) => {
+  assignCourseToManagerFromAssigned: (req, res) => {
     try {
       checkAssignCourseToManagerReqData(req.body)
         .then(async (result) => {
@@ -455,7 +456,7 @@ export const userController = {
             realCourse_id,
             realCourse_type,
             realValidity,
-            from: "assigned"
+            from: "assigned",
           })
             .then((result) => {
               res.status(200).json({
@@ -567,7 +568,72 @@ export const userController = {
       });
     }
   },
-  assignCourseToManagerIndividualFromManager:(req, res) => {
+  assignCourseToManagerIndividualFromAssigned: (req, res) => {
+    try {
+      checkAssignCourseToManagerIndividualReqData(req.body)
+        .then(async (result) => {
+          result.receiverId = result.userId;
+          delete result.userId;
+
+          let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
+
+          let realCourse_id = course[0].course_id;
+          let realCourse_type = course[0].course_type;
+          let realValidity = course[0].validity;
+          let userId = getUser(req).id;
+          assignCourseToMAnagerIndividualFromAssignedDb({
+            ...result,
+            userId,
+            realCourse_id,
+            realCourse_type,
+            realValidity,
+          })
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "assigned successfully",
+                  response: "",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "value not acceptable",
+                  response: err,
+                },
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  assignCourseToManagerIndividualFromManager: (req, res) => {
     try {
       checkAssignCourseToManagerIndividualReqData(req.body)
         .then(async (result) => {
@@ -587,7 +653,7 @@ export const userController = {
             realCourse_id,
             realCourse_type,
             realValidity,
-            assigned:true
+            assigned: true,
           })
             .then((result) => {
               res.status(200).json({
@@ -986,7 +1052,7 @@ export const userController = {
       });
     }
   },
-  getAllAssignedBundlesForIndividuals:(req,res) => {
+  getAllAssignedBundlesForIndividuals: (req, res) => {
     try {
       let user = getUser(req);
       getAssignedBundlesFromDbByUserId(user.id)
@@ -1024,7 +1090,7 @@ export const userController = {
       });
     }
   },
-  getAllAssignedBundlesForCompany:(req,res) => {
+  getAllAssignedBundlesForCompany: (req, res) => {
     try {
       let user = getUser(req);
       getAssignedBundlesFromDbByCompanyId(user.id)
@@ -1061,5 +1127,5 @@ export const userController = {
         errorType: "server",
       });
     }
-  }
+  },
 };
