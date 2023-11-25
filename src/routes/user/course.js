@@ -9,7 +9,7 @@ route.get("/get-single-course/:id",courseController.getCourseById);
 route.get("/get-all-course",courseController.getAllCourses);
 route.get("/get-course-by-limit/:limit",courseController.getCoursesByLimit);
 route.post("/get-course-by-category",courseController.getCourseByCategory);
-route.get("/get-bought-course",validateUser, courseController.getBoughtCourses); // available course
+route.get("/get-bought-course",validateUser, courseController.getBoughtCourses); // available
 route.get("/get-all-bought-course",validateUser, courseController.getAllBoughtCourses);
 route.get("/get-all-assigned-course",validateUser, courseController.getAllAssignedCourses);
 route.post("/start-course",validateUser, courseController.startCourse);

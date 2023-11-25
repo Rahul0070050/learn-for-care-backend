@@ -102,6 +102,7 @@ export function getAllPurchasedCourseByUserId(id) {
 
 export function getAllAssignedCourseFromDb(id, type) {
   return new Promise((resolve, reject) => {
+    console.log(id);
     try {
       let getAssignedCourseByIdDataQuery = `
         SELECT *, 0 AS from_purchased FROM assigned_course WHERE user_id = ? AND course_type = ?;
