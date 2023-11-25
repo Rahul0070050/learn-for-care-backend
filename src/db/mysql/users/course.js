@@ -79,7 +79,10 @@ export function getAllPurchasedCourseByUserId(id) {
   return new Promise((resolve, reject) => {
     try {
       let getPurchasedCourseDataQuery = `
-        SELECT purchased_course.id AS purchased_course_id, status, Name, description, course_count, course_id, category, validity FROM purchased_course 
+        SELECT purchased_course.id AS purchased_course_id,
+        status, Name, description, course_count,
+        course_id, category, validity 
+        FROM purchased_course 
         INNER JOIN course ON purchased_course.course_id = course.id
         WHERE purchased_course.user_id = ?;
       `;
@@ -97,14 +100,14 @@ export function getAllPurchasedCourseByUserId(id) {
   });
 }
 
-export function getAllPendingCourseFromDb(id, type) {
+export function getAllAssignedCourseFromDb(id, type) {
   return new Promise((resolve, reject) => {
     try {
-      let getPurchasedCourseByIdDataQuery = `
-        SELECT * FROM purchased_course WHERE user_id = ? AND user_type = ?;
+      let getAssignedCourseByIdDataQuery = `
+        SELECT * FROM assigned_course WHERE user_id = ? AND course_type = ?;
       `;
 
-      db.query(getPurchasedCourseByIdDataQuery, [id, type], (err, result) => {
+      db.query(getAssignedCourseByIdDataQuery, [id, "course"], (err, result) => {
         if (err) {
           return reject(err?.message);
         } else {

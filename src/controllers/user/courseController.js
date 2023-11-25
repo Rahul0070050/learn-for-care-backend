@@ -6,8 +6,8 @@ import {
 } from "../../helpers/user/validateCourseReqData.js";
 import {
   decrementTheCourseCount,
+  getAllAssignedCourseFromDb,
   getAllCoursesFromDb,
-  getAllPendingCourseFromDb,
   getAllPurchasedCourseByUserId,
   getCourseByCategory,
   getCourseByIdFromDb,
@@ -526,16 +526,16 @@ export const courseController = {
       });
     }
   },
-  getAllPendingCourses: (req, res) => {
+  getAllAssignedCourses: (req, res) => {
     try {
       let user = getUser(req);
-      getAllPendingCourseFromDb(user.id, user.type_of_account)
+      getAllAssignedCourseFromDb(user.id, user.type_of_account)
         .then((result) => {
           res.status(200).json({
             success: true,
             data: {
               code: 200,
-              message: "got all courses",
+              message: "got all assigned courses",
               response: result,
             },
           });
