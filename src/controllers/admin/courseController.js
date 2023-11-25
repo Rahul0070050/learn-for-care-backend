@@ -250,7 +250,7 @@ export const courseController = {
                 course[`resourceCount`] = resources.length;
 
                 resources.forEach((item, i) => {
-                  course[`resource${i}`] = `${item.file}##${item.type}`;
+                  course[`resource${i}`] = item.file;
                 });
 
                 for (let index = 0; index < resources.length; index++) {
