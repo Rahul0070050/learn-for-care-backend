@@ -108,11 +108,12 @@ export function getAllAssignedCourseFromDb(id, type) {
     console.log(id);
     try {
       let getAssignedCourseByIdDataQuery = `
-        SELECT *, 0 AS from_purchased, assigned_course.id AS id,
-        1 AS from_purchased, Name, description, course_count,
-        course_id, category, validity 
-        FROM assigned_course INNER JOIN course ON assigned_course.course_id = course.id
-        assigned_course WHERE user_id = ? AND course_type = ?;
+      SELECT assigned_course.*, 0 AS from_purchased, course.id AS course_id,
+      course.Name, course.description, course.course_count,
+      course.category, course.validity 
+      FROM assigned_course 
+      INNER JOIN course ON assigned_course.course_id = course.id
+      WHERE assigned_course.user_id = ? AND assigned_course.course_type = ?;
       `;
 
       db.query(getAssignedCourseByIdDataQuery, [id, "course"], (err, result) => {
