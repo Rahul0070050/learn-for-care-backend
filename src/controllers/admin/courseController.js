@@ -31,81 +31,94 @@ export const courseController = {
     try {
       checkAddCourseReqBodyAndFile(req.body, req.files)
         .then((result) => {
-          let video = uploadFileToS3("/course/video", result.video);
+          try {
+            let video = uploadFileToS3("/course/video", result.video);
 
-          let introVideo = null;
+            let introVideo = null;
 
-          if (result?.intro_video?.mv) {
-            introVideo = uploadFileToS3(
-              "/course/intro_video",
-              result?.intro_video
+            if (result?.intro_video?.mv) {
+              introVideo = uploadFileToS3(
+                "/course/intro_video",
+                result?.intro_video
+              );
+            } else {
+              introVideo = Promise.resolve({ name: "intro_video", file: "" });
+            }
+
+            let thumbnail = uploadFileToS3(
+              "/course/thumbnail",
+              result.thumbnail
             );
-          } else {
-            introVideo = Promise.resolve({ name: "intro_video", file: "" });
-          }
 
-          let thumbnail = uploadFileToS3("/course/thumbnail", result.thumbnail);
+            //  = uploadFileToS3("/course/ppt", result.ppt);
 
-          //  = uploadFileToS3("/course/ppt", result.ppt);
+            let ppt = result.ppt.map((file) =>
+              uploadFileToS3("/course/ppt", file)
+            );
+            let resource = result.resource.map((file) =>
+              uploadFileToS3("/course/resource", file)
+            );
 
-          let ppt = result.ppt.map((file) =>
-            uploadFileToS3("/course/ppt", file)
-          );
-          let resource = result.resource.map((file) =>
-            uploadFileToS3("/course/resource", file)
-          );
-
-          Promise.all([video, introVideo, thumbnail, ...ppt, ...resource])
-            .then((uploadedResult) => {
-              result.resource = [];
-              result.ppt = [];
-              uploadedResult.forEach((file) => {
-                if (file.name == "resource") {
-                  result[file.name].push({ type: file.type, file: file.file });
-                } else if (file.name == "ppt") {
-                  result[file.name].push({ type: file.type, file: file.file });
-                }
-              });
-              addNewCourse(result)
-                .then(() => {
-                  res.status(200).json({
-                    success: true,
-                    data: {
-                      code: 200,
-                      message: "course successfully created",
-                      response: result[0],
-                    },
-                  });
-                })
-                .catch((err) => {
-                  res.status(500).json({
-                    success: false,
-                    errors: [
-                      {
-                        code: 500,
-                        message:
-                          "some error occurred while saving your data try again after some times",
-                        error: err,
-                      },
-                    ],
-                    errorType: "server",
-                  });
+            Promise.all([video, introVideo, thumbnail, ...ppt, ...resource])
+              .then((uploadedResult) => {
+                result.resource = [];
+                result.ppt = [];
+                uploadedResult.forEach((file) => {
+                  if (file.name == "resource") {
+                    result[file.name].push({
+                      type: file.type,
+                      file: file.file,
+                    });
+                  } else if (file.name == "ppt") {
+                    result[file.name].push({
+                      type: file.type,
+                      file: file.file,
+                    });
+                  }
                 });
-            })
-            .catch((err) => {
-              res.status(500).json({
-                success: false,
-                errors: [
-                  {
-                    code: 500,
-                    message:
-                      "some error occurred in the server try again after some times",
-                    error: err,
-                  },
-                ],
-                errorType: "server",
+                addNewCourse(result)
+                  .then(() => {
+                    res.status(200).json({
+                      success: true,
+                      data: {
+                        code: 200,
+                        message: "course successfully created",
+                        response: result[0],
+                      },
+                    });
+                  })
+                  .catch((err) => {
+                    res.status(500).json({
+                      success: false,
+                      errors: [
+                        {
+                          code: 500,
+                          message:
+                            "some error occurred while saving your data try again after some times",
+                          error: err,
+                        },
+                      ],
+                      errorType: "server",
+                    });
+                  });
+              })
+              .catch((err) => {
+                res.status(500).json({
+                  success: false,
+                  errors: [
+                    {
+                      code: 500,
+                      message:
+                        "some error occurred in the server try again after some times",
+                      error: err,
+                    },
+                  ],
+                  errorType: "server",
+                });
               });
-            });
+          } catch (error) {
+            console.log(error);
+          }
         })
         .catch((err) => {
           res.status(406).json({
@@ -291,7 +304,7 @@ export const courseController = {
                 course["intro_video"] = intro_video?.url;
                 course["thumbnail"] = thumbnail?.url;
                 course["video"] = video?.url;
-                // course["ppt"] = ppt; 
+                // course["ppt"] = ppt;
 
                 return course;
               });
