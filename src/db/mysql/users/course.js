@@ -154,12 +154,12 @@ export function decrementTheCourseCount(data) {
       let course = null;
       if(data.from == "assigned") {
         decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
-        course = await getAssignedCourseById(id);
+        course = await getAssignedCourseById(data.id);
       } else {
-        course = await getPurchasedCourseById(id);
+        course = await getPurchasedCourseById(data.id);
         decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
       }
-      db.query(decrementTheCourseCountQuery, [id], (err, result) => {
+      db.query(decrementTheCourseCountQuery, [data.id], (err, result) => {
         if (err) {
           return reject(err?.message);
         } else {
