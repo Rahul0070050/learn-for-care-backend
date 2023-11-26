@@ -52,11 +52,11 @@ export function checkCreateSubUSerReqBody(body) {
   });
 }
 
-export function checkBlockSubUserRewData(body) {
+export function checkBlockUserRewData(body) {
   return new Promise((resolve, reject) => {
     try {
       const schema = yup.object({
-        sub_user_id: yup.string().required("please provide valid sub-user id"),
+        userId: yup.string().required("please provide valid sub-user id"),
       });
 
       let value = schema.validate(body);
@@ -74,11 +74,11 @@ export function checkBlockSubUserRewData(body) {
   });
 }
 
-export function checkUnBlockSubUserRewData(body) {
+export function checkUnBlockUserRewData(body) {
   return new Promise((resolve, reject) => {
     try {
       const schema = yup.object({
-        sub_user_id: yup.string().required("please provide valid sub-user id"),
+        userId: yup.string().required("please provide valid sub-user id"),
       });
 
       let value = schema.validate(body);

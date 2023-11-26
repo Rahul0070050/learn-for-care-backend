@@ -37,8 +37,8 @@ route.post("/create-manager-individual", validateCompanyOrManagerUser, userContr
 // route.post("/assign-course-to-manager-individual", validateCompanyUserUser, userController.assignCourseToManagerIndividual);
 route.get("/get-assigned-bundle", validateCompanyOrManagerUser, userController.getAssignedBundles); // manager and company users
 // route.get("/get-purchased-course", validateCompanyUserUser, userController.blockSubUser);
-route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
-route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);
+route.post("/block-user", validateCompanyUserUser, userController.blockUser);
+route.post("/unblock-user", validateCompanyUserUser, userController.unBlockUser);
 route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);
 route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userController.getAllAssignedCourseProgress);
 
@@ -46,8 +46,6 @@ route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userCont
 route.post("/create-manager", validateCompanyUserUser, userController.createManager);
 route.get("/get-all-managers", validateCompanyUserUser, userController.getAllManagers);
 // route.post("/assign-course-to-sub-user", validateCompanyUserUser, userController.assignCourseToSubUser);
-route.post("/block-sub-user", validateCompanyUserUser, userController.blockSubUser);
-route.post("/unblock-sub-user", validateCompanyUserUser, userController.unBlockSubUser);
 route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);
 route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userController.getAllAssignedCourseProgress);
 

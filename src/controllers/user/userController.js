@@ -11,7 +11,7 @@ import {
   assignCourseToMAnager,
   assignCourseToMAnagerIndividual,
   assignCourseToMAnagerIndividualFromAssignedDb,
-  blockSubUserBySubUserId,
+  blockUserById,
   getAllAssignedCourseProgressFromDb,
   getAllBlockedUser,
   getAllMAnagers,
@@ -23,7 +23,7 @@ import {
   saveAManagerToDb,
   saveASubUserToDb,
   saveUserProfileImage,
-  unBlockSubUserBySubUserId,
+  unBlockUserBySubUserId,
   updateUserData,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
@@ -31,12 +31,12 @@ import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassTo
 import {
   checkAssignCourseToManagerIndividualReqData,
   checkAssignCourseToManagerReqData,
-  checkBlockSubUserRewData,
+  checkBlockUserRewData,
   checkCreateManagerIndividualReqBody,
   checkCreateManagerReqBody,
   checkCreateSubUSerReqBody,
   checkSetUserProfileImageReqData,
-  checkUnBlockSubUserRewData,
+  checkUnBlockUserRewData,
   validateUpdateUserInfo,
 } from "../../helpers/user/validateUserReqData.js";
 import { hashPassword } from "../../helpers/validatePasswords.js";
@@ -234,17 +234,17 @@ export const userController = {
       });
     }
   },
-  blockSubUser: (req, res) => {
+  blockUser: (req, res) => {
     try {
-      checkBlockSubUserRewData(req.body)
+      checkBlockUserRewData(req.body)
         .then((result) => {
-          blockSubUserBySubUserId(result.sub_user_id)
+          blockUserById(result.userId)
             .then(() => {
               res.status(200).json({
                 success: true,
                 data: {
                   code: 200,
-                  message: "blocked sub-user successful",
+                  message: "successfully blocked",
                   response: "",
                 },
               });
@@ -322,17 +322,17 @@ export const userController = {
       });
     }
   },
-  unBlockSubUser: (req, res) => {
+  unBlockUser: (req, res) => {
     try {
-      checkUnBlockSubUserRewData(req.body)
+      checkUnBlockUserRewData(req.body)
         .then((result) => {
-          unBlockSubUserBySubUserId(result.sub_user_id)
+          unBlockUserBySubUserId(result.userId)
             .then(() => {
               res.status(200).json({
                 success: true,
                 data: {
                   code: 200,
-                  message: "unBlocked sub-user successful",
+                  message: "unBlocked successful",
                   response: "",
                 },
               });

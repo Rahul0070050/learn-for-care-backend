@@ -231,11 +231,11 @@ export function saveASubUserToDb(data) {
   });
 }
 
-export function blockSubUserBySubUserId(subUserId) {
+export function blockUserById(userId) {
   return new Promise((resolve, reject) => {
     try {
-      let blockSubUserQuery = `UPDATE sub_user SET block = ? WHERE id = ?;`;
-      db.query(blockSubUserQuery, [true, subUserId], (err, result) => {
+      let blockSubUserQuery = `UPDATE users SET block = ? WHERE id = ?;`;
+      db.query(blockSubUserQuery, [true, userId], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
       });
@@ -266,11 +266,11 @@ export function getAssignedBundleToManagerFromDb(userId) {
   });
 }
 
-export function unBlockSubUserBySubUserId(subUserId) {
+export function unBlockUserBySubUserId(userId) {
   return new Promise((resolve, reject) => {
     try {
-      let upBlockSubUserQuery = `UPDATE sub_user SET block = ? WHERE id = ?;`;
-      db.query(upBlockSubUserQuery, [false, subUserId], (err, result) => {
+      let upBlockSubUserQuery = `UPDATE users SET block = ? WHERE id = ?;`;
+      db.query(upBlockSubUserQuery, [false, userId], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
       });
