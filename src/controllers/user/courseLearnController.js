@@ -14,64 +14,65 @@ export const onGoingCourseController = {
         .then((result) => {
           getOnGoingCourseByIdFromDb(result).then(async (result) => {
             let newResult = await result.map(async (course, i) => {
-              try{let resources = JSON.parse(course.resource);
-              let ppt = JSON.parse(course.ppt);
+              try {
+                console.log(course);
+                let resources = JSON.parse(course.resource);
+                let ppt = JSON.parse(course.ppt);
 
-              delete course.resource;
-              delete course.ppt;
+                delete course.resource;
+                delete course.ppt;
 
-              course[`resourceCount`] = resources.length;
-              course[`pptCount`] = resources.length;
+                course[`resourceCount`] = resources.length;
+                course[`pptCount`] = resources.length;
 
-              resources.forEach((item, i) => {
-                console.log(item.file + ":" + item.type);
-                course[`resource${i}-`] = item.file + ":" + item.type;
-              });
+                resources.forEach((item, i) => {
+                  console.log(item.file + ":" + item.type);
+                  course[`resource${i}-`] = item.file;
+                });
 
-              ppt.forEach((item, i) => {
-                course[`ppt${i}-`] = item.file + ":" + item.type;
-              });
+                ppt.forEach((item, i) => {
+                  course[`ppt${i}-`] = item.file;
+                });
 
-              let images = []
-              let resource = []
+                let images = [];
+                let resource = [];
 
-              for (let index = 0; index < ppt.length; index++) {
-                let urlstring = course[`ppt${index}-`].split(":");
+                for (let index = 0; index < ppt.length; index++) {
+                  let link = course[`ppt${index}-`];
 
-                let key = urlstring.pop();
+                  // let key = urlstring.pop();
 
-                let url = await downloadFromS3(index, key);
+                  let url = await downloadFromS3(index, link);
 
-                images.push(url.url)
-              }
+                  images.push(url.url);
+                }
 
-              for (let index = 0; index < resources.length; index++) {
-                let urlstring = course[`resource${index}-`].split(":");
+                for (let index = 0; index < resources.length; index++) {
+                  let link = course[`resource${index}-`];
+                  let url = await downloadFromS3(index, link);
 
-                let key = urlstring.pop();
+                  resource.push(url.url);
+                }
 
-                let url = await downloadFromS3(index, key);
+                let intro_video = await downloadFromS3(
+                  course.id,
+                  course.intro_video
+                );
 
-                resources.push(url.url)
-              }
+                let thumbnail = await downloadFromS3(
+                  course.id,
+                  course.thumbnail
+                );
 
-              let intro_video = await downloadFromS3(
-                course.id,
-                course.intro_video
-              );
+                let video = await downloadFromS3(course.id, course.video);
 
-              let thumbnail = await downloadFromS3(course.id, course.thumbnail);
+                course["intro_video"] = intro_video?.url;
+                course["thumbnail"] = thumbnail?.url;
+                course["video"] = video?.url;
+                course["ppt"] = images;
+                course["resource"] = resource;
 
-              let video = await downloadFromS3(course.id, course.video);
-
-
-              course["intro_video"] = intro_video?.url;
-              course["thumbnail"] = thumbnail?.url;
-              course["video"] = video?.url;
-              course["ppt"] = images;
-              course["resource"] = resource;
-
-              return course;
+                return course;
               } catch (error) {
                 console.log(error);
               }
@@ -135,7 +136,7 @@ export const onGoingCourseController = {
   getAllOnGoingCourseById: (req, res) => {
     try {
       let user = getUser(req);
-      getAllOnGoingCourseByUserIdFromDb(user.id,user.type_of_account)
+      getAllOnGoingCourseByUserIdFromDb(user.id, user.type_of_account)
         .then((result) => {
           res.status(200).json({
             success: true,
