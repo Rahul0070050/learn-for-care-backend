@@ -275,18 +275,15 @@ export const courseController = {
                   course[`resource${i}`] = item.file;
                 });
 
+                let images = []
                 ppt.forEach((item, i) => {
-                  course[`ppt-${i}`] = item.file;
+                  images.push(item.file);
                 });
 
                 for (let index = 0; index < resources.length; index++) {
-                  let urlstring = course[`resource${index}`].split("##");
+                  let urlstring = course[`resource${index}`]
 
-                  let type = urlstring.pop();
-
-                  let key = urlstring.pop();
-
-                  let url = await downloadFromS3(index, key);
+                  let url = await downloadFromS3(index, urlstring);
 
                   course[`resource${index}`] = `${url.url}##${type}`;
                 }
@@ -306,7 +303,7 @@ export const courseController = {
                 course["intro_video"] = intro_video?.url;
                 course["thumbnail"] = thumbnail?.url;
                 course["video"] = video?.url;
-                // course["ppt"] = ppt;
+                course["ppt"] = imaegs;
 
                 return course;
               });
