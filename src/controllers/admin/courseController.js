@@ -287,7 +287,7 @@ export const courseController = {
 
                     let url = await downloadFromS3(index, urlstring);
 
-                    course[`resource${index}`] = `${url.url}##${type}`;
+                    course[`resource${index}`] = `${url.url}##${url.type}`;
                   }
 
                   for (let index = 0; index < ppt.length; index++) {
