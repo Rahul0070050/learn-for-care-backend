@@ -14,7 +14,7 @@ export const onGoingCourseController = {
         .then((result) => {
           getOnGoingCourseByIdFromDb(result).then(async (result) => {
             let newResult = await result.map(async (course, i) => {
-              let resources = JSON.parse(course.resource);
+              try{let resources = JSON.parse(course.resource);
               let ppt = JSON.parse(course.ppt);
 
               delete course.resource;
@@ -23,22 +23,20 @@ export const onGoingCourseController = {
               course[`resourceCount`] = resources.length;
               course[`pptCount`] = resources.length;
 
-              resources.forEach((item, i) => {
-                console.log(item.file + ":" + item.type);
-                course[`resource${i}-`] = item.file + ":" + item.type;
-              });
+              // resources.forEach((item, i) => {
+              //   console.log(item.file + ":" + item.type);
+              //   course[`resource${i}-`] = item.file + ":" + item.type;
+              // });
 
-              ppt.forEach((item, i) => {
-                course[`ppt${i}-`] = item.file + ":" + item.type;
-              });
+              // ppt.forEach((item, i) => {
+              //   course[`ppt${i}-`] = item.file + ":" + item.type;
+              // });
 
               let images = []
               let resource = []
 
               for (let index = 0; index < ppt.length; index++) {
                 let urlstring = course[`ppt${index}-`].split(":");
-
-                let type = urlstring.pop();
 
                 let key = urlstring.pop();
 
@@ -49,8 +47,6 @@ export const onGoingCourseController = {
 
               for (let index = 0; index < resources.length; index++) {
                 let urlstring = course[`resource${index}-`].split(":");
-
-                let type = urlstring.pop();
 
                 let key = urlstring.pop();
 
@@ -76,6 +72,9 @@ export const onGoingCourseController = {
               course["resource"] = resource;
 
               return course;
+              } catch (error) {
+                console.log(error);
+              }
             });
 
             Promise.all(newResult)
