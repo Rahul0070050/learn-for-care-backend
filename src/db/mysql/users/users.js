@@ -555,7 +555,7 @@ export function getAllManagerIndividualFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery =
-        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, type_of_account FROM users WHERE created_by = ? AND type_of_account = ?";
+        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ? AND type_of_account = ?";
       db.query(getQuery, [id, "individual"], (err, result) => {
         if (err) {
           reject(err.message);
