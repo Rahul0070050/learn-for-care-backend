@@ -23,14 +23,14 @@ export const onGoingCourseController = {
               course[`resourceCount`] = resources.length;
               course[`pptCount`] = resources.length;
 
-              // resources.forEach((item, i) => {
-              //   console.log(item.file + ":" + item.type);
-              //   course[`resource${i}-`] = item.file + ":" + item.type;
-              // });
+              resources.forEach((item, i) => {
+                console.log(item.file + ":" + item.type);
+                course[`resource${i}-`] = item.file + ":" + item.type;
+              });
 
-              // ppt.forEach((item, i) => {
-              //   course[`ppt${i}-`] = item.file + ":" + item.type;
-              // });
+              ppt.forEach((item, i) => {
+                course[`ppt${i}-`] = item.file + ":" + item.type;
+              });
 
               let images = []
               let resource = []
