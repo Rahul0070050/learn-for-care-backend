@@ -53,7 +53,7 @@ export const courseController = {
             //  = uploadFileToS3("/course/ppt", result.ppt);
 
             let ppt = result.image.map((file) =>
-              uploadFileToS3("/course/ppt", file)
+            uploadFileToS3("/course/image", file)
             );
             let resource = result.resource.map((file) =>
               uploadFileToS3("/course/resource", file)
@@ -62,18 +62,20 @@ export const courseController = {
             Promise.all([video, introVideo, thumbnail, ...ppt, ...resource])
               .then((uploadedResult) => {
                 result.resource = [];
-                result.ppt = [];
+                result.image = [];
                 uploadedResult.forEach((file) => {
                   if (file.name == "resource") {
                     result[file.name].push({
                       type: file.type,
                       file: file.file,
                     });
-                  } else if (file.name == "ppt") {
+                  } else if (file.name == "image") {
                     result[file.name].push({
                       type: file.type,
                       file: file.file,
                     });
+                  } else {
+                    result[file.name] = file.file;
                   }
                 });
                 addNewCourse(result)

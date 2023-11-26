@@ -4,7 +4,9 @@ export function addNewCourse(courseData) {
   return new Promise((resolve, reject) => {
     try {
       let resource = JSON.stringify(courseData.resource);
-      let ppt = JSON.stringify(courseData.ppt);
+      let ppt = JSON.stringify(courseData.image);
+      console.log(ppt);
+      console.log(courseData);
       let insertCourseQuery =
         "INSERT INTO course(name,description,category,price,intro_video,thumbnail,video,ppt,resource) VALUES(?,?,?,?,?,?,?,?,?);";
       db.query(

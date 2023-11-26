@@ -48,7 +48,7 @@ export function validateFile(files, key) {
           return isValidFileExtensions(value?.name?.toLowerCase() || "", type);
         }),
     });
-
+    
     try {
       let fileUploads = null;
       if (Array.isArray(files[0][key])) {

@@ -3,7 +3,6 @@ import { validateFile } from "../validateFileTypes.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
-    console.log(files);
     let resources = files["resource[]"]
     delete files["resource[]"]
     if(!resources) {
@@ -11,7 +10,6 @@ export function checkAddCourseReqBodyAndFile(body, files) {
     }
 
     files.resource = resources
-    
     try {
 
       let introVideoFile = null;
@@ -35,7 +33,7 @@ export function checkAddCourseReqBodyAndFile(body, files) {
         "thumbnail"
       );
       let PdfFile = validateFile([{ resource: files.resource }], "resource");
-      let PptFile = validateFile([{ image: [...files.ppt] }], "image");
+      let PptFile = validateFile([{ image: files.image }], "image"); // change files[0] to files in the frond ent
 
       let bodyTemplate = object({
         description: string().required("please enter valid description"),
@@ -61,7 +59,7 @@ export function checkAddCourseReqBodyAndFile(body, files) {
             ...result[2][0],
             ...result[3][0],
             resource: result[4].map((item) => item.resource),
-            ...result[5][0],
+            image: result[5].map((item) => item.image),
           };
           resolve(values);
         })
