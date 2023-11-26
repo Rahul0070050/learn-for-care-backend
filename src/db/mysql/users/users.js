@@ -573,11 +573,16 @@ export function getAllIndividualUnderCompanyFromDb(id) {
   return new Promise(async (resolve, reject) => {
     let managers = await getAllMAnagers(id);
     try {
-      Promise.all(managers.map(item => getAllManagerIndividualFromDb(item.id))).then(result => {
-        resolve(result);
-      }).catch(err => {
-        reject(err);
-      })
+      Promise.all(
+        managers.map((item) => getAllManagerIndividualFromDb(item.id))
+      )
+        .then(async (result) => {
+          let individualsOfAdmin = await getAllManagerIndividualFromDb(id);
+          resolve([...result,individualsOfAdmin]);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     } catch (error) {
       reject(error?.message);
     }
