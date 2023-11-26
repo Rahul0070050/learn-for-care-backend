@@ -276,8 +276,9 @@ export const courseController = {
                 });
 
                 let images = []
+
                 ppt.forEach((item, i) => {
-                  images.push(item.file);
+                  course[`ppt${i}`] = item.file;
                 });
 
                 for (let index = 0; index < resources.length; index++) {
@@ -286,6 +287,14 @@ export const courseController = {
                   let url = await downloadFromS3(index, urlstring);
 
                   course[`resource${index}`] = `${url.url}##${type}`;
+                }
+
+                for (let index = 0; index < ppt.length; index++) {
+                  let urlstring = course[`resource${index}`]
+
+                  let url = await downloadFromS3(index, urlstring);
+
+                  images.push(url.url)
                 }
 
                 let intro_video = await downloadFromS3(
@@ -303,7 +312,7 @@ export const courseController = {
                 course["intro_video"] = intro_video?.url;
                 course["thumbnail"] = thumbnail?.url;
                 course["video"] = video?.url;
-                course["ppt"] = images;
+                // course["ppt"] = ppt;
 
                 return course;
               });
