@@ -303,7 +303,7 @@ export const courseController = {
                 course["intro_video"] = intro_video?.url;
                 course["thumbnail"] = thumbnail?.url;
                 course["video"] = video?.url;
-                course["ppt"] = imaegs;
+                course["ppt"] = images;
 
                 return course;
               });
