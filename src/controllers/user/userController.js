@@ -15,7 +15,7 @@ import {
   getAllAssignedCourseProgressFromDb,
   getAllBlockedUser,
   getAllMAnagers,
-  getAllManagerIndividualFromDb,
+  getAllIndividualUnderCompanyFromDb,
   getAllSubUsersFrom,
   getAssignedBundleToManagerFromDb,
   getAssignedCourseForManagerByManagerId,
@@ -25,6 +25,7 @@ import {
   saveUserProfileImage,
   unBlockUserBySubUserId,
   updateUserData,
+  getAllManagerIndividualFromDb,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
@@ -1034,6 +1035,44 @@ export const userController = {
             data: {
               code: 200,
               message: "got all manager individual",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllIndividualUnderCompany:(req,res) => {
+    try {
+      let user = getUser(req);
+      getAllIndividualUnderCompanyFromDb(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all individual under company",
               response: result,
             },
           });

@@ -319,11 +319,11 @@ export function assignCourseToMAnager(data) {
         realCourse_type,
         realValidity,
         userId,
-        from
+        from,
       } = data;
 
-      let decreaseQuery = ""
-      if(from == "assigned") {
+      let decreaseQuery = "";
+      if (from == "assigned") {
         decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
       } else {
         decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
@@ -414,11 +414,11 @@ export function assignCourseToMAnagerIndividualFromAssignedDb(data) {
         count,
       } = data;
 
-      let decreaseQuery = null
-      if(data.from == "manager-assigned") {
+      let decreaseQuery = null;
+      if (data.from == "manager-assigned") {
         decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
       } else {
-        decreaseQuery =`UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
+        decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
       }
 
       db.query(decreaseQuery, [count, course_id], (err, result) => {
@@ -563,6 +563,21 @@ export function getAllManagerIndividualFromDb(id) {
           resolve(result);
         }
       });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getAllIndividualUnderCompanyFromDb(id) {
+  return new Promise(async (resolve, reject) => {
+    let managers = await getAllMAnagers(id);
+    try {
+      Promise.all(managers.map(item => getAllManagerIndividualFromDb(item.id))).then(result => {
+        resolve(result);
+      }).catch(err => {
+        reject(err);
+      })
     } catch (error) {
       reject(error?.message);
     }
