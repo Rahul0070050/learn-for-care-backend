@@ -532,8 +532,8 @@ export const courseController = {
     try {
       getAllCoursesFromDb()
         .then(async (result) => {
-           let newResult = await result.map(async (course, i) => {
-              try {
+          let newResult = await result.map(async (course, i) => {
+            try {
               let resources = JSON.parse(course.resource);
               let ppt = JSON.parse(course.ppt);
 
@@ -593,10 +593,12 @@ export const courseController = {
             } catch (error) {
               console.log(error);
             }
-            });
+          });
 
           Promise.all(newResult)
             .then((result) => {
+              result[0] = result[2]
+              result[1] = result[2]
               res.status(200).json({
                 success: true,
                 data: {
