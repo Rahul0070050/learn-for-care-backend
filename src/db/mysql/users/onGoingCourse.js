@@ -4,7 +4,7 @@ export function getOnGoingCourseByIdFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getOnGoingCourseByIdQuery = `
-        SELECT enrolled_course.* course.*, enrolled_course.id AS id FROM enrolled_course 
+        SELECT enrolled_course.*, course.*, enrolled_course.id AS id FROM enrolled_course 
         INNER JOIN course ON course.id = enrolled_course.course_id
         WHERE enrolled_course.id = ?;
       `;
