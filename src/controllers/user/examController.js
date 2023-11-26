@@ -10,11 +10,6 @@ export const examController = {
         .then((result) => {
           getQuestionsForExamByCourseId(result.course_id)
             .then((exam) => {
-              exam.map((item) => {
-                let options = JSON.parse(item.options)
-                item.options = options
-                return item
-              })
               res.status(200).json({
                 success: true,
                 data: {
