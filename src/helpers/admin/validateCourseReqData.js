@@ -5,12 +5,17 @@ export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
     console.log(files);
     let resources = files["resource[]"]
+    let ppt = files["ppt[]"]
     delete files["resource[]"]
+    if(!resources) {
+      resources = files.resource
+    }
     if(!resources) {
       resources = files.resource
     }
 
     files.resource = resources
+    files.ppt = ppt
     try {
 
       let introVideoFile = null;
