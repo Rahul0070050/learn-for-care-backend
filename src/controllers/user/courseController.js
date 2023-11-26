@@ -210,27 +210,6 @@ export const courseController = {
       getAllCoursesFromDb()
         .then(async (result) => {
           let newResult = await result.map(async (course, i) => {
-            let resources = JSON.parse(course.resource);
-
-            delete course.resource;
-
-            course[`resourceCount`] = resources.length;
-
-            resources.forEach((item, i) => {
-              course[`resource${i}`] = `${item.file}##${item.type}`;
-            });
-
-            for (let index = 0; index < resources.length; index++) {
-              let urlstring = course[`resource${index}`].split("##");
-
-              let type = urlstring.pop();
-
-              let key = urlstring.pop();
-
-              let url = await downloadFromS3(index, key);
-
-              course[`resource${index}`] = `${url.url}##${type}`;
-            }
 
             let intro_video = await downloadFromS3(
               course.id,
@@ -239,14 +218,8 @@ export const courseController = {
 
             let thumbnail = await downloadFromS3(course.id, course.thumbnail);
 
-            let video = await downloadFromS3(course.id, course.video);
-
-            let ppt = await downloadFromS3(course.id, course.ppt);
-
             course["intro_video"] = intro_video?.url;
             course["thumbnail"] = thumbnail?.url;
-            course["video"] = video?.url;
-            course["ppt"] = ppt?.url;
 
             return course;
           });
