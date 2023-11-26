@@ -262,59 +262,63 @@ export const courseController = {
           getCourseByIdFromDb(id)
             .then(async (result) => {
               let newResult = await result.map(async (course, i) => {
-                let resources = JSON.parse(course.resource);
-                let ppt = JSON.parse(course.ppt);
+                try {
+                  let resources = JSON.parse(course.resource);
+                  let ppt = JSON.parse(course.ppt);
 
-                delete course.resource;
-                delete course.ppt;
+                  delete course.resource;
+                  delete course.ppt;
 
-                course[`resourceCount`] = resources.length;
-                course[`pptCount`] = resources.length;
+                  course[`resourceCount`] = resources.length;
+                  course[`pptCount`] = resources.length;
 
-                resources.forEach((item, i) => {
-                  course[`resource${i}`] = item.file;
-                });
+                  resources.forEach((item, i) => {
+                    course[`resource${i}`] = item.file;
+                  });
 
-                let images = []
+                  let images = [];
 
-                ppt.forEach((item, i) => {
-                  course[`ppt${i}`] = item.file;
-                });
+                  ppt.forEach((item, i) => {
+                    course[`ppt${i}`] = item.file;
+                  });
 
-                for (let index = 0; index < resources.length; index++) {
-                  let urlstring = course[`resource${index}`]
+                  for (let index = 0; index < resources.length; index++) {
+                    let urlstring = course[`resource${index}`];
 
-                  let url = await downloadFromS3(index, urlstring);
+                    let url = await downloadFromS3(index, urlstring);
 
-                  course[`resource${index}`] = `${url.url}##${type}`;
+                    course[`resource${index}`] = `${url.url}##${type}`;
+                  }
+
+                  for (let index = 0; index < ppt.length; index++) {
+                    let urlstring = course[`ppt${index}`];
+
+                    let url = await downloadFromS3(index, urlstring);
+
+                    images.push(url.url);
+                  }
+
+                  let intro_video = await downloadFromS3(
+                    course.id,
+                    course.intro_video
+                  );
+
+                  let thumbnail = await downloadFromS3(
+                    course.id,
+                    course.thumbnail
+                  );
+
+                  let video = await downloadFromS3(course.id, course.video);
+
+                  course["intro_video"] = intro_video?.url;
+                  course["thumbnail"] = thumbnail?.url;
+                  course["video"] = video?.url;
+                  // course["ppt"] = ppt;
+
+                  return course;
+                } catch (error) {
+                  console.log(error);
                 }
-
-                for (let index = 0; index < ppt.length; index++) {
-                  let urlstring = course[`ppt${index}`]
-
-                  let url = await downloadFromS3(index, urlstring);
-
-                  images.push(url.url)
-                }
-
-                let intro_video = await downloadFromS3(
-                  course.id,
-                  course.intro_video
-                );
-
-                let thumbnail = await downloadFromS3(
-                  course.id,
-                  course.thumbnail
-                );
-
-                let video = await downloadFromS3(course.id, course.video);
-
-                course["intro_video"] = intro_video?.url;
-                course["thumbnail"] = thumbnail?.url;
-                course["video"] = video?.url;
-                // course["ppt"] = ppt;
-
-                return course;
               });
 
               Promise.all(newResult)
@@ -558,7 +562,7 @@ export const courseController = {
                 course[`ppt${i}-`] = item.file + ":" + item.type;
               });
 
-              let images = []
+              let images = [];
 
               for (let index = 0; index < ppt.length; index++) {
                 let urlstring = course[`ppt${index}-`].split(":");
@@ -569,7 +573,7 @@ export const courseController = {
 
                 let url = await downloadFromS3(index, key);
 
-                images.push(url.url)
+                images.push(url.url);
               }
 
               for (let index = 0; index < resources.length; index++) {
@@ -606,8 +610,8 @@ export const courseController = {
 
           Promise.all(newResult)
             .then((result) => {
-              result[0] = result[2]
-              result[1] = result[2]
+              result[0] = result[2];
+              result[1] = result[2];
               res.status(200).json({
                 success: true,
                 data: {
