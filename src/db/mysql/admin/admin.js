@@ -392,13 +392,13 @@ export function saveImageToDb(id, image) {
 
 export function getManagerReport(id) {
   return new Promise(async (resolve, reject) => {
-    console.log(id);
     let managers = await getAllMAnagers(id);
     Promise.all(managers.map(async(item) => {
       let bundleCount1 = await getCountOfAssignedBundleByOwnerId(item.id)
       let bundleCount2 = await getCountOfBundleByOwnerId(item.id)
       let CourseCount1 = await geCountOfPurchasedCourse(item.id)
       let CourseCount2 = await geCountOfAssignedCourse(item.id)
+      console.log(CourseCount2);
       item['course_count'] = CourseCount1[0] + CourseCount2[0]
       item['bundle_count'] = bundleCount1[0] + bundleCount2[0]
       return item
@@ -416,9 +416,9 @@ export function getManagerReport(id) {
     // LEFT JOIN purchased_course ON purchased_course.user_id = users.id
     // WHERE type_of_account = ? AND created_by = ?;
     // `;
-    db.query(updateQuery, ["manager", id], (err, result) => {
-      if (err) return reject(err?.message);
-      else return resolve(result);
-    });
+    // db.query(updateQuery, ["manager", id], (err, result) => {
+    //   if (err) return reject(err?.message);
+    //   else return resolve(result);
+    // });
   });
 }
