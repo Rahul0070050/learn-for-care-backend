@@ -67,8 +67,15 @@ export const examController = {
       validateValidateExamReqData(req.body).then(async (result) => {
         let answers = JSON.parse(result.answer);
         let questions = await getQuestionsById(result.question_id);
-        console.log(answers);
-        console.log(questions);
+        let realAnswers = JSON.parse(questions[0].exam)
+        let points = 0;
+        realAnswers.map(item => {
+          let ans = answers.find(i => i.question == item.question)
+          if(ans.answer == item.answer) {
+            ++points
+          }
+        })
+        console.log(points)
       });
     } catch (error) {
       res.status(500).json({
