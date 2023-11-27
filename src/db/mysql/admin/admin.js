@@ -446,15 +446,12 @@ export function getIndividualReportFromDb(id) {
           let CourseCount2 = await geCountOfAssignedCourse(item.id);
           let countOfIndividuals = await geCountOfAllCertificatesByUserId(item.id);
 
-          console.log(bundleCount1, bundleCount2, CourseCount1, CourseCount2, countOfIndividuals);
           // Number.isInteger
-          // item["assigned_course_count"] = CourseCount2[0]["SUM(fake_count)"];
-          // item["assigned_bundle_count"] = bundleCount1[0]["SUM(fake_count)"];
-          // item["purchased_course_count"] =
-          //   CourseCount1[0]["SUM(fake_course_count)"];
-          // item["purchased_bundle_count"] =
-          //   bundleCount2[0]["SUM(fake_course_count)"];
-          // item["individuals_count"] = countOfIndividuals[0]["COUNT(*)"];
+          item["assigned_course_count"] = CourseCount2[0]["SUM(fake_count)"];
+          item["assigned_bundle_count"] = bundleCount1[0]["SUM(count)"];
+          item["purchased_course_count"] = CourseCount1[0]["SUM(fake_course_count)"];
+          item["purchased_bundle_count"] = bundleCount2[0]["SUM(fake_course_count)"];
+          item["individuals_count"] = countOfIndividuals[0]["COUNT(*)"];
           return item;
         } catch (error) {
           console.log(error);
