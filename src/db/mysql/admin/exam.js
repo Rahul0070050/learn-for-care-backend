@@ -30,8 +30,8 @@ export function getQuestionsForExamByCourseId(course_id, userId,id) {
   return new Promise((resolve, reject) => {
     try {
       let insertQuery =
-        "INSERT INTO exam_attempts (enrolled_course_id) VALUES (?)";
-      db.query(insertQuery, [id], (err, result) => {
+        "INSERT INTO exam_attempts (enrolled_course_id,course_id,user_id) VALUES (?,?,?)";
+      db.query(insertQuery, [id,course_id,userId], (err, result) => {
         if (err) throw err;
       });
 
