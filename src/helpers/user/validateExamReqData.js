@@ -30,7 +30,7 @@ export function validateValidateExamReqData(data) {
         question_id: yup.number().required("invalid question id")
       });
 
-      let bodyData = bodyTemplate.validate(body);
+      let bodyData = bodyTemplate.validate(data);
 
       bodyData
         .then((result) => {
