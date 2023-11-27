@@ -1542,6 +1542,24 @@ export const adminController = {
       });
     }
   },
+  getManagerReport:(req,res) => {
+    try {
+      let admin = getUser(req)
+      getManagerReport(admin.id)
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
   getAllAdminQualifications: (req, res) => {
     let admin = getUser(req);
     getAdminQualificationsDocs(admin.id).then((result) => {});

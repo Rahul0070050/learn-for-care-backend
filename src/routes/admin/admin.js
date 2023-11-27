@@ -46,6 +46,8 @@ route.patch("/update-admin-profile-image", validateAdmin, adminController.update
 route.delete("/delete-experience/:id", validateAdmin, adminController.delateAdminExperience);
 route.delete("/delete-qualification/:id", validateAdmin, adminController.delateAdminQualification);
 
+route.get("/get-manager-report", validateAdmin, adminController.getManagerReport);
+
 route.post("/assign-bundle", validateAdmin, adminController.assignBundle);
 
 export default route;

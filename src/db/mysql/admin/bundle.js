@@ -22,3 +22,37 @@ export function assignBundleToUser(data) {
     }
   });
 }
+
+export function getCountOfAssignedBundleByOwnerId(id) {
+    return new Promise((resolve, reject) => {
+        try {
+          let insertQuery = "SELECT fake_count FROM course_assigned_manager WHERE manager_id = ?;"
+          db.query(
+            insertQuery,
+            (err, result) => {
+              if (err) return reject(err?.message);
+              else return resolve(result);
+            }
+          );
+        } catch (error) {
+          reject(error?.message);
+        }
+      });
+}
+
+export function getCountOfBundleByOwnerId(id) {
+    return new Promise((resolve, reject) => {
+        try {
+          let insertQuery = "SELECT fake_course_count FROM purchased_course WHERE user_id = ?;"
+          db.query(
+            insertQuery,
+            (err, result) => {
+              if (err) return reject(err?.message);
+              else return resolve(result);
+            }
+          );
+        } catch (error) {
+          reject(error?.message);
+        }
+      });
+}

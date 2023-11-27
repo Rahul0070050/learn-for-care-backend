@@ -1,5 +1,10 @@
 import { db } from "../../../conf/mysql.js";
+import { getAllMAnagers } from "../users/users.js";
 import { getNewBlogs } from "./blog.js";
+import {
+  getCountOfAssignedBundleByOwnerId,
+  getCountOfBundleByOwnerId,
+} from "./bundle.js";
 import { geCountOfAllCertificates } from "./certificate.js";
 import { geCountOfAllCourse } from "./course.js";
 import { getAllPurchasedCourseFromDb } from "./purchasedCourse.js";
@@ -381,6 +386,30 @@ export function saveImageToDb(id, image) {
     db.query(updateQuery, [image, id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve();
+    });
+  });
+}
+
+export function getManagerReport(id) {
+  return new Promise(async (resolve, reject) => {
+    console.log(id);
+    let managers = await getAllMAnagers(id);
+    // managers.map(async(item) => {
+    //   let count1 = await getCountOfAssignedBundleByOwnerId(item.id)
+    //   let count2 = await getCountOfBundleByOwnerId(item.id)
+    // })
+    let updateQuery = `
+    SELECT 
+    users.*, course_assigned_manager.course_type AS type, course_assigned_manager.fake_count AS count,
+    purchased_course.fake_course_count AS count, purchased_course.course_type AS type
+    FROM users
+    INNER JOIN course_assigned_manager ON course_assigned_manager.owner = users.id 
+    INNER JOIN purchased_course ON purchased_course.user_id = user.id
+    WHERE type_of_account = ? AND created_by = ?;
+    `;
+    db.query(updateQuery, ["manager", id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
     });
   });
 }
