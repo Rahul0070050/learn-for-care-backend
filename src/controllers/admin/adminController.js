@@ -1561,6 +1561,7 @@ export const adminController = {
                 email: item.email,
                 name: item.first_name + " " + item.last_name,
                 count: item.purchased_count,
+                id: item.id
               });
             }
           });
