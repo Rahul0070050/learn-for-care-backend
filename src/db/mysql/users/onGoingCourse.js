@@ -3,6 +3,7 @@ import { db } from "../../../conf/mysql.js";
 export function getOnGoingCourseByIdFromDb(id, userId) {
   return new Promise((resolve, reject) => {
     try {
+      console.log(id,userId);
       let getOnGoingCourseByIdQuery = `
         SELECT enrolled_course.*, course.*, enrolled_course.id AS id FROM enrolled_course 
         INNER JOIN course ON course.id = enrolled_course.course_id
