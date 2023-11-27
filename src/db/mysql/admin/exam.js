@@ -71,3 +71,18 @@ export function deleteFromDb(id) {
     }
   });
 }
+
+export function getQuestionsById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuestionsQuery =
+        "SELECT * FROM exams WHERE id = ?;";
+      db.query(getQuestionsQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

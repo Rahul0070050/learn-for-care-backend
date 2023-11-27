@@ -1,7 +1,11 @@
 import {
+  getQuestionsById,
   getQuestionsForExamByCourseId,
 } from "../../db/mysql/admin/exam.js";
-import { checkGetExamReqBody } from "../../helpers/user/validateExamReqData.js";
+import {
+  checkGetExamReqBody,
+  validateValidateExamReqData,
+} from "../../helpers/user/validateExamReqData.js";
 
 export const examController = {
   getExam: (req, res) => {
@@ -43,6 +47,29 @@ export const examController = {
             errorType: "client",
           });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  validate: (req, res) => {
+    try {
+      validateValidateExamReqData(req.body).then(async (result) => {
+        let answers = JSON.parse(result.answer);
+        let questions = await getQuestionsById(result.question_id);
+        console.log(answers);
+        console.log(questions);
+      });
     } catch (error) {
       res.status(500).json({
         success: false,
