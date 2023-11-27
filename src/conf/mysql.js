@@ -201,13 +201,13 @@ export function mySqlConnect(done) {
           id INT AUTO_INCREMENT PRIMARY KEY,
           course_id INT NOT NULL,
           user_id TEXT NOT NULL,
-          attempts DEFAULT 0,
-          percentage DEFAULT NULL,
+          attempts INT DEFAULT 0,
+          percentage INT DEFAULT NULL,
           status VARCHAR(10) DEFAULT NULL
         );
       `;
 
-      
+
       db.query(ExamAttemptsTable, (err, result) => {
         if (err) console.log(err.message);
         else console.log("exam_attempts table created");
