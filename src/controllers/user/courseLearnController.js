@@ -13,6 +13,7 @@ export const onGoingCourseController = {
       checkGetOnGoingCourseByIdReqData(req.params.id)
         .then((result) => {
           let user = getUSer(req)
+          console.log(user.id);
           getOnGoingCourseByIdFromDb(result,user.id).then(async (result) => {
             let newResult = await result.map(async (course, i) => {
               try {
