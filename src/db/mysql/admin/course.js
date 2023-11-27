@@ -194,3 +194,39 @@ export function geCountOfAllCourse() {
     }
   });
 }
+
+export function geCountOfPurchasedCourse(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery =
+        "SELECT SUM(fake_course_count) FROM purchased_course WHERE course_type = ? AND user_id = ?;";
+      db.query(getQuery, [id, "course"], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function geCountOfAssignedCourse(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery =
+        "SELECT SUM(fake_count) FROM course_assigned_manager WHERE course_type = ? AND manager_id = ?;";
+      db.query(getQuery, [id, "course"], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

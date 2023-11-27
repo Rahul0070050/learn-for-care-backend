@@ -1548,29 +1548,29 @@ export const adminController = {
       let admin = getUser(req);
       getManagerReport(admin.id)
         .then((result) => {
-          let newResult = [];
-          result.forEach((item) => {
-            if (newResult.find((nItem) => nItem.email == item.email)) {
-              newResult.filter((nItem) => {
-                if (nItem.email == item.email) {
-                  nItem["count"] += item.purchased_count;
-                }
-              });
-            } else {
-              newResult.push({
-                email: item.email,
-                name: item.first_name + " " + item.last_name,
-                count: item.purchased_count,
-                id: item.id
-              });
-            }
-          });
+          // let newResult = [];
+          // result.forEach((item) => {
+          //   if (newResult.find((nItem) => nItem.email == item.email)) {
+          //     newResult.filter((nItem) => {
+          //       if (nItem.email == item.email) {
+          //         nItem["count"] += item.purchased_count;
+          //       }
+          //     });
+          //   } else {
+          //     newResult.push({
+          //       email: item.email,
+          //       name: item.first_name + " " + item.last_name,
+          //       count: item.purchased_count,
+          //       id: item.id
+          //     });
+          //   }
+          // });
           res.status(200).json({
             success: true,
             data: {
               code: 200,
               message: "got manager report",
-              response: newResult,
+              response: result,
             },
           });
         })

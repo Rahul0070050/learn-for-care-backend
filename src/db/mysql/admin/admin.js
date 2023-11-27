@@ -6,7 +6,7 @@ import {
   getCountOfBundleByOwnerId,
 } from "./bundle.js";
 import { geCountOfAllCertificates } from "./certificate.js";
-import { geCountOfAllCourse } from "./course.js";
+import { geCountOfAllCourse, geCountOfAssignedCourse, geCountOfPurchasedCourse } from "./course.js";
 import { getAllPurchasedCourseFromDb } from "./purchasedCourse.js";
 import {
   geCountOfAllCompanyUsers,
@@ -394,19 +394,28 @@ export function getManagerReport(id) {
   return new Promise(async (resolve, reject) => {
     console.log(id);
     let managers = await getAllMAnagers(id);
-    // managers.map(async(item) => {
-    //   let count1 = await getCountOfAssignedBundleByOwnerId(item.id)
-    //   let count2 = await getCountOfBundleByOwnerId(item.id)
-    // })
-    let updateQuery = `
-    SELECT 
-    users.*, 
-    purchased_course.fake_course_count AS purchased_count, 
-    purchased_course.course_type AS purchased_type
-    FROM users
-    LEFT JOIN purchased_course ON purchased_course.user_id = users.id
-    WHERE type_of_account = ? AND created_by = ?;
-    `;
+    Promise.all(managers.map(async(item) => {
+      let bundleCount1 = await getCountOfAssignedBundleByOwnerId(item.id)
+      let bundleCount2 = await getCountOfBundleByOwnerId(item.id)
+      let CourseCount1 = await geCountOfPurchasedCourse(item.id)
+      let CourseCount2 = await geCountOfAssignedCourse(item.id)
+      item['course_count'] = CourseCount1[0] + CourseCount2[0]
+      item['bundle_count'] = bundleCount1[0] + bundleCount2[0]
+      return item
+    })).then(result => {
+      resolve(result)
+    }).catch(err => {
+      reject(err?.message)
+    })
+    // let updateQuery = `
+    // SELECT 
+    // users.*, 
+    // purchased_course.fake_course_count AS purchased_count, 
+    // purchased_course.course_type AS purchased_type
+    // FROM users
+    // LEFT JOIN purchased_course ON purchased_course.user_id = users.id
+    // WHERE type_of_account = ? AND created_by = ?;
+    // `;
     db.query(updateQuery, ["manager", id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);

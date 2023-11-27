@@ -11,7 +11,7 @@ export function assignBundleToUser(data) {
       let insertQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity,count) VALUES (?,?,?,?,?,?);`;
       db.query(
         insertQuery,
-        [adminId, bundle_id, type, user_id, new Date(validity),count],
+        [adminId, bundle_id, type, user_id, new Date(validity), count],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
@@ -24,35 +24,31 @@ export function assignBundleToUser(data) {
 }
 
 export function getCountOfAssignedBundleByOwnerId(id) {
-    return new Promise((resolve, reject) => {
-        try {
-          let insertQuery = "SELECT fake_count FROM course_assigned_manager WHERE manager_id = ?;"
-          db.query(
-            insertQuery,
-            (err, result) => {
-              if (err) return reject(err?.message);
-              else return resolve(result);
-            }
-          );
-        } catch (error) {
-          reject(error?.message);
-        }
+  return new Promise((resolve, reject) => {
+    try {
+      let insertQuery =
+        "SELECT SUM(fake_count) FROM course_assigned_manager WHERE course_type = ? AND manager_id = ?;";
+      db.query(insertQuery, ["bundle", id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
       });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
 }
 
 export function getCountOfBundleByOwnerId(id) {
-    return new Promise((resolve, reject) => {
-        try {
-          let insertQuery = "SELECT fake_course_count FROM purchased_course WHERE user_id = ?;"
-          db.query(
-            insertQuery,
-            (err, result) => {
-              if (err) return reject(err?.message);
-              else return resolve(result);
-            }
-          );
-        } catch (error) {
-          reject(error?.message);
-        }
+  return new Promise((resolve, reject) => {
+    try {
+      let insertQuery =
+        "SELECT SUM(fake_course_count) FROM purchased_course WHERE course_type = ? AND user_id = ?;";
+      db.query(insertQuery, ["bundle", id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
       });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
 }
