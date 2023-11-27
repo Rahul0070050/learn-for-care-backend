@@ -7,7 +7,11 @@ import {
   getCountOfBundlePurchasedByOwnerId,
 } from "./bundle.js";
 import { geCountOfAllCertificates } from "./certificate.js";
-import { geCountOfAllCourse, geCountOfAssignedCourse, geCountOfPurchasedCourse } from "./course.js";
+import {
+  geCountOfAllCourse,
+  geCountOfAssignedCourse,
+  geCountOfPurchasedCourse,
+} from "./course.js";
 import { getAllPurchasedCourseFromDb } from "./purchasedCourse.js";
 import {
   geCountOfAllCompanyUsers,
@@ -394,30 +398,36 @@ export function saveImageToDb(id, image) {
 export function getManagerReport(id) {
   return new Promise(async (resolve, reject) => {
     let managers = await getAllMAnagers(id);
-    Promise.all(managers.map(async(item) => {
-      let bundleCount1 = await getCountOfAssignedBundleByOwnerId(item.id)
-      let bundleCount2 = await getCountOfBundlePurchasedByOwnerId(item.id)
-      let CourseCount1 = await geCountOfPurchasedCourse(item.id)
-      let CourseCount2 = await geCountOfAssignedCourse(item.id)
-      console.log(CourseCount1[0]);
-      console.log(bundleCount1[0]);
-      console.log(CourseCount2[0]);
-      console.log(bundleCount2[0]);
-      // Number.isInteger
-      item['assigned_course_count'] = CourseCount2[0]
-      item['assigned_bundle_count'] = bundleCount1[0]
-      item['purchased_course_count'] = CourseCount1[0]
-      item['purchased_bundle_count'] = bundleCount2[0]
-      return item
-    })).then(result => {
-      resolve(result)
-    }).catch(err => {
-      reject(err?.message)
-    })
+    Promise.all(
+      managers.map(async (item) => {
+        try {
+          let bundleCount1 = await getCountOfAssignedBundleByOwnerId(item.id);
+          let bundleCount2 = await getCountOfBundlePurchasedByOwnerId(item.id);
+          let CourseCount1 = await geCountOfPurchasedCourse(item.id);
+          let CourseCount2 = await geCountOfAssignedCourse(item.id);
+
+          console.log(CourseCount2, bundleCount1, CourseCount1, bundleCount2);
+          // Number.isInteger
+          item["assigned_course_count"] = CourseCount2[0];
+          item["assigned_bundle_count"] = bundleCount1[0];
+          item["purchased_course_count"] = CourseCount1[0];
+          item["purchased_bundle_count"] = bundleCount2[0];
+          return item;
+        } catch (error) {
+          console.log(error);
+        }
+      })
+    )
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err?.message);
+      });
     // let updateQuery = `
-    // SELECT 
-    // users.*, 
-    // purchased_course.fake_course_count AS purchased_count, 
+    // SELECT
+    // users.*,
+    // purchased_course.fake_course_count AS purchased_count,
     // purchased_course.course_type AS purchased_type
     // FROM users
     // LEFT JOIN purchased_course ON purchased_course.user_id = users.id
