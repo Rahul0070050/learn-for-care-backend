@@ -195,6 +195,7 @@ export function mySqlConnect(done) {
     //   else console.log("exam table created");
     // });
 
+
       const ExamAttemptsTable = `
         CREATE TABLE IF NOT EXISTS exam_attempts (
           id INT AUTO_INCREMENT PRIMARY KEY,
@@ -206,6 +207,7 @@ export function mySqlConnect(done) {
         );
       `;
 
+      
       db.query(ExamAttemptsTable, (err, result) => {
         if (err) console.log(err.message);
         else console.log("exam_attempts table created");
