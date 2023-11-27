@@ -92,7 +92,7 @@ export function getQuestionsById(id) {
 export function saveExamResult(per, questionId, UserId) {
   return new Promise((resolve, reject) => {
     try {
-      let status = data.per >= 100 ? "pass" : "fail";
+      let status = per >= 100 ? "pass" : "fail";
       let getQuestionsQuery =
         "UPDATE exam_attempts SET attempts = 1 - attempts, percentage = ?,status = ? WHERE course_id = ? AND user_id = ?;";
       db.query(
