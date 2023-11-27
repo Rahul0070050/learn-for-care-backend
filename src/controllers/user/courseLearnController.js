@@ -12,7 +12,8 @@ export const onGoingCourseController = {
       req.params.id = Number(req.params.id);
       checkGetOnGoingCourseByIdReqData(req.params.id)
         .then((result) => {
-          getOnGoingCourseByIdFromDb(result).then(async (result) => {
+          let user = getUSer(req)
+          getOnGoingCourseByIdFromDb(result,user.id).then(async (result) => {
             let newResult = await result.map(async (course, i) => {
               try {
                 console.log(course);
