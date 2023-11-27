@@ -398,7 +398,10 @@ export function getManagerReport(id) {
       let bundleCount2 = await getCountOfBundleByOwnerId(item.id)
       let CourseCount1 = await geCountOfPurchasedCourse(item.id)
       let CourseCount2 = await geCountOfAssignedCourse(item.id)
+      console.log(CourseCount1);
       console.log(CourseCount2);
+      console.log(bundleCount1);
+      console.log(bundleCount2);
       item['course_count'] = CourseCount1[0] + CourseCount2[0]
       item['bundle_count'] = bundleCount1[0] + bundleCount2[0]
       return item
