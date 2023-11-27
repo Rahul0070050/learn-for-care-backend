@@ -26,12 +26,12 @@ export function insertQuestionsToExam(info) {
   });
 }
 
-export function getQuestionsForExamByCourseId(course_id, userId) {
+export function getQuestionsForExamByCourseId(course_id, userId,id) {
   return new Promise((resolve, reject) => {
     try {
       let insertQuery =
-        "INSERT INTO exam_attempts (course_id, user_id) VALUES (?,?)";
-      db.query(insertQuery, [course_id, userId], (err, result) => {});
+        "INSERT INTO exam_attempts (enrolled_course_id) VALUES (?)";
+      db.query(insertQuery, [id], (err, result) => {});
 
       let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ?;";
       db.query(getQuestionsQuery, [course_id], (err, result) => {

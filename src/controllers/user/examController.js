@@ -15,7 +15,7 @@ export const examController = {
       checkGetExamReqBody(req.body)
         .then((result) => {
           let user = getUser(req)
-          getQuestionsForExamByCourseId(result.course_id,user.id)
+          getQuestionsForExamByCourseId(result.course_id,user.id,result.enrolled_course_id)
             .then((exam) => {
               res.status(200).json({
                 success: true,
