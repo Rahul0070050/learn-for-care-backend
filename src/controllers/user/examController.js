@@ -1,18 +1,21 @@
 import {
   getQuestionsById,
   getQuestionsForExamByCourseId,
+  saveExamResult,
 } from "../../db/mysql/admin/exam.js";
 import {
   checkGetExamReqBody,
   validateValidateExamReqData,
 } from "../../helpers/user/validateExamReqData.js";
+import { getUser } from "../../utils/auth.js";
 
 export const examController = {
   getExam: (req, res) => {
     try {
       checkGetExamReqBody(req.body)
         .then((result) => {
-          getQuestionsForExamByCourseId(result.course_id)
+          let user = getUser(req)
+          getQuestionsForExamByCourseId(result.course_id,user.id)
             .then((exam) => {
               res.status(200).json({
                 success: true,
@@ -69,11 +72,39 @@ export const examController = {
         let questions = await getQuestionsById(result.question_id);
         let realAnswers = JSON.parse(questions[0].exam)
         let points = 0;
+        let user = getUser(req);
         realAnswers.map(item => {
           let ans = answers.find(i => i.question == item.question)
           if(ans.answer == item.answer) {
             ++points
           }
+        })
+        let per = points / answers.length * 100
+        saveExamResult(per,result.question_id,user.id).then(() => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "result",
+              response: {
+                per: per + " %",
+                rightAnswers: points,
+                wrongAnswers: answers.length - points
+              },
+            },
+          });
+        }).catch(err => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
         })
         console.log(points)
       });

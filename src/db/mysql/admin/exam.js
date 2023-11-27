@@ -26,11 +26,14 @@ export function insertQuestionsToExam(info) {
   });
 }
 
-export function getQuestionsForExamByCourseId(course_id) {
+export function getQuestionsForExamByCourseId(course_id, userId) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuestionsQuery =
-        "SELECT * FROM exams WHERE course_id = ?;";
+      let insertQuery =
+        "INSERT INTO exam_attempts (course_id, user_id) VALUES (?,?)";
+      db.query(insertQuery, [course_id, userId], (err, result) => {});
+
+      let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ?;";
       db.query(getQuestionsQuery, [course_id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
@@ -75,12 +78,31 @@ export function deleteFromDb(id) {
 export function getQuestionsById(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuestionsQuery =
-        "SELECT * FROM exams WHERE id = ?;";
+      let getQuestionsQuery = "SELECT * FROM exams WHERE id = ?;";
       db.query(getQuestionsQuery, [id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
       });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function saveExamResult(per, questionId, UserId) {
+  return new Promise((resolve, reject) => {
+    try {
+      let status = data.per >= 100 ? "pass" : "fail";
+      let getQuestionsQuery =
+        "UPDATE exam_attempts SET attempts = 1 - attempts, percentage = ?,status = ? WHERE course_id = ? AND user_id = ?;";
+      db.query(
+        getQuestionsQuery,
+        [per, status, questionId, UserId],
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }

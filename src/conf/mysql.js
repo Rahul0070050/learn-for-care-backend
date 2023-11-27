@@ -195,21 +195,21 @@ export function mySqlConnect(done) {
     //   else console.log("exam table created");
     // });
 
-    //   const ExamAttemptsTable = `
-    //     CREATE TABLE IF NOT EXISTS exam_attempts (
-    //       id INT AUTO_INCREMENT PRIMARY KEY,
-    //       course_id INT NOT NULL,
-    //       user_id TEXT NOT NULL,
-    //       attempts INT NOT NULL,
-    //       percentage INT NOT NULL,
-    //       status VARCHAR(10) NOT NULL
-    //     );
-    //   `;
+      const ExamAttemptsTable = `
+        CREATE TABLE IF NOT EXISTS exam_attempts (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          course_id INT NOT NULL,
+          user_id TEXT NOT NULL,
+          attempts INT NOT NULL DEFAULT 0,
+          percentage INT NOT NULL,
+          status VARCHAR(10) NOT NULL
+        );
+      `;
 
-    //   db.query(ExamAttemptsTable, (err, result) => {
-    //     if (err) console.log(err.message);
-    //     else console.log("exam_attempts table created");
-    //   });
+      db.query(ExamAttemptsTable, (err, result) => {
+        if (err) console.log(err.message);
+        else console.log("exam_attempts table created");
+      });
 
     // const subUserTable = `
     //   CREATE TABLE IF NOT EXISTS sub_user (
