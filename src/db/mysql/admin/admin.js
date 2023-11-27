@@ -404,8 +404,10 @@ export function getManagerReport(id) {
       console.log(CourseCount2[0]);
       console.log(bundleCount2[0]);
       // Number.isInteger
-      item['course_count'] = CourseCount1[0]['SUM(fake_course_count)'] + CourseCount2[0]['SUM(fake_course_count)']
-      item['bundle_count'] = bundleCount1[0]['SUM(fake_count)'] + bundleCount2[0]['SUM(fake_count)']
+      item['assigned_course_count'] = CourseCount2[0]
+      item['assigned_bundle_count'] = bundleCount1[0]
+      item['purchased_course_count'] = CourseCount1[0]
+      item['purchased_bundle_count'] = bundleCount2[0]
       return item
     })).then(result => {
       resolve(result)
