@@ -72,3 +72,21 @@ export function geCountOfAllCertificates() {
     }
   });
 }
+
+export function geCountOfAllCertificatesByUserId(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT COUNT(*) FROM certificate WHERE user_id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

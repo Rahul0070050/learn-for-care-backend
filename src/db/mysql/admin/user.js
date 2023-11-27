@@ -215,3 +215,41 @@ export function geCountOfAllIndividuals(id) {
     }
   });
 }
+
+export function getAllIndividualsFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT * FROM users
+      WHERE type_of_account = 'individual' AND created_by = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getCountOfAssignedBundleForIndividuals(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT SUM(count) FROM assigned_course
+      WHERE course_type = 'bundle' AND user_id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

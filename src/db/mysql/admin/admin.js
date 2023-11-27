@@ -6,7 +6,7 @@ import {
   getCountOfBundleByOwnerId,
   getCountOfBundlePurchasedByOwnerId,
 } from "./bundle.js";
-import { geCountOfAllCertificates } from "./certificate.js";
+import { geCountOfAllCertificates, geCountOfAllCertificatesByUserId } from "./certificate.js";
 import {
   geCountOfAllCourse,
   geCountOfAssignedCourse,
@@ -17,6 +17,8 @@ import {
   geCountOfAllCompanyUsers,
   geCountOfAllIndividualUsers,
   geCountOfAllIndividuals,
+  getAllIndividualsFromDb,
+  getCountOfAssignedBundleForIndividuals,
   getNewCompanyUsers,
   getNewUsers,
 } from "./user.js";
@@ -410,11 +412,13 @@ export function getManagerReport(id) {
 
           console.log(countOfIndividuals);
           // Number.isInteger
-          item["assigned_course_count"] = CourseCount2[0]['SUM(fake_count)'];
-          item["assigned_bundle_count"] = bundleCount1[0]['SUM(fake_count)'];
-          item["purchased_course_count"] = CourseCount1[0]['SUM(fake_course_count)'];
-          item["purchased_bundle_count"] = bundleCount2[0]['SUM(fake_course_count)'];
-          item["individuals_count"] = countOfIndividuals[0]['COUNT(*)']
+          item["assigned_course_count"] = CourseCount2[0]["SUM(fake_count)"];
+          item["assigned_bundle_count"] = bundleCount1[0]["SUM(fake_count)"];
+          item["purchased_course_count"] =
+            CourseCount1[0]["SUM(fake_course_count)"];
+          item["purchased_bundle_count"] =
+            bundleCount2[0]["SUM(fake_course_count)"];
+          item["individuals_count"] = countOfIndividuals[0]["COUNT(*)"];
           return item;
         } catch (error) {
           console.log(error);
@@ -427,18 +431,41 @@ export function getManagerReport(id) {
       .catch((err) => {
         reject(err?.message);
       });
-    // let updateQuery = `
-    // SELECT
-    // users.*,
-    // purchased_course.fake_course_count AS purchased_count,
-    // purchased_course.course_type AS purchased_type
-    // FROM users
-    // LEFT JOIN purchased_course ON purchased_course.user_id = users.id
-    // WHERE type_of_account = ? AND created_by = ?;
-    // `;
-    // db.query(updateQuery, ["manager", id], (err, result) => {
-    //   if (err) return reject(err?.message);
-    //   else return resolve(result);
-    // });
+  });
+}
+
+export function getIndividualReportFromDb(id) {
+  return new Promise(async (resolve, reject) => {
+    let individuals = await getAllIndividualsFromDb(id);
+    Promise.all(
+      individuals.map(async (item) => {
+        try {
+          let bundleCount1 = await getCountOfAssignedBundleForIndividuals(item.id);
+          let bundleCount2 = await getCountOfBundlePurchasedByOwnerId(item.id);
+          let CourseCount1 = await geCountOfPurchasedCourse(item.id);
+          let CourseCount2 = await geCountOfAssignedCourse(item.id);
+          let countOfIndividuals = await geCountOfAllCertificatesByUserId(item.id);
+
+          console.log(bundleCount1, bundleCount2, CourseCount1, CourseCount2, countOfIndividuals);
+          // Number.isInteger
+          // item["assigned_course_count"] = CourseCount2[0]["SUM(fake_count)"];
+          // item["assigned_bundle_count"] = bundleCount1[0]["SUM(fake_count)"];
+          // item["purchased_course_count"] =
+          //   CourseCount1[0]["SUM(fake_course_count)"];
+          // item["purchased_bundle_count"] =
+          //   bundleCount2[0]["SUM(fake_course_count)"];
+          // item["individuals_count"] = countOfIndividuals[0]["COUNT(*)"];
+          return item;
+        } catch (error) {
+          console.log(error);
+        }
+      })
+    )
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err?.message);
+      });
   });
 }

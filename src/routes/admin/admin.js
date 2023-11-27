@@ -47,6 +47,7 @@ route.delete("/delete-experience/:id", validateAdmin, adminController.delateAdmi
 route.delete("/delete-qualification/:id", validateAdmin, adminController.delateAdminQualification);
 
 route.get("/get-manager-report", validateAdmin, adminController.getManagerReport);
+route.get("/get-individual-report", validateAdmin, adminController.getIndividualReport);
 
 route.post("/assign-bundle", validateAdmin, adminController.assignBundle);
 
