@@ -4,6 +4,7 @@ import { getNewBlogs } from "./blog.js";
 import {
   getCountOfAssignedBundleByOwnerId,
   getCountOfBundleByOwnerId,
+  getCountOfBundlePurchasedByOwnerId,
 } from "./bundle.js";
 import { geCountOfAllCertificates } from "./certificate.js";
 import { geCountOfAllCourse, geCountOfAssignedCourse, geCountOfPurchasedCourse } from "./course.js";
@@ -395,15 +396,11 @@ export function getManagerReport(id) {
     let managers = await getAllMAnagers(id);
     Promise.all(managers.map(async(item) => {
       let bundleCount1 = await getCountOfAssignedBundleByOwnerId(item.id)
-      let bundleCount2 = await getCountOfBundleByOwnerId(item.id)
+      let bundleCount2 = await getCountOfBundlePurchasedByOwnerId(item.id)
       let CourseCount1 = await geCountOfPurchasedCourse(item.id)
       let CourseCount2 = await geCountOfAssignedCourse(item.id)
-      console.log(CourseCount1);
-      console.log(CourseCount2);
-      console.log(bundleCount1);
-      console.log(bundleCount2);
-      item['course_count'] = CourseCount1[0] + CourseCount2[0]
-      item['bundle_count'] = bundleCount1[0] + bundleCount2[0]
+      item['course_count'] = CourseCount1[0]['SUM(fake_course_count)'] + CourseCount2[0]['SUM(fake_course_count)']
+      item['bundle_count'] = bundleCount1[0]['SUM(fake_count)'] + bundleCount2[0]['SUM(fake_count)']
       return item
     })).then(result => {
       resolve(result)

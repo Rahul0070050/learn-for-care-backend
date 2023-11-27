@@ -38,6 +38,21 @@ export function getCountOfAssignedBundleByOwnerId(id) {
   });
 }
 
+export function getCountOfBundlePurchasedByOwnerId() {
+  return new Promise((resolve, reject) => {
+    try {
+      let insertQuery =
+        "SELECT SUM(fake_course_count) FROM purchased_course WHERE course_type = ? AND manager_id = ?;";
+      db.query(insertQuery, ["bundle", id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getCountOfBundleByOwnerId(id) {
   return new Promise((resolve, reject) => {
     try {
