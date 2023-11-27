@@ -399,6 +399,11 @@ export function getManagerReport(id) {
       let bundleCount2 = await getCountOfBundlePurchasedByOwnerId(item.id)
       let CourseCount1 = await geCountOfPurchasedCourse(item.id)
       let CourseCount2 = await geCountOfAssignedCourse(item.id)
+      console.log(CourseCount1[0]['SUM(fake_course_count)']);
+      console.log(bundleCount1[0]['SUM(fake_count)']);
+      console.log(CourseCount2[0]['SUM(fake_course_count)']);
+      console.log(bundleCount2[0]['SUM(fake_count)']);
+      // Number.isInteger
       item['course_count'] = CourseCount1[0]['SUM(fake_course_count)'] + CourseCount2[0]['SUM(fake_course_count)']
       item['bundle_count'] = bundleCount1[0]['SUM(fake_count)'] + bundleCount2[0]['SUM(fake_count)']
       return item
