@@ -42,7 +42,7 @@ export function getCountOfBundlePurchasedByOwnerId(id) {
   return new Promise((resolve, reject) => {
     try {
       let insertQuery =
-        "SELECT SUM(fake_course_count) FROM purchased_course WHERE course_type = ? AND manager_id = ?;";
+        "SELECT SUM(fake_course_count) FROM purchased_course WHERE course_type = ? AND user_id = ?;";
       db.query(insertQuery, ["bundle", id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
