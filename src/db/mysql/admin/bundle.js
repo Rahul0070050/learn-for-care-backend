@@ -38,7 +38,7 @@ export function getCountOfAssignedBundleByOwnerId(id) {
   });
 }
 
-export function getCountOfBundlePurchasedByOwnerId() {
+export function getCountOfBundlePurchasedByOwnerId(id) {
   return new Promise((resolve, reject) => {
     try {
       let insertQuery =

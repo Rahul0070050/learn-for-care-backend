@@ -200,7 +200,7 @@ export function geCountOfPurchasedCourse(id) {
     try {
       let getQuery =
         "SELECT SUM(fake_course_count) FROM purchased_course WHERE course_type = ? AND user_id = ?;";
-      db.query(getQuery, [id, "course"], (err, result) => {
+      db.query(getQuery, ["course",id], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
@@ -218,7 +218,7 @@ export function geCountOfAssignedCourse(id) {
     try {
       let getQuery =
         "SELECT SUM(fake_count) FROM course_assigned_manager WHERE course_type = ? AND manager_id = ?;";
-      db.query(getQuery, [id, "course"], (err, result) => {
+      db.query(getQuery, ["course",id], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
