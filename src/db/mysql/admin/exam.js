@@ -91,15 +91,15 @@ export function getQuestionsById(id) {
   });
 }
 
-export function saveExamResult(per, questionId, UserId) {
+export function saveExamResult(per, questionId, UserId,enrolledCourseId) {
   return new Promise((resolve, reject) => {
     try {
       let status = per >= 100 ? "pass" : "fail";
       let getQuestionsQuery =
-        "UPDATE exam_attempts SET attempts = 1 - attempts, percentage = ?,status = ? WHERE course_id = ? AND user_id = ?;";
+        "UPDATE exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ? WHERE enrolled_course_id = ?;";
       db.query(
         getQuestionsQuery,
-        [per, status, questionId, UserId],
+        [per, status, enrolledCourseId],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);

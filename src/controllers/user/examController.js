@@ -80,7 +80,7 @@ export const examController = {
           }
         })
         let per = points / answers.length * 100
-        saveExamResult(per,result.question_id,user.id).then(() => {
+        saveExamResult(per,result.question_id,user.id,result.enrolled_course_id).then(() => {
           res.status(200).json({
             success: true,
             data: {

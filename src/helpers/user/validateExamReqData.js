@@ -28,7 +28,8 @@ export function validateValidateExamReqData(data) {
     try {
       let bodyTemplate = yup.object().shape({
         answer: yup.string().required("invalid answer"),
-        question_id: yup.number().required("invalid question id")
+        question_id: yup.number().required("invalid question id"),
+        enrolled_course_id: yup.number().required("invalid enrolled course id")
       });
 
       let bodyData = bodyTemplate.validate(data);
