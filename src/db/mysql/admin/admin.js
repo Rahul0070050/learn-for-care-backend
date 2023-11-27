@@ -402,8 +402,8 @@ export function getManagerReport(id) {
     SELECT 
     users.*, 
     course_assigned_manager.course_type AS assigned_type,
-    course_assigned_manager.fake_count AS assigned_count,
-    purchased_course.fake_course_count AS purchased_count, 
+    SUM(course_assigned_manager.fake_count) AS assigned_count,
+    SUM(purchased_course.fake_course_count) AS purchased_count, 
     purchased_course.course_type AS purchased_type
     FROM users
     INNER JOIN course_assigned_manager ON course_assigned_manager.manager_id = users.id 
