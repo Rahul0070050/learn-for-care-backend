@@ -16,6 +16,7 @@ import { getAllPurchasedCourseFromDb } from "./purchasedCourse.js";
 import {
   geCountOfAllCompanyUsers,
   geCountOfAllIndividualUsers,
+  geCountOfAllIndividuals,
   getNewCompanyUsers,
   getNewUsers,
 } from "./user.js";
@@ -405,8 +406,9 @@ export function getManagerReport(id) {
           let bundleCount2 = await getCountOfBundlePurchasedByOwnerId(item.id);
           let CourseCount1 = await geCountOfPurchasedCourse(item.id);
           let CourseCount2 = await geCountOfAssignedCourse(item.id);
+          let countOfIndividuals = await geCountOfAllIndividuals(item.id);
 
-          console.log(CourseCount2, bundleCount1, CourseCount1, bundleCount2);
+          console.log(countOfIndividuals);
           // Number.isInteger
           item["assigned_course_count"] = CourseCount2[0]['SUM(fake_count)'];
           item["assigned_bundle_count"] = bundleCount1[0]['SUM(fake_count)'];

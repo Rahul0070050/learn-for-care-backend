@@ -194,3 +194,24 @@ export function geCountOfAllIndividualUsers() {
     }
   });
 }
+
+export function geCountOfAllIndividuals(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT COUNT(*)
+      FROM users
+      WHERE type_of_account = 'individual' AND created_by = ?
+      ;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
