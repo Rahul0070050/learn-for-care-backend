@@ -31,7 +31,9 @@ export function getQuestionsForExamByCourseId(course_id, userId,id) {
     try {
       let insertQuery =
         "INSERT INTO exam_attempts (enrolled_course_id) VALUES (?)";
-      db.query(insertQuery, [id], (err, result) => {});
+      db.query(insertQuery, [id], (err, result) => {
+        if (err) throw err;
+      });
 
       let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ?;";
       db.query(getQuestionsQuery, [course_id], (err, result) => {
