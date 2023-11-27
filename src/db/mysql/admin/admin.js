@@ -404,7 +404,7 @@ export function getManagerReport(id) {
     purchased_course.fake_course_count AS count, purchased_course.course_type AS type
     FROM users
     INNER JOIN course_assigned_manager ON course_assigned_manager.owner = users.id 
-    INNER JOIN purchased_course ON purchased_course.user_id = user.id
+    INNER JOIN purchased_course ON purchased_course.user_id = users.id
     WHERE type_of_account = ? AND created_by = ?;
     `;
     db.query(updateQuery, ["manager", id], (err, result) => {
