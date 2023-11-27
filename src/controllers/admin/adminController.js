@@ -1543,32 +1543,49 @@ export const adminController = {
       });
     }
   },
-  getManagerReport:(req,res) => {
+  getManagerReport: (req, res) => {
     try {
-      let admin = getUser(req)
-      getManagerReport(admin.id).then(result => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "got manager report",
-            response: result,
-          },
-        });
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "error from from db",
-              error: err,
+      let admin = getUser(req);
+      getManagerReport(admin.id)
+        .then((result) => {
+          let newResult = [];
+          result.forEach((item) => {
+            if (newResult.find((nItem) => nItem.email == item.email)) {
+              newResult.filter((nItem) => {
+                if (nItem.email == item.email) {
+                  nItem["count"] += item.purchased_count;
+                }
+              });
+            } else {
+              newResult.push({
+                email: item.email,
+                name: item.first_name + " " + item.last_name,
+                count: item.purchased_count,
+              });
+            }
+          });
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got manager report",
+              response: newResult,
             },
-          ],
-          errorType: "client",
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "error from from db",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
         });
-        
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
