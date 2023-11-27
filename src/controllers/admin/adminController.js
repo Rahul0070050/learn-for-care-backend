@@ -15,6 +15,7 @@ import {
   getDashboardData,
   getExperienceDocFromDbByAdminIdAndDocId,
   getExperienceDocFromDbById,
+  getManagerReport,
   getQualificationDocFromDbByAdminIdAndDocId,
   getQualificationDocFromDbById,
   saveBannerToDb,
@@ -1545,7 +1546,29 @@ export const adminController = {
   getManagerReport:(req,res) => {
     try {
       let admin = getUser(req)
-      getManagerReport(admin.id)
+      getManagerReport(admin.id).then(result => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: "got manager report",
+            response: result,
+          },
+        });
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "error from from db",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+        
+      })
     } catch (error) {
       res.status(500).json({
         success: false,
