@@ -200,12 +200,8 @@ export const bundleController = {
                   course_count: JSON.parse(startedResult.course_count).split(
                     ","
                   ).length,
-                  unfinished_course: JSON.parse(
-                    startedResult.course_count
-                  ).split(","),
-                  all_courses: JSON.parse(
-                    startedResult.course_count
-                  ).split(","),
+                  unfinished_course: startedResult.course_count,
+                  all_courses: startedResult.course_count,
                 };
                 setNewBundleToEnroll(data)
                   .then((result) => {
