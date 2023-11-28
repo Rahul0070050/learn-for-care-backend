@@ -12,7 +12,7 @@ import {
   validateValidateExamReqData,
 } from "../../helpers/user/validateExamReqData.js";
 import { getUser } from "../../utils/auth.js";
-import { v4 as uuid} from "uuid";
+import { v4 as uuid } from "uuid";
 
 export const examController = {
   getExam: (req, res) => {
@@ -80,7 +80,7 @@ export const examController = {
         let answers = JSON.parse(result.answer);
         let questions = await getQuestionsById(result.question_id);
         let realAnswers = JSON.parse(questions[0].exam);
-        let course = await getCourseByIdFromDb(questions[0].course_id)
+        let course = await getCourseByIdFromDb(questions[0].course_id);
         let points = 0;
         let user = getUser(req);
         realAnswers.map((item) => {
@@ -101,7 +101,15 @@ export const examController = {
               let filePath = uuid() + ".pdf";
               await convertHtmlToPdf(filePath);
               let url = await uploadPdfToS3(filePath);
-              insertNewCertificate({ ...result, user_id: user.id, user_name: user.first_name+ " "+ user.last_name,per,date: new Date(),  image: url.file,course_name: course[0].name  })
+              insertNewCertificate({
+                ...result,
+                user_id: user.id,
+                user_name: user.first_name + " " + user.last_name,
+                percentage: per,
+                date: new Date(),
+                image: url.file,
+                course_name: course[0].name,
+              })
                 .then(async (result) => {
                   res.status(201).json({
                     success: true,
