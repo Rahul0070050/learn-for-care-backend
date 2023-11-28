@@ -1,4 +1,5 @@
 import { db } from "../../../conf/mysql.js";
+import { getAssignedCourseById, getAssignedCourseByUserId } from "./assignedCourse.js";
 import { getAllManagerIndividualFromDb } from "./users.js";
 
 export function addCourseToEnrolledCourse(
@@ -51,8 +52,10 @@ export function getManagerMatrixData(id) {
       let users = await getAllManagerIndividualFromDb(id);
       Promise.all(
         users.map(async (item) => {
-          let data = await getManagerMatrixData(item.id);
+          let data = await getMatrixDataByUserId(item.id);
+          let assigned = await getAssignedCourseByUserId(item.id)
           item["matrix"] = data;
+          item["matrix_assigned"] = assigned;
           return item;
         })
       )
