@@ -94,7 +94,7 @@ export function setNewBundleToEnroll(data) {
           user_id,
           course_count,
           new Date(validity),
-          unfinished_course,
+          JSON.stringify(unfinished_course),
         ],
         (err, result) => {
           if (err) {
