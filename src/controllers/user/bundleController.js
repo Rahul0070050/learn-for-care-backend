@@ -286,7 +286,7 @@ export const bundleController = {
     try {
       validateGetBundleInfoReqData(req.params)
         .then((result) => {
-          getBundleDataFromDb()
+          getBundleDataFromDb(result.id)
         })
         .catch((err) => {
           res.status(406).json({
