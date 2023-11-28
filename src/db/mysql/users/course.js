@@ -134,7 +134,7 @@ export function getPurchasedCourseById(id) {
         SELECT purchased_course.*, course_bundle.name AS name, course_bundle.courses AS courses
         FROM purchased_course 
         INNER JOIN course_bundle ON course_bundle.id = purchased_course.course_id
-        WHERE id = ?;
+        WHERE purchased_course.id = ?;
       `;
 
       db.query(getPurchasedCourseByIdDataQuery, [id], (err, result) => {

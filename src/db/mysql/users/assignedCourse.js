@@ -7,7 +7,7 @@ export function getAssignedCourseById(id) {
         SELECT assigned_course.*, course_bundle.name AS name, course_bundle.courses AS courses
         FROM assigned_course 
         INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id
-        WHERE id = ?;`;
+        WHERE assigned_course.id = ?;`;
         db.query(
           getCourseByIdQuery,
           [id],
