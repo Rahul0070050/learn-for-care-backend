@@ -190,25 +190,31 @@ export const bundleController = {
           let user = getUser(req);
           startANewBundle({ ...result, id: user.id })
             .then((startedResult) => {
-              console.log(startedResult);
-              let data = {
-                bundle_id: startedResult.id,
-                validity: startedResult.validity,
-                bundle_name: startedResult.bundleName,
-                user_id: user.id,
-                course_count: JSON.parse(startedResult.courses).split(",")
-                  .length,
-                unfinished_course: JSON.parse(startedResult.courses).split(","),
-              };
-              setNewBundleToEnroll(data);
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "bundle",
-                  response: result,
-                },
-              });
+              try {
+                console.log(startedResult);
+                let data = {
+                  bundle_id: startedResult.id,
+                  validity: startedResult.validity,
+                  bundle_name: startedResult.bundleName,
+                  user_id: user.id,
+                  course_count: JSON.parse(startedResult.courses).split(",")
+                    .length,
+                  unfinished_course: JSON.parse(startedResult.courses).split(
+                    ","
+                  ),
+                };
+                setNewBundleToEnroll(data);
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "bundle",
+                    response: result,
+                  },
+                });
+              } catch (error) {
+                console.log(error);
+              }
             })
             .catch((err) => {
               res.status(406).json({
