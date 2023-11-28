@@ -132,6 +132,8 @@ export function getBundleDataFromDb(id) {
           })).then(result => {
             console.log(result);
             resolve(result)
+          }).catch(err => {
+            console.log(err);
           })
           console.log(result)
           console.log(JSON.parse(result[0].all_courses))
