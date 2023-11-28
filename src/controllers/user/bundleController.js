@@ -181,7 +181,7 @@ export const bundleController = {
       .then(async (result) => {
         let user = getUser(req)
         startANewBundle({...result,id: user.id}).then(startedResult => {
-          console.log(result);
+          console.log(startedResult);
           // bundle_id: startedResult.id
           // validity: startedResult.validity
           // bundle_name: startedResult.bundleName
