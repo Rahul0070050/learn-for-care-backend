@@ -36,7 +36,8 @@ export function getMatrixDataByUserId(id) {
   return new Promise(async (resolve, reject) => {
     try {
       let getQuery = `
-      SELECT * FROM enrolled_course
+      SELECT enrolled_course.*, course.name AS course_name 
+      FROM enrolled_course
       INNER JOIN course ON course.id = enrolled_course.course_id
       WHERE user_id = ?;`;
       db.query(getQuery, [id], (err, result) => {
