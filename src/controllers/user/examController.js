@@ -99,7 +99,7 @@ export const examController = {
               let filePath = uuid() + ".pdf";
               await convertHtmlToPdf(filePath);
               let url = await uploadPdfToS3(filePath);
-              insertNewCertificate({ ...result, user_id: user.id, course_name: user.first_name+ " "+ user.last_name,per,date: new Date(),  image: url.file })
+              insertNewCertificate({ ...result, user_id: user.id, user_name: user.first_name+ " "+ user.last_name,per,date: new Date(),  image: url.file })
                 .then(async (result) => {
                   res.status(201).json({
                     success: true,
