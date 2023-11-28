@@ -38,7 +38,7 @@ export function validateStartBundleReqData(data) {
    })
 }
 
-export function validateGetBundleInfoReqData() {
+export function validateGetBundleInfoReqData(data) {
   return new Promise((resolve, reject) => { 
     try {
       let template = object({
