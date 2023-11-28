@@ -131,7 +131,10 @@ export function getPurchasedCourseById(id) {
   return new Promise((resolve, reject) => {
     try {
       let getPurchasedCourseByIdDataQuery = `
-        SELECT * FROM purchased_course WHERE id = ?;
+        SELECT purchased_course.*, course_bundle.name AS name, course_bundle.courses AS courses
+        FROM purchased_course 
+        INNER JOIN course_bundle ON course_bundle.id = purchased_course.course_id
+        WHERE id = ?;
       `;
 
       db.query(getPurchasedCourseByIdDataQuery, [id], (err, result) => {

@@ -180,11 +180,11 @@ export const bundleController = {
       validateStartBundleReqData(req.body)
       .then(async (result) => {
         let user = getUser(req)
-        startANewBundle({...result,id: user.id}).then(result => {
+        startANewBundle({...result,id: user.id}).then(startedResult => {
           console.log(result);
-          // bundle_id: result.id
-          // validity: result.validity
-          // bundle_name: result.bundleName
+          // bundle_id: startedResult.id
+          // validity: startedResult.validity
+          // bundle_name: startedResult.bundleName
           // user_id: user.id
           // course_count
           // unfinished_course

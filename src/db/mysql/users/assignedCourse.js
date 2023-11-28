@@ -3,7 +3,11 @@ import { db } from "../../../conf/mysql.js";
 export function getAssignedCourseById(id) {
     return new Promise((resolve, reject) => {
       try {
-        let getCourseByIdQuery = `SELECT * FROM assigned_course WHERE id = ?;`;
+        let getCourseByIdQuery = `
+        SELECT assigned_course.*, course_bundle.name AS name, course_bundle.courses AS courses
+        FROM assigned_course 
+        INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id
+        WHERE id = ?;`;
         db.query(
           getCourseByIdQuery,
           [id],
