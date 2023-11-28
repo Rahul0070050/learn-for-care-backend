@@ -37,6 +37,7 @@ export function startANewBundle(data) {
     const { bundle_id, from, id } = data;
 
     let course = null;
+    let decrementTheCourseCountQuery = ""
     if (from == "assigned") {
       decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
       course = await getAssignedCourseById(bundle_id);
