@@ -129,7 +129,7 @@ export function getBundleDataFromDb(id) {
         } else {
           console.log(result)
           console.log(result[0].all_courses)
-          let course = resolve(result);
+          resolve(result);
         }
       });
     } catch (error) {
