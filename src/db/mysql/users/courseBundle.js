@@ -128,7 +128,7 @@ export function getBundleDataFromDb(id) {
           return reject(err?.message);
         } else {
           console.log(result)
-          console.log(result[0].all_courses)
+          console.log(JSON.parse(result[0].all_courses))
           resolve(result);
         }
       });
