@@ -127,9 +127,15 @@ export function getBundleDataFromDb(id) {
         if (err) {
           return reject(err?.message);
         } else {
+          Promise.all(JSON.parse(result[0].all_courses).map(id => {
+            return getCourseBundleById(id)
+          })).then(result => {
+            console.log(result);
+            resolve(result)
+          })
           console.log(result)
           console.log(JSON.parse(result[0].all_courses))
-          resolve(result);
+          // resolve(result);
         }
       });
     } catch (error) {
