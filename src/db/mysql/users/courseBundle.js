@@ -76,6 +76,14 @@ export function setNewBundleToEnroll(data) {
         validity,
         unfinished_course,
       } = data;
+      console.log(
+        bundle_name,
+        bundle_id,
+        user_id,
+        course_count,
+        validity,
+        unfinished_course
+      );
 
       let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, user_id, course_count, validity, unfinished_course) VALUES (?,?,?,?,?,?)`;
       db.query(
@@ -92,8 +100,7 @@ export function setNewBundleToEnroll(data) {
           if (err) {
             console.log(err);
             reject(err?.message);
-          }
-          else resolve(result);
+          } else resolve(result);
         }
       );
     } catch (error) {
