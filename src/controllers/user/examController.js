@@ -6,6 +6,7 @@ import {
   getQuestionsForExamByCourseId,
   saveExamResult,
 } from "../../db/mysql/admin/exam.js";
+import { getCourseByIdFromDb } from "../../db/mysql/users/course.js";
 import {
   checkGetExamReqBody,
   validateValidateExamReqData,
@@ -79,6 +80,7 @@ export const examController = {
         let answers = JSON.parse(result.answer);
         let questions = await getQuestionsById(result.question_id);
         let realAnswers = JSON.parse(questions[0].exam);
+        let course = await getCourseByIdFromDb(questions[0].course_id)
         let points = 0;
         let user = getUser(req);
         realAnswers.map((item) => {
@@ -99,7 +101,7 @@ export const examController = {
               let filePath = uuid() + ".pdf";
               await convertHtmlToPdf(filePath);
               let url = await uploadPdfToS3(filePath);
-              insertNewCertificate({ ...result, user_id: user.id, user_name: user.first_name+ " "+ user.last_name,per,date: new Date(),  image: url.file })
+              insertNewCertificate({ ...result, user_id: user.id, user_name: user.first_name+ " "+ user.last_name,per,date: new Date(),  image: url.file,course_name: course[0].name  })
                 .then(async (result) => {
                   res.status(201).json({
                     success: true,
