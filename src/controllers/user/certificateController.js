@@ -1,3 +1,4 @@
+import { downloadFromS3 } from "../../AWS/S3.js";
 import { getAllCertificatesByUserId } from "../../db/mysql/users/certificates.js";
 import { getUser } from "../../utils/auth.js";
 
@@ -7,17 +8,32 @@ export const certificateController = {
       let user = getUser(req);
       getAllCertificatesByUserId(user.id)
         .then((certificates) => {
-            // certificates.map(item => {
-            //     return 
-            // })
-          res.status(200).json({
-            success: true,
-            data: {
-              code: 200,
-              message: "got all certificates",
-              response: certificates,
-            },
-          });
+          Promise.all(
+            certificates.map(async (item) => {
+              let file = await downloadFromS3("", item.image);
+              return (item["image"] = file.url);
+            })
+          )
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "got all certificates",
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: true,
+                data: {
+                  code: 406,
+                  message: "value not acceptable",
+                  response: err,
+                },
+              });
+            });
         })
         .catch((err) => {
           res.status(406).json({
