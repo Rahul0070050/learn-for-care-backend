@@ -5,6 +5,6 @@ import { validateAdmin } from "../../middlewares/adminAuth.js";
 
 const route = Router();
 
-route.get("/get-certificate-by-user-id/:id",validateAdmin, certificateController.getCertificateByUsersId);
+route.get("/get-certificates",validateAdmin, certificateController.getCertificateByUsersId);
 
 export default route;
