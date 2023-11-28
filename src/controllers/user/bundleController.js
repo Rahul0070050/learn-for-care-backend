@@ -203,13 +203,14 @@ export const bundleController = {
                   ),
                 };
                 setNewBundleToEnroll(data).then(result => {
-                  console.log(result);
                   res.status(200).json({
                   success: true,
                   data: {
                     code: 200,
                     message: "bundle",
-                    response: result,
+                    response: {
+                      id: result.insertId
+                    },
                   },
                 })
               }).catch(err => {
