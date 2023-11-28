@@ -35,7 +35,10 @@ export function addCourseToEnrolledCourse(
 export function getMatrixDataByUserId(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      let getQuery = "SELECT * FROM enrolled_course WHERE user_id = ?;";
+      let getQuery = `
+      SELECT * FROM enrolled_course
+      INNER JOIN course ON course.id = enrolled_course.course_id
+      WHERE user_id = ?;`;
       db.query(getQuery, [id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
