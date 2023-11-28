@@ -76,7 +76,7 @@ export function getPurchasedCourseBundlesFromDbByUserId(id) {
     try {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
-          SELECT purchased_course.* , purchased_course.course_id AS bundle_id, course_bundle.name AS bundle_name, 
+          SELECT purchased_course.* , purchased_course.course_id AS bundle_id, purchased_course.id AS id course_bundle.name AS bundle_name, 
           course_bundle.description AS description, 1 AS from_purchased
           FROM purchased_course
           INNER JOIN course_bundle ON purchased_course.course_id = course_bundle.id
