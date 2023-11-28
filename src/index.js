@@ -14,6 +14,7 @@ import cart from "./routes/user/cart.js";
 import exam from "./routes/user/exam.js";
 import userBundle from "./routes/user/bundle.js";
 import onGoingCourse from "./routes/user/onGoingCourse.js";
+import userCertificates from "./routes/user/certificates.js";
 
 import adminAuth from "./routes/admin/auth.js";
 import category from "./routes/admin/category.js";
@@ -91,6 +92,7 @@ app.use("/api/user/info", user);
 app.use("/api/user/exam", exam);
 app.use("/api/user/bundle", userBundle);
 app.use("/api/user/course", course);
+app.use("/api/user/certificate", userCertificates);
 app.use("/api/user/on-going-course", onGoingCourse);
 
 app.use("/api/user/manager/auth", managerAuth);
