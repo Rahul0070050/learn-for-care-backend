@@ -185,7 +185,7 @@ export const bundleController = {
           // bundle_id: result.id
           // validity: result.validity
           // bundle_name: result.bundleName
-          // user_id user.id
+          // user_id: user.id
           // course_count
           // unfinished_course
           res.status(200).json({
