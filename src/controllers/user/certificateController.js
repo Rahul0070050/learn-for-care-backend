@@ -11,7 +11,8 @@ export const certificateController = {
           Promise.all(
             certificates.map(async (item) => {
               let file = await downloadFromS3("", item.image);
-              return (item["image"] = file.url);
+              item["image"] = file.url
+              return item 
             })
           )
             .then((result) => {
