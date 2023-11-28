@@ -197,9 +197,9 @@ export const bundleController = {
                   validity: startedResult.validity,
                   bundle_name: startedResult.bundleName,
                   user_id: user.id,
-                  course_count: JSON.parse(startedResult.courses).split(",")
+                  course_count: JSON.parse(startedResult.course_count).split(",")
                     .length,
-                  unfinished_course: JSON.parse(startedResult.courses).split(
+                  unfinished_course: JSON.parse(startedResult.course_count).split(
                     ","
                   ),
                 };
