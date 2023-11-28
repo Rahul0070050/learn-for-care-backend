@@ -1,4 +1,4 @@
-import { getAllCertificatesByUserId } from "../../db/mysql/users/certificates";
+import { getAllCertificatesByUserId } from "../../db/mysql/users/certificates.js";
 
 export const certificateController = {
   getCertificateByUsersId: (req, res) => {
