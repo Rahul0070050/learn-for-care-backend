@@ -75,7 +75,7 @@ export function setNewBundleToEnroll(data) {
         course_count,
         validity,
         unfinished_course,
-        all_courses
+        all_courses,
       } = data;
 
       let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, all_courses, user_id, course_count, validity, unfinished_course) VALUES (?,?,?,?,?,?,?)`;
@@ -127,16 +127,20 @@ export function getBundleDataFromDb(id) {
         if (err) {
           return reject(err?.message);
         } else {
-          Promise.all(JSON.parse(result[0].all_courses).map(id => {
-            return getCourseBundleById(id)
-          })).then(result => {
-            console.log(result);
-            resolve(result)
-          }).catch(err => {
-            console.log(err);
-          })
-          console.log(result)
-          console.log(JSON.parse(result[0].all_courses))
+          Promise.all(
+            JSON.parse(result[0].all_courses).map(async (id) => {
+              return await getCourseBundleById(id);
+            })
+          )
+            .then((result) => {
+              console.log(result);
+              resolve(result);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+          // console.log(result)
+          // console.log(JSON.parse(result[0].all_courses))
           // resolve(result);
         }
       });
