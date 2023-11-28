@@ -78,7 +78,7 @@ export function setNewBundleToEnroll(data) {
         all_courses
       } = data;
 
-      let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, all_courses, user_id, course_count, validity, unfinished_course) VALUES (?,?,?,?,?,?)`;
+      let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, all_courses, user_id, course_count, validity, unfinished_course) VALUES (?,?,?,?,?,?,?)`;
       db.query(
         setQuery,
         [
