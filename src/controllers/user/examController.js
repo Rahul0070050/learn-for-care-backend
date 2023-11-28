@@ -1,5 +1,6 @@
 import { uploadPdfToS3 } from "../../AWS/S3.js";
 import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
+import { insertNewCertificate } from "../../db/mysql/admin/certificate.js";
 import {
   getQuestionsById,
   getQuestionsForExamByCourseId,
