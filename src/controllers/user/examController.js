@@ -83,10 +83,13 @@ export const examController = {
         let course = await getCourseByIdFromDb(questions[0].course_id);
         let points = 0;
         let user = getUser(req);
+        let wrongAnswers = []
         realAnswers.map((item) => {
           let ans = answers.find((i) => i.question == item.question);
           if (ans.answer == item.answer) {
             ++points;
+          } else {
+            wrongAnswers.push({ question: item.question, answer: ans.answer });
           }
         });
         let per = (points / answers.length) * 100;
@@ -119,7 +122,7 @@ export const examController = {
                       response: {
                         per: per + " %",
                         rightAnswers: points,
-                        wrongAnswers: answers.length - points,
+                        wrongAnswers: wrongAnswers,
                       },
                     },
                   });
@@ -146,7 +149,7 @@ export const examController = {
                   response: {
                     per: per + " %",
                     rightAnswers: points,
-                    wrongAnswers: answers.length - points,
+                    wrongAnswers: wrongAnswers,
                   },
                 },
               });
