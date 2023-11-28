@@ -89,7 +89,7 @@ export const examController = {
           if (ans.answer == item.answer) {
             ++points;
           } else {
-            wrongAnswers.push({ question: item.question, answer: ans.answer });
+            wrongAnswers.push({ question: item.question, answer: item.answer });
           }
         });
         let per = (points / answers.length) * 100;
