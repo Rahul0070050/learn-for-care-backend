@@ -22,7 +22,8 @@ export function getAssignedCourseById(id) {
     return new Promise((resolve, reject) => {
       try {
         let getCourseByIdQuery = `
-        SELECT assigned_course.*, course.name as course_name FROM assigned_course 
+        SELECT assigned_course.*, course.name as course_name, 0 AS progress, 'red' AS color
+        FROM assigned_course 
         INNER JOIN course ON course.id = assigned_course.course_id
         WHERE user_id = ? AND count >= 1 AND course_type = 'course';`;
         db.query(
