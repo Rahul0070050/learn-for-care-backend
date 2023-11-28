@@ -89,7 +89,10 @@ export function setNewBundleToEnroll(data) {
           unfinished_course,
         ],
         (err, result) => {
-          if (err) reject(err?.message);
+          if (err) {
+            console.log(err);
+            reject(err?.message);
+          }
           else resolve(result);
         }
       );
