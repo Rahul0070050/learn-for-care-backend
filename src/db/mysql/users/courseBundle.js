@@ -66,13 +66,35 @@ export function startANewBundle(data) {
 }
 
 export function setNewBundleToEnroll(data) {
-  const {
-    bundle_id,
-    validity,
-    bundle_name,
-    user_id,
-    course_count,
-    unfinished_course,
-  } = data;
-  console.log(data);
+  return new Promise((resolve, reject) => {
+    try {
+      const {
+        bundle_name,
+        bundle_id,
+        user_id,
+        course_count,
+        validity,
+        unfinished_course,
+      } = data;
+
+      let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, user_id, course_count, validity, unfinished_course) VALUES (?,?,?,?,?,?)`;
+      db.query(
+        setQuery,
+        [
+          bundle_name,
+          bundle_id,
+          user_id,
+          course_count,
+          new Date(validity),
+          unfinished_course,
+        ],
+        (err, result) => {
+          if (err) reject(err?.message);
+          else resolve(result);
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
 }

@@ -203,15 +203,28 @@ export const bundleController = {
                     ","
                   ),
                 };
-                setNewBundleToEnroll(data);
-                res.status(200).json({
+                setNewBundleToEnroll(data).then(result => {
+                  res.status(200).json({
                   success: true,
                   data: {
                     code: 200,
                     message: "bundle",
                     response: result,
                   },
+                })
+              }).catch(err => {
+                res.status(406).json({
+                  success: false,
+                  errors: [
+                    {
+                      code: 406,
+                      message: "error from db",
+                      error: err,
+                    },
+                  ],
+                  errorType: "client",
                 });
+              });
               } catch (error) {
                 console.log(error);
               }
