@@ -129,7 +129,7 @@ export function getBundleDataFromDb(id) {
         } else {
           Promise.all(
             JSON.parse(result[0].all_courses).map(async (id) => {
-              return await getCourseBundleById(id);
+              return await getCourseByIdFromDb(id);
             })
           )
             .then((result) => {
