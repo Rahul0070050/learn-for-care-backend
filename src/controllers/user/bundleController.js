@@ -196,7 +196,7 @@ export const bundleController = {
               response: result,
             },
           });
-        }).catch(ree => {
+        }).catch(err => {
           res.status(406).json({
             success: false,
             errors: [
