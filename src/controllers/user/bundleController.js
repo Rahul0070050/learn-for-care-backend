@@ -191,7 +191,6 @@ export const bundleController = {
           startANewBundle({ ...result, id: user.id })
             .then((startedResult) => {
               try {
-                console.log(startedResult);
                 let data = {
                   bundle_id: startedResult.id,
                   validity: startedResult.validity,
@@ -204,6 +203,7 @@ export const bundleController = {
                   ),
                 };
                 setNewBundleToEnroll(data).then(result => {
+                  console.log(result);
                   res.status(200).json({
                   success: true,
                   data: {
