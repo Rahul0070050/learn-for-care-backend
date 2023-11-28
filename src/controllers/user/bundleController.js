@@ -1,8 +1,12 @@
-import { checkGetBundleByIdReqDate, validateStartBundleReqData } from "../../helpers/user/validateBundleReqData.js";
+import {
+  checkGetBundleByIdReqDate,
+  validateStartBundleReqData,
+} from "../../helpers/user/validateBundleReqData.js";
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
   getAllBBundle,
   getCourseBundleById,
+  setNewBundleToEnroll,
   startANewBundle,
 } from "../../db/mysql/users/courseBundle.js";
 import { getCourseByIdFromDb } from "../../db/mysql/users/course.js";
@@ -28,19 +32,23 @@ export const bundleController = {
                     return await getCourseByIdFromDb(id);
                   })
                 )
-                  .then(async(result) => {
-                    result = result.flat(1)
-                    let urls = await Promise.all(result.map(async (course,i) => {
-                      return await downloadFromS3(
-                        course.id,
-                        course.thumbnail
+                  .then(async (result) => {
+                    result = result.flat(1);
+                    let urls = await Promise.all(
+                      result.map(async (course, i) => {
+                        return await downloadFromS3(
+                          course.id,
+                          course.thumbnail
                         );
-                    }));
+                      })
+                    );
 
-                    let updatedCourse = result.map(course => {
-                      course.thumbnail = urls.find(url => url.id === course.id).url;
-                      return course
-                    })
+                    let updatedCourse = result.map((course) => {
+                      course.thumbnail = urls.find(
+                        (url) => url.id === course.id
+                      ).url;
+                      return course;
+                    });
 
                     bundle[0].courses = updatedCourse;
 
@@ -175,56 +183,62 @@ export const bundleController = {
       });
     }
   },
-  startBundle:(req,res) => {
+  startBundle: (req, res) => {
     try {
       validateStartBundleReqData(req.body)
-      .then(async (result) => {
-        let user = getUser(req)
-        startANewBundle({...result,id: user.id}).then(startedResult => {
-          console.log(startedResult);
-          // bundle_id: startedResult.id
-          // validity: startedResult.validity
-          // bundle_name: startedResult.bundleName
-          // user_id: user.id
-          // course_count
-          // unfinished_course
-          res.status(200).json({
-            success: true,
-            data: {
-              code: 200,
-              message: "bundle",
-              response: result,
-            },
-          });
-        }).catch(err => {
-          res.status(406).json({
+        .then(async (result) => {
+          let user = getUser(req);
+          startANewBundle({ ...result, id: user.id })
+            .then((startedResult) => {
+              console.log(startedResult);
+              let data = {
+                bundle_id: startedResult.id,
+                validity: startedResult.validity,
+                bundle_name: startedResult.bundleName,
+                user_id: user.id,
+                course_count: JSON.parse(startedResult.courses).split(",")
+                  .length,
+                unfinished_course: JSON.parse(startedResult.courses).split(","),
+              };
+              setNewBundleToEnroll(data);
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "bundle",
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).json({
             success: false,
             errors: [
               {
-                code: 406,
-                message: "value not acceptable",
-                error: err,
+                code: 500,
+                message:
+                  "some error occurred in the server try again after some times",
+                error: err?.message,
               },
             ],
-            errorType: "client",
+            errorType: "server",
           });
-        })
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({
-          success: false,
-          errors: [
-            {
-              code: 500,
-              message:
-                "some error occurred in the server try again after some times",
-              error: err?.message,
-            },
-          ],
-          errorType: "server",
         });
-      });
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -239,7 +253,7 @@ export const bundleController = {
         errorType: "server",
       });
     }
-  }
+  },
   // getBundleById: (req, res) => {
   //   try {
   //     getBBundleByIdFromDb()

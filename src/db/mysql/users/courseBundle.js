@@ -37,7 +37,7 @@ export function startANewBundle(data) {
     const { bundle_id, from, id } = data;
 
     let course = null;
-    let decrementTheCourseCountQuery = ""
+    let decrementTheCourseCountQuery = "";
     if (from == "assigned") {
       decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
       course = await getAssignedCourseById(bundle_id);
@@ -47,24 +47,32 @@ export function startANewBundle(data) {
     }
 
     try {
-      db.query(
-        decrementTheCourseCountQuery,
-        [bundle_id],
-        (err, result) => {
-          if (err) {
-            return reject(err?.message);
-          } else {
-            return resolve({
-              id: course[0].course_id,
-              validity: course[0].validity,
-              bundleName: course[0].name,
-              course_count: course[0].courses,
-            });
-          }
+      db.query(decrementTheCourseCountQuery, [bundle_id], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          return resolve({
+            id: course[0].course_id,
+            validity: course[0].validity,
+            bundleName: course[0].name,
+            course_count: course[0].courses,
+          });
         }
-      );
+      });
     } catch (error) {
       reject(error?.message);
     }
   });
+}
+
+export function setNewBundleToEnroll(data) {
+  const {
+    bundle_id,
+    validity,
+    bundle_name,
+    user_id,
+    course_count,
+    unfinished_course,
+  } = data;
+  console.log(data);
 }
