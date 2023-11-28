@@ -21,7 +21,7 @@ export function getAssignedCourseById(id) {
   export function getAssignedCourseByUserId(id) {
     return new Promise((resolve, reject) => {
       try {
-        let getCourseByIdQuery = `SELECT * FROM assigned_course WHERE user_id = ?;`;
+        let getCourseByIdQuery = `SELECT * FROM assigned_course WHERE user_id = ? AND count >= 1;`;
         db.query(
           getCourseByIdQuery,
           [id],
