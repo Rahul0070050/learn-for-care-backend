@@ -17,3 +17,23 @@ export function checkGetBundleByIdReqDate(id) {
     }
    })
 }
+
+export function validateStartBundleReqData(data) {
+  return new Promise((resolve, reject) => { 
+    try {
+      let template = object({
+        bundle_id: number().required("please provide valid bundle id"),
+        from: string().required("please provide valid from field")
+      })
+      
+      template.validate(data).then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err?.message);
+      });
+    } catch (error) {
+      reject(error?.message)
+    }
+   })
+}

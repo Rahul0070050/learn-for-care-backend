@@ -1,10 +1,12 @@
-import { checkGetBundleByIdReqDate } from "../../helpers/user/validateBundleReqData.js";
+import { checkGetBundleByIdReqDate, validateStartBundleReqData } from "../../helpers/user/validateBundleReqData.js";
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
   getAllBBundle,
   getCourseBundleById,
+  startANewBundle,
 } from "../../db/mysql/users/courseBundle.js";
 import { getCourseByIdFromDb } from "../../db/mysql/users/course.js";
+import { getUser } from "../../utils/auth.js";
 
 export const bundleController = {
   getBundleById: (req, res) => {
@@ -173,6 +175,71 @@ export const bundleController = {
       });
     }
   },
+  startBundle:(req,res) => {
+    try {
+      validateStartBundleReqData(req.body)
+      .then(async (result) => {
+        let user = getUser(req)
+        startANewBundle({...result,id: user.id}).then(result => {
+          console.log(result);
+          // bundle_id: result.id
+          // validity: result.validity
+          // bundle_name: result.bundleName
+          // user_id user.id
+          // course_count
+          // unfinished_course
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "bundle",
+              response: result,
+            },
+          });
+        }).catch(ree => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({
+          success: false,
+          errors: [
+            {
+              code: 500,
+              message:
+                "some error occurred in the server try again after some times",
+              error: err?.message,
+            },
+          ],
+          errorType: "server",
+        });
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
   // getBundleById: (req, res) => {
   //   try {
   //     getBBundleByIdFromDb()

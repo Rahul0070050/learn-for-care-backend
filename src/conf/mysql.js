@@ -332,10 +332,11 @@ export function mySqlConnect(done) {
       bundle_id INT NOT NULL,
       user_id INT NOT NULL,
       course_count INT NOT NULL,
+      validity DATETIME NOT NULL,
+      unfinished_course TEXT DEFAULT NULL,
       finished_course TEXT DEFAULT NULL,
       progress INT DEFAULT 0,
-      color VARCHAR(15) DEFAULT 'orange',
-      unfinished_course TEXT DEFAULT NULL
+      color VARCHAR(15) DEFAULT 'orange'
     );
   `;
 

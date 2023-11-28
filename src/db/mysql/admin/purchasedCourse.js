@@ -67,7 +67,8 @@ export function getReportFromDb() {
 export function getReportFromDbGroupByMonth() {
   return new Promise((resolve, reject) => {
     try {
-      let getPurchasedCourseDataQuery = `SELECT
+      let getPurchasedCourseDataQuery = `
+      SELECT
       MONTH(date) AS month,
       SUM(amount) AS total_amount,
       SUM(course_count) AS total_course_count
