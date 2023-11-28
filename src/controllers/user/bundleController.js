@@ -6,6 +6,7 @@ import {
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
   getAllBBundle,
+  getBundleDataFromDb,
   getCourseBundleById,
   setNewBundleToEnroll,
   startANewBundle,
@@ -285,7 +286,7 @@ export const bundleController = {
     try {
       validateGetBundleInfoReqData(req.params)
         .then((result) => {
-          getBundleDataFromDb
+          getBundleDataFromDb()
         })
         .catch((err) => {
           res.status(406).json({

@@ -127,6 +127,8 @@ export function getBundleDataFromDb(id) {
         if (err) {
           return reject(err?.message);
         } else {
+          console.log(result)
+          console.log(result[0].all_courses)
           let course = resolve(result);
         }
       });
