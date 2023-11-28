@@ -37,3 +37,22 @@ export function validateStartBundleReqData(data) {
     }
    })
 }
+
+export function validateGetBundleInfoReqData() {
+  return new Promise((resolve, reject) => { 
+    try {
+      let template = object({
+        id: number().required("please provide valid bundle id"),
+      })
+      
+      template.validate(data).then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err?.message);
+      });
+    } catch (error) {
+      reject(error?.message)
+    }
+   })
+}

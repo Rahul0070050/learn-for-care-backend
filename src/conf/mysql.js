@@ -333,6 +333,7 @@ export function mySqlConnect(done) {
       user_id INT NOT NULL,
       course_count INT NOT NULL,
       validity DATETIME NOT NULL,
+      all_courses TEXT NOT NULL,
       unfinished_course TEXT DEFAULT NULL,
       finished_course TEXT DEFAULT NULL,
       progress INT DEFAULT 0,

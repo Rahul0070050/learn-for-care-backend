@@ -75,22 +75,16 @@ export function setNewBundleToEnroll(data) {
         course_count,
         validity,
         unfinished_course,
+        all_courses
       } = data;
-      console.log(
-        bundle_name,
-        bundle_id,
-        user_id,
-        course_count,
-        validity,
-        unfinished_course
-      );
 
-      let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, user_id, course_count, validity, unfinished_course) VALUES (?,?,?,?,?,?)`;
+      let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, all_courses, user_id, course_count, validity, unfinished_course) VALUES (?,?,?,?,?,?)`;
       db.query(
         setQuery,
         [
           bundle_name,
           bundle_id,
+          all_courses,
           user_id,
           course_count,
           new Date(validity),
@@ -105,6 +99,39 @@ export function setNewBundleToEnroll(data) {
       );
     } catch (error) {
       reject(error?.message);
+    }
+  });
+}
+
+export function getCourseByIdFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      id = Number(id);
+      let getAllBundleQuery = "SELECT * FROM course WHERE id = ?;";
+
+      db.query(getAllBundleQuery, [id], (err, bundle) => {
+        if (err) reject(err?.message);
+        else resolve(bundle);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getBundleDataFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = "SELECT * FROM enrolled_bundle WHERE id = ?";
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          let course = resolve(result);
+        }
+      });
+    } catch (error) {
+      return reject(err?.message);
     }
   });
 }
