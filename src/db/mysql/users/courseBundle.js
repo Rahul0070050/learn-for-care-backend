@@ -84,7 +84,7 @@ export function setNewBundleToEnroll(data) {
         [
           bundle_name,
           bundle_id,
-          all_courses,
+          JSON.stringify(all_courses),
           user_id,
           course_count,
           new Date(validity),
