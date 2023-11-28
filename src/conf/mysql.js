@@ -325,6 +325,25 @@ export function mySqlConnect(done) {
       else console.log("course bundle table created");
     });
 
+    const enrollBundleTable = `
+    CREATE TABLE IF NOT EXISTS enrolled_bundle (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      bundle_name VARCHAR(150) NOT NULL,
+      bundle_id INT NOT NULL,
+      user_id INT NOT NULL,
+      course_count INT NOT NULL,
+      progress INT DEFAULT 0,
+      color VARCHAR(15) DEFAULT 'orange',
+      finished_course TEXT DEFAULT NULL,
+      unfinished_course TEXT DEFAULT NULL
+    );
+  `;
+
+  db.query(enrollBundleTable, (err, result) => {
+    if (err) console.log(err.message);
+    else console.log("enrolled bundle table created");
+  });
+
     // const certificateTable = `
     //     CREATE TABLE IF NOT EXISTS certificate (
     //       id INT AUTO_INCREMENT PRIMARY KEY,
