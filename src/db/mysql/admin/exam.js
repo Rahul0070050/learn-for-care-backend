@@ -94,6 +94,7 @@ export function getQuestionsById(id) {
 export function saveExamResult(per, questionId, UserId,enrolledCourseId) {
   return new Promise((resolve, reject) => {
     try {
+      per = Number(per)
       let status = per >= 80 ? "pass" : "fail";
       let color = "red"
       if(per >= 100) {
@@ -118,7 +119,7 @@ export function saveExamResult(per, questionId, UserId,enrolledCourseId) {
         "UPDATE exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ? WHERE enrolled_course_id = ?;";
       db.query(
         getQuestionsQuery,
-        [per, status, color, enrolledCourseId],
+        [per, status, enrolledCourseId],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
