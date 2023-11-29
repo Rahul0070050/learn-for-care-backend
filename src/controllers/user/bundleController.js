@@ -1,6 +1,7 @@
 import {
   checkGetBundleByIdReqDate,
   validateGetBundleInfoReqData,
+  validateGetCourseReqData,
   validateSTartBundleCourseReqData,
   validateStartBundleReqData,
 } from "../../helpers/user/validateBundleReqData.js";
@@ -343,6 +344,38 @@ export const bundleController = {
     try {
       validateSTartBundleCourseReqData(req.body).then(result => {
         startBundleCourse(result)
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "value not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getCourse:(req,res) => {
+    try {
+      validateGetCourseReqData(req.body).then(result => {
+        getOneCourseFromBundleCourse
       }).catch(err => {
         res.status(406).json({
           success: false,

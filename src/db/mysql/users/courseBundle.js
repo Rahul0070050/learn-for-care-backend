@@ -160,11 +160,11 @@ export function startBundleCourse(data) {
           // let unFinished = JSON.parse(result[0].unfinished_course).filter(id => id != course_id);
           // console.log('finished ', result[0].finished_course);
           // if(result[0].finished_course) {
-            // let unFinished = JSON.parse(result[0].finished_course)
-            // unFinished
+          // let unFinished = JSON.parse(result[0].finished_course)
+          // unFinished
           // } else {
-            // let unFinished = JSON.parse(result[0].finished_course)
-            // unFinished
+          // let unFinished = JSON.parse(result[0].finished_course)
+          // unFinished
           // }
           // console.log(course);
           resolve(result);
@@ -172,6 +172,26 @@ export function startBundleCourse(data) {
       });
     } catch (error) {
       return reject(err?.message);
+    }
+  });
+}
+
+export function getOneCourseFromBundleCourse(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const { course_id, bundleId } = data;
+      let getQuery = "SELECT * FROM enrolled_bundle WHERE id = ?;";
+
+      db.query(getQuery, [bundleId], (err, bundle) => {
+        if (err) reject(err?.message);
+        else {
+          let courses = bundle[0]
+          console.log(courses);
+          resolve(bundle);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
     }
   });
 }
