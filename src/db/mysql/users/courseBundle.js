@@ -186,7 +186,7 @@ export function getOneCourseFromBundleCourse(data) {
         if (err) reject(err?.message);
         else {
           let courses = bundle[0]
-          console.log(courses);
+          console.log(bundle);
           resolve(bundle);
         }
       });
