@@ -77,7 +77,7 @@ export function uploadPdfToS3(uploadPath) {
           file: fileUploading.Key,
           type,
         });
-      }, 1000);
+      }, 4000);
     } catch (error) {
       console.log(error);
       reject(error);
