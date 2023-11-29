@@ -22,10 +22,14 @@ import { getCourseByIdFromDb } from "../../db/mysql/users/course.js";
 import { getUser } from "../../utils/auth.js";
 import { getOnGoingCourseByIdFromDb } from "../../db/mysql/users/onGoingCourse.js";
 import { validateValidateExamReqData } from "../../helpers/user/validateExamReqData.js";
-import { getQuestionsById, saveBundleExamResult, saveExamResult } from "../../db/mysql/admin/exam.js";
+import {
+  getQuestionsById,
+  saveBundleExamResult,
+  saveExamResult,
+} from "../../db/mysql/admin/exam.js";
 import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
 import { v4 as uuid } from "uuid";
-import {insertNewCertificate} from "../../db/mysql/admin/certificate.js"
+import { insertNewCertificate } from "../../db/mysql/admin/certificate.js";
 
 export const bundleController = {
   getBundleById: (req, res) => {
@@ -619,7 +623,7 @@ export const bundleController = {
           )
             .then(async () => {
               try {
-                if ((per) => 80) {
+                if (per >= 80) {
                   let filePath = uuid() + ".pdf";
                   await convertHtmlToPdf(filePath);
                   let url = await uploadPdfToS3(filePath);
