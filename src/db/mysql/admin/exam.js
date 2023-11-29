@@ -95,11 +95,12 @@ export function saveExamResult(per, questionId, UserId,enrolledCourseId) {
   return new Promise((resolve, reject) => {
     try {
       let status = per >= 100 ? "pass" : "fail";
+      let color = per >= 80 ? "rgb(84, 156, 48)" : "rgb(247, 181, 0)";
       let getQuestionsQuery =
-        "UPDATE exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ? WHERE enrolled_course_id = ?;";
+        "UPDATE exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ?,color = ? WHERE enrolled_course_id = ?;";
       db.query(
         getQuestionsQuery,
-        [per, status, enrolledCourseId],
+        [per, status, color, enrolledCourseId],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
