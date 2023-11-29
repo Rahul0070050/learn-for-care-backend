@@ -25,6 +25,7 @@ import { validateValidateExamReqData } from "../../helpers/user/validateExamReqD
 import { getQuestionsById, saveBundleExamResult, saveExamResult } from "../../db/mysql/admin/exam.js";
 import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
 import { v4 as uuid } from "uuid";
+import {insertNewCertificate} from "../../db/mysql/admin/certificate.js"
 
 export const bundleController = {
   getBundleById: (req, res) => {
