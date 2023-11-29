@@ -29,7 +29,7 @@ export function getAssignedCourseById(id) {
       try {
         //  from course
         let getCourseByIdQuery = `
-        SELECT assigned_course.*, course.name AS name, course.courses AS courses assigned_course.validity AS validity
+        SELECT assigned_course.*, course.name AS name, assigned_course.validity AS validity
         FROM assigned_course 
         INNER JOIN course ON course.id = assigned_course.course_id
         WHERE assigned_course.id = ?;`;

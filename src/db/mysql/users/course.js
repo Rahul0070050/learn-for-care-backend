@@ -162,7 +162,7 @@ export function getPurchasedCourseByIdFromCourse(id) {
   return new Promise((resolve, reject) => {
     try {
       let getPurchasedCourseByIdDataQuery = `
-        SELECT purchased_course.*, course.name AS name, course.courses AS courses, purchased_course.validity AS validity
+        SELECT purchased_course.*, course.name AS name, purchased_course.validity AS validity
         FROM purchased_course 
         INNER JOIN course ON course.id = purchased_course.course_id
         WHERE purchased_course.id = ?;
