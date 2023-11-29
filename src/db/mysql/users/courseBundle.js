@@ -185,9 +185,10 @@ export function getOneCourseFromBundleCourse(data) {
       db.query(getQuery, [bundleId], (err, bundle) => {
         if (err) reject(err?.message);
         else {
-          let courses = bundle[0]
-          console.log('a ',bundle);
-          resolve(bundle);
+          let course = JSON.parse(bundle[0].unfinished_course).find(id => id == course_id)
+          resolve({
+            course_id: course
+          });
         }
       });
     } catch (error) {

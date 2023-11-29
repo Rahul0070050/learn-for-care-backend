@@ -376,7 +376,21 @@ export const bundleController = {
   getCourse:(req,res) => {
     try {
       validateGetCourseReqData(req.body).then(result => {
-        getOneCourseFromBundleCourse(result)
+        getOneCourseFromBundleCourse(result).then(result => {
+          console.log(result);
+        }).catch(err => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        })
       }).catch(err => {
         res.status(406).json({
           success: false,
