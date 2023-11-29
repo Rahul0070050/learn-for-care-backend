@@ -574,14 +574,15 @@ export const bundleController = {
   },
   validateExamResult: (req,res) => {
     try {
-      console.log(req.body);
       validateValidateExamReqData(req.body).then(async (result) => {
-        let answers = JSON.parse(result.answer);
-        let questions = await getQuestionsById(result.question_id);
-        let realAnswers = JSON.parse(questions[0].exam);
-        let course = await getCourseByIdFromDb(questions[0].course_id);
-        let points = 0;
-        let user = getUser(req);
+        try {
+          
+          let answers = JSON.parse(result.answer);
+          let questions = await getQuestionsById(result.question_id);
+          let realAnswers = JSON.parse(questions[0].exam);
+          let course = await getCourseByIdFromDb(questions[0].course_id);
+          let points = 0;
+          let user = getUser(req);
         let wrongAnswers = []
         realAnswers.map((item) => {
           let ans = answers.find((i) => i.question == item.question);
@@ -612,7 +613,7 @@ export const bundleController = {
                 image: url.file,
                 course_name: course[0].name,
               })
-                .then(async (result) => {
+              .then(async (result) => {
                   res.status(201).json({
                     success: true,
                     data: {
@@ -640,8 +641,8 @@ export const bundleController = {
                     errorType: "client",
                   });
                 });
-            } else {
-              res.status(200).json({
+              } else {
+                res.status(200).json({
                 success: true,
                 data: {
                   code: 200,
@@ -668,7 +669,9 @@ export const bundleController = {
               errorType: "client",
             });
           });
-        console.log(points);
+        } catch (error) {
+          console.log(error);
+        }
       });
     } catch (error) {
       res.status(500).json({
