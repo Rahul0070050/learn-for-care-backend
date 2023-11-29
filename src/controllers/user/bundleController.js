@@ -215,9 +215,9 @@ export const bundleController = {
                   unfinished_course: JSON.parse(
                     startedResult.course_count
                   ).split(","),
-                  all_courses: JSON.parse(
-                    startedResult.course_count
-                  ).split(","),
+                  all_courses: JSON.parse(startedResult.course_count).split(
+                    ","
+                  ),
                 };
                 setNewBundleToEnroll(data)
                   .then((result) => {
@@ -297,28 +297,30 @@ export const bundleController = {
     try {
       validateGetBundleInfoReqData(req.params)
         .then((result) => {
-          getBundleDataFromDb(result.id).then(result => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: "got courses",
-                response: result
-              },
-            });
-          }).catch(err => {
-            res.status(406).json({
-              success: false,
-              errors: [
-                {
-                  code: 406,
-                  message: "value not acceptable",
-                  error: err,
+          getBundleDataFromDb(result.id)
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "got courses",
+                  response: result,
                 },
-              ],
-              errorType: "client",
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
             });
-          })
         })
         .catch((err) => {
           res.status(406).json({
@@ -348,23 +350,25 @@ export const bundleController = {
       });
     }
   },
-  startBundleCourse:(req,res) => {
+  startBundleCourse: (req, res) => {
     try {
-      validateSTartBundleCourseReqData(req.body).then(result => {
-        startBundleCourse(result)
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "value not acceptable",
-              error: err,
-            },
-          ],
-          errorType: "client",
+      validateSTartBundleCourseReqData(req.body)
+        .then((result) => {
+          startBundleCourse(result);
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -380,104 +384,123 @@ export const bundleController = {
       });
     }
   },
-  getCourse:(req,res) => {
+  getCourse: (req, res) => {
     try {
-      validateGetCourseReqData(req.body).then(result => {
-        getOneCourseFromBundleCourse(result).then(result => {
-          console.log(result);
-          getCourseByCourseIdFromDb(result.course_id).then(async (result) => {
-            let newResult = await result.map(async (course, i) => {
-              try {
-                console.log(course);
-                let resources = JSON.parse(course.resource);
-                let ppt = JSON.parse(course.ppt);
+      validateGetCourseReqData(req.body)
+        .then((result) => {
+          getOneCourseFromBundleCourse(result)
+            .then((result) => {
+              console.log(result);
+              getCourseByCourseIdFromDb(result.course_id).then(
+                async (result) => {
+                  let newResult = await result.map(async (course, i) => {
+                    try {
+                      console.log(course);
+                      let resources = JSON.parse(course.resource);
+                      let ppt = JSON.parse(course.ppt);
 
-                delete course.resource;
-                delete course.ppt;
+                      delete course.resource;
+                      delete course.ppt;
 
-                course[`resourceCount`] = resources.length;
-                course[`pptCount`] = resources.length;
+                      course[`resourceCount`] = resources.length;
+                      course[`pptCount`] = resources.length;
 
-                resources.forEach((item, i) => {
-                  console.log(item.file + ":" + item.type);
-                  course[`resource${i}-`] = item.file;
-                });
+                      resources.forEach((item, i) => {
+                        console.log(item.file + ":" + item.type);
+                        course[`resource${i}-`] = item.file;
+                      });
 
-                ppt.forEach((item, i) => {
-                  course[`ppt${i}-`] = item.file;
-                });
+                      ppt.forEach((item, i) => {
+                        course[`ppt${i}-`] = item.file;
+                      });
 
-                let images = [];
-                let resource = [];
+                      let images = [];
+                      let resource = [];
 
-                for (let index = 0; index < ppt.length; index++) {
-                  let link = course[`ppt${index}-`];
+                      for (let index = 0; index < ppt.length; index++) {
+                        let link = course[`ppt${index}-`];
 
-                  // let key = urlstring.pop();
+                        // let key = urlstring.pop();
 
-                  let url = await downloadFromS3(index, link);
+                        let url = await downloadFromS3(index, link);
 
-                  images.push(url.url);
+                        images.push(url.url);
+                      }
+
+                      for (let index = 0; index < resources.length; index++) {
+                        let link = course[`resource${index}-`];
+                        let url = await downloadFromS3(index, link);
+
+                        resource.push(url.url);
+                      }
+
+                      let intro_video = await downloadFromS3(
+                        course.id,
+                        course.intro_video
+                      );
+
+                      let thumbnail = await downloadFromS3(
+                        course.id,
+                        course.thumbnail
+                      );
+
+                      let video = await downloadFromS3(course.id, course.video);
+
+                      course["intro_video"] = intro_video?.url;
+                      course["thumbnail"] = thumbnail?.url;
+                      course["video"] = video?.url;
+                      course["ppt"] = images;
+                      course["resource"] = resource;
+
+                      return course;
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  });
+
+                  Promise.all(newResult)
+                    .then((result) => {
+                      res.status(200).json({
+                        success: true,
+                        data: {
+                          code: 200,
+                          message: `got one course`,
+                          response: result,
+                        },
+                      });
+                    })
+                    .catch((err) => {
+                      res.status(500).json({
+                        success: false,
+                        errors: [
+                          {
+                            code: 500,
+                            message:
+                              "some error occurred in the server try again after some times",
+                            error: err,
+                          },
+                        ],
+                        errorType: "server",
+                      });
+                    });
                 }
-
-                for (let index = 0; index < resources.length; index++) {
-                  let link = course[`resource${index}-`];
-                  let url = await downloadFromS3(index, link);
-
-                  resource.push(url.url);
-                }
-
-                let intro_video = await downloadFromS3(
-                  course.id,
-                  course.intro_video
-                );
-
-                let thumbnail = await downloadFromS3(
-                  course.id,
-                  course.thumbnail
-                );
-
-                let video = await downloadFromS3(course.id, course.video);
-
-                course["intro_video"] = intro_video?.url;
-                course["thumbnail"] = thumbnail?.url;
-                course["video"] = video?.url;
-                course["ppt"] = images;
-                course["resource"] = resource;
-
-                return course;
-              } catch (error) {
-                console.log(error);
-              }
-            });
-
-            Promise.all(newResult)
-              .then((result) => {
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    message: `got one course`,
-                    response: result,
+              );
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
                   },
-                });
-              })
-              .catch((err) => {
-                res.status(500).json({
-                  success: false,
-                  errors: [
-                    {
-                      code: 500,
-                      message:
-                        "some error occurred in the server try again after some times",
-                      error: err,
-                    },
-                  ],
-                  errorType: "server",
-                });
+                ],
+                errorType: "client",
               });
-          });
-        }).catch(err => {
+            });
+        })
+        .catch((err) => {
           res.status(406).json({
             success: false,
             errors: [
@@ -489,20 +512,7 @@ export const bundleController = {
             ],
             errorType: "client",
           });
-        })
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "value not acceptable",
-              error: err,
-            },
-          ],
-          errorType: "client",
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -518,20 +528,37 @@ export const bundleController = {
       });
     }
   },
-  getExam:(req,res) => {
+  getExam: (req, res) => {
     try {
-      validateGetExamReqData(req.body).then(result => {
-        let user = getUser(req)
-        getExamByCourseId({...result,user_id: user.id}).then(result => {
-          res.status(200).json({
-            success: true,
-            data: {
-              code: 200,
-              message: `got exam`,
-              response: result,
-            },
-          });
-        }).catch(err => {
+      validateGetExamReqData(req.body)
+        .then((result) => {
+          let user = getUser(req);
+          getExamByCourseId({ ...result, user_id: user.id })
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `got exam`,
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
           res.status(406).json({
             success: false,
             errors: [
@@ -543,20 +570,7 @@ export const bundleController = {
             ],
             errorType: "client",
           });
-        })
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "value not acceptable",
-              error: err,
-            },
-          ],
-          errorType: "client",
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -572,103 +586,109 @@ export const bundleController = {
       });
     }
   },
-  validateExamResult: (req,res) => {
+  validateExamResult: (req, res) => {
     try {
       validateValidateExamReqData(req.body).then(async (result) => {
         try {
-          
           let answers = JSON.parse(result.answer);
           let questions = await getQuestionsById(result.question_id);
           let realAnswers = JSON.parse(questions[0].exam);
           let course = await getCourseByIdFromDb(questions[0].course_id);
           let points = 0;
           let user = getUser(req);
-        let wrongAnswers = []
-        realAnswers.map((item) => {
-          let ans = answers.find((i) => i.question == item.question);
-          if (ans.answer == item.answer) {
-            ++points;
-          } else {
-            wrongAnswers.push({ question: item.question, answer: item.answer });
-          }
-        });
-        let per = (points / answers.length) * 100;
-        saveExamResult(
-          per,
-          result.question_id,
-          user.id,
-          result.enrolled_course_id
-        )
-          .then(async () => {
-            if (per => 80) {
-              let filePath = uuid() + ".pdf";
-              await convertHtmlToPdf(filePath);
-              let url = await uploadPdfToS3(filePath);
-              insertNewCertificate({
-                ...result,
-                user_id: user.id,
-                user_name: user.first_name + " " + user.last_name,
-                percentage: per,
-                date: new Date(),
-                image: url.file,
-                course_name: course[0].name,
-              })
-              .then(async (result) => {
-                  res.status(201).json({
+          let wrongAnswers = [];
+          realAnswers.map((item) => {
+            let ans = answers.find((i) => i.question == item.question);
+            if (ans.answer == item.answer) {
+              ++points;
+            } else {
+              wrongAnswers.push({
+                question: item.question,
+                answer: item.answer,
+              });
+            }
+          });
+          let per = (points / answers.length) * 100;
+          saveExamResult(
+            per,
+            result.question_id,
+            user.id,
+            result.enrolled_course_id
+          )
+            .then(async () => {
+              try {
+                if ((per) => 80) {
+                  let filePath = uuid() + ".pdf";
+                  await convertHtmlToPdf(filePath);
+                  let url = await uploadPdfToS3(filePath);
+                  insertNewCertificate({
+                    ...result,
+                    user_id: user.id,
+                    user_name: user.first_name + " " + user.last_name,
+                    percentage: per,
+                    date: new Date(),
+                    image: url.file,
+                    course_name: course[0].name,
+                  })
+                    .then(async (result) => {
+                      res.status(201).json({
+                        success: true,
+                        data: {
+                          code: 201,
+                          message: "you successfully finished the course",
+                          response: {
+                            per: per + " %",
+                            rightAnswers: points,
+                            wrongAnswers: wrongAnswers,
+                            certificate: url.file,
+                          },
+                        },
+                      });
+                    })
+                    .catch((error) => {
+                      res.status(406).json({
+                        success: false,
+                        errors: [
+                          {
+                            code: 406,
+                            message: "error from db acceptable",
+                            error: error,
+                          },
+                        ],
+                        errorType: "client",
+                      });
+                    });
+                } else {
+                  res.status(200).json({
                     success: true,
                     data: {
-                      code: 201,
-                      message: "you successfully finished the course",
+                      code: 200,
+                      message: "result",
                       response: {
                         per: per + " %",
                         rightAnswers: points,
                         wrongAnswers: wrongAnswers,
-                        certificate: url.file
                       },
                     },
                   });
-                })
-                .catch((error) => {
-                  res.status(406).json({
-                    success: false,
-                    errors: [
-                      {
-                        code: 406,
-                        message: "error from db acceptable",
-                        error: error,
-                      },
-                    ],
-                    errorType: "client",
-                  });
-                });
-              } else {
-                res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "result",
-                  response: {
-                    per: per + " %",
-                    rightAnswers: points,
-                    wrongAnswers: wrongAnswers,
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
                   },
-                },
+                ],
+                errorType: "client",
               });
-            }
-          })
-          .catch((err) => {
-            res.status(406).json({
-              success: false,
-              errors: [
-                {
-                  code: 406,
-                  message: "value not acceptable",
-                  error: err,
-                },
-              ],
-              errorType: "client",
             });
-          });
         } catch (error) {
           console.log(error);
         }
@@ -687,7 +707,7 @@ export const bundleController = {
         errorType: "server",
       });
     }
-  }
+  },
   // getBundleById: (req, res) => {
   //   try {
   //     getBBundleByIdFromDb()
