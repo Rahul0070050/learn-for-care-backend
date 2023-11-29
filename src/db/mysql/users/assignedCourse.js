@@ -54,7 +54,7 @@ export function getAssignedCourseById(id) {
         SELECT assigned_course.*, course.name as course_name, 0 AS progress, 'red' AS color
         FROM assigned_course 
         INNER JOIN course ON course.id = assigned_course.course_id
-        WHERE user_id = ? AND count >= 1 AND course_type = 'course';`;
+        WHERE assigned_course.user_id = ? AND assigned_course.count >= 1 AND assigned_course.course_type = 'course';`;
         db.query(
           getCourseByIdQuery,
           [id],

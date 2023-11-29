@@ -42,7 +42,7 @@ export function getMatrixDataByUserId(id) {
       SELECT enrolled_course.*, course.name AS course_name 
       FROM enrolled_course
       INNER JOIN course ON course.id = enrolled_course.course_id
-      WHERE user_id = ?;`;
+      WHERE enrolled_course.user_id = ?;`;
       db.query(getQuery, [id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
