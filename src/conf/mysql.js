@@ -195,8 +195,7 @@ export function mySqlConnect(done) {
     //   else console.log("exam table created");
     // });
 
-
-      const ExamAttemptsTable = `
+    const ExamAttemptsTable = `
         CREATE TABLE IF NOT EXISTS exam_attempts (
           id INT AUTO_INCREMENT PRIMARY KEY,
           course_id INT NOT NULL,
@@ -208,30 +207,27 @@ export function mySqlConnect(done) {
         );
       `;
 
+    db.query(ExamAttemptsTable, (err, result) => {
+      if (err) console.log(err.message);
+      else console.log("exam_attempts table created");
+    });
 
-      db.query(ExamAttemptsTable, (err, result) => {
-        if (err) console.log(err.message);
-        else console.log("exam_attempts table created");
-      });
-
-      const bundleExamAttemptsTable = `
+    const bundleExamAttemptsTable = `
         CREATE TABLE IF NOT EXISTS bundle_exam_attempts (
           id INT AUTO_INCREMENT PRIMARY KEY,
-          enrolled_bundle_id INT NOT NULL,
+          enrolled_bundle_id INT NOT NULL UNIQUE,
           user_id TEXT NOT NULL,
           course_id INT DEFAULT NULL,
           attempts INT DEFAULT 0,
           percentage INT DEFAULT NULL,
-          enrolled_course_id INT NOT NULL UNIQUE,
           status VARCHAR(10) DEFAULT NULL
         );
       `;
 
-
-      db.query(bundleExamAttemptsTable, (err, result) => {
-        if (err) console.log(err.message);
-        else console.log("exam_attempts table created");
-      });
+    db.query(bundleExamAttemptsTable, (err, result) => {
+      if (err) console.log(err.message);
+      else console.log("exam_attempts table created");
+    });
 
     // const subUserTable = `
     //   CREATE TABLE IF NOT EXISTS sub_user (
@@ -288,10 +284,10 @@ export function mySqlConnect(done) {
       );
     `;
 
-      db.query(assignedCourseTable, (err, result) => {
-        if (err) console.log(err);
-        else console.log("assigned course table created");
-      });
+    db.query(assignedCourseTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("assigned course table created");
+    });
     // =================> NOT THIS
     //  const assignedCourseTable = `
     //   CREATE TABLE IF NOT EXISTS assigned_course (
@@ -312,16 +308,15 @@ export function mySqlConnect(done) {
     //   });
     // =================>
 
-    
     // const subAdminTable = `
     //   CREATE TABLE IF NOT EXISTS sub_admin (
-      //     id INT AUTO_INCREMENT PRIMARY KEY,
-      //     name VARCHAR(150) NOT NULL,
-      //     email VARCHAR(150) NOT NULL UNIQUE,
-      //     password VARCHAR(150) NOT NULL,
-      //     block BOOLEAN DEFAULT FALSE
-      //   );
-      // `;
+    //     id INT AUTO_INCREMENT PRIMARY KEY,
+    //     name VARCHAR(150) NOT NULL,
+    //     email VARCHAR(150) NOT NULL UNIQUE,
+    //     password VARCHAR(150) NOT NULL,
+    //     block BOOLEAN DEFAULT FALSE
+    //   );
+    // `;
 
     // db.query(subAdminTable, (err, result) => {
     //   if (err) console.log(err.message);
@@ -360,10 +355,10 @@ export function mySqlConnect(done) {
     );
   `;
 
-  db.query(enrollBundleTable, (err, result) => {
-    if (err) console.log(err.message);
-    else console.log("enrolled bundle table created");
-  });
+    db.query(enrollBundleTable, (err, result) => {
+      if (err) console.log(err.message);
+      else console.log("enrolled bundle table created");
+    });
 
     // const certificateTable = `
     //     CREATE TABLE IF NOT EXISTS certificate (

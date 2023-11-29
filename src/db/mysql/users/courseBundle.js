@@ -219,7 +219,6 @@ export function getCourseByCourseIdFromDb(id) {
 export function getExamByCourseId(data) {
   return new Promise((resolve, reject) => {
     const {course_id, bundle_id,user_id} = data
-    console.log(data);
     let insertQuery =
         "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id) VALUES (?,?,?)";
       db.query(insertQuery, [bundle_id, course_id, user_id ], (err, result) => {
