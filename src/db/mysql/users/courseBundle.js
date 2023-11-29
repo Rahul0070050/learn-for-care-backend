@@ -132,9 +132,9 @@ export function getBundleDataFromDb(id) {
               return await getCourseByIdFromDb(id);
             })
           )
-            .then((result) => {
+            .then((allCourses) => {
               console.log(result);
-              resolve(result);
+              resolve({bundle: result,courses: allCourses.flat(1)});
             })
             .catch((err) => {
               console.log(err);
