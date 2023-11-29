@@ -1,10 +1,14 @@
 import { db } from "../../../conf/mysql.js";
-import { getAssignedCourseById, getAssignedCourseByIdFromCourse } from "./assignedCourse.js";
+import {
+  getAssignedCourseById,
+  getAssignedCourseByIdFromCourse,
+} from "./assignedCourse.js";
 
 export function getCourseByIdFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getCourseByIdQuery = "SELECT id, name, description, category, price, intro_video, thumbnail FROM course WHERE id = ?;";
+      let getCourseByIdQuery =
+        "SELECT id, name, description, category, price, intro_video, thumbnail FROM course WHERE id = ?;";
       db.query(getCourseByIdQuery, [id], (err, result) => {
         if (err) {
           return reject(err?.message);
@@ -115,13 +119,17 @@ export function getAllAssignedCourseFromDb(id, type) {
       WHERE assigned_course.user_id = ? AND assigned_course.course_type = ?;
       `;
 
-      db.query(getAssignedCourseByIdDataQuery, [id, "course"], (err, result) => {
-        if (err) {
-          return reject(err?.message);
-        } else {
-          return resolve(result);
+      db.query(
+        getAssignedCourseByIdDataQuery,
+        [id, "course"],
+        (err, result) => {
+          if (err) {
+            return reject(err?.message);
+          } else {
+            return resolve(result);
+          }
         }
-      });
+      );
     } catch (error) {
       reject(error?.message);
     }
@@ -176,26 +184,33 @@ export function getPurchasedCourseByIdFromCourse(id) {
 export function decrementTheCourseCount(data) {
   return new Promise(async (resolve, reject) => {
     try {
-      let decrementTheCourseCountQuery = '';
+      let decrementTheCourseCountQuery = "";
       let course = null;
-      if(data.from == "assigned") {
-        decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
-        course = await getAssignedCourseByIdFromCourse(data.course_id);
-      } else {
-        course = await getPurchasedCourseByIdFromCourse(data.course_id);
-        decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
-      }
-      console.log(course);
-      db.query(decrementTheCourseCountQuery, [data.course_id], (err, result) => {
-        if (err) {
-          return reject(err?.message);
+      try {
+        if (data.from == "assigned") {
+          decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
+          course = await getAssignedCourseByIdFromCourse(data.course_id);
         } else {
-          return resolve({
-            validity: course[0].validity,
-            id: course[0].course_id,
-          });
+          course = await getPurchasedCourseByIdFromCourse(data.course_id);
+          decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
         }
-      });
+      } catch (error) {
+        console.log(error);
+      }
+      db.query(
+        decrementTheCourseCountQuery,
+        [data.course_id],
+        (err, result) => {
+          if (err) {
+            return reject(err?.message);
+          } else {
+            return resolve({
+              validity: course[0].validity,
+              id: course[0].course_id,
+            });
+          }
+        }
+      );
     } catch (error) {
       reject(error?.message);
     }

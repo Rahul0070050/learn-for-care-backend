@@ -494,36 +494,35 @@ export const courseController = {
           decrementTheCourseCount(result)
             .then((course) => {
               try {
-                
                 addCourseToEnrolledCourse(
-                course.id,
-                user.id,
-                course.validity,
-                user.type_of_account
-              )
-                .then((result) => {
-                  res.status(200).json({
-                    success: true,
-                    data: {
-                      code: 200,
-                      message: "success",
-                      response: { id: result.id },
-                    },
-                  });
-                })
-                .catch((err) => {
-                  res.status(500).json({
-                    success: false,
-                    errors: [
-                      {
-                        code: 500,
-                        message: "some error occurred please try again later",
-                        error: err,
+                  course.id,
+                  user.id,
+                  course.validity,
+                  user.type_of_account
+                )
+                  .then((result) => {
+                    res.status(200).json({
+                      success: true,
+                      data: {
+                        code: 200,
+                        message: "success",
+                        response: { id: result.id },
                       },
-                    ],
-                    errorType: "server",
+                    });
+                  })
+                  .catch((err) => {
+                    res.status(500).json({
+                      success: false,
+                      errors: [
+                        {
+                          code: 500,
+                          message: "some error occurred please try again later",
+                          error: err,
+                        },
+                      ],
+                      errorType: "server",
+                    });
                   });
-                });
               } catch (error) {
                 console.log(error);
               }
