@@ -610,8 +610,8 @@ export const courseController = {
 
           Promise.all(newResult)
             .then((result) => {
-              result[0] = result[2];
-              result[1] = result[2];
+              // result[0] = result[2];
+              // result[1] = result[2];
               res.status(200).json({
                 success: true,
                 data: {

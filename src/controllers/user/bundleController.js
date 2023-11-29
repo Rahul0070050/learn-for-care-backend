@@ -627,6 +627,7 @@ export const bundleController = {
                   let filePath = uuid() + ".pdf";
                   await convertHtmlToPdf(filePath);
                   let url = await uploadPdfToS3(filePath);
+                  // updateBundleProgress(result.enrolled_course_id,questions[0].course_id)
                   insertNewCertificate({
                     ...result,
                     user_id: user.id,

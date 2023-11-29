@@ -231,3 +231,13 @@ export function getExamByCourseId(data) {
     });
   });
 }
+
+// export function updateBundleProgress(id, course_id) {
+//   return new Promise((resolve, reject) => {
+//     let getQuestionsQuery = "SELECT * FROM enrolled_bundle WHERE course_id = ? LIMIT 1;";
+//     db.query(getQuestionsQuery, [course_id], (err, result) => {
+//       if (err) return reject(err?.message);
+//       else return resolve(result);
+//     });
+//   });
+// }
