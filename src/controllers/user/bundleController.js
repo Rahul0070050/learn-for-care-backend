@@ -24,6 +24,7 @@ import { getOnGoingCourseByIdFromDb } from "../../db/mysql/users/onGoingCourse.j
 import { validateValidateExamReqData } from "../../helpers/user/validateExamReqData.js";
 import { getQuestionsById, saveExamResult } from "../../db/mysql/admin/exam.js";
 import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
+import { v4 as uuid } from "uuid";
 
 export const bundleController = {
   getBundleById: (req, res) => {
