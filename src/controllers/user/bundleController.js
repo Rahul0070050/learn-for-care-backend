@@ -378,6 +378,14 @@ export const bundleController = {
       validateGetCourseReqData(req.body).then(result => {
         getOneCourseFromBundleCourse(result).then(result => {
           console.log(result);
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got courses",
+              response: result.course_id
+            },
+          });
         }).catch(err => {
           res.status(406).json({
             success: false,
