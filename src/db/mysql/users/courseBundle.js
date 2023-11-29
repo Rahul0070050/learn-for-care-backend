@@ -157,9 +157,15 @@ export function startBundleCourse(data) {
         if (err) {
           return reject(err?.message);
         } else {
-          let unFinished = JSON.parse(result[0].unfinished_course).filter(id => id != course_id);
-          console.log('finished ', result[0].finished_course);
-          // let unFinished = JSON.parse(result[0].finished_course)
+          // let unFinished = JSON.parse(result[0].unfinished_course).filter(id => id != course_id);
+          // console.log('finished ', result[0].finished_course);
+          // if(result[0].finished_course) {
+            // let unFinished = JSON.parse(result[0].finished_course)
+            // unFinished
+          // } else {
+            // let unFinished = JSON.parse(result[0].finished_course)
+            // unFinished
+          // }
           // console.log(course);
           resolve(result);
         }
