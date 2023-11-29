@@ -108,7 +108,7 @@ export function saveExamResult(per, questionId, UserId,enrolledCourseId) {
         "UPDATE enrolled_course SET progress = ? ,color = ? WHERE id = ?;";
       db.query(
         updateQuery,
-        [per, status, color, enrolledCourseId],
+        [per, color, enrolledCourseId],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
