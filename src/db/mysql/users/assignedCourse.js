@@ -3,10 +3,35 @@ import { db } from "../../../conf/mysql.js";
 export function getAssignedCourseById(id) {
     return new Promise((resolve, reject) => {
       try {
+        //  from course
         let getCourseByIdQuery = `
         SELECT assigned_course.*, course_bundle.name AS name, course_bundle.courses AS courses
         FROM assigned_course 
         INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id
+        WHERE assigned_course.id = ?;`;
+        db.query(
+          getCourseByIdQuery,
+          [id],
+          (err, result) => {
+            if (err) return reject(err.message);
+            else return resolve(result);
+          }
+        );
+      } catch (error) {
+        reject(error?.message);
+      }
+    });
+  }
+
+
+  export function getAssignedCourseByIdFromCourse(id) {
+    return new Promise((resolve, reject) => {
+      try {
+        //  from course
+        let getCourseByIdQuery = `
+        SELECT assigned_course.*, course.name AS name, course.courses AS courses assigned_course.validity AS validity
+        FROM assigned_course 
+        INNER JOIN course ON course.id = assigned_course.course_id
         WHERE assigned_course.id = ?;`;
         db.query(
           getCourseByIdQuery,

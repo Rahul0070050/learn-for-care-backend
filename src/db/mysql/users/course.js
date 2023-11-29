@@ -1,5 +1,5 @@
 import { db } from "../../../conf/mysql.js";
-import { getAssignedCourseById } from "./assignedCourse.js";
+import { getAssignedCourseById, getAssignedCourseByIdFromCourse } from "./assignedCourse.js";
 
 export function getCourseByIdFromDb(id) {
   return new Promise((resolve, reject) => {
@@ -150,6 +150,29 @@ export function getPurchasedCourseById(id) {
   });
 }
 
+export function getPurchasedCourseByIdFromCourse(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getPurchasedCourseByIdDataQuery = `
+        SELECT purchased_course.*, course.name AS name, course.courses AS courses, purchased_course.validity AS validity
+        FROM purchased_course 
+        INNER JOIN course ON course.id = purchased_course.course_id
+        WHERE purchased_course.id = ?;
+      `;
+
+      db.query(getPurchasedCourseByIdDataQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function decrementTheCourseCount(data) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -157,9 +180,9 @@ export function decrementTheCourseCount(data) {
       let course = null;
       if(data.from == "assigned") {
         decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
-        course = await getAssignedCourseById(data.course_id);
+        course = await getAssignedCourseByIdFromCourse(data.course_id);
       } else {
-        course = await getPurchasedCourseById(data.course_id);
+        course = await getPurchasedCourseByIdFromCourse(data.course_id);
         decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
       }
       console.log(course);
