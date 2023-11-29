@@ -10,6 +10,7 @@ import {
   getAllBBundle,
   getBundleDataFromDb,
   getCourseBundleById,
+  getCourseByCourseIdFromDb,
   getOneCourseFromBundleCourse,
   setNewBundleToEnroll,
   startANewBundle,
@@ -379,7 +380,7 @@ export const bundleController = {
       validateGetCourseReqData(req.body).then(result => {
         getOneCourseFromBundleCourse(result).then(result => {
           console.log(result);
-          getOnGoingCourseByIdFromDb(result,user.id).then(async (result) => {
+          getCourseByCourseIdFromDb(result.course_id).then(async (result) => {
             let newResult = await result.map(async (course, i) => {
               try {
                 console.log(course);

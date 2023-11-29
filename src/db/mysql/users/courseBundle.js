@@ -196,3 +196,20 @@ export function getOneCourseFromBundleCourse(data) {
     }
   });
 }
+
+export function getCourseByCourseIdFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = "SELECT * FROM course WHERE id = ?;";
+
+      db.query(getQuery, [id], (err, course) => {
+        if (err) reject(err?.message);
+        else {
+          resolve(course);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
