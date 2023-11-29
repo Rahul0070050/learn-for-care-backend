@@ -103,8 +103,19 @@ export function saveExamResult(per, questionId, UserId,enrolledCourseId) {
       } else {
         color = "red"
       }
+      
+      let updateQuery =
+        "UPDATE enrolled_course SET progress = ? ,color = ? WHERE id = ?;";
+      db.query(
+        updateQuery,
+        [per, status, color, enrolledCourseId],
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        }
+      );
       let getQuestionsQuery =
-        "UPDATE exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ?,color = ? WHERE enrolled_course_id = ?;";
+        "UPDATE exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ? WHERE enrolled_course_id = ?;";
       db.query(
         getQuestionsQuery,
         [per, status, color, enrolledCourseId],
