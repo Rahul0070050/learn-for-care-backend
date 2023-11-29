@@ -216,7 +216,7 @@ export function getCourseByCourseIdFromDb(id) {
   });
 }
 
-export function getExamByCourseId(is) {
+export function getExamByCourseId(id) {
   return new Promise((resolve, reject) => {
     let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 1;";
     db.query(getQuestionsQuery, [id], (err, result) => {
