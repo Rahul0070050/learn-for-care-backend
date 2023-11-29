@@ -10,5 +10,6 @@ route.post("/start-bundle", bundleController.startBundle);
 route.get("/get-started-bundle/:id", bundleController.getBundleInfo);
 route.post("/start-bundle-course", bundleController.startBundleCourse);
 route.post("/get-course", bundleController.getCourse);
+route.post("/get-exam", bundleController.getExam);
 
 export default route;

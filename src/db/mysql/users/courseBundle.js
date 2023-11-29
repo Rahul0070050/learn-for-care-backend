@@ -185,9 +185,11 @@ export function getOneCourseFromBundleCourse(data) {
       db.query(getQuery, [bundleId], (err, bundle) => {
         if (err) reject(err?.message);
         else {
-          let course = JSON.parse(bundle[0].unfinished_course).find(id => id == course_id)
+          let course = JSON.parse(bundle[0].unfinished_course).find(
+            (id) => id == course_id
+          );
           resolve({
-            course_id: course
+            course_id: course,
           });
         }
       });
@@ -211,5 +213,15 @@ export function getCourseByCourseIdFromDb(id) {
     } catch (error) {
       reject(error?.message);
     }
+  });
+}
+
+export function getExamByCourseId() {
+  return new Promise((resolve, reject) => {
+    let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 1;";
+    db.query(getQuestionsQuery, [course_id], (err, result) => {
+      if (err) return reject(err?.message);
+      else return resolve(result);
+    });
   });
 }

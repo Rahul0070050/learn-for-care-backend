@@ -2,6 +2,7 @@ import {
   checkGetBundleByIdReqDate,
   validateGetBundleInfoReqData,
   validateGetCourseReqData,
+  validateGetExamReqData,
   validateSTartBundleCourseReqData,
   validateStartBundleReqData,
 } from "../../helpers/user/validateBundleReqData.js";
@@ -11,6 +12,7 @@ import {
   getBundleDataFromDb,
   getCourseBundleById,
   getCourseByCourseIdFromDb,
+  getExamByCourseId,
   getOneCourseFromBundleCourse,
   setNewBundleToEnroll,
   startANewBundle,
@@ -471,6 +473,59 @@ export const bundleController = {
                   errorType: "server",
                 });
               });
+          });
+        }).catch(err => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        })
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "value not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getExam:(req,res) => {
+    try {
+      validateGetExamReqData(req.body).then(result => {
+        getExamByCourseId(result.course_id).then(result => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: `got exam`,
+              response: result,
+            },
           });
         }).catch(err => {
           res.status(406).json({
