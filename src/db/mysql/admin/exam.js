@@ -110,3 +110,23 @@ export function saveExamResult(per, questionId, UserId,enrolledCourseId) {
     }
   });
 }
+
+export function saveBundleExamResult(per, questionId, UserId,enrolledCourseId) {
+  return new Promise((resolve, reject) => {
+    try {
+      let status = per >= 100 ? "pass" : "fail";
+      let getQuestionsQuery =
+        "UPDATE bundle_exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ? WHERE enrolled_bundle_id = ?;";
+      db.query(
+        getQuestionsQuery,
+        [per, status, enrolledCourseId],
+        (err, result) => {
+          if (err) return reject(err?.message);
+          else return resolve(result);
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

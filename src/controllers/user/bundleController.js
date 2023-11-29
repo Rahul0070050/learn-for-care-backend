@@ -22,7 +22,7 @@ import { getCourseByIdFromDb } from "../../db/mysql/users/course.js";
 import { getUser } from "../../utils/auth.js";
 import { getOnGoingCourseByIdFromDb } from "../../db/mysql/users/onGoingCourse.js";
 import { validateValidateExamReqData } from "../../helpers/user/validateExamReqData.js";
-import { getQuestionsById, saveExamResult } from "../../db/mysql/admin/exam.js";
+import { getQuestionsById, saveBundleExamResult, saveExamResult } from "../../db/mysql/admin/exam.js";
 import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
 import { v4 as uuid } from "uuid";
 
@@ -610,7 +610,7 @@ export const bundleController = {
             }
           });
           let per = (points / answers.length) * 100;
-          saveExamResult(
+          saveBundleExamResult(
             per,
             result.question_id,
             user.id,
