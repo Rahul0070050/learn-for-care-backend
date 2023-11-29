@@ -214,6 +214,25 @@ export function mySqlConnect(done) {
         else console.log("exam_attempts table created");
       });
 
+      const bundleExamAttemptsTable = `
+        CREATE TABLE IF NOT EXISTS bundle_exam_attempts (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          bundle_id INT NOT NULL,
+          user_id TEXT NOT NULL,
+          course_id INT DEFAULT NULL,
+          attempts INT DEFAULT 0,
+          percentage INT DEFAULT NULL,
+          enrolled_course_id INT NOT NULL UNIQUE,
+          status VARCHAR(10) DEFAULT NULL
+        );
+      `;
+
+
+      db.query(bundleExamAttemptsTable, (err, result) => {
+        if (err) console.log(err.message);
+        else console.log("exam_attempts table created");
+      });
+
     // const subUserTable = `
     //   CREATE TABLE IF NOT EXISTS sub_user (
     //     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -329,7 +348,7 @@ export function mySqlConnect(done) {
     CREATE TABLE IF NOT EXISTS enrolled_bundle (
       id INT AUTO_INCREMENT PRIMARY KEY,
       bundle_name VARCHAR(150) NOT NULL,
-      bundle_id INT NOT NULL,
+      bundle_id INT UNIQUE,
       user_id INT NOT NULL,
       course_count INT NOT NULL,
       validity DATETIME NOT NULL,

@@ -101,6 +101,7 @@ export function validateGetExamReqData(data) {
   return new Promise((resolve, reject) => { 
     try {
       let template = object({
+        bundle_id: number().required("please provide valid bundle id"),
         course_id: number().required("please provide valid course id"),
       })
       

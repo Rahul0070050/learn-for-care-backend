@@ -6,7 +6,7 @@ import {
   validateSTartBundleCourseReqData,
   validateStartBundleReqData,
 } from "../../helpers/user/validateBundleReqData.js";
-import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
+import { downloadFromS3, uploadFileToS3, uploadPdfToS3 } from "../../AWS/S3.js";
 import {
   getAllBBundle,
   getBundleDataFromDb,
@@ -21,6 +21,9 @@ import {
 import { getCourseByIdFromDb } from "../../db/mysql/users/course.js";
 import { getUser } from "../../utils/auth.js";
 import { getOnGoingCourseByIdFromDb } from "../../db/mysql/users/onGoingCourse.js";
+import { validateValidateExamReqData } from "../../helpers/user/validateExamReqData.js";
+import { getQuestionsById, saveExamResult } from "../../db/mysql/admin/exam.js";
+import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
 
 export const bundleController = {
   getBundleById: (req, res) => {
@@ -518,7 +521,8 @@ export const bundleController = {
   getExam:(req,res) => {
     try {
       validateGetExamReqData(req.body).then(result => {
-        getExamByCourseId(result.course_id).then(result => {
+        let user = getUser(req)
+        getExamByCourseId({...result,user_id: user.id}).then(result => {
           res.status(200).json({
             success: true,
             data: {
@@ -553,6 +557,118 @@ export const bundleController = {
           errorType: "client",
         });
       })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  validateExamResult: (req,res) => {
+    try {
+      validateValidateExamReqData(req.body).then(async (result) => {
+        let answers = JSON.parse(result.answer);
+        let questions = await getQuestionsById(result.question_id);
+        let realAnswers = JSON.parse(questions[0].exam);
+        let course = await getCourseByIdFromDb(questions[0].course_id);
+        let points = 0;
+        let user = getUser(req);
+        let wrongAnswers = []
+        realAnswers.map((item) => {
+          let ans = answers.find((i) => i.question == item.question);
+          if (ans.answer == item.answer) {
+            ++points;
+          } else {
+            wrongAnswers.push({ question: item.question, answer: item.answer });
+          }
+        });
+        let per = (points / answers.length) * 100;
+        saveExamResult(
+          per,
+          result.question_id,
+          user.id,
+          result.enrolled_course_id
+        )
+          .then(async () => {
+            if (per => 80) {
+              let filePath = uuid() + ".pdf";
+              await convertHtmlToPdf(filePath);
+              let url = await uploadPdfToS3(filePath);
+              insertNewCertificate({
+                ...result,
+                user_id: user.id,
+                user_name: user.first_name + " " + user.last_name,
+                percentage: per,
+                date: new Date(),
+                image: url.file,
+                course_name: course[0].name,
+              })
+                .then(async (result) => {
+                  res.status(201).json({
+                    success: true,
+                    data: {
+                      code: 201,
+                      message: "you successfully finished the course",
+                      response: {
+                        per: per + " %",
+                        rightAnswers: points,
+                        wrongAnswers: wrongAnswers,
+                        certificate: url.file
+                      },
+                    },
+                  });
+                })
+                .catch((error) => {
+                  res.status(406).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 406,
+                        message: "error from db acceptable",
+                        error: error,
+                      },
+                    ],
+                    errorType: "client",
+                  });
+                });
+            } else {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "result",
+                  response: {
+                    per: per + " %",
+                    rightAnswers: points,
+                    wrongAnswers: wrongAnswers,
+                  },
+                },
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "value not acceptable",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
+          });
+        console.log(points);
+      });
     } catch (error) {
       res.status(500).json({
         success: false,

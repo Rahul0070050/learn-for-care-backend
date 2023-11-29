@@ -216,8 +216,14 @@ export function getCourseByCourseIdFromDb(id) {
   });
 }
 
-export function getExamByCourseId(id) {
+export function getExamByCourseId(data) {
   return new Promise((resolve, reject) => {
+    const {course_id, bundle_id} = data
+    let insertQuery =
+        "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id) VALUES (?,?,?)";
+      db.query(insertQuery, [bundle_id, course_id, user_id ], (err, result) => {
+        if (err) throw err;
+      });
     let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 1;";
     db.query(getQuestionsQuery, [id], (err, result) => {
       if (err) return reject(err?.message);
