@@ -139,9 +139,6 @@ export function getBundleDataFromDb(id) {
             .catch((err) => {
               console.log(err);
             });
-          // console.log(result)
-          // console.log(JSON.parse(result[0].all_courses))
-          // resolve(result);
         }
       });
     } catch (error) {

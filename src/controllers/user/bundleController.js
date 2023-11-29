@@ -286,7 +286,28 @@ export const bundleController = {
     try {
       validateGetBundleInfoReqData(req.params)
         .then((result) => {
-          getBundleDataFromDb(result.id)
+          getBundleDataFromDb(result.id).then(result => {
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "got courses",
+                response: result
+              },
+            });
+          }).catch(err => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "value not acceptable",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
+          })
         })
         .catch((err) => {
           res.status(406).json({
