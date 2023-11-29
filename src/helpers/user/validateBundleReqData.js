@@ -56,3 +56,23 @@ export function validateGetBundleInfoReqData(data) {
     }
    })
 }
+
+export function validateSTartBundleCourseReqData(data) {
+  return new Promise((resolve, reject) => { 
+    try {
+      let template = object({
+        course_id: number().required("please provide valid course id"),
+        enrolled_bundle_id: number().required("please provide valid bundle id"),
+      })
+      
+      template.validate(data).then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err?.message);
+      });
+    } catch (error) {
+      reject(error?.message)
+    }
+   })
+}

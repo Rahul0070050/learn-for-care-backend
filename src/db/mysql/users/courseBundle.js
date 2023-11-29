@@ -107,7 +107,8 @@ export function getCourseByIdFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       id = Number(id);
-      let getAllBundleQuery = "SELECT id, name, description, category FROM course WHERE id = ?;";
+      let getAllBundleQuery =
+        "SELECT id, name, description, category FROM course WHERE id = ?;";
 
       db.query(getAllBundleQuery, [id], (err, bundle) => {
         if (err) reject(err?.message);
@@ -134,11 +135,31 @@ export function getBundleDataFromDb(id) {
           )
             .then((allCourses) => {
               console.log(result);
-              resolve({bundle: result,courses: allCourses.flat(1)});
+              resolve({ bundle: result, courses: allCourses.flat(1) });
             })
             .catch((err) => {
               console.log(err);
             });
+        }
+      });
+    } catch (error) {
+      return reject(err?.message);
+    }
+  });
+}
+
+export function startBundleCourse(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const { course_id, enrolled_bundle_id } = data;
+      let getQuery = "SELECT * FROM enrolled_bundle WHERE id = ?";
+      db.query(getQuery, [enrolled_bundle_id], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          let course = JSON.parse(result[0].unfinished_course);
+          console.log(course);
+          resolve(result);
         }
       });
     } catch (error) {

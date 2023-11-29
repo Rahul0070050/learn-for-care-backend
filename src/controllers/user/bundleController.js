@@ -1,6 +1,7 @@
 import {
   checkGetBundleByIdReqDate,
   validateGetBundleInfoReqData,
+  validateSTartBundleCourseReqData,
   validateStartBundleReqData,
 } from "../../helpers/user/validateBundleReqData.js";
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
@@ -10,6 +11,7 @@ import {
   getCourseBundleById,
   setNewBundleToEnroll,
   startANewBundle,
+  startBundleCourse,
 } from "../../db/mysql/users/courseBundle.js";
 import { getCourseByIdFromDb } from "../../db/mysql/users/course.js";
 import { getUser } from "../../utils/auth.js";
@@ -337,6 +339,38 @@ export const bundleController = {
       });
     }
   },
+  startBundleCourse:(req,res) => {
+    try {
+      validateSTartBundleCourseReqData(req.body).then(result => {
+        startBundleCourse(result)
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "value not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
   // getBundleById: (req, res) => {
   //   try {
   //     getBBundleByIdFromDb()
