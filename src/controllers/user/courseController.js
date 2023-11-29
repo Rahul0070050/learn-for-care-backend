@@ -493,7 +493,9 @@ export const courseController = {
           let user = getUser(req);
           decrementTheCourseCount(result)
             .then((course) => {
-              addCourseToEnrolledCourse(
+              try {
+                
+                addCourseToEnrolledCourse(
                 course.id,
                 user.id,
                 course.validity,
@@ -522,6 +524,9 @@ export const courseController = {
                     errorType: "server",
                   });
                 });
+              } catch (error) {
+                console.log(error);
+              }
             })
             .catch((err) => {
               res.status(500).json({
