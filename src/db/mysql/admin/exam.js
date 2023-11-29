@@ -94,8 +94,15 @@ export function getQuestionsById(id) {
 export function saveExamResult(per, questionId, UserId,enrolledCourseId) {
   return new Promise((resolve, reject) => {
     try {
-      let status = per >= 100 ? "pass" : "fail";
-      let color = per >= 80 ? "rgb(84, 156, 48)" : "rgb(247, 181, 0)";
+      let status = per >= 80 ? "pass" : "fail";
+      let color = "red"
+      if(per >= 100) {
+        color = "green"
+      } else if(per >= 50) {
+        color = "yellow"
+      } else {
+        color = "red"
+      }
       let getQuestionsQuery =
         "UPDATE exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ?,color = ? WHERE enrolled_course_id = ?;";
       db.query(
