@@ -574,6 +574,7 @@ export const bundleController = {
   },
   validateExamResult: (req,res) => {
     try {
+      console.log(req.body);
       validateValidateExamReqData(req.body).then(async (result) => {
         let answers = JSON.parse(result.answer);
         let questions = await getQuestionsById(result.question_id);
