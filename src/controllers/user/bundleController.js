@@ -10,6 +10,7 @@ import {
   getAllBBundle,
   getBundleDataFromDb,
   getCourseBundleById,
+  getOneCourseFromBundleCourse,
   setNewBundleToEnroll,
   startANewBundle,
   startBundleCourse,
@@ -375,7 +376,7 @@ export const bundleController = {
   getCourse:(req,res) => {
     try {
       validateGetCourseReqData(req.body).then(result => {
-        getOneCourseFromBundleCourse
+        getOneCourseFromBundleCourse(result)
       }).catch(err => {
         res.status(406).json({
           success: false,
