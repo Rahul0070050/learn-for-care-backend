@@ -217,7 +217,7 @@ export function mySqlConnect(done) {
       const bundleExamAttemptsTable = `
         CREATE TABLE IF NOT EXISTS bundle_exam_attempts (
           id INT AUTO_INCREMENT PRIMARY KEY,
-          bundle_id INT NOT NULL,
+          enrolled_bundle_id INT NOT NULL,
           user_id TEXT NOT NULL,
           course_id INT DEFAULT NULL,
           attempts INT DEFAULT 0,
@@ -348,7 +348,7 @@ export function mySqlConnect(done) {
     CREATE TABLE IF NOT EXISTS enrolled_bundle (
       id INT AUTO_INCREMENT PRIMARY KEY,
       bundle_name VARCHAR(150) NOT NULL,
-      enrolled_bundle_id INT UNIQUE,
+      bundle_id INT UNIQUE,
       user_id INT NOT NULL,
       course_count INT NOT NULL,
       validity DATETIME NOT NULL,
