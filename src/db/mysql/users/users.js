@@ -127,8 +127,8 @@ export function getUserById(id) {
           let managersCount = await getManagersCountById(id);
           let individualsCount = await getIndividualsCountById(id);
           console.log(managersCount);
-          result["managers-count"] = managersCount[0]['COUNT(*)']
-          result["individuals-count"] = individualsCount[0]['COUNT(*)']
+          result[0]["managers-count"] = managersCount[0]['COUNT(*)']
+          result[0]["individuals-count"] = individualsCount[0]['COUNT(*)']
           return resolve(result);
         }
       });
