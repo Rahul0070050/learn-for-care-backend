@@ -54,6 +54,7 @@ export function startANewBundle(data) {
         if (err) {
           return reject(err?.message);
         } else {
+          console.log(course);
           return resolve({
             id: course[0].course_id,
             validity: course[0].validity,
