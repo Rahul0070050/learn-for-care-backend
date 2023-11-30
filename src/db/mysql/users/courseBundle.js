@@ -41,7 +41,7 @@ export function startANewBundle(data) {
     if (from == "assigned") {
       decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
       course = await getAssignedCourseById(bundle_id);
-    } else if ("purchased") {
+    } else if (from == "purchased") {
       course = await getPurchasedCourseById(bundle_id);
       decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
     } else {
@@ -54,7 +54,6 @@ export function startANewBundle(data) {
         if (err) {
           return reject(err?.message);
         } else {
-          console.log(course);
           return resolve({
             id: course[0].course_id,
             validity: course[0].validity,
