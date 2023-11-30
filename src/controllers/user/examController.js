@@ -100,7 +100,7 @@ export const examController = {
           result.enrolled_course_id
         )
           .then(async () => {
-            if (per => 80) {
+            if (per >= 80) {
               let filePath = uuid() + ".pdf";
               await convertHtmlToPdf(filePath);
               let url = await uploadPdfToS3(filePath);
