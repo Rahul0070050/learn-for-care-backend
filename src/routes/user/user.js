@@ -51,5 +51,4 @@ route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.g
 route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userController.getAllAssignedCourseProgress);
 route.post("/assign-course-or-bundle", validateCompanyOrManagerUser, userController.assignCourseOrBundle);
 
-
 export default route;

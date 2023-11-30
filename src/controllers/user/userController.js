@@ -68,11 +68,11 @@ export const userController = {
         })
         .catch((err) => {
           console.log(err);
-          res.status(500).json({
+          res.status(406).json({
             success: false,
             errors: [
               {
-                code: 500,
+                code: 406,
                 message: "some error occurred please try again later",
                 error: err,
               },

@@ -79,15 +79,55 @@ export function getUserByEmail(info) {
   });
 }
 
-export function getUserById(id) {
+export function getIndividualsCountById(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT * FROM users WHERE id = ?;`;
-      db.query(getQuery, [id], (err, result) => {
+      let getQuery = `SELECT COUNT(*) FROM users WHERE type_of_account = ? AND created_by = ?;`;
+      db.query(getQuery, ["individual",id], (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
           delete result[0]?.password;
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getManagersCountById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FROM users WHERE type_of_account = ? AND created_by = ?;`;
+      db.query(getQuery, ["manager",id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          delete result[0]?.password;
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getUserById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT * FROM users WHERE id = ?;`;
+      db.query(getQuery, [id], async (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          delete result[0]?.password;
+          let managersCount = await getManagersCountById(id);
+          let individualsCount = await getIndividualsCountById(id);
+          result["managers-count"] = managersCount[0]['COUNT(*)']
+          result["individuals-count"] = individualsCount[0]['COUNT(*)']
           return resolve(result);
         }
       });
@@ -601,7 +641,7 @@ export function getAllIndividualUnderCompanyFromDb(id) {
       )
         .then(async (result) => {
           let individualsOfAdmin = await getAllManagerIndividualFromDb(id);
-          resolve([...result,individualsOfAdmin]);
+          resolve([...result, individualsOfAdmin]);
         })
         .catch((err) => {
           reject(err);
