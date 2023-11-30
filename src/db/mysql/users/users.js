@@ -126,6 +126,7 @@ export function getUserById(id) {
           delete result[0]?.password;
           let managersCount = await getManagersCountById(id);
           let individualsCount = await getIndividualsCountById(id);
+          console.log(managersCount);
           result["managers-count"] = managersCount[0]['COUNT(*)']
           result["individuals-count"] = individualsCount[0]['COUNT(*)']
           return resolve(result);
