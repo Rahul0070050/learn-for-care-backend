@@ -74,7 +74,7 @@ export function getAssignedCourseByIdFromManagerAssigned(id) {
   return new Promise((resolve, reject) => {
     try {
       let getCourseByIdQuery = `
-      SELECT course_assigned_manager FROM course_assigned_manager WHERE course_assigned_manager.id = ?;`;
+      SELECT * FROM course_assigned_manager WHERE id = ?;`;
       db.query(getCourseByIdQuery, [id], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
