@@ -360,7 +360,21 @@ export const bundleController = {
     try {
       validateSTartBundleCourseReqData(req.body)
         .then((result) => {
-          startBundleCourse(result);
+          startBundleCourse(result).then(result => {
+            
+          }).catch(err => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "value not acceptable",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
+          })
         })
         .catch((err) => {
           res.status(406).json({

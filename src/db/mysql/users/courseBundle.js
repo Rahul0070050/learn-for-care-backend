@@ -41,9 +41,12 @@ export function startANewBundle(data) {
     if (from == "assigned") {
       decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
       course = await getAssignedCourseById(bundle_id);
-    } else {
+    } else if ("purchased") {
       course = await getPurchasedCourseById(bundle_id);
       decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
+    } else {
+      course = await getPurchasedCourseById(bundle_id);
+      decrementTheCourseCountQuery = `UPDATE course_assigned_manager SET count = count - 1 WHERE id = ?`;
     }
 
     try {

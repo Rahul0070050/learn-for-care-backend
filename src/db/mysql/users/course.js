@@ -2,6 +2,7 @@ import { db } from "../../../conf/mysql.js";
 import {
   getAssignedCourseById,
   getAssignedCourseByIdFromCourse,
+  getAssignedCourseByIdFromManagerAssigned,
 } from "./assignedCourse.js";
 
 export function getCourseByIdFromDb(id) {
@@ -190,6 +191,9 @@ export function decrementTheCourseCount(data) {
         if (data.from == "assigned") {
           decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
           course = await getAssignedCourseByIdFromCourse(data.course_id);
+        } else if (data.form == "manager") {
+          decrementTheCourseCountQuery = `UPDATE course_assigned_manager SET count = count - 1 WHERE id = ?`;
+          course = await getAssignedCourseByIdFromManagerAssigned(data.course_id);
         } else {
           course = await getPurchasedCourseByIdFromCourse(data.course_id);
           decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
