@@ -191,11 +191,14 @@ export function decrementTheCourseCount(data) {
       try {
         if (data.from == "assigned") {
           decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?`;
+          console.log('form assign');
           course = await getAssignedCourseByIdFromCourse(data.course_id);
         } else if (data.form == "manager") {
+          console.log('form manager');
           decrementTheCourseCountQuery = `UPDATE course_assigned_manager SET count = count - 1 WHERE id = ?`;
           course = await getAssignedCourseByIdFromManagerAssigned(data.course_id);
         } else {
+          console.log('form else');
           course = await getPurchasedCourseByIdFromCourse(data.course_id);
           decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
         
