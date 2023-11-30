@@ -47,21 +47,25 @@ export const userController = {
   getUserData: (req, res) => {
     try {
       let user = getUser(req);
-      console.log(user);
       getUserById(user.id)
         .then(async (result) => {
-          let url = await downloadFromS3("", result[0]?.profile_image || "");
-          result[0].profile_image = url?.url;
-          res.status(200).json({
-            success: true,
-            data: {
-              code: 200,
-              message: "got user",
-              response: result,
-            },
-          });
+          try {
+            let url = await downloadFromS3("", result[0]?.profile_image || "");
+            result[0].profile_image = url?.url;
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "got user",
+                response: result,
+              },
+            });
+          } catch (error) {
+            console.log(error);
+          }
         })
         .catch((err) => {
+          console.log(err);
           res.status(500).json({
             success: false,
             errors: [
@@ -75,6 +79,7 @@ export const userController = {
           });
         });
     } catch (error) {
+      console.log(err);
       res.status(500).json({
         success: false,
         errors: [

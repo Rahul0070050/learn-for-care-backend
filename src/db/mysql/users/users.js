@@ -82,7 +82,6 @@ export function getUserByEmail(info) {
 export function getUserById(id) {
   return new Promise((resolve, reject) => {
     try {
-      console.log(id);
       let getQuery = `SELECT * FROM users WHERE id = ?;`;
       db.query(getQuery, [id], (err, result) => {
         if (err) {
