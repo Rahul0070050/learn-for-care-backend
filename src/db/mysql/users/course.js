@@ -185,6 +185,7 @@ export function getPurchasedCourseByIdFromCourse(id) {
 export function decrementTheCourseCount(data) {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(data);
       let decrementTheCourseCountQuery = "";
       let course = null;
       try {

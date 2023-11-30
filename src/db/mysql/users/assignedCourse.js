@@ -73,7 +73,6 @@ export function getManagerAssignedCourseById(id) {
 export function getAssignedCourseByIdFromManagerAssigned(id) {
   return new Promise((resolve, reject) => {
     try {
-      console.log('id ',id);
       let getCourseByIdQuery = `
       SELECT course_assigned_manager.*,
       FROM course_assigned_manager 
