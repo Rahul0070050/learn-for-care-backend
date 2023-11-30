@@ -45,33 +45,47 @@ import { getUser } from "../../utils/auth.js";
 
 export const userController = {
   getUserData: (req, res) => {
-    let user = getUser(req);
-    getUserById(user.id)
-      .then(async (result) => {
-        let url = await downloadFromS3("", result[0]?.profile_image || "");
-        result[0].profile_image = url?.url;
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "got user",
-            response: result,
-          },
-        });
-      })
-      .catch((err) => {
-        res.status(500).json({
-          success: false,
-          errors: [
-            {
-              code: 500,
-              message: "some error occurred please try again later",
-              error: err,
+    try {
+      let user = getUser(req);
+      getUserById(user.id)
+        .then(async (result) => {
+          let url = await downloadFromS3("", result[0]?.profile_image || "");
+          result[0].profile_image = url?.url;
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got user",
+              response: result,
             },
-          ],
-          errorType: "server",
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "some error occurred please try again later",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
       });
+    }
   },
   updateUserData: (req, res) => {
     try {
@@ -654,7 +668,7 @@ export const userController = {
             realCourse_id,
             realCourse_type,
             realValidity,
-            from: "manager-assigned"
+            from: "manager-assigned",
           })
             .then((result) => {
               res.status(200).json({
@@ -986,7 +1000,7 @@ export const userController = {
       });
     }
   },
-  getAssignedCourseForManager:(req,res) => {
+  getAssignedCourseForManager: (req, res) => {
     try {
       let user = getUser(req);
       console.log(user.id);
@@ -1063,7 +1077,7 @@ export const userController = {
       });
     }
   },
-  getAllIndividualUnderCompany:(req,res) => {
+  getAllIndividualUnderCompany: (req, res) => {
     try {
       let user = getUser(req);
       getAllIndividualUnderCompanyFromDb(user.id)
