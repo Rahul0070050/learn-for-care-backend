@@ -47,6 +47,7 @@ export const userController = {
   getUserData: (req, res) => {
     try {
       let user = getUser(req);
+      console.log(user);
       getUserById(user.id)
         .then(async (result) => {
           let url = await downloadFromS3("", result[0]?.profile_image || "");
