@@ -113,6 +113,11 @@ export function removeFromS3(key) {
 export function downloadFromS3(id, key) {
   return new Promise(async (resolve, reject) => {
     try {
+
+      if(!key) {
+        resolve({ id, url: "" });
+      }
+
       let signedUrl = await s3.getSignedUrlPromise("getObject", {
         Bucket: process.env.AWS_S3_NAME || "",
         Key: key,
@@ -121,7 +126,6 @@ export function downloadFromS3(id, key) {
 
       resolve({ id, url: signedUrl });
     } catch (error) {
-      console.log(error);
       if (
         error.message ===
         `Expected uri parameter to have length >= 1, but found "" for params.Key`
