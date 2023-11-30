@@ -197,7 +197,8 @@ export function decrementTheCourseCount(data) {
         } else {
           course = await getPurchasedCourseByIdFromCourse(data.course_id);
           decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
-        }
+        
+        console.log(course);}
       } catch (error) {
         console.log(error);
       }
