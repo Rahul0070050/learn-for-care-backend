@@ -50,9 +50,8 @@ export const userController = {
       getUserById(user.id)
         .then(async (result) => {
           try {
-            if(result[0]?.profile_image) {
-              let url = await downloadFromS3("", result[0]?.profile_image || "");
-            result[0]?.profile_image = url?.url;
+            let url = await downloadFromS3("", result[0]?.profile_image || "");
+            result[0].profile_image = url?.url;
             res.status(200).json({
               success: true,
               data: {
@@ -60,18 +59,7 @@ export const userController = {
                 message: "got user",
                 response: result,
               },
-            });  
-          } else {
-
-              res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: "got user",
-                response: result,
-              },
             });
-          }
           } catch (error) {
             console.log(error);
           }
