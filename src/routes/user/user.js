@@ -49,6 +49,7 @@ route.get("/get-all-managers", validateCompanyUserUser, userController.getAllMan
 // route.post("/assign-course-to-sub-user", validateCompanyUserUser, userController.assignCourseToSubUser);
 route.get("/get-all-blocked-sub-user", validateCompanyUserUser, userController.getBlocked);
 route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userController.getAllAssignedCourseProgress);
+route.post("/assign-course-or-bundle", validateCompanyOrManagerUser, userController.assignCourseOrBundle);
 
 
 export default route;

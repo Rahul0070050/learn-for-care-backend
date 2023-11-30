@@ -26,6 +26,7 @@ import {
   unBlockUserBySubUserId,
   updateUserData,
   getAllManagerIndividualFromDb,
+  assignCourseOrBundleToUser,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
@@ -38,6 +39,7 @@ import {
   checkCreateSubUSerReqBody,
   checkSetUserProfileImageReqData,
   checkUnBlockUserRewData,
+  validateAssignCourseOrBundleReqData,
   validateUpdateUserInfo,
 } from "../../helpers/user/validateUserReqData.js";
 import { hashPassword } from "../../helpers/validatePasswords.js";
@@ -50,8 +52,6 @@ export const userController = {
       getUserById(user.id)
         .then(async (result) => {
           try {
-            console.log(result);
-            console.log(result[0].profile_image);
             let url = await downloadFromS3("", result[0]?.profile_image || "");
             result[0].profile_image = url?.url;
             res.status(200).json({
@@ -852,6 +852,49 @@ export const userController = {
             },
           });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  assignCourseOrBundle:(req,res) => {
+    try {
+      validateAssignCourseOrBundleReqData(req.body).then((result) => {
+        let user = getUser(req);
+        assignCourseOrBundleToUser({ ...result, adminId: user.id })
+          .then(() => {
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "successfully assigned",
+                response: "",
+              },
+            });
+          })
+          .catch((err) => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "values not acceptable",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
+          });
+      });
     } catch (error) {
       res.status(500).json({
         success: false,

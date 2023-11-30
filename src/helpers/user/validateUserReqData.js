@@ -145,6 +145,29 @@ export function checkAssignCourseToManagerIndividualReqData(body) {
   });
 }
 
+export function validateAssignCourseOrBundleReqData(data) {
+  return new Promise((resolve, reject) => {
+    let dataTemplate = object({
+      type: string().required("please provide type of course"),
+      count: number().required("please provide count"),
+      user_id: number().required("please provide user id"),
+      bundle_id: number().required("please provide bundle id"),
+    });
+
+    try {
+      dataTemplate.validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function checkCreateManagerReqBody(body) {
   return new Promise((resolve, reject) => {
     try {

@@ -1,6 +1,5 @@
 import { db } from "../../../conf/mysql.js";
 
-// 1111 //
 export function assignBundleToUser(data) {
   return new Promise((resolve, reject) => {
     try {
