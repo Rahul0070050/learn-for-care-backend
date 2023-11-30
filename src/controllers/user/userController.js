@@ -50,6 +50,8 @@ export const userController = {
       getUserById(user.id)
         .then(async (result) => {
           try {
+            console.log(result);
+            console.log(result[0].profile_image);
             let url = await downloadFromS3("", result[0]?.profile_image || "");
             result[0].profile_image = url?.url;
             res.status(200).json({
