@@ -1,6 +1,6 @@
 import { db } from "../../../conf/mysql.js";
 import { getAssignedCourseById } from "./assignedCourse.js";
-import { getPurchasedCourseById } from "./course.js";
+import { getManagerAssignedBundleById, getPurchasedCourseById } from "./course.js";
 
 export function getCourseBundleById(id) {
   return new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ export function startANewBundle(data) {
       course = await getPurchasedCourseById(bundle_id);
       decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?`;
     } else {
-      course = await getPurchasedCourseById(bundle_id);
+      course = await getManagerAssignedBundleById(bundle_id);
       decrementTheCourseCountQuery = `UPDATE course_assigned_manager SET count = count - 1 WHERE id = ?`;
     }
 

@@ -159,6 +159,29 @@ export function getPurchasedCourseById(id) {
   });
 }
 
+export function getManagerAssignedBundleById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getPurchasedCourseByIdDataQuery = `
+        SELECT course_assigned_manager.*, course_bundle.name AS name, course_bundle.courses AS courses, course_assigned_manager.validity AS validity
+        FROM course_assigned_manager 
+        INNER JOIN course_bundle ON course_bundle.id = course_assigned_manager.course_id
+        WHERE course_assigned_manager.id = ?;
+      `;
+
+      db.query(getPurchasedCourseByIdDataQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getPurchasedCourseByIdFromCourse(id) {
   return new Promise((resolve, reject) => {
     try {
