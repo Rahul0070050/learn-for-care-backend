@@ -534,7 +534,7 @@ export function getAssignedCourseForManagerByManagerId(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `
-      SELECT course_assigned_manager.*, count AS course_count, category, course.name AS name, 0 AS from_purchased
+      SELECT course_assigned_manager.*, count AS course_count, category, course.name AS name, 0 AS from_purchased, course_assigned_manager.id AS id
       FROM course_assigned_manager
       INNER JOIN course ON course.id = course_assigned_manager.course_id
       WHERE manager_id = ?;`;
