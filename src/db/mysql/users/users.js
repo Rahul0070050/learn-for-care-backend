@@ -747,7 +747,6 @@ function getCountAssignedToManager(id, type) {
         if (err) {
           return reject(err.message);
         } else {
-          delete result[0]?.password;
           return resolve(result);
         }
       });
