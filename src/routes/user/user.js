@@ -52,7 +52,7 @@ route.get("/get-all-assigned-course-progress", validateCompanyUserUser, userCont
 route.post("/assign-course-or-bundle", validateCompanyOrManagerUser, userController.assignCourseOrBundle);
 
 // individual reports
-route.get("/get-all-transactions", validateCompanyUserUser, userController.getAllTransactions);
+route.get("/get-all-transactions", validateUser, userController.getAllTransactions);
 
 // company reports
 
