@@ -17,6 +17,7 @@ import {
   setNewBundleToEnroll,
   startANewBundle,
   startBundleCourse,
+  updateBundleProgress,
 } from "../../db/mysql/users/courseBundle.js";
 import { getCourseByIdFromDb } from "../../db/mysql/users/course.js";
 import { getUser } from "../../utils/auth.js";
@@ -361,7 +362,7 @@ export const bundleController = {
       validateSTartBundleCourseReqData(req.body)
         .then((result) => {
           startBundleCourse(result).then(result => {
-            
+
           }).catch(err => {
             res.status(406).json({
               success: false,
@@ -641,7 +642,7 @@ export const bundleController = {
                   let filePath = uuid() + ".pdf";
                   await convertHtmlToPdf(filePath);
                   let url = await uploadPdfToS3(filePath);
-                  // updateBundleProgress(result.enrolled_course_id,questions[0].course_id)
+                  updateBundleProgress(result.enrolled_course_id,questions[0].course_id,per)
                   insertNewCertificate({
                     ...result,
                     user_id: user.id,

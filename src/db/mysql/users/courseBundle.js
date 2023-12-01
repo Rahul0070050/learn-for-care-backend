@@ -1,6 +1,9 @@
 import { db } from "../../../conf/mysql.js";
 import { getAssignedCourseById } from "./assignedCourse.js";
-import { getManagerAssignedBundleById, getPurchasedCourseById } from "./course.js";
+import {
+  getManagerAssignedBundleById,
+  getPurchasedCourseById,
+} from "./course.js";
 
 export function getCourseBundleById(id) {
   return new Promise((resolve, reject) => {
@@ -160,16 +163,6 @@ export function startBundleCourse(data) {
         if (err) {
           return reject(err?.message);
         } else {
-          // let unFinished = JSON.parse(result[0].unfinished_course).filter(id => id != course_id);
-          // console.log('finished ', result[0].finished_course);
-          // if(result[0].finished_course) {
-          // let unFinished = JSON.parse(result[0].finished_course)
-          // unFinished
-          // } else {
-          // let unFinished = JSON.parse(result[0].finished_course)
-          // unFinished
-          // }
-          // console.log(course);
           resolve(result);
         }
       });
@@ -221,12 +214,12 @@ export function getCourseByCourseIdFromDb(id) {
 
 export function getExamByCourseId(data) {
   return new Promise((resolve, reject) => {
-    const {course_id, bundle_id,user_id} = data
+    const { course_id, bundle_id, user_id } = data;
     let insertQuery =
-        "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id) VALUES (?,?,?)";
-      db.query(insertQuery, [bundle_id, course_id, user_id ], (err, result) => {
-        if (err) throw err;
-      });
+      "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id) VALUES (?,?,?)";
+    db.query(insertQuery, [bundle_id, course_id, user_id], (err, result) => {
+      if (err) throw err;
+    });
     let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 1;";
     db.query(getQuestionsQuery, [course_id], (err, result) => {
       if (err) return reject(err?.message);
@@ -235,12 +228,42 @@ export function getExamByCourseId(data) {
   });
 }
 
-// export function updateBundleProgress(id, course_id) {
-//   return new Promise((resolve, reject) => {
-//     let getQuestionsQuery = "SELECT * FROM enrolled_bundle WHERE course_id = ? LIMIT 1;";
-//     db.query(getQuestionsQuery, [course_id], (err, result) => {
-//       if (err) return reject(err?.message);
-//       else return resolve(result);
-//     });
-//   });
-// }
+export function updateBundleProgress(id, course_id, per) {
+  return new Promise((resolve, reject) => {
+    let getQuestionsQuery = "SELECT * FROM enrolled_bundle WHERE bundle_id = ?";
+    db.query(getQuestionsQuery, [id], (err, result) => {
+      if (err) return reject(err?.message);
+      else {
+        try {
+          let color = "";
+          if (per >= 50) {
+            color = "yellow";
+          } else if (per >= 80) {
+            color = "green";
+          }
+          let finished = JSON.parse(result[0].finished_course);
+          let unFinished = JSON.parse(result[0].unfinished_course).filter(
+            (id) => id != course_id
+          );
+          if (result[0].finished_course) {
+            finished.push(course_id);
+          } else {
+            finished = [course_id];
+          }
+
+          let updatedQuery =
+            "UPDATE enrolled_bundle SET progress = ?, color = ?, finished_course = ?, unfinished_course = ? WHERE bundle_id = ?";
+          db.query(
+            updatedQuery,
+            [id, color, JSON.stringify(finished), JSON.stringify(unFinished)],
+            (err, result) => {}
+          );
+          console.log(course);
+          // resolve(result);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    });
+  });
+}
