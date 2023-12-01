@@ -665,43 +665,47 @@ export const userController = {
     try {
       checkAssignCourseToManagerIndividualReqData(req.body)
         .then(async (result) => {
-          result.receiverId = result.userId;
-          delete result.userId;
+          try {
+            result.receiverId = result.userId;
+            delete result.userId;
 
-          let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
+            let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
 
-          let realCourse_id = course[0].course_id;
-          let realCourse_type = course[0].course_type;
-          let realValidity = course[0].validity;
-          let userId = getUser(req).id;
-          assignCourseToMAnagerIndividualFromAssignedDb({
-            ...result,
-            userId,
-            realCourse_id,
-            realCourse_type,
-            realValidity,
-            from: "manager-assigned",
-          })
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "assigned successfully",
-                  response: "",
-                },
-              });
+            let realCourse_id = course[0].course_id;
+            let realCourse_type = course[0].course_type;
+            let realValidity = course[0].validity;
+            let userId = getUser(req).id;
+            assignCourseToMAnagerIndividualFromAssignedDb({
+              ...result,
+              userId,
+              realCourse_id,
+              realCourse_type,
+              realValidity,
+              from: "manager-assigned",
             })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "value not acceptable",
-                  response: err,
-                },
+              .then((result) => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "assigned successfully",
+                    response: "",
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value not acceptable",
+                    response: err,
+                  },
+                });
               });
-            });
+          } catch (error) {
+            console.log(error);
+          }
         })
         .catch((err) => {
           res.status(406).json({
