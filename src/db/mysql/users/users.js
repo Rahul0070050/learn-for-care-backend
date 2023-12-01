@@ -803,7 +803,7 @@ export function getIndividualsById(id) {
 export function getCountAssignedToIndividual(id,type) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT COUNT(*) FROM assigned_course WHERE course_type = ? user_id = ?;`;
+      let getQuery = `SELECT COUNT(*) FROM assigned_course WHERE course_type = ? AND user_id = ?;`;
       db.query(getQuery, [type,id], (err, result) => {
         if (err) {
           return reject(err.message);
