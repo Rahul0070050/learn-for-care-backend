@@ -253,10 +253,10 @@ export function updateBundleProgress(id, course_id, per) {
           }
 
           let updatedQuery =
-            "UPDATE enrolled_bundle SET progress = ?, color = ?, finished_course = ?, unfinished_course = ? WHERE bundle_id = ?";
+            "UPDATE enrolled_bundle SET progress = ?, color = ?, finished_course = ?, unfinished_course = ? WHERE id = ?;";
           db.query(
             updatedQuery,
-            [id, color, JSON.stringify(finished), JSON.stringify(unFinished)],
+            [color, JSON.stringify(finished), JSON.stringify(unFinished),id],
             (err, result) => {
               if(err) console.log(err);
               else resolve();
