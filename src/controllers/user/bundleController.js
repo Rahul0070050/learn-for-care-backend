@@ -9,6 +9,7 @@ import {
 import { downloadFromS3, uploadFileToS3, uploadPdfToS3 } from "../../AWS/S3.js";
 import {
   getAllBBundle,
+  getAllOnGoingBundles,
   getBundleDataFromDb,
   getCourseBundleById,
   getCourseByCourseIdFromDb,
@@ -362,7 +363,7 @@ export const bundleController = {
       validateSTartBundleCourseReqData(req.body)
         .then((result) => {
           startBundleCourse(result).then(result => {
-            
+
           }).catch(err => {
             res.status(406).json({
               success: false,
@@ -714,6 +715,48 @@ export const bundleController = {
         } catch (error) {
           console.log(error);
         }
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getOnGoingBundles:(req,res) => {
+    try {
+      let user = getUser(req)
+      getAllOnGoingBundles(user.id)
+      .then((result) => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: `got all on-going bundles`,
+            response: result,
+          },
+        });
+      })
+      .catch((err) => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "value not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
       });
     } catch (error) {
       res.status(500).json({
