@@ -669,3 +669,26 @@ export function saveUserProfileImage(id, file) {
     }
   });
 }
+
+export function getAllTransactionsFromDb(userId) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT 
+      course.name AS name purchased_course.amount AS amount, purchased_course.date AS date, purchased_course.fake_course_count AS count, purchased_course.type AS type 
+      FROM 
+      purchased_course 
+      INNER JOIN course on course_id = purchased_course.course_id
+      WHERE user_id = ?`;
+      db.query(getQuery, [userId], (err, result) => {
+        if (err) {
+          reject(err.message);
+        } else {
+          resolve();
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

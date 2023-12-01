@@ -13,7 +13,7 @@ route.get("/get-bought-course",validateUser, courseController.getBoughtCourses);
 route.get("/get-all-bought-course",validateUser, courseController.getAllBoughtCourses);
 route.get("/get-all-assigned-course",validateUser, courseController.getAllAssignedCourses);
 route.post("/start-course",validateUser, courseController.startCourse);
-route.get("/get-manager-matrix-course",validateUser, courseController.getManagerMatrix);
+route.get("/get-manager-matrix-course", courseController.getManagerMatrix);
 route.get("/get-manager-matrix-bundle",validateUser, courseController.getManagerMatrix);
 
 export default route;
