@@ -234,14 +234,12 @@ export function updateBundleProgress(id, course_id, per) {
       if (err) return reject(err?.message);
       else {
         try {
-          let color = "";
+          let color = "red";
           if (per >= 50) {
             color = "yellow";
           } else if (per >= 80) {
             color = "green";
           }
-          console.log(id);
-          console.log(result);
           let finished = JSON.parse(result[0].finished_course || '[]');
           let unFinished = JSON.parse(result[0].unfinished_course).filter(
             (id) => id != course_id
@@ -256,7 +254,7 @@ export function updateBundleProgress(id, course_id, per) {
             "UPDATE enrolled_bundle SET progress = ?, color = ?, finished_course = ?, unfinished_course = ? WHERE id = ?;";
           db.query(
             updatedQuery,
-            [color, JSON.stringify(finished), JSON.stringify(unFinished),id],
+            [per,color, JSON.stringify(finished), JSON.stringify(unFinished),id],
             (err, result) => {
               if(err) console.log(err);
               else resolve();
