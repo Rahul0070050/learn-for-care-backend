@@ -730,7 +730,6 @@ function getManagersByCompanyId(id) {
         if (err) {
           return reject(err.message);
         } else {
-          delete result[0]?.password;
           return resolve(result);
         }
       });
@@ -766,6 +765,7 @@ export function getAllManagerReportsFromDb(id) {
         let course = await getCountAssignedToManager(item.id, "course");
         let bundle = await getCountAssignedToManager(item.id, "bundle");
         let individuals = await getIndividualsCountById(item.id);
+        console.log(course,bundle,individuals);
         item['course_count'] = course[0]['COUNT(*)']
         item['bundle_count'] = bundle[0]['COUNT(*)']
         item['individuals_count'] = individuals[0]['COUNT(*)']
