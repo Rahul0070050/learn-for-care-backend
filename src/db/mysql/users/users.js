@@ -812,6 +812,7 @@ export function getAllIndividualReportsFromDb(id) {
           return individuals;
         })
       );
+      ind = ind.flat(1)
       console.log(ind);
     } catch (error) {
       reject(error?.message);
