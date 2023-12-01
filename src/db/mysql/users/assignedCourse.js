@@ -19,6 +19,22 @@ export function getAssignedCourseById(id) {
   });
 }
 
+export function getAssignedCourseById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      //  from course
+      let getCourseByIdQuery = `
+        SELECT course_assigned_manager FROM course_assigned_manager WHERE course_assigned_manager.id = ?;`;
+      db.query(getCourseByIdQuery, [id], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getAssignedCourseByIdFromCourse(id) {
   return new Promise((resolve, reject) => {
     try {
