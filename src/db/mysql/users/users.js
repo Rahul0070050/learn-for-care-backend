@@ -741,7 +741,7 @@ function getManagersByCompanyId(id) {
 function getCountAssignedToManager(id, type) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT COUNT(*) FROM course_assigned_manager WHERE manager_id = ?, course_type = ?;`;
+      let getQuery = `SELECT COUNT(*) FROM course_assigned_manager WHERE manager_id = ? AND course_type = ?;`;
       db.query(getQuery, [id, type], (err, result) => {
         if (err) {
           return reject(err.message);
