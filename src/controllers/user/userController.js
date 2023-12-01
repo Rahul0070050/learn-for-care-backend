@@ -1350,8 +1350,7 @@ export const userController = {
   getAllTransactions:(req,res) => {
     try {
       let userId = getUser(req).id
-      getAllTransactionsFromDb(userId)
-      .then((result) => {
+      getAllTransactionsFromDb(userId).then((result) => {
         res.status(200).json({
           success: true,
           data: {

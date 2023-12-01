@@ -684,7 +684,7 @@ export function getAllTransactionsFromDb(userId) {
         if (err) {
           reject(err.message);
         } else {
-          resolve();
+          resolve(result);
         }
       });
     } catch (error) {
