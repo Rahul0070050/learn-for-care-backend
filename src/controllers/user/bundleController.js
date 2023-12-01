@@ -362,7 +362,7 @@ export const bundleController = {
       validateSTartBundleCourseReqData(req.body)
         .then((result) => {
           startBundleCourse(result).then(result => {
-
+            
           }).catch(err => {
             res.status(406).json({
               success: false,
