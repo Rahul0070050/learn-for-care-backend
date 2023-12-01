@@ -605,33 +605,37 @@ export const userController = {
           let realCourse_type = course[0].course_type;
           let realValidity = course[0].validity;
           let userId = getUser(req).id;
-          assignCourseToMAnagerIndividualFromAssignedDb({
-            ...result,
-            userId,
-            realCourse_id,
-            realCourse_type,
-            realValidity,
-          })
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "assigned successfully",
-                  response: "",
-                },
-              });
+          try {
+            assignCourseToMAnagerIndividualFromAssignedDb({
+              ...result,
+              userId,
+              realCourse_id,
+              realCourse_type,
+              realValidity,
             })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "value not acceptable",
-                  response: err,
-                },
+              .then((result) => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "assigned successfully",
+                    response: "",
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value not acceptable",
+                    response: err,
+                  },
+                });
               });
-            });
+          } catch (error) {
+            console.log(error);
+          }
         })
         .catch((err) => {
           res.status(406).json({
@@ -866,7 +870,7 @@ export const userController = {
       });
     }
   },
-  assignCourseOrBundle:(req,res) => {
+  assignCourseOrBundle: (req, res) => {
     try {
       validateAssignCourseOrBundleReqData(req.body).then((result) => {
         let user = getUser(req);

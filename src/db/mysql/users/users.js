@@ -456,7 +456,7 @@ export function assignCourseToMAnagerIndividualFromAssignedDb(data) {
       } = data;
 
       let decreaseQuery = null;
-      if (data.from == "manager-assigned") {
+      if (data?.from == "manager-assigned") {
         decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
       } else {
         decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
