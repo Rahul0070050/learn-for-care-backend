@@ -98,10 +98,6 @@ export function setNewBundleToEnroll(data) {
         ],
         (err, result) => {
           if (err) {
-            if(err.message == `Error: ER_DUP_ENTRY: Duplicate entry '${bundle_id}' for key 'enrolled_bundle.bundle_id'`) {
-              resolve(err?.message)
-            }
-            console.log(err);
             reject(err?.message);
           } else resolve(result);
         }
