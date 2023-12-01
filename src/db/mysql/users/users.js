@@ -692,3 +692,32 @@ export function getAllTransactionsFromDb(userId) {
     }
   });
 }
+
+export function getAllMonthlyTransactionsFromDb(userId) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+            SELECT 
+                YEAR(date) AS year,
+                MONTH(date) AS month,
+                SUM(fake_course_count) AS total_fake_count,
+                SUM(amount) AS total_amount
+            FROM 
+                purchased_course
+            GROUP BY 
+                YEAR(date), MONTH(date)
+            ORDER BY 
+                YEAR(date), MONTH(date);
+            `;
+      db.query(getQuery, [userId], (err, result) => {
+        if (err) {
+          reject(err.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

@@ -53,6 +53,7 @@ route.post("/assign-course-or-bundle", validateCompanyOrManagerUser, userControl
 
 // individual reports
 route.get("/get-all-transactions", validateUser, userController.getAllTransactions);
+route.get("/get-all-transactions-by-month", validateUser, userController.getAllMonthlyTransactions);
 
 // company reports
 

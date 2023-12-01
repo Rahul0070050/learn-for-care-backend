@@ -142,7 +142,7 @@ export function mySqlConnect(done) {
     //   if (err) console.log(err);
     //   else console.log("cart table created");
     // });
-
+    
     // const purchasedCourseTable = `
     //   CREATE TABLE IF NOT EXISTS purchased_course (
     //     id INT AUTO_INCREMENT PRIMARY KEY,
