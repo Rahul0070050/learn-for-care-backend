@@ -229,7 +229,7 @@ export function getExamByCourseId(data) {
 
 export function updateBundleProgress(id, course_id, per) {
   return new Promise((resolve, reject) => {
-    let getQuestionsQuery = "SELECT * FROM enrolled_bundle WHERE bundle_id = ?";
+    let getQuery = "SELECT * FROM enrolled_bundle WHERE id = ?";
     db.query(getQuestionsQuery, [id], (err, result) => {
       if (err) return reject(err?.message);
       else {
