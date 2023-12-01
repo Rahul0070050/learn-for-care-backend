@@ -19,7 +19,7 @@ export function getAssignedCourseById(id) {
   });
 }
 
-export function getAssignedCourseById(id) {
+export function getAssignedCourseForManagerById(id) {
   return new Promise((resolve, reject) => {
     try {
       //  from course

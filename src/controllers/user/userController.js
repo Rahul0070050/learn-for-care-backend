@@ -1,5 +1,5 @@
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
-import { getAssignedCourseById } from "../../db/mysql/users/assignedCourse.js";
+import { getAssignedCourseById, getAssignedCourseForManagerById } from "../../db/mysql/users/assignedCourse.js";
 import {
   getAssignedBundlesFromDbByUserId,
   getAssignedCourseToManagerById,
@@ -669,7 +669,7 @@ export const userController = {
             result.receiverId = result.userId;
             delete result.userId;
 
-            let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
+            let course = await getAssignedCourseForManagerById(result.course_id); // course_id is purchased courses tables id
 
             let realCourse_id = course[0].course_id;
             let realCourse_type = course[0].course_type;
