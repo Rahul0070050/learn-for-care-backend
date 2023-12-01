@@ -348,8 +348,8 @@ export function mySqlConnect(done) {
       course_count INT NOT NULL,
       validity DATETIME NOT NULL,
       all_courses TEXT NOT NULL,
-      unfinished_course TEXT DEFAULT "[]",
-      finished_course TEXT DEFAULT "[]",
+      unfinished_course TEXT DEFAULT ('[]'),
+      finished_course TEXT DEFAULT ('[]'),
       progress INT DEFAULT 0,
       color VARCHAR(15) DEFAULT 'orange'
     );
