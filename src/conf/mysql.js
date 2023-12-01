@@ -343,7 +343,7 @@ export function mySqlConnect(done) {
     CREATE TABLE IF NOT EXISTS enrolled_bundle (
       id INT AUTO_INCREMENT PRIMARY KEY,
       bundle_name VARCHAR(150) NOT NULL,
-      bundle_id INT UNIQUE,
+      bundle_id INT,
       user_id INT NOT NULL,
       course_count INT NOT NULL,
       validity DATETIME NOT NULL,

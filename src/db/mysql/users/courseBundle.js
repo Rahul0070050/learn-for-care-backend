@@ -98,6 +98,9 @@ export function setNewBundleToEnroll(data) {
         ],
         (err, result) => {
           if (err) {
+            if(err.message == `Error: ER_DUP_ENTRY: Duplicate entry '${bundle_id}' for key 'enrolled_bundle.bundle_id'`) {
+              resolve(err?.message)
+            }
             console.log(err);
             reject(err?.message);
           } else resolve(result);
@@ -135,7 +138,7 @@ export function getBundleDataFromDb(id) {
           return reject(err?.message);
         } else {
           Promise.all(
-            JSON.parse(result[0].all_courses).map(async (id) => {
+            JSON.parse(result[0]?.all_courses || '[]').map(async (id) => {
               return await getCourseByIdFromDb(id);
             })
           )
