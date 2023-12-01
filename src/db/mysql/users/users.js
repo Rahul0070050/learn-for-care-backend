@@ -675,7 +675,7 @@ export function getAllTransactionsFromDb(userId) {
     try {
       let getQuery = `
       SELECT 
-      course.name AS name purchased_course.amount AS amount, purchased_course.date AS date, purchased_course.fake_course_count AS count, purchased_course.type AS type 
+      course.name AS name, purchased_course.amount AS amount, purchased_course.date AS date, purchased_course.fake_course_count AS count, purchased_course.type AS type 
       FROM 
       purchased_course 
       INNER JOIN course on course_id = purchased_course.course_id
