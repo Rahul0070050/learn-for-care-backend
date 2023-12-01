@@ -849,10 +849,11 @@ export function getAllIndividualReportsFromDb(id) {
         ind.map(async (ind) => {
           let course = await getCountAssignedToIndividual(ind.id,"course");
           let bundle = await getCountAssignedToIndividual(ind.id,"bundle");
-          let certificates = await getCertificatesCount(ind.id,"bundle");
+          let certificates = await getCertificatesCount(ind.id);
           ind['course'] = course[0]['COUNT(*)']
           ind['bundle'] = bundle[0]['COUNT(*)']
           ind['certificates'] = certificates[0]['COUNT(*)']
+          return ind
         })
       ).then((result) => {
         resolve(result);
