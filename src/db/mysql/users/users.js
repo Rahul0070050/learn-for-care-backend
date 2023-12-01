@@ -758,30 +758,26 @@ function getCountAssignedToManager(id, type) {
 export function getAllManagerReportsFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      try {
-        let managers = await getManagersByCompanyId(id);
-        console.log(managers);
-        Promise.all(
-          managers.map(async (item) => {
-            let course = await getCountAssignedToManager(item.id, "course");
-            let bundle = await getCountAssignedToManager(item.id, "bundle");
-            let individuals = await getIndividualsCountById(item.id);
-            console.log(course, bundle, individuals);
-            item["course_count"] = course[0]["COUNT(*)"];
-            item["bundle_count"] = bundle[0]["COUNT(*)"];
-            item["individuals_count"] = individuals[0]["COUNT(*)"];
-            return item;
-          })
-        )
-          .then((result) => {
-            resolve(result);
-          })
-          .catch((err) => {
-            reject(err?.message);
-          });
-      } catch (error) {
-        console.log(error);
-      }
+      let managers = await getManagersByCompanyId(id);
+      console.log(managers);
+      Promise.all(
+        managers.map(async (item) => {
+          let course = await getCountAssignedToManager(item.id, "course");
+          let bundle = await getCountAssignedToManager(item.id, "bundle");
+          let individuals = await getIndividualsCountById(item.id);
+          item["course_count"] = course[0]["COUNT(*)"];
+          item["bundle_count"] = bundle[0]["COUNT(*)"];
+          item["individuals_count"] = individuals[0]["COUNT(*)"];
+          return item;
+        })
+      )
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err?.message);
+        });
     } catch (error) {
       reject(error?.message);
     }
