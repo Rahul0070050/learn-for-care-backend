@@ -783,3 +783,38 @@ export function getAllManagerReportsFromDb(id) {
     }
   });
 }
+
+export function getIndividualsById(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT id, first_name, last_name FROM users WHERE type_of_account = ? AND created_by = ?;`;
+      db.query(getQuery, ["individual", id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getAllIndividualReportsFromDb(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let managers = await getManagersByCompanyId(id);
+      let ind = await Promise.all(
+        managers.map(async (item) => {
+          let individuals = await getIndividualsById(item.id);
+          item["individual"] = individuals;
+          return item;
+        })
+      );
+      console.log(ind);
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
