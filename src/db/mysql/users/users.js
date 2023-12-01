@@ -83,7 +83,7 @@ export function getIndividualsCountById(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `SELECT COUNT(*) FROM users WHERE type_of_account = ? AND created_by = ?;`;
-      db.query(getQuery, ["individual",id], (err, result) => {
+      db.query(getQuery, ["individual", id], (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
@@ -101,7 +101,7 @@ export function getManagersCountById(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `SELECT COUNT(*) FROM users WHERE type_of_account = ? AND created_by = ?;`;
-      db.query(getQuery, ["manager",id], (err, result) => {
+      db.query(getQuery, ["manager", id], (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
@@ -127,8 +127,8 @@ export function getUserById(id) {
           let managersCount = await getManagersCountById(id);
           let individualsCount = await getIndividualsCountById(id);
           console.log(managersCount);
-          result[0]["managers_count"] = managersCount[0]['COUNT(*)']
-          result[0]["individuals_count"] = individualsCount[0]['COUNT(*)']
+          result[0]["managers_count"] = managersCount[0]["COUNT(*)"];
+          result[0]["individuals_count"] = individualsCount[0]["COUNT(*)"];
           return resolve(result);
         }
       });
@@ -716,6 +716,65 @@ export function getAllMonthlyTransactionsFromDb(userId) {
           resolve(result);
         }
       });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+function getManagersByCompanyId(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT id, first_name, last_name FROM users WHERE type_of_account = ? AND created_by = ?;`;
+      db.query(getQuery, ["manager", id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          delete result[0]?.password;
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+function getCountAssignedToManager(id, type) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FROM course_assigned_manager WHERE manager_id = ?, course_type = ?;`;
+      db.query(getQuery, [id, type], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          delete result[0]?.password;
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getAllManagerReportsFromDb(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let managers = await getManagersByCompanyId(id);
+      Promise.all(managers.map(async (item) => {
+        let course = await getCountAssignedToManager(item.id, "course");
+        let bundle = await getCountAssignedToManager(item.id, "bundle");
+        let individuals = await getIndividualsCountById(item.id);
+        item['course_count'] = course[0]['COUNT(*)']
+        item['bundle_count'] = bundle[0]['COUNT(*)']
+        item['individuals_count'] = individuals[0]['COUNT(*)']
+        return item
+      })).then(result => {
+        resolve(result)
+      }).catch(err => {
+        reject(err?.message)
+      })
     } catch (error) {
       reject(error?.message);
     }

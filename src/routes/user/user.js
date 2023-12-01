@@ -56,6 +56,7 @@ route.get("/get-all-transactions", validateUser, userController.getAllTransactio
 route.get("/get-all-transactions-by-month", validateUser, userController.getAllMonthlyTransactions);
 
 // company reports
+route.get("/get-all-manager-reports", validateUser, userController.getAllManagerReports);
 
 
 export default route;
