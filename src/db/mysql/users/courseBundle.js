@@ -257,10 +257,11 @@ export function updateBundleProgress(id, course_id, per) {
           db.query(
             updatedQuery,
             [id, color, JSON.stringify(finished), JSON.stringify(unFinished)],
-            (err, result) => {}
+            (err, result) => {
+              if(err) console.log(err);
+              else resolve();
+            }
           );
-          console.log(course);
-          // resolve(result);
         } catch (error) {
           console.log(error);
         }
