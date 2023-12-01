@@ -808,8 +808,8 @@ export function getAllIndividualReportsFromDb(id) {
       let ind = await Promise.all(
         managers.map(async (item) => {
           let individuals = await getIndividualsById(item.id);
-          individual = individuals.flat(1);
-          return individual;
+          individuals = individuals.flat(1);
+          return individuals;
         })
       );
       console.log(ind);
