@@ -1469,7 +1469,7 @@ export const userController = {
           success: true,
           data: {
             code: 200,
-            message: "got all managers reports",
+            message: "got all individual reports",
             response: result,
           },
         });

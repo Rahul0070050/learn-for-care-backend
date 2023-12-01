@@ -800,7 +800,39 @@ export function getIndividualsById(id) {
     }
   });
 }
+export function getCountAssignedToIndividual(id,type) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FROM assigned_course WHERE course_type = ? user_id = ?;`;
+      db.query(getQuery, [type,id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
 
+export function getCertificatesCount(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FROM certificate WHERE user_id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
 export function getAllIndividualReportsFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -812,8 +844,23 @@ export function getAllIndividualReportsFromDb(id) {
           return individuals;
         })
       );
-      ind = ind.flat(1)
-      console.log(ind);
+      ind = ind.flat(1);
+      Promise.all(
+        ind.map(async (ind) => {
+          let course = await getCountAssignedToIndividual(ind.id,"course");
+          let bundle = await getCountAssignedToIndividual(ind.id,"bundle");
+          let certificates = await getCertificatesCount(ind.id,"bundle");
+          ind['course'] = course[0]['COUNT(*)']
+          ind['bundle'] = bundle[0]['COUNT(*)']
+          ind['certificates'] = certificates[0]['COUNT(*)']
+        })
+      ).then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err?.message);
+      })
     } catch (error) {
       reject(error?.message);
     }
