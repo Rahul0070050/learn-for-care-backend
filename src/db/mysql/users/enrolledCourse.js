@@ -61,14 +61,13 @@ export function getManagerMatrixData(id) {
         users.map(async (item) => {
           let data = await getMatrixDataByUserId(item.id);
           let assigned = await getAssignedCourseByUserId(item.id);
-          console.log(data);
-          console.log(assigned);
           item["matrix"] = data;
           item["matrix_assigned"] = assigned;
           return item;
         })
       )
         .then((result) => {
+          console.log(result);
           resolve(result);
         })
         .catch((err) => {
