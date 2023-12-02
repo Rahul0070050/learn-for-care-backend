@@ -989,7 +989,7 @@ export function getIndividualReportFromDb(id) {
       individuals.forEach(async (item) => {
         let course = await getCountAssignedToManager(id, "course");
         let bundle = await getCountAssignedToManager(id, "bundle");
-        let certificates = await getCertificatesCount(ind.id);
+        let certificates = await getCertificatesCount(id);
         item["course_count"] = course[0]["COUNT(*)"];
         item["bundle_count"] = bundle[0]["COUNT(*)"];
         item["certificates"] = certificates[0]["COUNT(*)"];
