@@ -1519,6 +1519,7 @@ export const userController = {
             ...result,
             type: course[0].course_type,
             validity: course[0].validity,
+            course_id: course[0].course_id,
             userId,
           })
             .then((result) => {

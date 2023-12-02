@@ -249,7 +249,6 @@ export function validateManagerSelfAssignCourseReqData(data) {
     try {
       const schema = yup.object({
         id: yup.number().required("please provide valid id"),
-        course_id: yup.number().required("please provide valid course id"),
         count: yup.number().required("please provide valid count"),
       });
 
