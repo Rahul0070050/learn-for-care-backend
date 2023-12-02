@@ -1514,7 +1514,7 @@ export const userController = {
       validateManagerSelfAssignCourseReqData(req.body)
         .then(async (result) => {
           let course = await getPurchasedCourseById(result.id);
-          let userId = getUser(req);
+          let userId = getUser(req).id;
           managerAssignSelfCourse({
             ...result,
             type: course[0].course_type,
