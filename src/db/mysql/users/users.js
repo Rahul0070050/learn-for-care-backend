@@ -929,7 +929,7 @@ export function getIndividualsByCompanyId(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `SELECT id, first_name, last_name FROM users WHERE type_of_account = ? AND created_by = ?;`;
-      db.query(getQuery, ["individuals", id], (err, result) => {
+      db.query(getQuery, ["individual", id], (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
