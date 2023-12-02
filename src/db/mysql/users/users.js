@@ -954,8 +954,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
       let courses = await Promise.all(
         individuals.map(async (item) => {
           let course = await getAllAssignedCourseByUserId(item.id);
-          item['course'] = course[0]
-          item['n'] = 'jo'
+          item['course'] = course
           return item
         })
       );
