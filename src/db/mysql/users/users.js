@@ -987,8 +987,8 @@ export function getIndividualReportFromDb(id) {
       let individuals = await getAllManagerIndividualFromDb(id);
       individuals = individuals.flat(1);
       Promise.all(individuals.map(async (item) => {
-        let course = await getCountAssignedToManager(id, "course");
-        let bundle = await getCountAssignedToManager(id, "bundle");
+        let course = await getCountAssignedToIndividual(id, "course");
+        let bundle = await getCountAssignedToIndividual(id, "bundle");
         let certificates = await getCertificatesCount(id);
         item["course_count"] = course[0]["COUNT(*)"];
         item["bundle_count"] = bundle[0]["COUNT(*)"];
