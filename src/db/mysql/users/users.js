@@ -980,3 +980,21 @@ export function getCourseWiseIndividualReportsFromDb(id) {
     }
   });
 }
+
+export function getIndividualReportFromDb(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let item = {};
+      let course = await getCountAssignedToManager(id, "course");
+      let bundle = await getCountAssignedToManager(id, "bundle");
+      let certificates = await getCertificatesCount(ind.id);
+
+      item["course_count"] = course[0]["COUNT(*)"];
+      item["bundle_count"] = bundle[0]["COUNT(*)"];
+      item["certificates"] = certificates[0]["COUNT(*)"];
+      resolve(item)
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
