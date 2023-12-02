@@ -986,17 +986,19 @@ export function getIndividualReportFromDb(id) {
     try {
       let individuals = await getAllManagerIndividualFromDb(id);
       individuals = individuals.flat(1);
-      individuals.forEach(async (item) => {
+      Promise.all(individuals.map(async (item) => {
         let course = await getCountAssignedToManager(id, "course");
         let bundle = await getCountAssignedToManager(id, "bundle");
         let certificates = await getCertificatesCount(id);
         item["course_count"] = course[0]["COUNT(*)"];
         item["bundle_count"] = bundle[0]["COUNT(*)"];
         item["certificates"] = certificates[0]["COUNT(*)"];
-        item["k"] = "asd";
-        console.log();
+        return item
+      })).then(result => {
+        resolve(result);
+      }).catch(err => {
+        reject(err)
       });
-      resolve(individuals);
     } catch (error) {
       reject(error?.message);
     }
