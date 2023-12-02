@@ -950,11 +950,17 @@ export function getCourseWiseIndividualReportsFromDb(id) {
       let individuals = await Promise.all(
         managers.map((item) => getIndividualsByCompanyId(item.id))
       );
-      individuals = individuals.flat(1)
-      let courses = await Promise.all(individuals.map(item => getAllAssignedCourseByUserId(item.id)))
-      courses = [...courses.flat(1)]
-      console.log('individuals ',individuals);
-      console.log('courses ',courses);
+      individuals = individuals.flat(1);
+      let courses = await Promise.all(
+        individuals.map(async (item) => {
+          let course = await getAllAssignedCourseByUserId(item.id);
+          item['course'] = course
+          return item
+        })
+      );
+      courses = courses.flat(1);
+      console.log("individuals ", individuals);
+      console.log("courses ", courses);
       // let getQuery = ``;
       // db.query(getQuery, (err, result) => {
       //   if (err) {
