@@ -985,7 +985,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
 export function getCourseWiseIndividualFromManagerReportsFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      let individuals = await getIndividualsByCompanyId(item.id)
+      let individuals = await getIndividualsByCompanyId(id)
       individuals = individuals.flat(1);
       let course_names = [];
       let courses = await Promise.all(
