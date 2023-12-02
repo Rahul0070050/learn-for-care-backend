@@ -76,10 +76,10 @@ export function getBundleAssignedCourseByUserId(id) {
   return new Promise((resolve, reject) => {
     try {
       let getCourseByIdQuery = `
-        SELECT assigned_course.*, course.name as course_name, 0 AS progress, 'red' AS color
+        SELECT assigned_course.*, course_bundle.name as bundle_name, 0 AS progress, 'red' AS color
         FROM assigned_course 
-        INNER JOIN course ON course.id = assigned_course.course_id
-        WHERE assigned_course.user_id = ? AND assigned_course.count >= 1 AND assigned_course.course_type = 'course';`;
+        INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id
+        WHERE assigned_course.user_id = ? AND assigned_course.count >= 1 AND assigned_course.course_type = 'bundle';`;
       db.query(getCourseByIdQuery, [id], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
