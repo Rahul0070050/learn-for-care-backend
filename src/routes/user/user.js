@@ -60,6 +60,6 @@ route.get("/get-all-manager-reports", validateUser, userController.getAllManager
 route.get("/get-all-ind-reports", validateUser, userController.getAllIndReports);
 
 route.post("/manager-self-assign-course", validateUser, userController.managerSelfAssignCourse);
-route.get("/get-course wise-reports", validateUser, userController.getCourseWiseManagerReports);
+route.get("/get-course-wise-reports", validateUser, userController.getCourseWiseManagerReports);
 
 export default route;
