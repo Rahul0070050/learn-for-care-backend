@@ -994,7 +994,7 @@ export function getIndividualReportFromDb(id) {
         item["bundle_count"] = bundle[0]["COUNT(*)"];
         item["certificates"] = certificates[0]["COUNT(*)"];
       });
-      resolve(result);
+      resolve(individuals);
     } catch (error) {
       reject(error?.message);
     }
