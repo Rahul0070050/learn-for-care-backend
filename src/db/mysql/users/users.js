@@ -951,16 +951,31 @@ export function getCourseWiseIndividualReportsFromDb(id) {
         managers.map((item) => getIndividualsByCompanyId(item.id))
       );
       individuals = individuals.flat(1);
+      let course_names = [];
       let courses = await Promise.all(
         individuals.map(async (item) => {
           let course = await getAllAssignedCourseByUserId(item.id);
-          item['course'] = course
-          return item
+          course.map((c) => {
+            if (!course_names.includes({ course_name: c.name, count: 0 }))
+              course_names.push({ course_name: c.name, count: 0 });
+          });
+          item["course"] = course;
+          return item;
         })
       );
       courses = courses.flat(1);
-      console.log("individuals ", individuals);
-      console.log("courses ", courses);
+      courses.map((item) => {
+        item.course.forEach((c) => {
+          course_names.forEach((cname) => {
+            if (c.name === cname.course_name) {
+              cname.count++;
+            }
+          });
+        });
+      });
+
+      console.log(course_names);
+      // console.log("courses ", courses);
       // let getQuery = ``;
       // db.query(getQuery, (err, result) => {
       //   if (err) {
