@@ -59,4 +59,7 @@ route.get("/get-all-transactions-by-month", validateUser, userController.getAllM
 route.get("/get-all-manager-reports", validateUser, userController.getAllManagerReports);
 route.get("/get-all-ind-reports", validateUser, userController.getAllIndReports);
 
+route.post("/manager-self-assign-course", validateUser, userController.managerSelfAssignCourse);
+// route.get("/get-all-ind-reports", validateUser, userController.getAllIndReports);
+
 export default route;

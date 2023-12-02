@@ -1,5 +1,8 @@
 import { downloadFromS3, uploadFileToS3 } from "../../AWS/S3.js";
-import { getAssignedCourseById, getAssignedCourseForManagerById } from "../../db/mysql/users/assignedCourse.js";
+import {
+  getAssignedCourseById,
+  getAssignedCourseForManagerById,
+} from "../../db/mysql/users/assignedCourse.js";
 import {
   getAssignedBundlesFromDbByUserId,
   getAssignedCourseToManagerById,
@@ -31,6 +34,7 @@ import {
   getAllMonthlyTransactionsFromDb,
   getAllManagerReportsFromDb,
   getAllIndividualReportsFromDb,
+  managerAssignSelfCourse,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
@@ -44,6 +48,7 @@ import {
   checkSetUserProfileImageReqData,
   checkUnBlockUserRewData,
   validateAssignCourseOrBundleReqData,
+  validateManagerSelfAssignCourseReqData,
   validateUpdateUserInfo,
 } from "../../helpers/user/validateUserReqData.js";
 import { hashPassword } from "../../helpers/validatePasswords.js";
@@ -673,7 +678,9 @@ export const userController = {
             result.receiverId = result.userId;
             delete result.userId;
 
-            let course = await getAssignedCourseForManagerById(result.course_id); // course_id is purchased courses tables id
+            let course = await getAssignedCourseForManagerById(
+              result.course_id
+            ); // course_id is purchased courses tables id
 
             let realCourse_id = course[0].course_id;
             let realCourse_type = course[0].course_type;
@@ -1350,29 +1357,30 @@ export const userController = {
       });
     }
   },
-  getAllTransactions:(req,res) => {
+  getAllTransactions: (req, res) => {
     try {
-      let userId = getUser(req).id
-      getAllTransactionsFromDb(userId).then((result) => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "got all transaction reports",
-            response: result,
-          },
+      let userId = getUser(req).id;
+      getAllTransactionsFromDb(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all transaction reports",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
         });
-      })
-      .catch((err) => {
-        res.status(406).json({
-          success: false,
-          data: {
-            code: 406,
-            message: "value not acceptable",
-            response: err,
-          },
-        });
-      });
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -1387,29 +1395,30 @@ export const userController = {
       });
     }
   },
-  getAllMonthlyTransactions:(req,res) => {
+  getAllMonthlyTransactions: (req, res) => {
     try {
-      let userId = getUser(req).id
-      getAllMonthlyTransactionsFromDb(userId).then((result) => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "got all transaction reports",
-            response: result,
-          },
+      let userId = getUser(req).id;
+      getAllMonthlyTransactionsFromDb(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all transaction reports",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
         });
-      })
-      .catch((err) => {
-        res.status(406).json({
-          success: false,
-          data: {
-            code: 406,
-            message: "value not acceptable",
-            response: err,
-          },
-        });
-      });
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -1424,29 +1433,30 @@ export const userController = {
       });
     }
   },
-  getAllManagerReports:(req,res) => {
+  getAllManagerReports: (req, res) => {
     try {
-      let userId = getUser(req).id
-      getAllManagerReportsFromDb(userId).then((result) => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "got all managers reports",
-            response: result,
-          },
+      let userId = getUser(req).id;
+      getAllManagerReportsFromDb(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all managers reports",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
         });
-      })
-      .catch((err) => {
-        res.status(406).json({
-          success: false,
-          data: {
-            code: 406,
-            message: "value not acceptable",
-            response: err,
-          },
-        });
-      });
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -1461,29 +1471,30 @@ export const userController = {
       });
     }
   },
-  getAllIndReports:(req,res) => {
+  getAllIndReports: (req, res) => {
     try {
-      let userId = getUser(req).id
-      getAllIndividualReportsFromDb(userId).then((result) => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: "got all individual reports",
-            response: result,
-          },
+      let userId = getUser(req).id;
+      getAllIndividualReportsFromDb(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all individual reports",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
         });
-      })
-      .catch((err) => {
-        res.status(406).json({
-          success: false,
-          data: {
-            code: 406,
-            message: "value not acceptable",
-            response: err,
-          },
-        });
-      });
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -1497,5 +1508,62 @@ export const userController = {
         errorType: "server",
       });
     }
-  }
+  },
+  managerSelfAssignCourse: (req, res) => {
+    try {
+      validateManagerSelfAssignCourseReqData(req.body)
+        .then(async (result) => {
+          let course = await getPurchasedCourseById(result.id);
+          let userId = getUser(req);
+          managerAssignSelfCourse({
+            ...result,
+            type: course[0].course_type,
+            validity: course[0].validity,
+            userId,
+          })
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "assigned successfully",
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "error from db",
+                  response: err,
+                },
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
 };

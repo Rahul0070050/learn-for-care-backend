@@ -800,11 +800,11 @@ export function getIndividualsById(id) {
     }
   });
 }
-export function getCountAssignedToIndividual(id,type) {
+export function getCountAssignedToIndividual(id, type) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `SELECT COUNT(*) FROM assigned_course WHERE course_type = ? AND user_id = ?;`;
-      db.query(getQuery, [type,id], (err, result) => {
+      db.query(getQuery, [type, id], (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
@@ -847,22 +847,50 @@ export function getAllIndividualReportsFromDb(id) {
       ind = ind.flat(1);
       Promise.all(
         ind.map(async (ind) => {
-          let course = await getCountAssignedToIndividual(ind.id,"course");
-          let bundle = await getCountAssignedToIndividual(ind.id,"bundle");
+          let course = await getCountAssignedToIndividual(ind.id, "course");
+          let bundle = await getCountAssignedToIndividual(ind.id, "bundle");
           let certificates = await getCertificatesCount(ind.id);
-          ind['course'] = course[0]['COUNT(*)']
-          ind['bundle'] = bundle[0]['COUNT(*)']
-          ind['certificates'] = certificates[0]['COUNT(*)']
-          return ind
+          ind["course"] = course[0]["COUNT(*)"];
+          ind["bundle"] = bundle[0]["COUNT(*)"];
+          ind["certificates"] = certificates[0]["COUNT(*)"];
+          return ind;
         })
-      ).then((result) => {
-        resolve(result);
-      })
-      .catch((err) => {
-        console.log(err);
-        reject(err?.message);
-      })
+      )
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err?.message);
+        });
     } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function managerAssignSelfCourse(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const { id, course_id, count, userId, type, validity } = data;
+
+      let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
+
+      db.query(decreaseQuery, [count, id], (err, result) => {
+        if (err) console.log(err);
+      });
+
+      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
+      db.query(
+        assignCourseToManagerQuery,
+        [userId, course_id, type, userId, new Date(validity)],
+        (err, result) => {
+          if (err) return reject(err.message);
+          else return resolve(result);
+        }
+      );
+    } catch (error) {
+      console.log(error);
       reject(error?.message);
     }
   });

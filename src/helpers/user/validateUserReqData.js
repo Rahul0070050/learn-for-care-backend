@@ -243,3 +243,27 @@ export function checkSetUserProfileImageReqData(file) {
     }
   });
 }
+
+export function validateManagerSelfAssignCourseReqData(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const schema = yup.object({
+        id: yup.number().required("please provide valid id"),
+        course_id: yup.number().required("please provide valid course id"),
+        count: yup.number().required("please provide valid count"),
+      });
+
+      let value = schema.validate(data);
+
+      value
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+}
