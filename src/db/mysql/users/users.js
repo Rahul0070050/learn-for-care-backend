@@ -1,5 +1,6 @@
 import { db } from "../../../conf/mysql.js";
 import { generatorOtp } from "../../../utils/auth.js";
+import { getAllAssignedCourseByUserId } from "./assignedCourse.js";
 
 export const insertUser = (user, otp) => {
   return new Promise((resolve, reject) => {
@@ -950,7 +951,10 @@ export function getCourseWiseIndividualReportsFromDb(id) {
         managers.map((item) => getIndividualsByCompanyId(item.id))
       );
       individuals = individuals.flat(1)
+      let courses = await Promise.all(individuals.map(item => getAllAssignedCourseByUserId(item.id)))
+      courses = courses.flat(1)
       console.log('individuals ',individuals);
+      console.log('courses ',courses);
       // let getQuery = ``;
       // db.query(getQuery, (err, result) => {
       //   if (err) {
