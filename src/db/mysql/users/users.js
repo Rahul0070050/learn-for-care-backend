@@ -949,7 +949,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
       let individuals = await Promise.all(
         managers.map((item) => getIndividualsByCompanyId(item.id))
       );
-      individuals.flat(1)
+      individuals = individuals.flat(1)
       console.log('individuals ',individuals);
       // let getQuery = ``;
       // db.query(getQuery, (err, result) => {
