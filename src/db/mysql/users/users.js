@@ -480,8 +480,7 @@ export function assignCourseToMAnagerIndividualFromAssignedDb(data) {
           if (err) {
             console.log(err);
             return reject(err.message);
-          }
-          else return resolve(result);
+          } else return resolve(result);
         }
       );
     } catch (error) {
@@ -879,24 +878,22 @@ export function managerAssignSelfCourse(data) {
       const { id, course_id, count, userId, type, validity } = data;
 
       try {
-        
         let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
-        
+
         db.query(decreaseQuery, [count, id], (err, result) => {
           if (err) console.log(err);
-      });
+        });
 
-      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, count, course_type, user_id, validity) VALUES (?,?,?,?,?,?);`;
-      db.query(
-        assignCourseToManagerQuery,
-        [userId, course_id, count, type, userId, new Date(validity)],
-        (err, result) => {
-          if (err) {
-            console.log(err);
-            return reject(err.message);
+        let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, count, course_type, user_id, validity) VALUES (?,?,?,?,?,?);`;
+        db.query(
+          assignCourseToManagerQuery,
+          [userId, course_id, count, type, userId, new Date(validity)],
+          (err, result) => {
+            if (err) {
+              console.log(err);
+              return reject(err.message);
+            } else return resolve(result);
           }
-          else return resolve(result);
-        }
         );
       } catch (error) {
         console.log(error);
@@ -908,7 +905,6 @@ export function managerAssignSelfCourse(data) {
   });
 }
 
-
 export function getCourseWiseManagerReportsFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
@@ -919,13 +915,48 @@ export function getCourseWiseManagerReportsFromDb(id) {
         WHERE course_type = ? AND owner = ?
         GROUP BY course.name;
       `;
-      db.query(getQuery, ["course",id], (err, result) => {
+      db.query(getQuery, ["course", id], (err, result) => {
         if (err) {
           return reject(err.message);
         } else {
           return resolve(result);
         }
       });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getIndividualsByCompanyId(id) {
+  try {
+    let getQuery = `SELECT id, first_name, last_name FROM users WHERE type_of_account = ? AND created_by = ?;`;
+    db.query(getQuery, ["individuals", id], (err, result) => {
+      if (err) {
+        return reject(err.message);
+      } else {
+        return resolve(result);
+      }
+    });
+  } catch (error) {
+    reject(error?.message);
+  }
+}
+
+export function getCourseWiseIndividualReportsFromDb(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let managers = await getManagersByCompanyId(id);
+      let individuals = await Promise.all(managers.map(item => getIndividualsByCompanyId(item.id)))
+      console.log(individuals);
+      // let getQuery = ``;
+      // db.query(getQuery, (err, result) => {
+      //   if (err) {
+      //     return reject(err.message);
+      //   } else {
+      //     return resolve(result);
+      //   }
+      // });
     } catch (error) {
       reject(error?.message);
     }
