@@ -606,16 +606,16 @@ export const userController = {
     try {
       checkAssignCourseToManagerIndividualReqData(req.body)
         .then(async (result) => {
-          result.receiverId = result.userId;
-          delete result.userId;
-
-          let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
-
-          let realCourse_id = course[0].course_id;
-          let realCourse_type = course[0].course_type;
-          let realValidity = course[0].validity;
-          let userId = getUser(req).id;
           try {
+            result.receiverId = result.userId;
+            delete result.userId;
+
+            let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
+
+            let realCourse_id = course[0].course_id;
+            let realCourse_type = course[0].course_type;
+            let realValidity = course[0].validity;
+            let userId = getUser(req).id;
             assignCourseToMAnagerIndividualFromAssignedDb({
               ...result,
               userId,
@@ -638,7 +638,7 @@ export const userController = {
                   success: false,
                   data: {
                     code: 406,
-                    message: "value not acceptable",
+                    message: "err from db",
                     response: err,
                   },
                 });
@@ -1568,7 +1568,7 @@ export const userController = {
       });
     }
   },
-  getCourseWiseManagerReports:(req,res) => {
+  getCourseWiseManagerReports: (req, res) => {
     try {
       let userId = getUser(req).id;
       getCourseWiseManagerReportsFromDb(userId)
@@ -1605,5 +1605,5 @@ export const userController = {
         errorType: "server",
       });
     }
-  }
+  },
 };
