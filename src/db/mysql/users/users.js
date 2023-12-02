@@ -956,7 +956,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
         individuals.map(async (item) => {
           let course = await getAllAssignedCourseByUserId(item.id);
           course.map((c) => {
-            if (!course_names.find(item => item?.course_name == c.name))
+            if (!course_names.find((item) => item?.course_name == c.name))
               course_names.push({ course_name: c.name, count: 0 });
           });
           item["course"] = course;
@@ -974,16 +974,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
         });
       });
 
-      console.log(course_names);
-      // console.log("courses ", courses);
-      // let getQuery = ``;
-      // db.query(getQuery, (err, result) => {
-      //   if (err) {
-      //     return reject(err.message);
-      //   } else {
-      //     return resolve(result);
-      //   }
-      // });
+      resolve(course_names);
     } catch (error) {
       reject(error?.message);
     }
