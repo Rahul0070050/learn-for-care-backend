@@ -913,12 +913,11 @@ export function getCourseWiseManagerReportsFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `
-      SELECT course.name AS course_name, course_assigned_manager.id AS id, COUNT(*) AS course_count
+      SELECT course.name AS course_name AS id, COUNT(*) AS course_count
       FROM course_assigned_manager
       INNER JOIN course ON course.id = course_assigned_manager.course_id
       WHERE owner = ? AND course_type = ?
-      GROUP BY course.name, course_assigned_manager.id;
-
+      GROUP BY course.name;
       `;
       db.query(getQuery, [id,"course"], (err, result) => {
         if (err) {
