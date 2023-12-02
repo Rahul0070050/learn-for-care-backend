@@ -956,7 +956,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
         individuals.map(async (item) => {
           let course = await getAllAssignedCourseByUserId(item.id);
           course.map((c) => {
-            if (!course_names.includes({ course_name: c.name, count: 0 }))
+            if (!course_names.find(item => item.name == c.name))
               course_names.push({ course_name: c.name, count: 0 });
           });
           item["course"] = course;
