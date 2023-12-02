@@ -882,10 +882,10 @@ export function managerAssignSelfCourse(data) {
           if (err) console.log(err);
       });
 
-      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
+      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, count, course_type, user_id, validity) VALUES (?,?,?,?,?,?);`;
       db.query(
         assignCourseToManagerQuery,
-        [userId, course_id, type, userId, new Date(validity)],
+        [userId, course_id, count, type, userId, new Date(validity)],
         (err, result) => {
           if (err) {
             console.log(err);
