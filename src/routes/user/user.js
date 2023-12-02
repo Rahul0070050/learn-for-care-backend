@@ -63,5 +63,6 @@ route.get("/get-all-ind-reports", validateUser, userController.getAllIndReports)
 route.post("/manager-self-assign-course", validateUser, userController.managerSelfAssignCourse);
 route.get("/get-course-wise-manager-reports", validateUser, userController.getCourseWiseManagerReports);
 route.get("/get-course-wise-individual-reports", validateUser, userController.getCourseWiseIndividualReports);
+route.get("/get-course-wise-individual-manager-reports", validateUser, userController.getCourseWiseIndividualManagerReports);
 
 export default route;

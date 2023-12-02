@@ -981,6 +981,42 @@ export function getCourseWiseIndividualReportsFromDb(id) {
   });
 }
 
+
+export function getCourseWiseIndividualFromManagerReportsFromDb(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let individuals = await getIndividualsByCompanyId(item.id)
+      individuals = individuals.flat(1);
+      let course_names = [];
+      let courses = await Promise.all(
+        individuals.map(async (item) => {
+          let course = await getAllAssignedCourseByUserId(item.id);
+          course.map((c) => {
+            if (!course_names.find((item) => item?.course_name == c.name))
+              course_names.push({ course_name: c.name, count: 0 });
+          });
+          item["course"] = course;
+          return item;
+        })
+      );
+      courses = courses.flat(1);
+      courses.map((item) => {
+        item.course.forEach((c) => {
+          course_names.filter((cname) => {
+            if (c.name === cname.course_name) {
+              return { ...cname, count: ++cname.count };
+            }
+          });
+        });
+      });
+
+      resolve(course_names);
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getIndividualReportFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {

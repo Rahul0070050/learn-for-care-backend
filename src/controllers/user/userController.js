@@ -38,6 +38,7 @@ import {
   getCourseWiseManagerReportsFromDb,
   getCourseWiseIndividualReportsFromDb,
   getIndividualReportFromDb,
+  getCourseWiseIndividualFromManagerReportsFromDb,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
@@ -1612,6 +1613,44 @@ export const userController = {
     try {
       let userId = getUser(req).id;
       getCourseWiseIndividualReportsFromDb(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all course wise ind reports",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "error from db",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getCourseWiseIndividualManagerReports:(req,res) => {
+    try {
+      let userId = getUser(req).id;
+      getCourseWiseIndividualFromManagerReportsFromDb(userId)
         .then((result) => {
           res.status(200).json({
             success: true,
