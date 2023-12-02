@@ -952,7 +952,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
       );
       individuals = individuals.flat(1)
       let courses = await Promise.all(individuals.map(item => getAllAssignedCourseByUserId(item.id)))
-      courses = courses.flat(1)
+      courses = [...courses.flat(1)]
       console.log('individuals ',individuals);
       console.log('courses ',courses);
       // let getQuery = ``;
