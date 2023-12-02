@@ -968,7 +968,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
         item.course.forEach((c) => {
           course_names.filter((cname) => {
             if (c.name === cname.course_name) {
-              return { ...cname, count: ++count };
+              return { ...cname, count: ++cname.count };
             }
           });
         });
