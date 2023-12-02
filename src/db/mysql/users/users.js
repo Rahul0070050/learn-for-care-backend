@@ -125,7 +125,6 @@ export function getUserById(id) {
           delete result[0]?.password;
           let managersCount = await getManagersCountById(id);
           let individualsCount = await getIndividualsCountById(id);
-          console.log(managersCount);
           result[0]["managers_count"] = managersCount[0]["COUNT(*)"];
           result[0]["individuals_count"] = individualsCount[0]["COUNT(*)"];
           return resolve(result);
@@ -202,7 +201,6 @@ export function deleteInactivateUser(email) {
 
 export function updateUserPassword(email, password) {
   return new Promise((resolve, reject) => {
-    console.log(password);
     try {
       let updatePasswordQuery = `UPDATE users SET password = ? WHERE email = ?;`;
       db.query(updatePasswordQuery, [password, email], (err, result) => {
@@ -762,7 +760,6 @@ export function getAllManagerReportsFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
       let managers = await getManagersByCompanyId(id);
-      console.log(managers);
       Promise.all(
         managers.map(async (item) => {
           let course = await getCountAssignedToManager(item.id, "course");
@@ -952,7 +949,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
       let individuals = await Promise.all(
         managers.map((item) => getIndividualsByCompanyId(item.id))
       );
-      console.log(individuals);
+      console.log('individuals ',individuals);
       // let getQuery = ``;
       // db.query(getQuery, (err, result) => {
       //   if (err) {
