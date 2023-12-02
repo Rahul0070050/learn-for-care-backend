@@ -984,15 +984,18 @@ export function getCourseWiseIndividualReportsFromDb(id) {
 export function getIndividualReportFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      let item = {};
-      let course = await getCountAssignedToManager(id, "course");
-      let bundle = await getCountAssignedToManager(id, "bundle");
-      let certificates = await getCertificatesCount(ind.id);
-
-      item["course_count"] = course[0]["COUNT(*)"];
-      item["bundle_count"] = bundle[0]["COUNT(*)"];
-      item["certificates"] = certificates[0]["COUNT(*)"];
-      resolve(item)
+      Promise.all(getAllManagerIndividualFromDb(id)).then(async (result) => {
+        result = result.flat(1);
+        result.forEach(async (item) => {
+          let course = await getCountAssignedToManager(id, "course");
+          let bundle = await getCountAssignedToManager(id, "bundle");
+          let certificates = await getCertificatesCount(ind.id);
+          item["course_count"] = course[0]["COUNT(*)"];
+          item["bundle_count"] = bundle[0]["COUNT(*)"];
+          item["certificates"] = certificates[0]["COUNT(*)"];
+        });
+        resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }
