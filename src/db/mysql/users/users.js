@@ -463,6 +463,7 @@ export function assignCourseToMAnagerIndividualFromAssignedDb(data) {
 
       db.query(decreaseQuery, [count, course_id], (err, result) => {
         if (err) console.log(err);
+        console.log(err);
       });
 
       let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
@@ -476,7 +477,10 @@ export function assignCourseToMAnagerIndividualFromAssignedDb(data) {
           new Date(realValidity),
         ],
         (err, result) => {
-          if (err) return reject(err.message);
+          if (err) {
+            console.log(err);
+            return reject(err.message);
+          }
           else return resolve(result);
         }
       );
