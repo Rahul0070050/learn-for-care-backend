@@ -874,10 +874,12 @@ export function managerAssignSelfCourse(data) {
     try {
       const { id, course_id, count, userId, type, validity } = data;
 
-      let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
-
-      db.query(decreaseQuery, [count, id], (err, result) => {
-        if (err) console.log(err);
+      try {
+        
+        let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
+        
+        db.query(decreaseQuery, [count, id], (err, result) => {
+          if (err) console.log(err);
       });
 
       let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
@@ -888,7 +890,10 @@ export function managerAssignSelfCourse(data) {
           if (err) return reject(err.message);
           else return resolve(result);
         }
-      );
+        );
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       console.log(error);
       reject(error?.message);
