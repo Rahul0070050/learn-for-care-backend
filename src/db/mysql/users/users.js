@@ -993,6 +993,8 @@ export function getIndividualReportFromDb(id) {
         item["course_count"] = course[0]["COUNT(*)"];
         item["bundle_count"] = bundle[0]["COUNT(*)"];
         item["certificates"] = certificates[0]["COUNT(*)"];
+        item["k"] = "asd";
+        console.log();
       });
       resolve(individuals);
     } catch (error) {
