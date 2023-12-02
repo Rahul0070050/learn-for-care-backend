@@ -237,7 +237,8 @@ export function updateBundleProgress(id, course_id, per) {
           let color = "red";
           if (per >= 50) {
             color = "yellow";
-          } else if (per >= 80) {
+          } 
+          if (per >= 80) {
             color = "green";
           }
           let finished = JSON.parse(result[0].finished_course || '[]');

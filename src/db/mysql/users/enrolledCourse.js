@@ -86,7 +86,6 @@ export function getManagerMatrixData(id) {
         })
       )
         .then((result) => {
-          console.log('result ',result);
           resolve(result);
         })
         .catch((err) => {
