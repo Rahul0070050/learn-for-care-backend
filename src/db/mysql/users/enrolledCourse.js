@@ -2,6 +2,7 @@ import { db } from "../../../conf/mysql.js";
 import {
   getAssignedCourseById,
   getAssignedCourseByUserId,
+  getBundleAssignedCourseByUserId,
 } from "./assignedCourse.js";
 import { getAllManagerIndividualFromDb } from "./users.js";
 
@@ -53,6 +54,24 @@ export function getMatrixDataByUserId(id) {
   });
 }
 
+export function getBundleMatrixDataByUserId(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT enrolled_bundle.*, course_bundle.name AS bundle_name 
+      FROM enrolled_bundle
+      INNER JOIN course_bundle ON course_bundle.id = enrolled_bundle.bundle_id
+      WHERE enrolled_bundle.user_id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getManagerMatrixData(id) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -61,6 +80,32 @@ export function getManagerMatrixData(id) {
         users.map(async (item) => {
           let data = await getMatrixDataByUserId(item.id);
           let assigned = await getAssignedCourseByUserId(item.id);
+          item["matrix"] = data;
+          item["matrix_assigned"] = assigned;
+          return item;
+        })
+      )
+        .then((result) => {
+          console.log('result ',result);
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getManagerBundleMatrixData(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let users = await getAllManagerIndividualFromDb(id);
+      Promise.all(
+        users.map(async (item) => {
+          let data = await getBundleMatrixDataByUserId(item.id);
+          let assigned = await getBundleAssignedCourseByUserId(item.id);
           item["matrix"] = data;
           item["matrix_assigned"] = assigned;
           return item;

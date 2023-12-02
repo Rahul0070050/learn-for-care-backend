@@ -18,6 +18,7 @@ import { getUser } from "../../utils/auth.js";
 import { getCourseByLimitFromDb } from "../../db/mysql/admin/course.js";
 import {
   addCourseToEnrolledCourse,
+  getManagerBundleMatrixData,
   getManagerMatrixData,
 } from "../../db/mysql/users/enrolledCourse.js";
 export const courseController = {
@@ -572,6 +573,47 @@ export const courseController = {
     try {
       let user = getUser(req);
       getManagerMatrixData(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all the data",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "some error occurred please try again later",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getManagerMatrixBundle: (req, res) => {
+    try {
+      let user = getUser(req);
+      getManagerBundleMatrixData(user.id)
         .then((result) => {
           res.status(200).json({
             success: true,

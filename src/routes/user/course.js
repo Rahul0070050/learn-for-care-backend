@@ -14,6 +14,6 @@ route.get("/get-all-bought-course",validateUser, courseController.getAllBoughtCo
 route.get("/get-all-assigned-course",validateUser, courseController.getAllAssignedCourses);
 route.post("/start-course",validateUser, courseController.startCourse);
 route.get("/get-manager-matrix-course", courseController.getManagerMatrix);
-route.get("/get-manager-matrix-bundle",validateUser, courseController.getManagerMatrix);
+route.get("/get-manager-matrix-bundle",validateUser, courseController.getManagerMatrixBundle);
 
 export default route;
