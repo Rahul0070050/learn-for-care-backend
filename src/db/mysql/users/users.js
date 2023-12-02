@@ -929,25 +929,29 @@ export function getCourseWiseManagerReportsFromDb(id) {
 }
 
 export function getIndividualsByCompanyId(id) {
-  try {
-    let getQuery = `SELECT id, first_name, last_name FROM users WHERE type_of_account = ? AND created_by = ?;`;
-    db.query(getQuery, ["individuals", id], (err, result) => {
-      if (err) {
-        return reject(err.message);
-      } else {
-        return resolve(result);
-      }
-    });
-  } catch (error) {
-    reject(error?.message);
-  }
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT id, first_name, last_name FROM users WHERE type_of_account = ? AND created_by = ?;`;
+      db.query(getQuery, ["individuals", id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
 }
 
 export function getCourseWiseIndividualReportsFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
       let managers = await getManagersByCompanyId(id);
-      let individuals = await Promise.all(managers.map(item => getIndividualsByCompanyId(item.id)))
+      let individuals = await Promise.all(
+        managers.map((item) => getIndividualsByCompanyId(item.id))
+      );
       console.log(individuals);
       // let getQuery = ``;
       // db.query(getQuery, (err, result) => {
