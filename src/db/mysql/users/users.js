@@ -887,7 +887,10 @@ export function managerAssignSelfCourse(data) {
         assignCourseToManagerQuery,
         [userId, course_id, type, userId, new Date(validity)],
         (err, result) => {
-          if (err) return reject(err.message);
+          if (err) {
+            console.log(err);
+            return reject(err.message);
+          }
           else return resolve(result);
         }
         );
