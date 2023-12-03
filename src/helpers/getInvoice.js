@@ -1,3 +1,4 @@
+import { downloadFromS3 } from "../AWS/S3.js";
 import { stripeObj } from "../conf/stripe.js";
 
 export function getInvoice(id) {
@@ -13,13 +14,26 @@ export function getInvoice(id) {
   });
 }
 
-export function getAllInvoice(limit) {
-  return new Promise(async (resolve, reject) => {
+export function getAllInvoice() {
+  return new Promise((resolve, reject) => {
     try {
-      const getQuery = await stripeObj.invoices.list();
-      resolve(invoices);
+      let getQuery = "SELECT * FROM invoice;";
+      db.query(getQuery, async (err, result) => {
+        if (err) return reject(err?.message);
+        else {
+          result = result.flat(1);
+          let newResult = await Promise.all(
+            result.map(async (item) => {
+              let image = await downloadFromS3("", item.img);
+              item["img"] = image.url;
+              return item;
+            })
+          );
+          newResult = newResult.flat(1);
+          return resolve(newResult);
+        }
+      });
     } catch (error) {
-      console.log(error);
       reject(error?.message);
     }
   });
