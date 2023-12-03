@@ -105,13 +105,13 @@ export function getManagerBundleMatrixData(id) {
         users.map(async (item) => {
           let data = await getBundleMatrixDataByUserId(item.id);
           let assigned = await getBundleAssignedCourseByUserId(item.id);
+          console.log('data ',data);
           item["matrix"] = data;
           item["matrix_assigned"] = assigned;
           return item;
         })
       )
         .then((result) => {
-          console.log('result ',result);
           resolve(result);
         })
         .catch((err) => {
