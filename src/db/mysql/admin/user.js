@@ -58,15 +58,53 @@ export function getAllUsersFromDb() {
   });
 }
 
+export function getCountPurchasedCourse(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FROM purchased_course WHERE AND user_id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getCountAllCertificates(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FROM certificate WHERE AND user_id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getUserByIdFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
       let courses = await getAllPurchasedCourseByUserId(id);
+      let course = await getCountPurchasedCourse(id)
+      let certificate = await getCountAllCertificates(id)
       let getUsersQuery = `SELECT * FROM users WHERE id = ?`;
       db.query(getUsersQuery, [id], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
+          result[0].course_count = course[0]['COUNT(*)']
+          result[0].certificate_count = certificate[0]['COUNT(*)']
           result[0].course = courses;
           resolve(result);
         }
