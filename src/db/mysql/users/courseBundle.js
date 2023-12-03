@@ -288,3 +288,23 @@ export function getAllOnGoingBundles(user_id) {
     }
   });
 }
+
+export function getAllOnGoingBundlesFromDb(user_id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+        SELECT course_bundle.name AS name, enrolled_bundle.validity AS validity,
+        enrolled_bundle.bundle_id AS bundle_id, enrolled_bundle.id AS id, 0 AS form_ongoing
+        FROM enrolled_bundle 
+        INNER JOIN course_bundle ON course_bundle.id = enrolled_bundle.bundle_id 
+        WHERE enrolled_bundle.bundle_id = ?
+      `;
+      db.query(getQuery, [user_id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

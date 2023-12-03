@@ -10,6 +10,7 @@ import { downloadFromS3, uploadFileToS3, uploadPdfToS3 } from "../../AWS/S3.js";
 import {
   getAllBBundle,
   getAllOnGoingBundles,
+  getAllOnGoingBundlesFromDb,
   getBundleDataFromDb,
   getCourseBundleById,
   getCourseByCourseIdFromDb,
@@ -734,7 +735,7 @@ export const bundleController = {
   getOnGoingBundles:(req,res) => {
     try {
       let user = getUser(req)
-      getAllOnGoingBundles(user.id)
+      getAllOnGoingBundlesFromDb(user.id)
       .then((result) => {
         res.status(200).json({
           success: true,
