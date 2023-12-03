@@ -134,7 +134,7 @@ export function getBundleDataFromDb(id) {
           return reject(err?.message);
         } else {
           Promise.all(
-            JSON.parse(result[0]?.all_courses || '[]').map(async (id) => {
+            JSON.parse(result[0]?.all_courses || "[]").map(async (id) => {
               return await getCourseByIdFromDb(id);
             })
           )
@@ -237,11 +237,11 @@ export function updateBundleProgress(id, course_id, per) {
           let color = "red";
           if (per >= 50) {
             color = "yellow";
-          } 
+          }
           if (per >= 80) {
             color = "green";
           }
-          let finished = JSON.parse(result[0].finished_course || '[]');
+          let finished = JSON.parse(result[0].finished_course || "[]");
           let unFinished = JSON.parse(result[0].unfinished_course).filter(
             (id) => id != course_id
           );
@@ -255,9 +255,15 @@ export function updateBundleProgress(id, course_id, per) {
             "UPDATE enrolled_bundle SET progress = ?, color = ?, finished_course = ?, unfinished_course = ? WHERE id = ?;";
           db.query(
             updatedQuery,
-            [per,color, JSON.stringify(finished), JSON.stringify(unFinished),id],
+            [
+              per,
+              color,
+              JSON.stringify(finished),
+              JSON.stringify(unFinished),
+              id,
+            ],
             (err, result) => {
-              if(err) console.log(err);
+              if (err) console.log(err);
               else resolve();
             }
           );
@@ -272,7 +278,7 @@ export function updateBundleProgress(id, course_id, per) {
 export function getAllOnGoingBundles(user_id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT * FROM enrolled_bundle WHERE user_id = ?";
+      let getQuery = "SELECT *, 1 AS on_going FROM enrolled_bundle WHERE user_id = ?";
       db.query(getQuery, [user_id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
