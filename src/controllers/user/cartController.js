@@ -457,8 +457,8 @@ export const cartController = {
             { email: chargeSucceeded.billing_details.email } || { email: "" }
           )
             .then((user) => {
+              console.log('user ',user);
               let userId = user[0].id;
-              console.log(userId);
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
                   let filePath = uuid() + ".pdf";
