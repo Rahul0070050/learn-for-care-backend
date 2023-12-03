@@ -219,7 +219,7 @@ export const adminController = {
             .then(async (hashedPassword) => {
               let otp = await Number(generatorOtp());
               result.password = hashedPassword;
-              insertUser({ ...result, type_of_account: "individual" }, otp)
+              insertUser({ ...result, type_of_account: result.type }, otp)
                 .then(() => {
                   res.status(200).json({
                     success: true,

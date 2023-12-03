@@ -11,6 +11,7 @@ export function validateCreateUserInfo(userData) {
       phone: string().required("please provide phone"),
       country: string().required("please provide country"),
       city: string().required("please provide city"),
+      type: string().required("please provide type"),
     });
 
     try {

@@ -17,9 +17,9 @@ route.delete(
   adminController.deleteSubAdmin
 );
 route.get(
-  "/list-all-sub-admin",
+  "/list-all-managers",
   validateAdmin,
-  adminController.listSubAdmin
+  adminController.listManagers
 );
 route.post("/create-user", validateAdmin, adminController.createUser);
 route.get("/get-all-users", validateAdmin, adminController.getAllUsers);
