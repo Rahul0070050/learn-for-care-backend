@@ -26,6 +26,7 @@ import {
 export function getDashboardData() {
   return new Promise(async (resolve, reject) => {
     try {
+      let managers = await getManagers();
       let newUsers = await getNewUsers();
       let newCompanyUsers = await getNewCompanyUsers();
       let newBlogs = await getNewBlogs();
@@ -40,6 +41,7 @@ export function getDashboardData() {
           return reject(err.message);
         } else {
           let response = {
+            manager: managers[0]['COUNT(*)'],
             newUsers: newUsers,
             newBlogs: newBlogs,
             ["new_company_users"]: newCompanyUsers,
@@ -50,6 +52,23 @@ export function getDashboardData() {
             ["course_count"]: course_count[0]["COUNT(*)"],
           };
           return resolve(response);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+function getManagers() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FORM users type_of_account = 'manager';`;
+      db.query(getQuery, (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
         }
       });
     } catch (error) {
