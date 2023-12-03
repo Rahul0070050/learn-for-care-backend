@@ -297,7 +297,7 @@ export function getAllOnGoingBundlesFromDb(user_id) {
         enrolled_bundle.bundle_id AS bundle_id, enrolled_bundle.id AS id, 0 AS form_ongoing
         FROM enrolled_bundle 
         INNER JOIN course_bundle ON course_bundle.id = enrolled_bundle.bundle_id 
-        WHERE enrolled_bundle.bundle_id = ?
+        WHERE enrolled_bundle.user_id = ?
       `;
       db.query(getQuery, [user_id], (err, result) => {
         if (err) return reject(err?.message);
