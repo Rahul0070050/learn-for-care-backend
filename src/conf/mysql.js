@@ -131,11 +131,11 @@ export function mySqlConnect(done) {
       id INT AUTO_INCREMENT PRIMARY KEY,
       user_id INT NOT NULL,
       img VARCHAR(200) NOT NULL,
-      code INT AUTO_INCREMENT DEFAULT NULL,
+      code INT DEFAULT NULL,
       date DATETIME DEFAULT NOW()
     ) AUTO_INCREMENT = 1000;`;
 
-    db.query(createBlogTable, (err, result) => {
+    db.query(createInvoiceTable, (err, result) => {
       if (err) console.log(err);
       else console.log("blog table created");
     });
