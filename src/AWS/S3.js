@@ -94,6 +94,7 @@ export function uploadInvoice(uploadPath) {
           "../",
           `/invoice/${uploadPath}`
         );
+        console.log(file_path);
         let blob = await fs.readFileSync(file_path);
         let name = `invoice/${uploadPath}`;
         let type = "application/pdf";
