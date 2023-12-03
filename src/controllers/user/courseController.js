@@ -571,6 +571,7 @@ export const courseController = {
   },
   getManagerMatrix: (req, res) => {
     try {
+      console.log(req.body?.manager_id);
       let userId = req.body?.manager_id || getUser(req).id;
       getManagerMatrixData(userId)
         .then((result) => {
