@@ -16,11 +16,11 @@ route.delete(
   validateAdminPrivilege,
   adminController.deleteSubAdmin
 );
-route.get(
-  "/list-all-managers",
-  validateAdmin,
-  adminController.listManagers
-);
+// route.get(
+//   "/list-all-managers",
+//   validateAdmin,
+//   adminController.listManagers
+// );
 route.post("/create-user", validateAdmin, adminController.createUser);
 route.get("/get-all-users", validateAdmin, adminController.getAllUsers);
 route.get("/get-user-data-by-id/:id", validateAdmin, adminController.getUserDataById);
