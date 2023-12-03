@@ -457,41 +457,43 @@ export const cartController = {
             { email: chargeSucceeded.billing_details.email } || { email: "" }
           )
             .then((user) => {
-              console.log('user ',user);
+              console.log("user ", user);
               let userId = user[0].id;
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
                   let filePath = uuid() + ".pdf";
                   await saveInvoice(filePath);
-                  let url = await uploadInvoice(filePath);
-                  await saveInvoiceToDb({ userId, image: url.file });
-                  Promise.all(
-                    cartItems.map((item) => {
-                      return saveToPurchasedCourse({
-                        user_id: item.user_id,
-                        course_id: item.course_id,
-                        amount: item.amount,
-                        course_count: item.product_count,
-                        type: item.item_type,
+                  setTimeout(async () => {
+                    let url = await uploadInvoice(filePath);
+                    await saveInvoiceToDb({ userId, image: url.file });
+                    Promise.all(
+                      cartItems.map((item) => {
+                        return saveToPurchasedCourse({
+                          user_id: item.user_id,
+                          course_id: item.course_id,
+                          amount: item.amount,
+                          course_count: item.product_count,
+                          type: item.item_type,
+                        });
+                      })
+                    )
+                      .then((result) => {
+                        cartItems.forEach((item) => {
+                          deleteCourseFromDb(item.id)
+                            .then(() => {
+                              console.log("Deleted from Cart");
+                            })
+                            .catch((err) => {
+                              console.error("Error deleting from db", err);
+                            });
+                        });
+                        res.send();
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        res.status(406).send();
                       });
-                    })
-                  )
-                    .then((result) => {
-                      cartItems.forEach((item) => {
-                        deleteCourseFromDb(item.id)
-                          .then(() => {
-                            console.log("Deleted from Cart");
-                          })
-                          .catch((err) => {
-                            console.error("Error deleting from db", err);
-                          });
-                      });
-                      res.send();
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                      res.status(406).send();
-                    });
+                  }, 2000);
                 })
                 .catch((err) => {
                   res.status(406).send();

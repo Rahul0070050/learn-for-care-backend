@@ -6,9 +6,9 @@ import PDFDocument from "pdfkit";
 export async function saveInvoice(file_name) {
   const doc = new PDFDocument();
 
-  let file_path = path.join(__dirname, "../", `/certificate/${file_name}`);
+  let file_path = path.join(__dirname, "../", `/invoice/${file_name}`);
   doc.pipe(fs.createWriteStream(file_path));
-  doc.image(path.join(__dirname, "../", "/certificate/invoice.jpg"), 50, 50, {
+  doc.image(path.join(__dirname, "../", "/invoice/invoice.jpg"), 50, 50, {
     width: 500,
   });
 
