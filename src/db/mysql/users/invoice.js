@@ -24,14 +24,15 @@ export function getInvoiceFromDb(userId) {
         if (err) return reject(err?.message);
         else {
           result = result.flat(1);
-          let newResult = await Promise.all(result.map((item) => {
-              let image = downloadFromS3(item.img);
-            item["img"] = image.url;
-            item["ra"] = 'image.url';
-            return item;
-        }));
-        newResult = newResult.flat(1);
-        return resolve(newResult);
+          let newResult = await Promise.all(
+            result.map(async (item) => {
+              let image = await downloadFromS3(item.img);
+              item["img"] = image.url;
+              return item;
+            })
+          );
+          newResult = newResult.flat(1);
+          return resolve(newResult);
         }
       });
     } catch (error) {
