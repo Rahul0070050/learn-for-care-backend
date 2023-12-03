@@ -1,3 +1,4 @@
+import { downloadFromS3 } from "../../../AWS/S3.js";
 import { db } from "../../../conf/mysql.js";
 
 export function saveInvoiceToDb(data) {
@@ -8,6 +9,29 @@ export function saveInvoiceToDb(data) {
       db.query(insertQuery, [userId, image], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getInvoiceFromDb(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const { userId } = data;
+      let getQuery = "SELECT * FROM invoice WHERE user_id = ?;";
+      db.query(getQuery, [userId], async (err, result) => {
+        if (err) return reject(err?.message);
+        else {
+          result = result.flat(1);
+          let newResult = await result.map((item) => {
+            let image = downloadFromS3(item.img);
+            item["img"] = image.url;
+            return item;
+          });
+          return resolve(newResult);
+        }
       });
     } catch (error) {
       reject(error?.message);

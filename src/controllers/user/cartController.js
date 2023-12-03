@@ -23,7 +23,7 @@ import { getCourseBundleById } from "../../db/mysql/users/courseBundle.js";
 import { getAllInvoice, getInvoice } from "../../helpers/getInvoice.js";
 import { v4 as uuid } from "uuid";
 import { saveInvoice } from "../../invoice/invoice.js";
-import { saveInvoiceToDb } from "../../db/mysql/users/invoice.js";
+import { getInvoiceFromDb, saveInvoiceToDb } from "../../db/mysql/users/invoice.js";
 
 config("../../../.env");
 export const cartController = {
@@ -530,7 +530,7 @@ export const cartController = {
   getInvoiceById: (req, res) => {
     try {
       let userId = getUser(req).id;
-      getAllInvoice(userId)
+      getInvoiceFromDb(userId)
         .then((invoiceResult) => {
           res.status(200).json({
             success: true,
