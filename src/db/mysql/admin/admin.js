@@ -55,6 +55,7 @@ export function getDashboardData() {
         }
       });
     } catch (error) {
+      console.log(error);
       reject(error?.message);
     }
   });
