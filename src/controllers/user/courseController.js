@@ -572,7 +572,13 @@ export const courseController = {
   getManagerMatrix: (req, res) => {
     try {
       console.log(req.body?.manager_id);
-      let userId = req.body?.manager_id == "Select Manager" ? getUser(req).id : req.body?.manager_id;
+      let userId = req.body?.manager_id;
+      if (userId == "Select Manager") {
+        userId = getUser(req).id;
+      } else {
+        userId = req.body?.manager_id;
+      }
+
       getManagerMatrixData(userId)
         .then((result) => {
           res.status(200).json({
