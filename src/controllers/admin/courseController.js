@@ -13,6 +13,7 @@ import {
   getReportFromDb,
   getReportFromDbGroupByYear,
 } from "../../db/mysql/admin/purchasedCourse.js";
+import { getManagerBundleMatrixData, getManagerMatrixData } from "../../db/mysql/users/enrolledCourse.js";
 import {
   checkAddCourseReqBodyAndFile,
   checkGetCourseByCategoryBody,
@@ -1315,6 +1316,89 @@ export const courseController = {
             message:
               "some error occurred in the server try again after some times",
             error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getManagerMatrix: (req, res) => {
+    try {
+      let userId = req.body?.manager_id
+      getManagerMatrixData(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all the data",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "some error occurred please try again later",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getManagerMatrixBundle: (req, res) => {
+    try {
+      let userId = req.body?.manager_id
+      getManagerBundleMatrixData(userId)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all the data",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "some error occurred please try again later",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error,
           },
         ],
         errorType: "server",

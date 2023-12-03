@@ -19,5 +19,7 @@ route.post("/update-course-thumbnail",validateAdmin,courseController.updateCours
 route.post("/update-course-data",validateAdmin,courseController.updateCourseData);
 route.delete("/delete/:id",validateAdmin,courseController.deleteCourse);
 
+route.post("/get-manager-matrix-course", courseController.getManagerMatrix);
+route.post("/get-manager-matrix-bundle", courseController.getManagerMatrixBundle);
 
 export default route;
