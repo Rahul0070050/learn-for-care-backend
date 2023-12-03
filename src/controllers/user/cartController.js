@@ -458,6 +458,7 @@ export const cartController = {
           )
             .then((user) => {
               let userId = user[0].id;
+              console.log(userId);
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
                   let filePath = uuid() + ".pdf";
