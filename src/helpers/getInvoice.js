@@ -16,7 +16,7 @@ export function getInvoice(id) {
 export function getAllInvoice(limit) {
   return new Promise(async (resolve, reject) => {
     try {
-      const invoices = await stripeObj.invoices.list();
+      const getQuery = await stripeObj.invoices.list();
       resolve(invoices);
     } catch (error) {
       console.log(error);

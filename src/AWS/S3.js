@@ -85,6 +85,42 @@ export function uploadPdfToS3(uploadPath) {
   });
 }
 
+export function uploadInvoice(uploadPath) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      setTimeout(async () => {
+        let file_path = path.join(
+          __dirname,
+          "../",
+          `/invoice/${uploadPath}`
+        );
+        let blob = await fs.readFileSync(file_path);
+        let name = `invoice/${uploadPath}`;
+        let type = "application/pdf";
+
+        let fileUploading = await s3
+          .upload({
+            Bucket: process.env.AWS_S3_NAME || "",
+            Key: name,
+            Body: blob,
+            ContentType: "application/pdf",
+          })
+          .promise();
+        fs.unlinkSync(file_path);
+
+        resolve({
+          ok: true,
+          file: fileUploading.Key,
+          type,
+        });
+      }, 4000);
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
+}
+
 export function removeFromS3(key) {
   return new Promise(async (resolve, reject) => {
     try {

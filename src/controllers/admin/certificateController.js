@@ -1,5 +1,5 @@
 import { uploadPdfToS3 } from "../../AWS/S3.js";
-import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
+import { saveCertificate } from "../../certificate/courseCertificate.js";
 import {
   getAllCertificateFromDb,
   getCertificateByIdFromDb,
@@ -18,7 +18,7 @@ export const certificateController = {
       validateCreateCertificateInfo(req.body)
         .then(async (result) => {
           let filePath = uuid() + ".pdf"
-          await convertHtmlToPdf(filePath);
+          await saveCertificate(filePath);
           let url = await uploadPdfToS3(filePath)
           insertNewCertificate({...result,image: url.file})
             .then(async (result) => {

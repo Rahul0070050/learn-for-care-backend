@@ -30,7 +30,7 @@ import {
   saveBundleExamResult,
   saveExamResult,
 } from "../../db/mysql/admin/exam.js";
-import { convertHtmlToPdf } from "../../certificate/courseCertificate.js";
+import { saveCertificate } from "../../certificate/courseCertificate.js";
 import { v4 as uuid } from "uuid";
 import { insertNewCertificate } from "../../db/mysql/admin/certificate.js";
 
@@ -642,7 +642,7 @@ export const bundleController = {
               try {
                 if (per >= 80) {
                   let filePath = uuid() + ".pdf";
-                  await convertHtmlToPdf(filePath);
+                  await saveCertificate(filePath);
                   let url = await uploadPdfToS3(filePath);
                   updateBundleProgress(result.enrolled_course_id,questions[0].course_id,per)
                   insertNewCertificate({

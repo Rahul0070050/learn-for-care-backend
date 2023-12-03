@@ -15,12 +15,16 @@ import {
   getCartItemsByUserId,
   updateCourseCountInTheCart,
 } from "../../db/mysql/users/cart.js";
-import { downloadFromS3 } from "../../AWS/S3.js";
+import { downloadFromS3, uploadInvoice } from "../../AWS/S3.js";
 import { getStripeUrl, stripeObj } from "../../conf/stripe.js";
 import { getUserByEmail } from "../../db/mysql/users/users.js";
 import { saveToPurchasedCourse } from "../../db/mysql/users/purchasedCourse.js";
 import { getCourseBundleById } from "../../db/mysql/users/courseBundle.js";
-import { getInvoice } from "../../helpers/getInvoice.js";
+import { getAllInvoice, getInvoice } from "../../helpers/getInvoice.js";
+import { v4 as uuid } from "uuid";
+import { saveInvoice } from "../../invoice/invoice.js";
+import { saveInvoiceToDb } from "../../db/mysql/users/invoice.js";
+
 config("../../../.env");
 export const cartController = {
   addCourseToCart: (req, res) => {
@@ -455,7 +459,11 @@ export const cartController = {
             .then((user) => {
               let userId = user[0].id;
               getCartItemsByUserId(userId)
-                .then((cartItems) => {
+                .then(async (cartItems) => {
+                  let filePath = uuid() + ".pdf";
+                  await saveInvoice(filePath);
+                  let url = await uploadInvoice(filePath);
+                  await saveInvoiceToDb({ userId, image: url.file });
                   Promise.all(
                     cartItems.map((item) => {
                       return saveToPurchasedCourse({
@@ -463,7 +471,7 @@ export const cartController = {
                         course_id: item.course_id,
                         amount: item.amount,
                         course_count: item.product_count,
-                        type: item.item_type
+                        type: item.item_type,
                       });
                     })
                   )
@@ -518,45 +526,31 @@ export const cartController = {
   },
   getInvoiceById: (req, res) => {
     try {
-      checkGetInvoiceByIdReqBody(req.params).then((result) => {
-        getInvoice(result.id)
-          .then((invoiceResult) => {
-            res.status(200).json({
-              success: true,
-              data: {
-                code: 200,
-                message: `get invoice`,
-                response: invoiceResult,
-              },
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              success: false,
-              errors: [
-                {
-                  code: 500,
-                  message: "something went wrong try again after some times",
-                  error: err,
-                },
-              ],
-              errorType: "server",
-            });
-          })
-          .catch((err) => {
-            res.status(500).json({
-              success: false,
-              errors: [
-                {
-                  code: 500,
-                  message: "something went wrong try again after some times",
-                  error: err,
-                },
-              ],
-              errorType: "server",
-            });
+      let userId = getUser(req).id;
+      getAllInvoice(userId)
+        .then((invoiceResult) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: `get invoice`,
+              response: invoiceResult,
+            },
           });
-      });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "something went wrong try again after some times",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
     } catch (error) {
       res.status(400).json({
         success: false,
