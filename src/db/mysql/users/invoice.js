@@ -16,10 +16,9 @@ export function saveInvoiceToDb(data) {
   });
 }
 
-export function getInvoiceFromDb(data) {
+export function getInvoiceFromDb(userId) {
   return new Promise((resolve, reject) => {
     try {
-      const { userId } = data;
       let getQuery = "SELECT * FROM invoice WHERE user_id = ?;";
       db.query(getQuery, [userId], async (err, result) => {
         if (err) return reject(err?.message);
