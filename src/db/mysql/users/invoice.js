@@ -26,7 +26,7 @@ export function getInvoiceFromDb(userId) {
           result = result.flat(1);
           let newResult = await Promise.all(
             result.map(async (item) => {
-              let image = await downloadFromS3(item.img);
+              let image = await downloadFromS3("",item.img);
               item["img"] = image.url;
               return item;
             })
