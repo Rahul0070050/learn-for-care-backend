@@ -61,7 +61,7 @@ export function getAllUsersFromDb() {
 export function getCountPurchasedCourse(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT COUNT(*) FROM purchased_course WHERE AND user_id = ?;`;
+      let getQuery = `SELECT COUNT(*) FROM purchased_course WHERE user_id = ?;`;
       db.query(getQuery, [id], (err, result) => {
         if (err) {
           return reject(err.message);
@@ -78,7 +78,7 @@ export function getCountPurchasedCourse(id) {
 export function getCountAllCertificates(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT COUNT(*) FROM certificate WHERE AND user_id = ?;`;
+      let getQuery = `SELECT COUNT(*) FROM certificate WHERE user_id = ?;`;
       db.query(getQuery, [id], (err, result) => {
         if (err) {
           return reject(err.message);
