@@ -64,7 +64,7 @@ export function getDashboardData() {
 function getManagers() {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT COUNT(*) FORM users WHERE type_of_account = 'manager';`;
+      let getQuery = `SELECT COUNT(*) FROM users WHERE type_of_account = 'manager';`;
       db.query(getQuery, (err, result) => {
         if (err) {
           reject(err?.message);
