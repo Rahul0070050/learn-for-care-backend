@@ -404,7 +404,7 @@ export const cartController = {
           errorType: "client",
         });
       } else {
-        let coupon = await getActiveCouponByUserId(userId);
+        let coupon = await getActiveCouponByUserId(user.id);
         console.log("coupon ", coupon);
         if (coupon) {
           if (coupon.type == "Percent") {
