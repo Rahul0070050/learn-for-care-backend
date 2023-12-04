@@ -44,7 +44,7 @@ export function deleteAppliedCoupon(id) {
   try {
     return new Promise((resolve, reject) => {
       let deleteQuery =
-        "DELETE FORM applied_coupon WHERE user_id = ? AND state = ?";
+        "DELETE FROM applied_coupon WHERE user_id = ? AND state = ?";
       db.query(deleteQuery, [id, true], (err, result) => {});
     });
   } catch (error) {}
