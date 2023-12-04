@@ -15,7 +15,7 @@ function findCouponFromDb(code) {
               if (result.length > 1) {
                 resolve({ type: "percent", amount: result[0] });
               } else {
-                resolve({ type: "non" });
+                reject("coupon not fount");
               }
             }
           });
