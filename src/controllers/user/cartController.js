@@ -39,7 +39,7 @@ export const cartController = {
       checkAddToCartReqBody(req.body.course)
         .then(async (courseIds) => {
           let user = getUser(req);
-
+          deleteAppliedCoupon(user.id);
           let allCourses = courseIds.map(async (item) => {
             return await getCourseByIdFromDb(item.id);
           });
@@ -268,7 +268,7 @@ export const cartController = {
           let userId = getUser(req).id;
           deleteAppliedCoupon(userId);
           deleteCourseFromDb(result.cart_id)
-          .then(() => {
+            .then(() => {
               res.status(200).json({
                 success: true,
                 data: {
