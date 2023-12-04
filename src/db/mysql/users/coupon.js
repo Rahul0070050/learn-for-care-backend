@@ -24,12 +24,16 @@ function findCouponFromDb(code) {
 
 function getActiveCouponByUserId(id) {
   return new Promise((resolve, reject) => {
-    let checkQuery =
-      "SELECT * FROM applied_coupon WHERE user_id = ? AND state = ?;";
-    db.query(checkQuery, [id, true], (err, result) => {
-      if (err) return reject(err.message);
-      else resolve(result);
-    });
+    try {
+      let checkQuery =
+        "SELECT * FROM applied_coupon WHERE user_id = ? AND state = ?;";
+      db.query(checkQuery, [id, true], (err, result) => {
+        if (err) return reject(err.message);
+        else resolve(result);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   });
 }
 export function applyCouponToCart(code, userId) {
