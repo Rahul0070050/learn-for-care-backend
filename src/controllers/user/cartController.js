@@ -477,6 +477,7 @@ export const cartController = {
                   await saveInvoice(filePath);
                   setTimeout(async () => {
                     let coupon = await getActiveCouponByUserId(userId);
+                    console.log('coupon ',coupon);
                     if (coupon) {
                       if (coupon.type == "Percent") {
                         cartItems.forEach((item) => {
