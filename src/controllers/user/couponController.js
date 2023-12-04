@@ -9,7 +9,14 @@ export const couponController = {
         .then((result) => {
           let user = getUser(req);
           applyCouponToCart(result.code, user.id).then(() => {
-
+            res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "got all managers",
+                  response: result,
+                },
+              });
           }).catch(err => {
             res.status(406).json({
                 success: false,

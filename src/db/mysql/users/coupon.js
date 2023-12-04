@@ -26,53 +26,28 @@ export function applyCouponToCart(code, userId) {
     try {
       let insertQuery =
         "INSERT INTO applied_coupon (user_id, coupon_id, price) VALUES (?,?,?);";
-      let checkQuery =
-        "SELECT * FROM applied_coupon WHERE user_id = ? AND state = ?;";
-      db.query(checkQuery, [userId, true], async (err, result) => {
-        if (err) return reject(err?.message);
-        else {
-          if (result.length <= 0) {
-            try {
-              let amount = await findCouponFromDb(code);
-              let cart = await getAllCartItemFromDB(userId);
-              let totalPrice = 0;
-              cart.forEach((item) => {
-                totalPrice += item.amount;
-              });
-              console.log(amount);
-              if (amount.type == "amount") {
-                if (amount.amount.minimum_purchase <= totalPrice) {
-                  db.query(
-                    insertQuery,
-                    [userId, amount.amount.amount, amount.amount.id],
-                    (err, result) => {
-                      if (err) return reject(err?.message);
-                      else return resolve();
-                    }
-                  );
-                }
-              } else {
-                // if(amount.amount.minimum_purchase <= totalPrice) {
-                //     db.query(insertQuery,[userId,amount.amount.amount,amount.amount.id],(err, result) => {
-                //       if (err) return reject(err?.message);
-                //       else return resolve();
-                //     });
-                // }
-                console.log(amount);
-                // console.log(cart);
-              }
-            } catch (error) {
-              reject(error);
+      try {
+        let amount = await findCouponFromDb(code);
+        let cart = await getAllCartItemFromDB(userId);
+        let totalPrice = 0;
+        cart.forEach((item) => {
+          totalPrice += item.amount;
+        });
+        if (amount.amount.minimum_purchase <= totalPrice) {
+          db.query(
+            insertQuery,
+            [userId, amount.amount.amount, amount.amount.id],
+            (err, result) => {
+              if (err) return reject(err?.message);
+              else return resolve(amount.amount);
             }
-            // ("minimum_purchase");
-            // ("max_val");
-            // ("min_val");
-            // ("amount");
-          } else {
-            reject("coupon is already applied");
-          }
+          );
+        } else {
+          throw new Error("Minimum purchase is required.");
         }
-      });
+      } catch (error) {
+        reject(error);
+      }
     } catch (error) {
       reject(error?.message);
     }
