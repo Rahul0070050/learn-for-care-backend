@@ -137,16 +137,33 @@ export function mySqlConnect(done) {
     const createInvoiceTable = `
       CREATE TABLE IF NOT EXISTS invoice (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      user_id INT NOT NULL,
-      img VARCHAR(200) NOT NULL,
-      code INT DEFAULT NULL,
+      user_id VARCHAR(150) NOT NULL,
+      products TEXT NOT NULL,
+      applied_coupon TEXT NOT NULL,
+      real_price INT NOT NULL,
+      discount_price INT NOT NULL,
+      state INT NOT NULL,
       date DATETIME DEFAULT NOW()
-    ) AUTO_INCREMENT = 1000;`;
+    );`;
 
     db.query(createInvoiceTable, (err, result) => {
       if (err) console.log(err);
       else console.log("blog table created");
     });
+
+  const createAppliedCouponTable = `
+    CREATE TABLE IF NOT EXISTS applied_coupon (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    coupon_id INT NOT NULL,
+    price INT DEFAULT NULL,
+    state BOOLEAN NOT NULL DEFAULT TRUE
+  )`;
+
+  db.query(createAppliedCouponTable, (err, result) => {
+    if (err) console.log(err);
+    else console.log("blog table created");
+  });
 
     // const createCartTable = `
     // CREATE TABLE IF NOT EXISTS cart (
