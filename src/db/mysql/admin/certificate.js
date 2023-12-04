@@ -1,3 +1,4 @@
+import { downloadFromS3 } from "../../../AWS/S3.js";
 import { db } from "../../../conf/mysql.js";
 
 export function insertNewCertificate(info) {
@@ -45,9 +46,19 @@ export function getAllCertificateFromDb() {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = "SELECT * FROM certificate";
-      db.query(getQuery, (err, result) => {
+      db.query(getQuery, async (err, result) => {
         if (err) return reject(err?.message);
-        else return resolve(result);
+        else {
+          result = result.flat(1);
+          result = await Promise.all(
+            result.map((item) => {
+              let image = downloadFromS3("", item.image);
+              item["image"] = image.url;
+              return item;
+            })
+          );
+          return resolve(result);
+        }
       });
     } catch (error) {
       reject(error?.message);
