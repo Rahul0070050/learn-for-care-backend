@@ -100,7 +100,7 @@ export function mySqlConnect(done) {
         intro_video VARCHAR(200),
         thumbnail VARCHAR(200) NOT NULL,
         video VARCHAR(200) NOT NULL,
-        ppt VARCHAR(200) NOT NULL,
+        ppt TEXT NOT NULL,
         resource TEXT NOT NULL,
         assessment TEXT DEFAULT NULL,
         certificate TEXT DEFAULT NULL,
