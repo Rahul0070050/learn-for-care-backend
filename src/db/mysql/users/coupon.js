@@ -48,7 +48,7 @@ export function applyCouponToCart(code, userId) {
           totalPrice += item.amount;
         });
         if (amount.amount.minimum_purchase <= totalPrice) {
-          if (coupon) {
+          if (coupon.length >= 0) {
             db.query(
               updateQuery,
               [amount.amount.coupon_type, amount.amount.amount, userId, true],
