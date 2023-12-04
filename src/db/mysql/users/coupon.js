@@ -43,7 +43,7 @@ export function applyCouponToCart(code, userId) {
             }
           );
         } else {
-          throw new Error("Minimum purchase is required.");
+          reject("Minimum purchase is required.");
         }
       } catch (error) {
         reject(error);
