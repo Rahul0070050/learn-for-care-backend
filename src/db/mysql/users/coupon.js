@@ -43,7 +43,7 @@ export function applyCouponToCart(code, userId) {
                 console.log(amount);
                 console.log(cart);
             } catch (error) {
-                console.log(error);
+                reject(error)
             }
             // ("minimum_purchase");
             // ("max_val");
