@@ -6,7 +6,7 @@ export function addNewCourse(courseData) {
       let resource = JSON.stringify(courseData.resource);
       let ppt = JSON.stringify(courseData.image);
       console.log(ppt);
-      console.log(courseData);
+      console.log(courseData.assessment, courseData.certificate, courseData.objective_define, courseData.What_you_will_learn, courseData.aims, courseData.who_should_attend, courseData.objectives_point, courseData.what_you_will_learn_point);
       let insertCourseQuery =
         "INSERT INTO course(name,description,category,price,intro_video,thumbnail,video,ppt,resource,assessment,certificate,objective_define,What_you_will_learn,aims,who_should_attend,objectives_point,what_you_will_learn_point) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
       db.query(
