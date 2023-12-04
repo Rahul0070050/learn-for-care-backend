@@ -8,7 +8,7 @@ export function addNewCourse(courseData) {
       console.log(ppt);
       console.log(courseData);
       let insertCourseQuery =
-        "INSERT INTO course(name,description,category,price,intro_video,thumbnail,video,ppt,resource) VALUES(?,?,?,?,?,?,?,?,?);";
+        "INSERT INTO course(name,description,category,price,intro_video,thumbnail,video,ppt,resource,assessment,certificate,objective_define,What_you_will_learn,aims,who_should_attend,objectives_point,what_you_will_learn_point) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
       db.query(
         insertCourseQuery,
         [
@@ -21,6 +21,14 @@ export function addNewCourse(courseData) {
           courseData.video,
           ppt,
           resource,
+          assessment,
+          certificate,
+          objective_define,
+          What_you_will_learn,
+          aims,
+          who_should_attend,
+          objectives_point,
+          what_you_will_learn_point,
         ],
         (err, result) => {
           if (err) return reject(err.message);
@@ -200,7 +208,7 @@ export function geCountOfPurchasedCourse(id) {
     try {
       let getQuery =
         "SELECT SUM(fake_course_count) FROM purchased_course WHERE course_type = ? AND user_id = ?;";
-      db.query(getQuery, ["course",id], (err, result) => {
+      db.query(getQuery, ["course", id], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
@@ -218,7 +226,7 @@ export function geCountOfAssignedCourse(id) {
     try {
       let getQuery =
         "SELECT SUM(fake_count) FROM course_assigned_manager WHERE course_type = ? AND manager_id = ?;";
-      db.query(getQuery, ["course",id], (err, result) => {
+      db.query(getQuery, ["course", id], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
