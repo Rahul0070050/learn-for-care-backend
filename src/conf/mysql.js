@@ -157,7 +157,7 @@ export function mySqlConnect(done) {
     user_id INT NOT NULL,
     coupon_id INT NOT NULL,
     price INT DEFAULT NULL,
-    state BOOLEAN NOT NULL DEFAULT TRUE
+    state BOOLEAN NOT NULL DEFAULT TRUE 
   )`;
 
   db.query(createAppliedCouponTable, (err, result) => {
