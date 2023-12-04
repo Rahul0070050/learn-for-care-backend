@@ -8,7 +8,7 @@ function findCouponFromDb(code) {
     db.query(getQuery1, [code], (err, result) => {
       if (err) return reject(err?.message);
       else {
-        if (result.length > 1) {
+        if (result.length < 1) {
           db.query(getQuery2, [code], (err, result) => {
             if (err) return reject(err?.message);
             else {
