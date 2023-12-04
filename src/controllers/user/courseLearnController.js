@@ -28,7 +28,6 @@ export const onGoingCourseController = {
                 course[`pptCount`] = resources.length;
 
                 resources.forEach((item, i) => {
-                  console.log(item.file + ":" + item.type);
                   course[`resource${i}-`] = `${item.file}&&${item.name}`;
                 });
 
@@ -41,10 +40,12 @@ export const onGoingCourseController = {
 
                 for (let index = 0; index < ppt.length; index++) {
                   let link = course[`ppt${index}-`];
-
+                  
                   // let key = urlstring.pop();
 
                   let url = await downloadFromS3(index, link);
+
+                  delete course[`ppt${index}-`];
 
                   images.push(url.url);
                 }
@@ -54,6 +55,8 @@ export const onGoingCourseController = {
                   let url = await downloadFromS3(index, link[0]);
 
                   resource.push({url: url.url, fileName: link[1]});
+                  
+                  delete course[`resource${index}-`];
                 }
 
                 let intro_video = await downloadFromS3(
