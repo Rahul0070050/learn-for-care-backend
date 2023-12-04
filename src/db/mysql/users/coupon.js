@@ -28,7 +28,7 @@ export function applyCouponToCart(code, userId) {
         "INSERT INTO applied_coupon (user_id, coupon_id, price) VALUES (?,?,?);";
       let checkQuery =
         "SELECT * FORM applied_coupon WHERE user_id = ? AND state = ?;";
-      db.query(checkQuery, [id, true], async (err, result) => {
+      db.query(checkQuery, [userId, true], async (err, result) => {
         if (err) return reject(err?.message);
         else {
           if (result.length <= 0) {
