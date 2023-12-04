@@ -2,8 +2,8 @@ import { db } from "../../../conf/mysql.js";
 
 function findCouponFromDb(codecode) {
   return new Promise((resolve, reject) => {
-    let getQuery1 = "SELECT * FORM coupons WHERE coupon_code = ?;";
-    let getQuery2 = "SELECT * FORM volume_coupons WHERE coupon_code = ?;";
+    let getQuery1 = "SELECT * FROM coupons WHERE coupon_code = ?;";
+    let getQuery2 = "SELECT * FROM volume_coupons WHERE coupon_code = ?;";
     db.query(getQuery1, [code], (err, result) => {
       if (err) return reject(err?.message);
       else {
@@ -27,7 +27,7 @@ export function applyCouponToCart(code, userId) {
       let insertQuery =
         "INSERT INTO applied_coupon (user_id, coupon_id, price) VALUES (?,?,?);";
       let checkQuery =
-        "SELECT * FORM applied_coupon WHERE user_id = ? AND state = ?;";
+        "SELECT * FROM applied_coupon WHERE user_id = ? AND state = ?;";
       db.query(checkQuery, [userId, true], async (err, result) => {
         if (err) return reject(err?.message);
         else {
