@@ -54,7 +54,7 @@ export function applyCouponToCart(code, userId) {
         console.log("coupon.length ", coupon);
         if (amount.amount.minimum_purchase <= totalPrice) {
           console.log("totalPrice ", totalPrice);
-          if (coupon.length >= 0) {
+          if (coupon.length <= 0) {
             db.query(
               updateQuery,
               [amount.amount.coupon_type, amount.amount.amount, userId, true],
