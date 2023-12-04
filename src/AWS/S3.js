@@ -23,6 +23,7 @@ export function uploadFileToS3(dir, file) {
         let blob = fs.readFileSync(uploadPath);
         let name = `${dir}/${uuid()}`;
         let type = file.mimetype;
+        let FName = file?.name?.split('.')[0] || 'resource'
 
         let fileUploading = await s3
           .upload({
@@ -39,6 +40,7 @@ export function uploadFileToS3(dir, file) {
           file: fileUploading.Key,
           name: dir.split("/").pop(),
           type,
+          fileName: FName
         });
       });
     } catch (error) {

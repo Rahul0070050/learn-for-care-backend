@@ -69,6 +69,7 @@ export const courseController = {
                     result[file.name].push({
                       type: file.type,
                       file: file.file,
+                      name: file.fileName,
                     });
                   } else if (file.name == "image") {
                     result[file.name].push({
