@@ -1,6 +1,6 @@
 import { db } from "../../../conf/mysql.js";
 
-function findCouponFromDb(codecode) {
+function findCouponFromDb(code) {
   return new Promise((resolve, reject) => {
     let getQuery1 = "SELECT * FROM coupons WHERE coupon_code = ?;";
     let getQuery2 = "SELECT * FROM volume_coupons WHERE coupon_code = ?;";
