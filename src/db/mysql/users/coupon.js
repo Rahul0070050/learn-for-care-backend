@@ -45,16 +45,21 @@ export function applyCouponToCart(code, userId) {
                 totalPrice += item.amount;
               });
               if (amount.type == "amount") {
-                console.log(userId,amount.amount.amount,amount.amount.id);
+                if(amount.amount.minimum_purchase <= totalPrice) {
+                    db.query(insertQuery,[userId,amount.amount.amount,amount.amount.id],(err, result) => {
+                      if (err) return reject(err?.message);
+                      else return resolve();
+                    });
+                }
+              } else {
                 // if(amount.amount.minimum_purchase <= totalPrice) {
                 //     db.query(insertQuery,[userId,amount.amount.amount,amount.amount.id],(err, result) => {
                 //       if (err) return reject(err?.message);
                 //       else return resolve();
                 //     });
                 // }
-              } else {
-                console.log(totalPrice);
-                console.log(cart);
+                console.log(amount);
+                // console.log(cart);
               }
             } catch (error) {
               reject(error);
