@@ -45,9 +45,9 @@ export function applyCouponToCart(code, userId) {
                 totalPrice += item.amount;
               });
               if (amount.type == "amount") {
-                console.log(amount);
-                // if(amount.minimum_purchase <= totalPrice) {
-                //     db.query(insertQuery,[userId,amount],(err, result) => {
+                console.log(userId,amount.amount.amount,amount.amount.id);
+                // if(amount.amount.minimum_purchase <= totalPrice) {
+                //     db.query(insertQuery,[userId,amount.amount.amount,amount.amount.id],(err, result) => {
                 //       if (err) return reject(err?.message);
                 //       else return resolve();
                 //     });
