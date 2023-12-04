@@ -7,7 +7,10 @@ import {
   checkUpdateCartCountReqBody,
 } from "../../helpers/user/validateCartReqBody.js";
 import { getUser } from "../../utils/auth.js";
-import { getCourseByIdFromDb } from "../../db/mysql/admin/course.js";
+import {
+  deleteAppliedCoupon,
+  getCourseByIdFromDb,
+} from "../../db/mysql/admin/course.js";
 import {
   addCourseToCart,
   deleteCourseFromDb,
@@ -23,7 +26,10 @@ import { getCourseBundleById } from "../../db/mysql/users/courseBundle.js";
 import { getAllInvoice, getInvoice } from "../../helpers/getInvoice.js";
 import { v4 as uuid } from "uuid";
 import { saveInvoice } from "../../invoice/invoice.js";
-import { getInvoiceFromDb, saveInvoiceToDb } from "../../db/mysql/users/invoice.js";
+import {
+  getInvoiceFromDb,
+  saveInvoiceToDb,
+} from "../../db/mysql/users/invoice.js";
 
 config("../../../.env");
 export const cartController = {
@@ -192,6 +198,9 @@ export const cartController = {
       checkUpdateCartCountReqBody(req.body)
         .then(async (result) => {
           let price = null;
+          let userId = getUser(req).id;
+          deleteAppliedCoupon(userId);
+
           if (result.type === "course") {
             price = await getCourseByIdFromDb(result.courseId);
           } else {
@@ -256,8 +265,10 @@ export const cartController = {
     try {
       checkDeleteCorseFromCartReqBody(req.body)
         .then((result) => {
+          let userId = getUser(req).id;
+          deleteAppliedCoupon(userId);
           deleteCourseFromDb(result.cart_id)
-            .then(() => {
+          .then(() => {
               res.status(200).json({
                 success: true,
                 data: {

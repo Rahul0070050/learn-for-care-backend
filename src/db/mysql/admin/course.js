@@ -40,10 +40,20 @@ export function addNewCourse(courseData) {
     }
   });
 }
+export function deleteAppliedCoupon(id) {
+  try {
+    return new Promise((resolve, reject) => {
+      let deleteQuery =
+        "DELETE FORM applied_coupon WHERE user_id = ? state = ?";
+      db.query(deleteQuery, [id, true], (err, result) => {});
+    });
+  } catch (error) {}
+}
 
 export function getCourseByIdFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
+      deleteAppliedCoupon(id)
       let getCourseByIdQuery = "SELECT * FROM course WHERE id = ?;";
       db.query(getCourseByIdQuery, [id], (err, result) => {
         if (err) {

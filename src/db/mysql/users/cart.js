@@ -1,4 +1,5 @@
 import { db } from "../../../conf/mysql.js";
+import { deleteAppliedCoupon } from "../admin/course.js";
 
 export function addCourseToCart(
   courseId,

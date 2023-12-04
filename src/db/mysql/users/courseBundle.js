@@ -1,4 +1,5 @@
 import { db } from "../../../conf/mysql.js";
+import { deleteAppliedCoupon } from "../admin/course.js";
 import { getAssignedCourseById } from "./assignedCourse.js";
 import {
   getManagerAssignedBundleById,
@@ -8,6 +9,7 @@ import {
 export function getCourseBundleById(id) {
   return new Promise((resolve, reject) => {
     try {
+      deleteAppliedCoupon(id)
       let getOneBundleQuery = "SELECT * FROM course_bundle WHERE id = ?;";
 
       db.query(getOneBundleQuery, [id], (err, bundle) => {
