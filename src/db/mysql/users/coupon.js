@@ -22,12 +22,26 @@ function findCouponFromDb(code) {
   });
 }
 
-function getActiveCouponByUserId(id) {
+export function getActiveCouponByUserId(id) {
   return new Promise((resolve, reject) => {
     try {
       let checkQuery =
         "SELECT * FROM applied_coupon WHERE user_id = ? AND state = ?;";
       db.query(checkQuery, [id, true], (err, result) => {
+        if (err) return reject(err.message);
+        else resolve(result[0]);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+}
+
+export function disableCouponByUserId(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let checkQuery = "UPDATE applied_coupon SET state = ? WHERE user_id = ?;";
+      db.query(checkQuery, [false, id], (err, result) => {
         if (err) return reject(err.message);
         else resolve(result);
       });

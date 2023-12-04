@@ -30,6 +30,7 @@ import {
   getInvoiceFromDb,
   saveInvoiceToDb,
 } from "../../db/mysql/users/invoice.js";
+import { getActiveCouponByUserId } from "../../db/mysql/users/coupon.js";
 
 config("../../../.env");
 export const cartController = {
@@ -475,6 +476,20 @@ export const cartController = {
                   let filePath = uuid() + ".pdf";
                   await saveInvoice(filePath);
                   setTimeout(async () => {
+                    let coupon = await getActiveCouponByUserId(userId);
+                    if (coupon) {
+                      if (coupon.type == "Percent") {
+                        cartItems.forEach((item) => {
+                          item["amount"] =
+                            (item["amount"] * coupon.amount) / 100;
+                        });
+                      } else {
+                        let amount = Number(coupon.amount / cartItems.length);
+                        cartItems.forEach((item) => {
+                          item["amount"] -= amount;
+                        });
+                      }
+                    }
                     let url = await uploadInvoice(filePath);
                     await saveInvoiceToDb({ userId, image: url.file });
                     Promise.all(
