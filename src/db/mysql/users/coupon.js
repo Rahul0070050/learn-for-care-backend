@@ -37,10 +37,14 @@ export function applyCouponToCart(code, userId) {
         if (err) return reject(err?.message);
         else {
           if (result.length <= 0) {
-            let amount = await findCouponFromDb(code);
-            let cart = await getAllCartItemFromDB(userId);
-            console.log(amount);
-            console.log(cart);
+            try {
+                let amount = await findCouponFromDb(code);
+                let cart = await getAllCartItemFromDB(userId);
+                console.log(amount);
+                console.log(cart);
+            } catch (error) {
+                console.log(error);
+            }
             // ("minimum_purchase");
             // ("max_val");
             // ("min_val");
