@@ -155,8 +155,8 @@ export function mySqlConnect(done) {
     CREATE TABLE IF NOT EXISTS applied_coupon (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
-    coupon_id INT NOT NULL,
-    price INT DEFAULT NULL,
+    type VARCHAR(10) NOT NULL,
+    amount INT DEFAULT NULL,
     state BOOLEAN NOT NULL DEFAULT TRUE 
   )`;
 

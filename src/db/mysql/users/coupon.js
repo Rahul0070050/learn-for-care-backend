@@ -25,7 +25,7 @@ export function applyCouponToCart(code, userId) {
   return new Promise(async (resolve, reject) => {
     try {
       let insertQuery =
-        "INSERT INTO applied_coupon (user_id, coupon_id, price) VALUES (?,?,?);";
+        "INSERT INTO applied_coupon (user_id, type, amount) VALUES (?,?,?);";
       try {
         let amount = await findCouponFromDb(code);
         let cart = await getAllCartItemFromDB(userId);
