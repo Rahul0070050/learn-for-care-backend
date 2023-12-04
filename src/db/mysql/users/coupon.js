@@ -21,11 +21,25 @@ function findCouponFromDb(code) {
     });
   });
 }
+
+function getActiveCouponByUserId(id) {
+  return new Promise((resolve, reject) => {
+    let checkQuery =
+      "SELECT * FROM applied_coupon WHERE user_id = ? AND state = ?;";
+    db.query(checkQuery, [id, true], (err, result) => {
+      if (err) return reject(err.message);
+      else resolve(result);
+    });
+  });
+}
 export function applyCouponToCart(code, userId) {
   return new Promise(async (resolve, reject) => {
     try {
+      let coupon = await getActiveCouponByUserId(userId);
       let insertQuery =
         "INSERT INTO applied_coupon (user_id, type, amount) VALUES (?,?,?);";
+      let updateQuery =
+        "UPDATE applied_coupon SET type = ?, amount = ? WHERE user_id = ? AND state = ?;";
       try {
         let amount = await findCouponFromDb(code);
         let cart = await getAllCartItemFromDB(userId);
@@ -33,16 +47,26 @@ export function applyCouponToCart(code, userId) {
         cart.forEach((item) => {
           totalPrice += item.amount;
         });
-        console.log(amount);
         if (amount.amount.minimum_purchase <= totalPrice) {
-          db.query(
-            insertQuery,
-            [userId, amount.amount.amount, amount.amount.id],
-            (err, result) => {
-              if (err) return reject(err?.message);
-              else return resolve(amount);
-            }
-          );
+          if (coupon) {
+            db.query(
+              updateQuery,
+              [amount.amount.coupon_type, amount.amount.amount, userId, true],
+              (err, result) => {
+                if (err) return reject(err?.message);
+                else return resolve(amount.amount);
+              }
+            );
+          } else {
+            db.query(
+              insertQuery,
+              [userId, amount.amount.coupon_type, amount.amount.amount],
+              (err, result) => {
+                if (err) return reject(err?.message);
+                else return resolve(amount.amount);
+              }
+            );
+          }
         } else {
           reject("Minimum purchase is required.");
         }

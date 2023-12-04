@@ -8,7 +8,7 @@ export const couponController = {
       validateApplyCouponReq(req.body)
         .then((result) => {
           let user = getUser(req);
-          applyCouponToCart(result.code, user.id).then(() => {
+          applyCouponToCart(result.code, user.id).then((result) => {
             res.status(200).json({
                 success: true,
                 data: {
