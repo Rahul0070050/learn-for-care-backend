@@ -13,7 +13,7 @@ export const couponController = {
                 success: true,
                 data: {
                   code: 200,
-                  message: "got all managers",
+                  message: "coupon applied",
                   response: result,
                 },
               });
