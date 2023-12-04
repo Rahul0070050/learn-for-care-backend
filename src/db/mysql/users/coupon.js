@@ -89,9 +89,11 @@ export function applyCouponToCart(code, userId) {
           reject("Minimum purchase is required.");
         }
       } catch (error) {
+        console.log(error);
         reject(error);
       }
     } catch (error) {
+      console.log(error);
       reject(error?.message);
     }
   });
