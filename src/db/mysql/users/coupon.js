@@ -38,21 +38,31 @@ export function applyCouponToCart(code, userId) {
         else {
           if (result.length <= 0) {
             try {
-                let amount = await findCouponFromDb(code);
-                let cart = await getAllCartItemFromDB(userId);
+              let amount = await findCouponFromDb(code);
+              let cart = await getAllCartItemFromDB(userId);
+              let totalPrice = 0;
+              cart.forEach((item) => {
+                totalPrice += item.amount;
+              });
+              if (amount.type == "amount") {
                 console.log(amount);
+                // if(amount.minimum_purchase <= totalPrice) {
+                //     db.query(insertQuery,[userId,amount],(err, result) => {
+                //       if (err) return reject(err?.message);
+                //       else return resolve();
+                //     });
+                // }
+              } else {
+                console.log(totalPrice);
                 console.log(cart);
+              }
             } catch (error) {
-                reject(error)
+              reject(error);
             }
             // ("minimum_purchase");
             // ("max_val");
             // ("min_val");
             // ("amount");
-            // db.query(insertQuery, (err, result) => {
-            //   if (err) return reject(err?.message);
-            //   else return resolve();
-            // });
           } else {
             reject("coupon is already applied");
           }
