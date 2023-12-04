@@ -404,6 +404,20 @@ export const cartController = {
           errorType: "client",
         });
       } else {
+        let coupon = await getActiveCouponByUserId(userId);
+        console.log("coupon ", coupon);
+        if (coupon) {
+          if (coupon.type == "Percent") {
+            cart.forEach((item) => {
+              item["amount"] = (item["amount"] * coupon.amount) / 100;
+            });
+          } else {
+            let amount = Number(coupon.amount / cart.length);
+            cart.forEach((item) => {
+              item["amount"] -= amount;
+            });
+          }
+        }
         let session = await getStripeUrl(cart, user.email);
         res.status(200).json({
           success: true,
@@ -477,7 +491,7 @@ export const cartController = {
                   await saveInvoice(filePath);
                   setTimeout(async () => {
                     let coupon = await getActiveCouponByUserId(userId);
-                    console.log('coupon ',coupon);
+                    console.log("coupon ", coupon);
                     if (coupon) {
                       if (coupon.type == "Percent") {
                         cartItems.forEach((item) => {
