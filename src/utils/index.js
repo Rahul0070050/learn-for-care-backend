@@ -4,7 +4,7 @@ export function isValidFileExtensions(fileName, fileType) {
     video: ["mp4", , "mkv", "webm"],
     pptx: ["pptx"],
     pdf: ["pdf"],
-    resource: ["pdf", "mp4", "mkv", "webm"],
+    resource: ["pdf", "mp4", "mkv", "webm","txt","docs"],
   };
   return (
     validFileExtensions[fileType].indexOf(fileName.split(".").pop() || "") > -1
