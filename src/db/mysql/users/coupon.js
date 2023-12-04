@@ -4,23 +4,18 @@ import { getAllCartItemFromDB } from "./cart.js";
 function findCouponFromDb(code) {
   return new Promise((resolve, reject) => {
     let getQuery1 = "SELECT * FROM coupons WHERE coupon_code = ?;";
-    let getQuery2 = "SELECT * FROM volume_coupons WHERE coupon_code = ?;";
+    // let getQuery2 = "SELECT * FROM volume_coupons WHERE coupon_code = ?;";
     db.query(getQuery1, [code], (err, result) => {
       if (err) return reject(err?.message);
       else {
-        if (result.length <= 0) {
-          db.query(getQuery2, [code], (err, result) => {
-            if (err) return reject(err?.message);
-            else {
-              if (result.length > 1) {
-                resolve({ type: "percent", amount: result[0] });
-              } else {
-                reject("coupon not fount");
-              }
-            }
-          });
+        if (result.length > 0) {
+          if (result[0].coupon_type == "Percent") {
+            resolve({ type: "Percent", amount: result[0] });
+          } else {
+            resolve({ type: "amount", amount: result[0] });
+          }
         } else {
-          resolve({ type: "amount", amount: result[0] });
+          reject("coupon not fount");
         }
       }
     });
@@ -46,11 +41,15 @@ export function applyCouponToCart(code, userId) {
               });
               console.log(amount);
               if (amount.type == "amount") {
-                if(amount.amount.minimum_purchase <= totalPrice) {
-                    db.query(insertQuery,[userId,amount.amount.amount,amount.amount.id],(err, result) => {
+                if (amount.amount.minimum_purchase <= totalPrice) {
+                  db.query(
+                    insertQuery,
+                    [userId, amount.amount.amount, amount.amount.id],
+                    (err, result) => {
                       if (err) return reject(err?.message);
                       else return resolve();
-                    });
+                    }
+                  );
                 }
               } else {
                 // if(amount.amount.minimum_purchase <= totalPrice) {
