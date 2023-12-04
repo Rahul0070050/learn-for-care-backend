@@ -50,14 +50,14 @@ export function getAllCertificateFromDb() {
         if (err) return reject(err?.message);
         else {
           result = result.flat(1);
-          result = await Promise.all(
+          let newResult = await Promise.all(
             result.map((item) => {
               let image = downloadFromS3("", item.image);
               item["image"] = image.url;
               return item;
             })
           );
-          return resolve(result);
+          return resolve(newResult);
         }
       });
     } catch (error) {
