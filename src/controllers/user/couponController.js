@@ -15,7 +15,7 @@ export const couponController = {
                 success: true,
                 data: {
                   code: 406,
-                  message: "value not acceptable",
+                  message: "error from db",
                   response: err,
                 },
               });

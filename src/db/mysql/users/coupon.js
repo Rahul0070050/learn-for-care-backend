@@ -8,11 +8,15 @@ function findCouponFromDb(code) {
     db.query(getQuery1, [code], (err, result) => {
       if (err) return reject(err?.message);
       else {
-        if (result.length <= 0) {
+        if (result.length > 1) {
           db.query(getQuery2, [code], (err, result) => {
             if (err) return reject(err?.message);
             else {
-              resolve({ type: "percent", amount: result[0] });
+              if (result.length > 1) {
+                resolve({ type: "percent", amount: result[0] });
+              } else {
+                resolve({ type: "non" });
+              }
             }
           });
         } else {
@@ -34,9 +38,13 @@ export function applyCouponToCart(code, userId) {
         else {
           if (result.length <= 0) {
             let amount = await findCouponFromDb(code);
-            let cart = await getAllCartItemFromDB(userId);
-            console.log(amount);
-            console.log(cart);
+            if(amount.type == "non") {
+                return reject("coupon not fount")
+            } else {
+                let cart = await getAllCartItemFromDB(userId);
+                console.log(amount);
+                console.log(cart);
+            }
             // ("minimum_purchase");
             // ("max_val");
             // ("min_val");
