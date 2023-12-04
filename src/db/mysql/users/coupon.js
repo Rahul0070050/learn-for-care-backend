@@ -33,6 +33,7 @@ export function applyCouponToCart(code, userId) {
         cart.forEach((item) => {
           totalPrice += item.amount;
         });
+        console.log(amount.amount);
         if (amount.amount.minimum_purchase <= totalPrice) {
           db.query(
             insertQuery,
