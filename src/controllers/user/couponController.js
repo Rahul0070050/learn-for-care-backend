@@ -12,7 +12,7 @@ export const couponController = {
 
           }).catch(err => {
             res.status(406).json({
-                success: true,
+                success: false,
                 data: {
                   code: 406,
                   message: "error from db",
