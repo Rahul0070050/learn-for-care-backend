@@ -51,8 +51,8 @@ export function getAllCertificateFromDb() {
         else {
           result = result.flat(1);
           let newResult = await Promise.all(
-            result.map((item) => {
-              let image = downloadFromS3("", item.image);
+            result.map(async (item) => {
+              let image = await downloadFromS3("", item.image);
               item["image"] = image.url;
               return item;
             })
