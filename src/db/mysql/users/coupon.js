@@ -38,13 +38,9 @@ export function applyCouponToCart(code, userId) {
         else {
           if (result.length <= 0) {
             let amount = await findCouponFromDb(code);
-            if(amount.type == "non") {
-                return reject("coupon not fount")
-            } else {
-                let cart = await getAllCartItemFromDB(userId);
-                console.log(amount);
-                console.log(cart);
-            }
+            let cart = await getAllCartItemFromDB(userId);
+            console.log(amount);
+            console.log(cart);
             // ("minimum_purchase");
             // ("max_val");
             // ("min_val");
