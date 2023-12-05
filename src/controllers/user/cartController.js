@@ -410,6 +410,7 @@ export const cartController = {
             cart.forEach((item) => {
               let per = (item["amount"] * coupon.amount) / 100;
               item["amount"] = Number(item["amount"] - per)
+              item["amount"] = parseInt(item["amount"]);
               console.log(item["amount"]);
             });
           } else {
