@@ -405,11 +405,11 @@ export const cartController = {
         });
       } else {
         let coupon = await getActiveCouponByUserId(user.id);
-        console.log("coupon ", coupon);
         if (coupon) {
           if (coupon.type == "Percent") {
             cart.forEach((item) => {
-              item["amount"] = (item["amount"] * coupon.amount) / 100;
+              let per = (item["amount"] * coupon.amount) / 100;
+              item["amount"] = item["amount"] - per
             });
           } else {
             let amount = Number(coupon.amount / cart.length);
