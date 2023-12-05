@@ -480,6 +480,7 @@ export function getCourseWiseManager() {
           //     course_names.push({ course_name: c.name, count: 0 });
           // });
           // item["course"] = course;
+          course = course.flat(1)
           console.log(course);
           return course;
         })
