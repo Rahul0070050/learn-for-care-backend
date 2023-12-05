@@ -1642,7 +1642,7 @@ export const adminController = {
             {
               code: 500,
               message: "some error occurred please try again later",
-              error: error,
+              error: err,
             },
           ],
           errorType: "server",
