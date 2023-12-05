@@ -97,18 +97,18 @@ export function getUserByIdFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
       let courses = await getAllPurchasedCourseByUserId(id);
-      let course = await getCountPurchasedCourse(id)
-      let certificate = await getCountAllCertificates(id)
+      let course = await getCountPurchasedCourse(id);
+      let certificate = await getCountAllCertificates(id);
       let getUsersQuery = `SELECT * FROM users WHERE id = ?`;
-      db.query(getUsersQuery, [id], (err, result) => {
+      db.query(getUsersQuery, [id], async (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
           console.log(result[0]);
-          let image = downloadFromS3("",result[0].profile_image || "")
-          result[0]['profile_image'] = image.url
-          result[0].course_count = course[0]['COUNT(*)']
-          result[0].certificate_count = certificate[0]['COUNT(*)']
+          let image = await downloadFromS3("", result[0].profile_image || "");
+          result[0]["profile_image"] = image.url;
+          result[0].course_count = course[0]["COUNT(*)"];
+          result[0].certificate_count = certificate[0]["COUNT(*)"];
           result[0].course = courses;
           resolve(result);
         }
