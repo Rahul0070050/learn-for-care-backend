@@ -458,7 +458,7 @@ export function getCourseWiseIndividualReportsFromAdminDb() {
           });
         });
       });
-
+      console.log(course_names);
       resolve(course_names);
     } catch (error) {
       reject(error?.message);
