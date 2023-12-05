@@ -409,7 +409,7 @@ export const cartController = {
           if (coupon.type == "Percent") {
             cart.forEach((item) => {
               let per = (item["amount"] * coupon.amount) / 100;
-              item["amount"] = item["amount"] - per
+              item["amount"] = item["amount"] - Number(per)
             });
           } else {
             let amount = Number(coupon.amount / cart.length);
