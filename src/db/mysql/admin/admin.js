@@ -1,6 +1,6 @@
 import { db } from "../../../conf/mysql.js";
 import { getAllAssignedCourseByUserId } from "../users/assignedCourse.js";
-import { getAllMAnagers } from "../users/users.js";
+import { getAllMAnagers, getCourseWiseManagerReportsFromDb } from "../users/users.js";
 import { getNewBlogs } from "./blog.js";
 import {
   getCountOfAssignedBundleByOwnerId,
@@ -460,6 +460,41 @@ export function getCourseWiseIndividualReportsFromAdminDb() {
         });
       });
       resolve(course_names);
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getCourseWiseManager(id) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let managers = await getAllMAnagers()
+      managers = managers.flat(1);
+      let course_names = [];
+      let courses = await Promise.all(
+        managers.map(async (item) => {
+          let course = await getCourseWiseManagerReportsFromDb(item.id);
+          // course.map((c) => {
+          //   if (!course_names.find((item) => item?.course_name == c.name))
+          //     course_names.push({ course_name: c.name, count: 0 });
+          // });
+          // item["course"] = course;
+          return course;
+        })
+      );
+      // courses = courses.flat(1);
+      // courses.map((item) => {
+      //   item.course.forEach((c) => {
+      //     course_names.filter((cname) => {
+      //       if (c.name === cname.course_name) {
+      //         return { ...cname, count: ++cname.count };
+      //       }
+      //     });
+      //   });
+      // });
+
+      resolve(courses);
     } catch (error) {
       reject(error?.message);
     }
