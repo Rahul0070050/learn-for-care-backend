@@ -723,7 +723,7 @@ export function getAllMonthlyTransactionsFromDb(userId) {
   });
 }
 
-export function getAllMonthlyTransactionsFromDb(userId) {
+export function getMonthlyTransactionsFromDb(userId) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `

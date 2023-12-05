@@ -39,6 +39,7 @@ import {
   getCourseWiseIndividualReportsFromDb,
   getIndividualReportFromDb,
   getCourseWiseIndividualFromManagerReportsFromDb,
+  getMonthlyTransactionsFromDb,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
@@ -1402,7 +1403,7 @@ export const userController = {
   getAllMonthlyTransactions: (req, res) => {
     try {
       let userId = getUser(req).id;
-      getAllMonthlyTransactionsFromDb(userId)
+      getMonthlyTransactionsFromDb(userId)
         .then((result) => {
           res.status(200).json({
             success: true,
