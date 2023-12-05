@@ -52,6 +52,8 @@ route.get("/get-individual-report", validateAdmin, adminController.getIndividual
 route.get("/get-course-wise-individual-reports", validateAdmin, adminController.getCourseWiseIndividualReports);
 route.get("/get-course-wise-individual-manager-reports", validateAdmin, adminController.getCourseWiseIndividualManagerReports);
 
+route.get("/get-all-transactions", validateUser, adminController.getAllTransactions);
+
 route.post("/assign-bundle", validateAdmin, adminController.assignBundle);
 
 export default route;

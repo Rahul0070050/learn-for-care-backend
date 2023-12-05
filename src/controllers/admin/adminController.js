@@ -12,6 +12,7 @@ import {
   getAllExperiencesData,
   getAllIndividualsAndCompaniesFromDb,
   getAllQualificationsFromDB,
+  getAllTransactionsFromDb,
   getCourseWiseIndividualReportsFromAdminDb,
   getCourseWiseManager,
   getDashboardData,
@@ -1687,6 +1688,43 @@ export const adminController = {
           errorType: "server",
         });
       })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAllTransactions: (req, res) => {
+    try {
+      getAllTransactionsFromDb()
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got all transaction reports",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
     } catch (error) {
       res.status(500).json({
         success: false,

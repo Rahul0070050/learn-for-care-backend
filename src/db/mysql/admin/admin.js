@@ -487,7 +487,7 @@ export function getCourseWiseManager() {
       );
       
       courses = courses.flat(1);
-      
+
       // courses = courses.flat(1);
       // courses.map((item) => {
       //   item.course.forEach((c) => {
@@ -500,6 +500,29 @@ export function getCourseWiseManager() {
       // });
 
       resolve(courses);
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getAllTransactionsFromDb() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT 
+      course.name AS name, purchased_course.amount AS amount, purchased_course.date AS date, purchased_course.fake_course_count AS count 
+      FROM 
+      purchased_course 
+      RIGHT JOIN course on course.id = purchased_course.course_id
+      `;
+      db.query(getQuery, (err, result) => {
+        if (err) {
+          reject(err.message);
+        } else {
+          resolve(result);
+        }
+      });
     } catch (error) {
       reject(error?.message);
     }
