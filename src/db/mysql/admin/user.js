@@ -104,7 +104,7 @@ export function getUserByIdFromDb(id) {
         if (err) {
           reject(err?.message);
         } else {
-          let image = downloadFromS3("",result[0].profile_image)
+          let image = downloadFromS3("",result[0].profile_image || "")
           result[0].profile_image = image.url
           result[0].course_count = course[0]['COUNT(*)']
           result[0].certificate_count = certificate[0]['COUNT(*)']
