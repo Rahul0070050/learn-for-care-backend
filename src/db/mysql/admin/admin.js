@@ -1,6 +1,6 @@
 import { db } from "../../../conf/mysql.js";
 import { getAllAssignedCourseByUserId } from "../users/assignedCourse.js";
-import { getAllMAnagers, getCourseWiseManagerReportsFromDb } from "../users/users.js";
+import { getAllCompanies, getAllMAnagers, getCourseWiseManagerReportsFromDb } from "../users/users.js";
 import { getNewBlogs } from "./blog.js";
 import {
   getCountOfAssignedBundleByOwnerId,
@@ -466,20 +466,21 @@ export function getCourseWiseIndividualReportsFromAdminDb() {
   });
 }
 
-export function getCourseWiseManager(id) {
+export function getCourseWiseManager() {
   return new Promise(async (resolve, reject) => {
     try {
-      let managers = await getAllMAnagers()
-      managers = managers.flat(1);
+      let companies = await getAllCompanies()
+      companies = companies.flat(1);
       let course_names = [];
       let courses = await Promise.all(
-        managers.map(async (item) => {
+        companies.map(async (item) => {
           let course = await getCourseWiseManagerReportsFromDb(item.id);
           // course.map((c) => {
           //   if (!course_names.find((item) => item?.course_name == c.name))
           //     course_names.push({ course_name: c.name, count: 0 });
           // });
           // item["course"] = course;
+          console.log(course);
           return course;
         })
       );
