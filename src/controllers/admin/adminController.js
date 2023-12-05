@@ -17,6 +17,7 @@ import {
   getExperienceDocFromDbById,
   getIndividualReportFromDb,
   getManagerReport,
+  getManagerReportForAdmin,
   getQualificationDocFromDbByAdminIdAndDocId,
   getQualificationDocFromDbById,
   saveBannerToDb,
