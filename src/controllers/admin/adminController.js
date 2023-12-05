@@ -1587,8 +1587,7 @@ export const adminController = {
   },
   getIndividualReport:(req,res) => {
     try {
-      let user = getUser(req)
-      getIndividualReportFromDb(user.id).then(result => {
+      getIndividualReportFromDb().then(result => {
         res.status(200).json({
           success: true,
           data: {

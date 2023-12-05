@@ -17,7 +17,6 @@ import {
   geCountOfAllCompanyUsers,
   geCountOfAllIndividualUsers,
   geCountOfAllIndividuals,
-  getAllIndividualsFromDb,
   getCountOfAssignedBundleForIndividuals,
   getNewCompanyUsers,
   getNewUsers,
@@ -454,9 +453,28 @@ export function getManagerReport(id) {
   });
 }
 
-export function getIndividualReportFromDb(id) {
+export function getAllIndividualsFromDb() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT * FROM users
+      WHERE type_of_account = 'individual';`;
+      db.query(getQuery, (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getIndividualReportFromDb() {
   return new Promise(async (resolve, reject) => {
-    let individuals = await getAllIndividualsFromDb(id);
+    let individuals = await getAllIndividualsFromDb();
     Promise.all(
       individuals.map(async (item) => {
         try {
