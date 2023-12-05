@@ -49,6 +49,9 @@ route.delete("/delete-qualification/:id", validateAdmin, adminController.delateA
 route.get("/get-manager-report", validateAdmin, adminController.getManagerReport);
 route.get("/get-individual-report", validateAdmin, adminController.getIndividualReport);
 
+route.get("/get-course-wise-individual-reports", validateAdmin, adminController.getCourseWiseIndividualReports);
+// route.get("/get-course-wise-individual-manager-reports", validateAdmin, adminController.getCourseWiseIndividualManagerReports);
+
 route.post("/assign-bundle", validateAdmin, adminController.assignBundle);
 
 export default route;

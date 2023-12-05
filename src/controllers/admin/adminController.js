@@ -12,6 +12,7 @@ import {
   getAllExperiencesData,
   getAllIndividualsAndCompaniesFromDb,
   getAllQualificationsFromDB,
+  getCourseWiseIndividualReportsFromAdminDb,
   getDashboardData,
   getExperienceDocFromDbByAdminIdAndDocId,
   getExperienceDocFromDbById,
@@ -1588,6 +1589,44 @@ export const adminController = {
   getIndividualReport:(req,res) => {
     try {
       getIndividualReportFromDb().then(result => {
+        res.status(200).json({
+          success: true,
+          data: {
+            code: 200,
+            message: "got individual report",
+            response: result,
+          },
+        });
+      }).catch(err => {
+        res.status(500).json({
+          success: false,
+          errors: [
+            {
+              code: 500,
+              message: "some error occurred please try again later",
+              error: error,
+            },
+          ],
+          errorType: "server",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getCourseWiseIndividualReports:(req,res) => {
+    try {
+      getCourseWiseIndividualReportsFromAdminDb().then(result => {
         res.status(200).json({
           success: true,
           data: {
