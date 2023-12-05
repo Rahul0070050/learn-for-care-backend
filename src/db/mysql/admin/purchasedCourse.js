@@ -74,10 +74,12 @@ export function getReportFromDbGroupByDay() {
       let getPurchasedCourseDataQuery = `
       SELECT
       YEAR(date) AS year,
+      MONTH(date) AS month,
+      DATE(date) AS date,
       SUM(amount) AS total_amount,
       SUM(course_count) AS total_course_count
       FROM purchased_course
-      GROUP BY year;
+      GROUP BY year, month, date;
       `;
 
       db.query(getPurchasedCourseDataQuery, (err, result) => {
