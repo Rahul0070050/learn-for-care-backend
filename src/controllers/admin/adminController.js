@@ -1546,8 +1546,7 @@ export const adminController = {
   },
    getManagerReport: (req, res) => {
     try {
-      let admin = getUser(req);
-      getManagerReport(admin.id)
+      getManagerReportForAdmin()
         .then((result) => {
           res.status(200).json({
             success: true,
