@@ -1,13 +1,20 @@
 import { db } from "../../../conf/mysql.js";
 import { getAllAssignedCourseByUserId } from "../users/assignedCourse.js";
-import { getAllCompanies, getAllMAnagers, getCourseWiseManagerReportsFromDb } from "../users/users.js";
+import {
+  getAllCompanies,
+  getAllMAnagers,
+  getCourseWiseManagerReportsFromDb,
+} from "../users/users.js";
 import { getNewBlogs } from "./blog.js";
 import {
   getCountOfAssignedBundleByOwnerId,
   getCountOfBundleByOwnerId,
   getCountOfBundlePurchasedByOwnerId,
 } from "./bundle.js";
-import { geCountOfAllCertificates, geCountOfAllCertificatesByUserId } from "./certificate.js";
+import {
+  geCountOfAllCertificates,
+  geCountOfAllCertificatesByUserId,
+} from "./certificate.js";
 import {
   geCountOfAllCourse,
   geCountOfAssignedCourse,
@@ -34,6 +41,7 @@ export function getDashboardData() {
       let individual_users_count = await geCountOfAllIndividualUsers();
       let certificates_count = await geCountOfAllCertificates();
       let course_count = await geCountOfAllCourse();
+      let graph_data = await getLineGraphData();
 
       let getQuery = `SELECT * FROM purchased_course ORDER BY id DESC;`;
       db.query(getQuery, (err, result) => {
@@ -41,7 +49,7 @@ export function getDashboardData() {
           return reject(err.message);
         } else {
           let response = {
-            manager: managers[0]['COUNT(*)'],
+            manager: managers[0]["COUNT(*)"],
             newUsers: newUsers,
             newBlogs: newBlogs,
             ["new_company_users"]: newCompanyUsers,
@@ -58,6 +66,33 @@ export function getDashboardData() {
       console.log(error);
       reject(error?.message);
     }
+  });
+}
+
+export function getLineGraphData() {
+  return new Promise((resolve, reject) => {
+    let getQuery = 
+    `
+      SELECT
+          MONTH(date) AS month_number,
+          DATE_FORMAT(date, '%M') AS month,
+          SUM(amount) AS amount
+      FROM
+          purchased_course
+      WHERE
+          date >= CURDATE() - INTERVAL 12 MONTH
+      GROUP BY
+          MONTH(date)
+      ORDER BY
+          MONTH(date) DESC;
+    `;
+    db.query(getQuery, (err, result) => {
+      if (err) {
+        reject(err?.message);
+      } else {
+        resolve(result);
+      }
+    });
   });
 }
 
@@ -435,7 +470,7 @@ export function getAllMAnagersForAdmin() {
 export function getCourseWiseIndividualReportsFromAdminDb() {
   return new Promise(async (resolve, reject) => {
     try {
-      let individuals = await getAllIndividualsFromDb()
+      let individuals = await getAllIndividualsFromDb();
       individuals = individuals.flat(1);
       let course_names = [];
       let courses = await Promise.all(
@@ -469,7 +504,7 @@ export function getCourseWiseIndividualReportsFromAdminDb() {
 export function getCourseWiseManager() {
   return new Promise(async (resolve, reject) => {
     try {
-      let companies = await getAllCompanies()
+      let companies = await getAllCompanies();
       companies = companies.flat(1);
       let course_names = [];
       let courses = await Promise.all(
@@ -480,12 +515,12 @@ export function getCourseWiseManager() {
           //     course_names.push({ course_name: c.name, count: 0 });
           // });
           // item["course"] = course;
-          course = course.flat(1)
+          course = course.flat(1);
           console.log(course);
           return course;
         })
       );
-      
+
       courses = courses.flat(1);
 
       // courses = courses.flat(1);
@@ -625,17 +660,23 @@ export function getIndividualReportFromDb() {
     Promise.all(
       individuals.map(async (item) => {
         try {
-          let bundleCount1 = await getCountOfAssignedBundleForIndividuals(item.id);
+          let bundleCount1 = await getCountOfAssignedBundleForIndividuals(
+            item.id
+          );
           let bundleCount2 = await getCountOfBundlePurchasedByOwnerId(item.id);
           let CourseCount1 = await geCountOfPurchasedCourse(item.id);
           let CourseCount2 = await geCountOfAssignedCourse(item.id);
-          let countOfIndividuals = await geCountOfAllCertificatesByUserId(item.id);
+          let countOfIndividuals = await geCountOfAllCertificatesByUserId(
+            item.id
+          );
 
           // Number.isInteger
           item["assigned_course_count"] = CourseCount2[0]["SUM(fake_count)"];
           item["assigned_bundle_count"] = bundleCount1[0]["SUM(count)"];
-          item["purchased_course_count"] = CourseCount1[0]["SUM(fake_course_count)"];
-          item["purchased_bundle_count"] = bundleCount2[0]["SUM(fake_course_count)"];
+          item["purchased_course_count"] =
+            CourseCount1[0]["SUM(fake_course_count)"];
+          item["purchased_bundle_count"] =
+            bundleCount2[0]["SUM(fake_course_count)"];
           item["certificates"] = countOfIndividuals[0]["COUNT(*)"];
           return item;
         } catch (error) {
