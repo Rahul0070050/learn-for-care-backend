@@ -514,7 +514,7 @@ export function getAllTransactionsFromDb() {
       course.name AS name, purchased_course.amount AS amount, purchased_course.date AS date, purchased_course.fake_course_count AS count 
       FROM 
       purchased_course 
-      RIGHT JOIN course on course.id = purchased_course.course_id
+      RIGHT JOIN course on course.id = purchased_course.course_id;
       `;
       db.query(getQuery, (err, result) => {
         if (err) {
