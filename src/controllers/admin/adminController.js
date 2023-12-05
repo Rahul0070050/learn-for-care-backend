@@ -12,7 +12,6 @@ import {
   getAllExperiencesData,
   getAllIndividualsAndCompaniesFromDb,
   getAllQualificationsFromDB,
-  getCourseWiseIndividualFromManagerReportsFromDb,
   getCourseWiseIndividualReportsFromAdminDb,
   getCourseWiseManager,
   getDashboardData,
