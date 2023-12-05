@@ -77,6 +77,7 @@ export function getReportFromDbGroupByDay() {
       MONTH(date) AS month,
       DAY(date) AS day,
       SUM(amount) AS total_amount,
+      date,
       SUM(course_count) AS total_course_count
       FROM purchased_course
       GROUP BY year, month, day;
