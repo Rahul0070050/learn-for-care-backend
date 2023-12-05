@@ -98,7 +98,7 @@ export function getReportFromDbGroupByYear() {
       let getPurchasedCourseCurrentDateQuery = `
       SELECT *
       FROM purchased_course
-      WHERE DATE(date_column) = CURDATE();
+      WHERE DATE(date) = CURDATE();
       `;
 
       db.query(getPurchasedCourseCurrentDateQuery, async (err, result) => {
