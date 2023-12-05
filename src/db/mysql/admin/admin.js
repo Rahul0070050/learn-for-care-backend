@@ -58,6 +58,7 @@ export function getDashboardData() {
             individual_users_count: individual_users_count[0]["COUNT(*)"],
             ["certificates_count"]: certificates_count[0]["COUNT(*)"],
             ["course_count"]: course_count[0]["COUNT(*)"],
+            graph_data: graph_data
           };
           return resolve(response);
         }
