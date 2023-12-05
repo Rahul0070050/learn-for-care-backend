@@ -1,4 +1,5 @@
 import { db } from "../../../conf/mysql.js";
+import { getAllAssignedCourseByUserId } from "../users/assignedCourse.js";
 import { getAllMAnagers } from "../users/users.js";
 import { getNewBlogs } from "./blog.js";
 import {
@@ -458,7 +459,6 @@ export function getCourseWiseIndividualReportsFromAdminDb() {
           });
         });
       });
-      console.log(course_names);
       resolve(course_names);
     } catch (error) {
       reject(error?.message);
