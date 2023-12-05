@@ -485,6 +485,9 @@ export function getCourseWiseManager() {
           return course;
         })
       );
+      
+      courses = courses.flat(1);
+      
       // courses = courses.flat(1);
       // courses.map((item) => {
       //   item.course.forEach((c) => {
