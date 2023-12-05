@@ -1,4 +1,4 @@
-import { applyCouponToCart } from "../../db/mysql/users/coupon.js";
+import { applyCouponToCart, getActiveCouponByUserId } from "../../db/mysql/users/coupon.js";
 import { validateApplyCouponReq } from "../../helpers/user/validateCouponReq.js";
 import { getUser } from "../../utils/auth.js";
 
@@ -8,8 +8,9 @@ export const couponController = {
       validateApplyCouponReq(req.body)
         .then((result) => {
           let user = getUser(req);
-          applyCouponToCart(result.code, user.id).then((result) => {
-            res.status(200).json({
+          applyCouponToCart(result.code, user.id)
+            .then((result) => {
+              res.status(200).json({
                 success: true,
                 data: {
                   code: 200,
@@ -17,8 +18,9 @@ export const couponController = {
                   response: result,
                 },
               });
-          }).catch(err => {
-            res.status(406).json({
+            })
+            .catch((err) => {
+              res.status(406).json({
                 success: false,
                 data: {
                   code: 406,
@@ -26,7 +28,7 @@ export const couponController = {
                   response: err,
                 },
               });
-          })
+            });
         })
         .catch((err) => {
           res.status(406).json({
@@ -34,6 +36,45 @@ export const couponController = {
             data: {
               code: 406,
               message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred while saving your data try again after some times",
+            error: err,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getAppliedCoupon: (req, res) => {
+    try {
+      let user = getUser(req);
+      getActiveCouponByUserId(user.id)
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got applied coupon",
+              response: result,
+            },
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "error from db",
               response: err,
             },
           });

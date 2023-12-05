@@ -1048,11 +1048,28 @@ export function getCourseWiseIndividualFromManagerReportsFromDb(id) {
   });
 }
 
+function getAllIndividualFromDb(id) {
+  return new Promise((resolve, reject) => { 
+    try {
+      let getQuery = `SELECT id, first_name, last_name FROM users WHERE type_of_account = ?;`;
+      db.query(getQuery, ["individual", id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+   })
+}
 export function getIndividualReportFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      let individuals = await getAllManagerIndividualFromDb(id);
+      let individuals = await getAllIndividualFromDb(id);
       individuals = individuals.flat(1);
+      console.log();
       Promise.all(individuals.map(async (item) => {
         let course = await getCountAssignedToIndividual(item.id, "course");
         let bundle = await getCountAssignedToIndividual(item.id, "bundle");

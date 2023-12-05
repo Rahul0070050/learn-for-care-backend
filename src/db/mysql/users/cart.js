@@ -102,7 +102,9 @@ export function getAllCartItemFromDB(user_id) {
       let getAllItemsFromCartQuery = `SELECT * FROM cart WHERE user_id = ?`;
       db.query(getAllItemsFromCartQuery, [user_id], (err, result) => {
         if (err) return reject(err?.message);
-        else return resolve(result);
+        else {
+          return resolve(result);
+        }
       });
     } catch (error) {
       reject(error?.message);
