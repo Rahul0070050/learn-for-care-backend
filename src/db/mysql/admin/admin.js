@@ -44,7 +44,7 @@ export function getDashboardData() {
       let graph_data = await getLineGraphData();
 
       console.log(graph_data);
-      
+
       let getQuery = `SELECT * FROM purchased_course ORDER BY id DESC;`;
       db.query(getQuery, (err, result) => {
         if (err) {
@@ -77,17 +77,17 @@ export function getLineGraphData() {
     let getQuery = 
     `
       SELECT
-          MONTH(date) AS month_number,
-          DATE_FORMAT(date, '%M') AS month,
-          SUM(amount) AS amount
+          MONTH(MIN(date)) AS month_number,
+          DATE_FORMAT(MIN(date), '%M') AS month_name,
+          SUM(amount) AS total_purchases
       FROM
           purchased_course
       WHERE
           date >= CURDATE() - INTERVAL 12 MONTH
       GROUP BY
-          MONTH(date)
+          YEAR(date), MONTH(date)
       ORDER BY
-          MONTH(date) DESC;
+          YEAR(date) DESC, MONTH(date) DESC;
     `;
     db.query(getQuery, (err, result) => {
       if (err) {
