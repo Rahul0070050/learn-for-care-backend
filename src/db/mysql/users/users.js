@@ -350,7 +350,7 @@ export function getAllMAnagers(userId) {
 export function getAllCompanies() {
   return new Promise((resolve, reject) => {
     try {
-      let getAllSubUsersQuery = `SELECT city ,phone ,email ,first_name ,id ,joined ,last_name,type_of_account,block FROM users WHERE created_by = ? AND type_of_account = ?;`;
+      let getAllSubUsersQuery = `SELECT city ,phone ,email ,first_name ,id ,joined ,last_name,type_of_account,block FROM users WHERE type_of_account = ?;`;
       db.query(getAllSubUsersQuery, ["company"], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
