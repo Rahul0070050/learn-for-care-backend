@@ -423,7 +423,7 @@ export function assignCourseToMAnagerIndividual(data) {
       } = data;
 
       console.log(data?.assigned);
-      console.log(course_id);
+      console.log('course_id ',course_id);
 
       let decreaseQuery = "";
       if (data?.assigned) {
