@@ -98,8 +98,9 @@ export function getReportFromDbGroupByYear() {
   return new Promise((resolve, reject) => {
     try {
       let getPurchasedCourseCurrentDateQuery = `
-      SELECT *
+      SELECT purchased_course.*, users.first_name AS first_name, users.last_name AS last_name 
       FROM purchased_course
+      INNER JOIN users ON users.id = purchased_course.user_id
       WHERE DATE(date) = CURDATE();
       `;
 
