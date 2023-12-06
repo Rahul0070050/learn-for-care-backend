@@ -1520,7 +1520,7 @@ export const userController = {
         .then(async (result) => {
           let course = await getPurchasedCourseById(result.id);
           let userId = getUser(req).id;
-          result.id = result
+          result.purchased_course_id = result.id
           managerAssignSelfCourse({
             ...result,
             type: course[0].course_type,

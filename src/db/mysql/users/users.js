@@ -441,7 +441,7 @@ export function assignCourseToMAnagerIndividual(data) {
           realCourse_id,
           realCourse_type,
           receiverId,
-          new Date(realValidity)
+          new Date(realValidity),
         ],
         (err, result) => {
           if (err) return reject(err.message);
@@ -918,10 +918,24 @@ export function getAllIndividualReportsFromDb(id) {
 export function managerAssignSelfCourse(data) {
   return new Promise((resolve, reject) => {
     try {
-      const { id,purchased_course_id, course_id, count, userId, type, validity } = data;
+      const {
+        from,
+        id,
+        purchased_course_id,
+        course_id,
+        count,
+        userId,
+        type,
+        validity,
+      } = data;
 
       try {
-        let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
+        let decreaseQuery = ""
+        if(from == "purchased") {
+          decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
+        } else {
+          decreaseQuery = `UPDATE assigned_course SET course_count = course_count - ? WHERE id = ?;`;
+        }
 
         db.query(decreaseQuery, [count, purchased_course_id], (err, result) => {
           if (err) console.log(err);
@@ -930,7 +944,7 @@ export function managerAssignSelfCourse(data) {
         let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, count, course_type, user_id, validity,fake_count) VALUES (?,?,?,?,?,?,?);`;
         db.query(
           assignCourseToManagerQuery,
-          [userId, course_id, count, type, userId, new Date(validity),count],
+          [userId, course_id, count, type, userId, new Date(validity), count],
           (err, result) => {
             if (err) {
               console.log(err);
@@ -1026,11 +1040,10 @@ export function getCourseWiseIndividualReportsFromDb(id) {
   });
 }
 
-
 export function getCourseWiseIndividualFromManagerReportsFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      let individuals = await getIndividualsByCompanyId(id)
+      let individuals = await getIndividualsByCompanyId(id);
       individuals = individuals.flat(1);
       let course_names = [];
       let courses = await Promise.all(
@@ -1067,19 +1080,23 @@ export function getIndividualReportFromDb(id) {
     try {
       let individuals = await getAllManagerIndividualFromDb(id);
       individuals = individuals.flat(1);
-      Promise.all(individuals.map(async (item) => {
-        let course = await getCountAssignedToIndividual(item.id, "course");
-        let bundle = await getCountAssignedToIndividual(item.id, "bundle");
-        let certificates = await getCertificatesCount(item.id);
-        item["course_count"] = course[0]["COUNT(*)"];
-        item["bundle_count"] = bundle[0]["COUNT(*)"];
-        item["certificates"] = certificates[0]["COUNT(*)"];
-        return item
-      })).then(result => {
-        resolve(result);
-      }).catch(err => {
-        reject(err)
-      });
+      Promise.all(
+        individuals.map(async (item) => {
+          let course = await getCountAssignedToIndividual(item.id, "course");
+          let bundle = await getCountAssignedToIndividual(item.id, "bundle");
+          let certificates = await getCertificatesCount(item.id);
+          item["course_count"] = course[0]["COUNT(*)"];
+          item["bundle_count"] = bundle[0]["COUNT(*)"];
+          item["certificates"] = certificates[0]["COUNT(*)"];
+          return item;
+        })
+      )
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err);
+        });
     } catch (error) {
       reject(error?.message);
     }
