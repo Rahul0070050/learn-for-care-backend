@@ -422,6 +422,9 @@ export function assignCourseToMAnagerIndividual(data) {
         count,
       } = data;
 
+      console.log(data?.assigned);
+      console.log(course_id);
+
       let decreaseQuery = "";
       if (data?.assigned) {
         decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
