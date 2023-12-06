@@ -422,7 +422,6 @@ export function assignCourseToMAnagerIndividual(data) {
         count,
       } = data;
 
-      console.log(data?.assigned);
       let decreaseQuery = "";
       if (data?.assigned) {
         decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
@@ -434,7 +433,7 @@ export function assignCourseToMAnagerIndividual(data) {
         if (err) console.log(err);
       });
 
-      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?,?);`;
+      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
       db.query(
         assignCourseToManagerQuery,
         [
