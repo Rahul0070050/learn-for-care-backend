@@ -918,12 +918,12 @@ export function getAllIndividualReportsFromDb(id) {
 export function managerAssignSelfCourse(data) {
   return new Promise((resolve, reject) => {
     try {
-      const { id, course_id, count, userId, type, validity } = data;
+      const { id,purchased_course_id, course_id, count, userId, type, validity } = data;
 
       try {
         let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
 
-        db.query(decreaseQuery, [count, id], (err, result) => {
+        db.query(decreaseQuery, [count, purchased_course_id], (err, result) => {
           if (err) console.log(err);
         });
 
