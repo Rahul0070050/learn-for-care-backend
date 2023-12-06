@@ -112,7 +112,7 @@ export function getAllAssignedCourseFromDb(id, type) {
     console.log(id);
     try {
       let getAssignedCourseByIdDataQuery = `
-      SELECT assigned_course.*, 0 AS from_purchased, course.id AS course_id,
+      SELECT assigned_course.*, 0 AS from_purchased, assigned_course.fake_count AS fake_count, course.id AS course_id,
       course.name, course.description, assigned_course.count AS course_count,
       course.category, assigned_course.validity
       FROM assigned_course 

@@ -433,7 +433,7 @@ export function assignCourseToMAnagerIndividual(data) {
         if (err) console.log(err);
       });
 
-      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
+      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?,?);`;
       db.query(
         assignCourseToManagerQuery,
         [
@@ -441,7 +441,7 @@ export function assignCourseToMAnagerIndividual(data) {
           realCourse_id,
           realCourse_type,
           receiverId,
-          new Date(realValidity),
+          new Date(realValidity)
         ],
         (err, result) => {
           if (err) return reject(err.message);
@@ -544,10 +544,10 @@ export function assignCourseOrBundleToUser(data) {
       let validity = new Date();
       validity.setFullYear(validity.getFullYear() + 1);
 
-      let insertQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity,count) VALUES (?,?,?,?,?,?);`;
+      let insertQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity,count,fake_count) VALUES (?,?,?,?,?,?,?);`;
       db.query(
         insertQuery,
-        [adminId, bundle_id, type, user_id, new Date(validity), count],
+        [adminId, bundle_id, type, user_id, new Date(validity), count, count],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
@@ -927,10 +927,10 @@ export function managerAssignSelfCourse(data) {
           if (err) console.log(err);
         });
 
-        let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, count, course_type, user_id, validity) VALUES (?,?,?,?,?,?);`;
+        let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, count, course_type, user_id, validity,fake_count) VALUES (?,?,?,?,?,?,?);`;
         db.query(
           assignCourseToManagerQuery,
-          [userId, course_id, count, type, userId, new Date(validity)],
+          [userId, course_id, count, type, userId, new Date(validity),count],
           (err, result) => {
             if (err) {
               console.log(err);

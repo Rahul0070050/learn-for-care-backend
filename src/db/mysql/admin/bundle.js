@@ -8,10 +8,10 @@ export function assignBundleToUser(data) {
       let validity = new Date();
       validity.setFullYear(validity.getFullYear() + 1);
 
-      let insertQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity,count) VALUES (?,?,?,?,?,?);`;
+      let insertQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity, count, fake_count) VALUES (?,?,?,?,?,?);`;
       db.query(
         insertQuery,
-        [adminId, bundle_id, type, user_id, new Date(validity), count],
+        [adminId, bundle_id, type, user_id, new Date(validity), count, count],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
