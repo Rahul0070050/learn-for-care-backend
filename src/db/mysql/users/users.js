@@ -423,7 +423,7 @@ export function assignCourseToMAnagerIndividual(data) {
       } = data;
 
       console.log(data?.assigned);
-      console.log('course_id ',course_id);
+      console.log("course_id ", course_id);
 
       let decreaseQuery = "";
       if (data?.assigned) {
@@ -431,26 +431,29 @@ export function assignCourseToMAnagerIndividual(data) {
       } else {
         decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
       }
+      try {
+        db.query(decreaseQuery, [count, course_id], (err, result) => {
+          if (err) console.log(err);
+        });
 
-      db.query(decreaseQuery, [count, course_id], (err, result) => {
-        if (err) console.log(err);
-      });
-
-      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
-      db.query(
-        assignCourseToManagerQuery,
-        [
-          userId,
-          realCourse_id,
-          realCourse_type,
-          receiverId,
-          new Date(realValidity),
-        ],
-        (err, result) => {
-          if (err) return reject(err.message);
-          else return resolve(result);
-        }
-      );
+        let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
+        db.query(
+          assignCourseToManagerQuery,
+          [
+            userId,
+            realCourse_id,
+            realCourse_type,
+            receiverId,
+            new Date(realValidity),
+          ],
+          (err, result) => {
+            if (err) return reject(err.message);
+            else return resolve(result);
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       reject(error?.message);
     }
@@ -934,8 +937,8 @@ export function managerAssignSelfCourse(data) {
 
       try {
         console.log(from);
-        let decreaseQuery = ""
-        if(from == "purchased") {
+        let decreaseQuery = "";
+        if (from == "purchased") {
           decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
         } else {
           decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;

@@ -548,12 +548,7 @@ export const userController = {
           result.receiverId = result.userId;
           delete result.userId;
 
-          let course = null;
-      if (data?.assigned) {
-        course = await getAssignedCourseToManagerById(result.course_id); // course_id is purchased courses tables id
-      } else {
-        course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tables id
-      }
+          let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tables id
 
           let realCourse_id = course[0].course_id;
           let realCourse_type = course[0].course_type;
