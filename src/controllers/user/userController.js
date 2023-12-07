@@ -685,7 +685,7 @@ export const userController = {
             result.receiverId = result.userId;
             delete result.userId;
 
-            let course = await getAssignedCourseForManagerById(
+            let course = await getAssignedCourseById(
               result.course_id
             ); // course_id is purchased courses tables id
 
