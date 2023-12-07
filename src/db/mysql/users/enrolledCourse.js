@@ -73,13 +73,17 @@ export function getBundleMatrixDataByUserId(id) {
   });
 }
 
-export function getManagerMatrixData(id, realUser) {
+export function getManagerMatrixData(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      let realUsers = await getUserDataFromDb(realUser);
-      let users = await getAllManagerIndividualFromDb(id);
+      let users = ""
+      if(from == "user") {
+        users = await getUserDataFromDb(id);
+      } else {
+        users = await getAllManagerIndividualFromDb(id);
+      }
       Promise.all(
-        [...realUsers, ...users].map(async (item) => {
+        users.map(async (item) => {
           let data = await getMatrixDataByUserId(item.id);
           let assigned = await getAssignedCourseByUserId(item.id);
           item["matrix"] = data;
@@ -99,13 +103,17 @@ export function getManagerMatrixData(id, realUser) {
   });
 }
 
-export function getManagerBundleMatrixData(id, realUser) {
+export function getManagerBundleMatrixData(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      let realUsers = await getUserDataFromDb(realUser);
-      let users = await getAllManagerIndividualFromDb(id);
+      let users = ""
+      if(from == "user") {
+        users = await getUserDataFromDb(id);
+      } else {
+        users = await getAllManagerIndividualFromDb(id);
+      }
       Promise.all(
-        [...realUsers, ...users].map(async (item) => {
+        users.map(async (item) => {
           let data = await getBundleMatrixDataByUserId(item.id);
           let assigned = await getBundleAssignedCourseByUserId(item.id);
           console.log("data ", data);

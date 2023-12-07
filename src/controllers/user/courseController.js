@@ -572,8 +572,13 @@ export const courseController = {
   getManagerMatrix: (req, res) => {
     try {
       let userId = req.body?.manager_id || getUser(req).id;
-      let realUserId = getUser(req).id;
-      getManagerMatrixData(userId,realUserId)
+      let form = "user";
+      if (userId == getUser(req).id) {
+        form = "user";
+      } else {
+        form = "admin";
+      }
+      getManagerMatrixData(userId, from)
         .then((result) => {
           res.status(200).json({
             success: true,
@@ -614,8 +619,13 @@ export const courseController = {
   getManagerMatrixBundle: (req, res) => {
     try {
       let userId = req.body?.manager_id || getUser(req).id;
-      let realUserId = getUser(req).id;
-      getManagerBundleMatrixData(userId,realUserId)
+      let form = "user";
+      if (userId == getUser(req).id) {
+        form = "user";
+      } else {
+        form = "admin";
+      }
+      getManagerBundleMatrixData(userId, from)
         .then((result) => {
           res.status(200).json({
             success: true,
