@@ -11,7 +11,7 @@ export function addNewCourse(courseData) {
         `INSERT INTO course(
           name,description,category,price,intro_video,thumbnail,video,ppt,resource,assessment,certificate,
           objective_define,What_you_will_learn,aims,who_should_attend,objectives_point,what_you_will_learn_point,
-          selling_priceRRP,course_type,duration,course_level,certificate,course_code
+          selling_price,RRP,course_type,duration,course_level,certificate,course_code
           ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
       db.query(
         insertCourseQuery,
