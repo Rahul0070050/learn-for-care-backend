@@ -622,8 +622,10 @@ export const courseController = {
       let from = "user";
       if (userId == getUser(req).id) {
         from = "user";
+      }else if (userId == getUser(req).id && getUser(req).type_of_account == "manager") {
+        from = "self" // if the account is manager then get the matrix data also from the manager
       } else {
-        from = "admin";
+        from = "not user";
       }
       getManagerBundleMatrixData(userId, from)
         .then((result) => {

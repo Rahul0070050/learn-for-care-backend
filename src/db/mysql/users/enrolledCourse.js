@@ -79,6 +79,8 @@ export function getManagerMatrixData(id,from) {
       let users = ""
       if(from == "user") {
         users = await getUserDataFromDb(id);
+      } else if (from == "self") {
+        users = [...await getUserDataFromDb(id), ...await getAllManagerIndividualFromDb(id)];
       } else {
         users = await getAllManagerIndividualFromDb(id);
       }
