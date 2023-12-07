@@ -311,7 +311,7 @@ ul.social li{
             	<tr>
             		<td style="padding: 0 2.5em; text-align: center; padding-bottom: 1em;">
             			<div class="text">
-            				<h2>Verify your account</h3>
+            				<h3>Verify your account</h3>
 							<p style="font-weight: 600;">Use this code to sign up</p>
             			</div>
             		</td>
@@ -325,7 +325,9 @@ ul.social li{
 								<span style="color: #17bebb !important;">${email}</span>
 							</p>
 							<br>
-				           	<p>If you don't request this email, you can simply ignore it.</p>
+				           	<p>If you did not request this One Time Password, Please contact us on support@learnforcare.co.uk
+								<a target="_blank" href="www.learnforcare.co.uk">Learn For Care</a>
+							</p>
 			           	</div>
 			          </td>
 			        </tr>
