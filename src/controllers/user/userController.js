@@ -1520,12 +1520,14 @@ export const userController = {
         .then(async (result) => {
           let course = ""
           
-          console.log(result.from);
           if(result.from == "purchased") {
             course = await getPurchasedCourseById(result.id);
           } else {
             course = await getAssignedCourseToManagerById(result.id);
           }
+          console.log(course);
+          console.log(result.from);
+          
 
           let userId = getUser(req).id;
           result.purchased_course_id = result.id
