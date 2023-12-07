@@ -572,11 +572,15 @@ export const courseController = {
   getManagerMatrix: (req, res) => {
     try {
       let userId = req.body?.manager_id || getUser(req).id;
+      console.log(getUser(req).type_of_account);
+      console.log(getUser(req).id);
       let from = "user";
-      if (userId == getUser(req).id) {
+      if (userId == getUser(req).id && getUser(req).type_of_account == "manager") {
         from = "user";
+      }else if (userId == getUser(req).id) {
+        from = "self" // if the account is manager then get the matrix data also from the manager
       } else {
-        from = "admin";
+        from = "not user";
       }
       getManagerMatrixData(userId, from)
         .then((result) => {
