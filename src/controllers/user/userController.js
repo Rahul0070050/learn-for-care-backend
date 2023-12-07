@@ -1520,6 +1520,7 @@ export const userController = {
         .then(async (result) => {
           let course = ""
           
+          console.log(result.from);
           if(result.from == "purchased") {
             course = await getPurchasedCourseById(result.id);
           } else {
