@@ -258,6 +258,26 @@ export function geCountOfAllIndividuals(id) {
   });
 }
 
+
+export function getUserDataFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `
+      SELECT * FROM users WHERE id = ?
+      ;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getAllIndividualsFromDb(id) {
   return new Promise((resolve, reject) => {
     try {

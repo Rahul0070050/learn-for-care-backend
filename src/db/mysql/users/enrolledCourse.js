@@ -1,4 +1,5 @@
 import { db } from "../../../conf/mysql.js";
+import { getUserDataFromDb } from "../admin/user.js";
 import {
   getAssignedCourseById,
   getAssignedCourseByUserId,
@@ -72,12 +73,13 @@ export function getBundleMatrixDataByUserId(id) {
   });
 }
 
-export function getManagerMatrixData(id) {
+export function getManagerMatrixData(id, realUser) {
   return new Promise(async (resolve, reject) => {
     try {
+      let realUser = await getUserDataFromDb(realUser);
       let users = await getAllManagerIndividualFromDb(id);
       Promise.all(
-        users.map(async (item) => {
+        [...realUser, ...users].map(async (item) => {
           let data = await getMatrixDataByUserId(item.id);
           let assigned = await getAssignedCourseByUserId(item.id);
           item["matrix"] = data;
@@ -97,15 +99,16 @@ export function getManagerMatrixData(id) {
   });
 }
 
-export function getManagerBundleMatrixData(id) {
+export function getManagerBundleMatrixData(id, realUser) {
   return new Promise(async (resolve, reject) => {
     try {
+      let realUser = await getUserDataFromDb(realUser);
       let users = await getAllManagerIndividualFromDb(id);
       Promise.all(
-        users.map(async (item) => {
+        [...realUser, ...users].map(async (item) => {
           let data = await getBundleMatrixDataByUserId(item.id);
           let assigned = await getBundleAssignedCourseByUserId(item.id);
-          console.log('data ',data);
+          console.log("data ", data);
           item["matrix"] = data;
           item["matrix_assigned"] = assigned;
           return item;
