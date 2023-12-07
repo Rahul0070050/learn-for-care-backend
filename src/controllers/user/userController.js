@@ -615,7 +615,7 @@ export const userController = {
             result.receiverId = result.userId;
             delete result.userId;
 
-            let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables id
+            let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tables or assigned course table id also works
             console.log(course);
             let realCourse_id = course[0].course_id;
             let realCourse_type = course[0].course_type;
@@ -688,6 +688,8 @@ export const userController = {
               result.course_id
             ); // course_id is purchased courses tables id
 
+            console.log(course);
+            
             let realCourse_id = course[0].course_id;
             let realCourse_type = course[0].course_type;
             let realValidity = course[0].validity;
