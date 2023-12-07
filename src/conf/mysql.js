@@ -109,9 +109,15 @@ export function mySqlConnect(done) {
         aims TEXT DEFAULT NULL,
         who_should_attend TEXT DEFAULT NULL,
         objectives_point TEXT DEFAULT NULL,
-        what_you_will_learn_point TEXT DEFAULT NULL
+        what_you_will_learn_point TEXT DEFAULT NULL,
+        selling_price INT DEFAULT NULL,
+        RRP INT DEFAULT NULL,
+        course_type VARCHAR(250) DEFAULT NULL,
+        duration VARCHAR(250) DEFAULT NULL,
+        course_level VARCHAR(250) DEFAULT NULL,
+        course_code VARCHAR(250) DEFAULT NULL
     );`;
-
+    
       db.query(createCourseTable, (err, result) => {
         if (err) console.log(err);
         else console.log("course table created");
