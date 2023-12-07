@@ -619,6 +619,8 @@ export const courseController = {
   getManagerMatrixBundle: (req, res) => {
     try {
       let userId = req.body?.manager_id || getUser(req).id;
+      console.log(getUser(req).type_of_account);
+      console.log(getUser(req).id);
       let from = "user";
       if (userId == getUser(req).id && getUser(req).type_of_account == "manager") {
         from = "user";
