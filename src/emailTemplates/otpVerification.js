@@ -1,4 +1,4 @@
-export const otpEMail = (email, otp) => {
+export const otpEMail = (email, otp,logo) => {
   return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
@@ -299,7 +299,7 @@ ul.social li{
           	<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
           		<tr>
           			<td class="logo" style="text-align: center;">
-			            <h1><a href="#">Learn For Care</a></h1>
+			            <img src="${logo}" style="width: 7rem" />
 			          </td>
           		</tr>
           	</table>
