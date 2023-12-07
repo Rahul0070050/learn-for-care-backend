@@ -1,10 +1,11 @@
 import { config } from "dotenv";
 import {mailer} from '../conf/nodeMailer.js'
 import { downloadFromS3 } from "../AWS/S3.js";
+import { welcomeEmail } from "../emailTemplates/welcome.js";
 
 config();
 
-export default function welcomeEmail(email) {
+export default function sendWelcomeEmail(email) {
   return new Promise(async(resolve, reject) => {
     try {
       let image = await downloadFromS3("","/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7")
