@@ -9,17 +9,16 @@ export function addNewCourse(courseData) {
       console.log(courseData);
       let insertCourseQuery =
         `INSERT INTO course(
-          name,description,category,price,intro_video,thumbnail,video,ppt,resource,assessment,certificate,
+          name,description,category,intro_video,thumbnail,video,ppt,resource,assessment,certificate,
           objective_define,What_you_will_learn,aims,who_should_attend,objectives_point,what_you_will_learn_point,
           selling_price,RRP,course_type,duration,course_level,certificate,course_code
-          ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+          ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
       db.query(
         insertCourseQuery,
         [
           courseData.name,
           courseData.description,
           courseData.category,
-          courseData.price,
           courseData.intro_video,
           courseData.thumbnail,
           courseData.video,
