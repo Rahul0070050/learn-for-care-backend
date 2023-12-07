@@ -935,14 +935,14 @@ export function managerAssignSelfCourse(data) {
       } = data;
 
       try {
-        console.log(from);
+        console.log(purchased_course_id);
         let decreaseQuery = "";
         if (from == "purchased") {
           decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
         } else {
           decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
         }
-
+        
         db.query(decreaseQuery, [count, purchased_course_id], (err, result) => {
           if (err) console.log(err);
         });
@@ -953,7 +953,6 @@ export function managerAssignSelfCourse(data) {
           [userId, course_id, count, type, userId, new Date(validity), count],
           (err, result) => {
             if (err) {
-              console.log(err);
               return reject(err.message);
             } else return resolve(result);
           }

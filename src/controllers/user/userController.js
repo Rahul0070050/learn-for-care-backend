@@ -1526,9 +1526,7 @@ export const userController = {
           } else {
             course = await getAssignedCourseToCompanyById(result.id);
           }
-          console.log(course);
-          console.log(result.from);
-          
+          console.log(result.id);
 
           let userId = getUser(req).id;
           result.purchased_course_id = result.id
