@@ -299,7 +299,7 @@ ul.social li{
           	<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
           		<tr>
           			<td class="logo" style="text-align: center;">
-			            <img src="${logo}" style="width: 15rem" />
+			            <img src="${logo}" style="width: 10rem;" />
 			          </td>
           		</tr>
           	</table>
@@ -311,7 +311,7 @@ ul.social li{
             	<tr>
             		<td style="padding: 0 2.5em; text-align: center; padding-bottom: 1em;">
             			<div class="text">
-            				<h3>Verify your account</h3>
+            				<h2>Verify your account</h3>
 							<p style="font-weight: 600;">Use this code to sign up</p>
             			</div>
             		</td>
