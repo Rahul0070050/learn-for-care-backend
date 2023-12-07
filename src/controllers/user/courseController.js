@@ -572,11 +572,11 @@ export const courseController = {
   getManagerMatrix: (req, res) => {
     try {
       let userId = req.body?.manager_id || getUser(req).id;
-      let form = "user";
+      let from = "user";
       if (userId == getUser(req).id) {
-        form = "user";
+        from = "user";
       } else {
-        form = "admin";
+        from = "admin";
       }
       getManagerMatrixData(userId, from)
         .then((result) => {
@@ -619,11 +619,11 @@ export const courseController = {
   getManagerMatrixBundle: (req, res) => {
     try {
       let userId = req.body?.manager_id || getUser(req).id;
-      let form = "user";
+      let from = "user";
       if (userId == getUser(req).id) {
-        form = "user";
+        from = "user";
       } else {
-        form = "admin";
+        from = "admin";
       }
       getManagerBundleMatrixData(userId, from)
         .then((result) => {
