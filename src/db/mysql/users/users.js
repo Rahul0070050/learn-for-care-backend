@@ -940,7 +940,7 @@ export function managerAssignSelfCourse(data) {
         if (from == "purchased") {
           decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
         } else {
-          decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
+          decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
         }
 
         db.query(decreaseQuery, [count, purchased_course_id], (err, result) => {
