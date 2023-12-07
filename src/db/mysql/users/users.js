@@ -508,6 +508,52 @@ export function assignCourseToMAnagerIndividualFromAssignedDb(data) {
   });
 }
 
+
+export function assignCourseToMAnagerIndividualFromAssignedToDb(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const {
+        course_id,
+        receiverId,
+        realCourse_id,
+        realCourse_type,
+        realValidity,
+        userId,
+        count,
+      } = data;
+
+      let decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
+      
+
+      db.query(decreaseQuery, [count, course_id], (err, result) => {
+        if (err) console.log(err);
+        console.log(err);
+      });
+
+      let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, course_type, user_id, validity) VALUES (?,?,?,?,?);`;
+      db.query(
+        assignCourseToManagerQuery,
+        [
+          userId,
+          realCourse_id,
+          realCourse_type,
+          receiverId,
+          new Date(realValidity),
+        ],
+        (err, result) => {
+          if (err) {
+            console.log(err);
+            return reject(err.message);
+          } else return resolve(result);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      reject(error?.message);
+    }
+  });
+}
+
 export function getAllBlockedUser(id) {
   return new Promise((resolve, reject) => {
     try {

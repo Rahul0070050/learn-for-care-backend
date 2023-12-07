@@ -41,6 +41,7 @@ import {
   getIndividualReportFromDb,
   getCourseWiseIndividualFromManagerReportsFromDb,
   getMonthlyTransactionsFromDb,
+  assignCourseToMAnagerIndividualFromAssignedToDb,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
@@ -689,12 +690,12 @@ export const userController = {
             ); // course_id is purchased courses tables id
 
             console.log(course);
-            
+
             let realCourse_id = course[0].course_id;
             let realCourse_type = course[0].course_type;
             let realValidity = course[0].validity;
             let userId = getUser(req).id;
-            assignCourseToMAnagerIndividualFromAssignedDb({
+            assignCourseToMAnagerIndividualFromAssignedToDb({
               ...result,
               userId,
               realCourse_id,
