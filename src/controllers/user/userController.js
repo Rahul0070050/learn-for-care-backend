@@ -9,6 +9,7 @@ import {
   getPurchasedCourseById,
   getPurchasedCourseBundlesFromDbByUserId,
   getAssignedBundlesFromDbByCompanyId,
+  getAssignedCourseToCompanyById,
 } from "../../db/mysql/users/purchasedCourse.js";
 import {
   assignCourseToMAnager,
@@ -1523,7 +1524,7 @@ export const userController = {
           if(result.from == "purchased") {
             course = await getPurchasedCourseById(result.id);
           } else {
-            course = await getAssignedCourseToManagerById(result.id);
+            course = await getAssignedCourseToCompanyById(result.id);
           }
           console.log(course);
           console.log(result.from);
