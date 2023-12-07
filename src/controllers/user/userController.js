@@ -484,7 +484,7 @@ export const userController = {
           result.receiverId = result.userId;
           delete result.userId;
 
-          let course = await getAssignedCourseById(result.course_id); // course_id is purchased courses tablses id
+          let course = await getAssignedCourseToCompanyById(result.course_id); // course_id is purchased courses tablses id
 
           let realCourse_id = course[0].course_id;
           let realCourse_type = course[0].course_type;
