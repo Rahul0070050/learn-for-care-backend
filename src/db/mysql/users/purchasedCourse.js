@@ -147,7 +147,7 @@ export function getAssignedBundlesFromDbByCompanyId(userId) {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
       SELECT course_bundle.name AS bundle_name, assigned_course.validity AS validity, course_bundle.description AS description,
-      assigned_course.course_id AS course_id, assigned_course.owner AS owner, assigned_course.id AS id, 0 AS from_purchased, assigned_course.count AS course_count
+      assigned_course.course_id AS course_id, assigned_course.fake_count AS fake_count, assigned_course.owner AS owner, assigned_course.id AS id, 0 AS from_purchased, assigned_course.count AS course_count
       FROM assigned_course 
       INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id 
       WHERE course_type = ? AND user_id = ?`
