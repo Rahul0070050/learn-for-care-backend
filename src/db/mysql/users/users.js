@@ -522,7 +522,8 @@ export function assignCourseToMAnagerIndividualFromAssignedToDb(data) {
         count,
       } = data;
 
-      let decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
+      // let decreaseQuery = `SELECT assigned_course SET count = count - ? WHERE id = ?;`;
+      let decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
       
 
       db.query(decreaseQuery, [count, course_id], (err, result) => {

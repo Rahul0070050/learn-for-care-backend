@@ -689,7 +689,7 @@ export const userController = {
             result.receiverId = result.userId;
             delete result.userId;
 
-            let course = await getAssignedCourseToCompanyById(
+            let course = await getAssignedCourseForManagerById(
               result.course_id
             ); // course_id is purchased courses tables id
 
