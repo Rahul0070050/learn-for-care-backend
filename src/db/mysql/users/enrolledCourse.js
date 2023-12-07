@@ -73,7 +73,7 @@ export function getBundleMatrixDataByUserId(id) {
   });
 }
 
-export function getManagerMatrixData(id) {
+export function getManagerMatrixData(id,from) {
   return new Promise(async (resolve, reject) => {
     try {
       let users = ""
@@ -103,7 +103,7 @@ export function getManagerMatrixData(id) {
   });
 }
 
-export function getManagerBundleMatrixData(id) {
+export function getManagerBundleMatrixData(id,from) {
   return new Promise(async (resolve, reject) => {
     try {
       let users = ""
