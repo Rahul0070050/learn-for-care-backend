@@ -486,6 +486,8 @@ export const userController = {
 
           let course = await getAssignedCourseToCompanyById(result.course_id); // course_id is purchased courses tablses id
 
+          console.log(course);
+          
           let realCourse_id = course[0].course_id;
           let realCourse_type = course[0].course_type;
           let realValidity = course[0].validity;
