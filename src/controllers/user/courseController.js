@@ -620,9 +620,9 @@ export const courseController = {
     try {
       let userId = req.body?.manager_id || getUser(req).id;
       let from = "user";
-      if (userId == getUser(req).id) {
+      if (userId == getUser(req).id && getUser(req).type_of_account == "manager") {
         from = "user";
-      }else if (userId == getUser(req).id && getUser(req).type_of_account == "manager") {
+      }else if (userId == getUser(req).id) {
         from = "self" // if the account is manager then get the matrix data also from the manager
       } else {
         from = "not user";
