@@ -30,6 +30,7 @@ import {
   validateChangePassToken,
 } from "../../helpers/genarateToken.js";
 import sendLinkToChangePasswordEmail from "../../helpers/sendForgotPassLink.js";
+import welcomeEmail from "../../helpers/welcomEmail.js";
 
 config();
 let cryptr = new Cryptr(process.env.CRYPTER);
@@ -224,7 +225,8 @@ export const userAuthController = {
 
               if (otp == result.otp) {
                 activateUser(result.email)
-                  .then(() => {
+                  .then(async() => {
+                    await welcomeEmail(result.email)
                     res.status(202).json({
                       success: true,
                       data: { code: 202, message: "signup successful" },
