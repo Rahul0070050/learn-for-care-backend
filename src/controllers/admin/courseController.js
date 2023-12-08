@@ -266,6 +266,7 @@ export const courseController = {
         .then((result) => {
           getCourseByIdFromDb(id)
             .then(async (result) => {
+              console.log(result);
               let newResult = await result.map(async (course, i) => {
                 try {
                   let resources = JSON.parse(course.resource);
