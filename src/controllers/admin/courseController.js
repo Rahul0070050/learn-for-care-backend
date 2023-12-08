@@ -35,15 +35,6 @@ export const courseController = {
     try {
       checkAddCourseReqBodyAndFile(req.body, req.files)
         .then((result) => {
-          console.log(
-            result.selling_price,
-            result.RRP,
-            result.course_type,
-            result.duration,
-            result.course_level,
-            result.certificate,
-            result.course_code
-          );
           try {
             let video = uploadFileToS3("/course/video", result.video);
 
