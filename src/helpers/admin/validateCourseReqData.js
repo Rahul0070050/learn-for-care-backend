@@ -3,15 +3,6 @@ import { validateFile } from "../validateFileTypes.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
-    console.log(
-      body.selling_price,
-      body.RRP,
-      body.course_type,
-      body.duration,
-      body.course_level,
-      body.certificate,
-      body.course_code
-    );
     let resources = files["resource[]"]
     let ppt = files["ppt[]"]
     delete files["resource[]"]
