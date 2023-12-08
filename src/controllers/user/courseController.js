@@ -35,6 +35,17 @@ export const courseController = {
                   course.intro_video
                 );
 
+                course["aims"] = JSON.parse(course.aims || "[]");
+                course["objectives_point"] = JSON.parse(
+                  course.objectives_point || "[]"
+                );
+                course["what_you_will_learn_point"] = JSON.parse(
+                  course.what_you_will_learn_point || "[]"
+                );
+                course["who_should_attend"] = JSON.parse(
+                  course.who_should_attend || "[]"
+                );
+
                 let thumbnail = await downloadFromS3(
                   course.id,
                   course.thumbnail
@@ -575,9 +586,12 @@ export const courseController = {
       console.log(getUser(req).type_of_account);
       console.log(getUser(req).id);
       let from = "user";
-      if (userId == getUser(req).id && getUser(req).type_of_account == "manager") {
-        from = "self" // if the account is manager then get the matrix data also from the manager
-      }else if (userId == getUser(req).id) {
+      if (
+        userId == getUser(req).id &&
+        getUser(req).type_of_account == "manager"
+      ) {
+        from = "self"; // if the account is manager then get the matrix data also from the manager
+      } else if (userId == getUser(req).id) {
         from = "user";
       } else {
         from = "not user";
@@ -626,9 +640,12 @@ export const courseController = {
       console.log(getUser(req).type_of_account);
       console.log(getUser(req).id);
       let from = "user";
-      if (userId == getUser(req).id && getUser(req).type_of_account == "manager") {
-        from = "self" // if the account is manager then get the matrix data also from the manager
-      }else if (userId == getUser(req).id) {
+      if (
+        userId == getUser(req).id &&
+        getUser(req).type_of_account == "manager"
+      ) {
+        from = "self"; // if the account is manager then get the matrix data also from the manager
+      } else if (userId == getUser(req).id) {
         from = "user";
       } else {
         from = "not user";
