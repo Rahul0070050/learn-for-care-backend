@@ -51,6 +51,7 @@ export function checkAddCourseReqBodyAndFile(body, files) {
         duration: string().required("please provide valid duration"),
         course_level: string().required("please provide valid course_level"),
         certificate: string().required("please provide valid certificate"),
+        course_code: string().required("please provide valid course_code"),
       });
 
       let bodData = bodyTemplate.validate(body);

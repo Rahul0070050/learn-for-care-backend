@@ -13,7 +13,10 @@ import {
   getReportFromDb,
   getReportFromDbGroupByYear,
 } from "../../db/mysql/admin/purchasedCourse.js";
-import { getManagerBundleMatrixData, getManagerMatrixData } from "../../db/mysql/users/enrolledCourse.js";
+import {
+  getManagerBundleMatrixData,
+  getManagerMatrixData,
+} from "../../db/mysql/users/enrolledCourse.js";
 import {
   checkAddCourseReqBodyAndFile,
   checkGetCourseByCategoryBody,
@@ -32,6 +35,15 @@ export const courseController = {
     try {
       checkAddCourseReqBodyAndFile(req.body, req.files)
         .then((result) => {
+          console.log(
+            result.selling_price,
+            result.RRP,
+            result.course_type,
+            result.duration,
+            result.course_level,
+            result.certificate,
+            result.course_code
+          );
           try {
             let video = uploadFileToS3("/course/video", result.video);
 
@@ -1325,7 +1337,7 @@ export const courseController = {
   },
   getManagerMatrix: (req, res) => {
     try {
-      let userId = req.body?.manager_id
+      let userId = req.body?.manager_id;
       getManagerMatrixData(userId)
         .then((result) => {
           res.status(200).json({
@@ -1367,7 +1379,7 @@ export const courseController = {
   },
   getManagerMatrixBundle: (req, res) => {
     try {
-      let userId = req.body?.manager_id
+      let userId = req.body?.manager_id;
       getManagerBundleMatrixData(userId)
         .then((result) => {
           res.status(200).json({
