@@ -7,8 +7,7 @@ export function addNewCourse(courseData) {
       let ppt = JSON.stringify(courseData.image);
       console.log(ppt);
       console.log(courseData);
-      let insertCourseQuery =
-        `INSERT INTO course(
+      let insertCourseQuery = `INSERT INTO course(
           name,description,category,intro_video,thumbnail,video,ppt,resource,assessment,certificate,
           objective_define,What_you_will_learn,aims,who_should_attend,objectives_point,what_you_will_learn_point,
           price,RRP,course_type,duration,course_level,course_code
@@ -130,16 +129,51 @@ export function updateCourseSingleFieldMediaById(id, data, type) {
 export function updateCourseData(courseInfo) {
   return new Promise((resolve, reject) => {
     try {
+      const {
+        course_id,
+        name,
+        description,
+        category,
+        thumbnail,
+        assessment,
+        certificate,
+        objective_define,
+        What_you_will_learn,
+        aims,
+        who_should_attend,
+        objectives_point,
+        what_you_will_learn_point,
+        selling_price,
+        RRP,
+        course_type,
+        duration,
+        course_level,
+        course_code,
+      } = courseInfo;
+
+
       let updateCourseDataQuery =
-        "UPDATE course SET name = ?, category = ?, price = ?, description = ? WHERE id = ?;";
+        "UPDATE course SET name = ?, description = ?, category = ?, assessment = ?, certificate = ?, objective_define = ?, What_you_will_learn = ?, aims = ?, who_should_attend = ?, objectives_point = ?, what_you_will_learn_point = ?, price = ?, RRP = ?, course_type = ?, duration = ?, course_level = ?, course_code = ? WHERE id = ?;";
       db.query(
         updateCourseDataQuery,
         [
-          courseInfo.name,
-          courseInfo.category,
-          courseInfo.price,
-          courseInfo.description,
-          courseInfo.course_id,
+          name,
+          description,
+          category,
+          assessment,
+          certificate,
+          objective_define,
+          What_you_will_learn,
+          JSON.stringify(aims),
+          JSON.stringify(who_should_attend),
+          JSON.stringify(objectives_point),
+          JSON.stringify(what_you_will_learn_point),
+          selling_price,
+          RRP,
+          course_type,
+          duration,
+          course_level,
+          course_code,
         ],
         (err, result) => {
           if (err) return reject(err?.message);
