@@ -303,6 +303,11 @@ export const courseController = {
                     images.push(url.url);
                   }
 
+                  course['aims'] = JSON.parse(course.aims || '[]')
+                  course['objectives_point'] = JSON.parse(course.objectives_point || '[]')
+                  course['what_you_will_learn_point'] = JSON.parse(course.what_you_will_learn_point || '[]')
+                  course['who_should_attend'] = JSON.parse(course.who_should_attend || '[]')
+
                   let intro_video = await downloadFromS3(
                     course.id,
                     course.intro_video
