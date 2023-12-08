@@ -27,8 +27,9 @@ export function getAllOnGoingCourseByUserIdFromDb(id, type) {
           SELECT enrolled_course.id AS on_going_course_id, enrolled_course.*, 
           course.name AS name, course.category AS category, 
           enrolled_course.validity AS validity,
-          course.description AS description
+          course.description AS description, enrolled_course.attempts AS attempts
           FROM enrolled_course 
+          INNER JOIN exam_attempts ON enrolled_course.id = exam_attempts.enrolled_bundle_id
           INNER JOIN course ON course.id = enrolled_course.course_id
           WHERE enrolled_course.user_id = ? AND enrolled_course.user_type = ?;
         `;
