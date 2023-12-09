@@ -36,7 +36,7 @@ export function addNewCourse(courseData) {
           courseData.duration,
           courseData.course_level,
           courseData.course_code,
-          certificate_line
+          courseData.certificate_line
         ],
         (err, result) => {
           if (err) return reject(err.message);
