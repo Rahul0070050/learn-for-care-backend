@@ -8,6 +8,6 @@ const route = Router();
 
 route.get("/get-on-going-course/:id",validateUser, onGoingCourseController.getOnGoingCourseById);
 route.get("/get-attempts/:id",validateUser, onGoingCourseController.getCourseAttemptsById);
-route.get("/get-all-on-going-courses",validateUser, onGoingCourseController.getCourseAttemptsById);
+route.get("/get-all-on-going-courses",validateUser, onGoingCourseController.getAllOnGoingCourseById);
 
 export default route;
