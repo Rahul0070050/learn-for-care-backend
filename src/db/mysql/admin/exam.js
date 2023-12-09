@@ -46,25 +46,25 @@ export function getQuestionsForExamByCourseId(course_id, userId,id) {
   });
 }
 
-export function enrolled_bundle_id(course_id) {
-  return new Promise((resolve, reject) => {
-    try {
-      let insertQuery =
-        "SELECT attempts FROM exam_attempts WHERE enrolled_bundle_id = ?;"
-      db.query(insertQuery, [course_id], (err, result) => {
-        if (err) throw err;
-      });
+// export function enrolled_bundle_id(course_id) {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       let insertQuery =
+//         "SELECT attempts FROM exam_attempts WHERE enrolled_bundle_id = ?;"
+//       db.query(insertQuery, [course_id], (err, result) => {
+//         if (err) throw err;
+//       });
 
-      let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ?;";
-      db.query(getQuestionsQuery, [course_id], (err, result) => {
-        if (err) return reject(err?.message);
-        else return resolve(result);
-      });
-    } catch (error) {
-      reject(error?.message);
-    }
-  });
-}
+//       let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ?;";
+//       db.query(getQuestionsQuery, [course_id], (err, result) => {
+//         if (err) return reject(err?.message);
+//         else return resolve(result);
+//       });
+//     } catch (error) {
+//       reject(error?.message);
+//     }
+//   });
+// }
 
 export function getAllExam() {
   return new Promise((resolve, reject) => {

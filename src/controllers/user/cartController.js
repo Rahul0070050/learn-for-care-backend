@@ -408,13 +408,13 @@ export const cartController = {
         if (coupon) {
           if (coupon.type == "Percent") {
             cart.forEach((item) => {
-              let per = (item["amount"] * coupon.amount) / 100;
-              item["amount"] = Number(item["amount"] - per)
-              item["amount"] = parseInt(item["amount"]);
-              console.log(item["amount"]);
+              let per = parseInt(
+                (item["amount"] * coupon.amount) / 100
+              ).toFixed(2);
+              item["amount"] = parseFloat(item["amount"] - per);
             });
           } else {
-            let amount = Number(coupon.amount / cart.length);
+            let amount = parseInt(coupon.amount / cart.length).toFixed(2);
             cart.forEach((item) => {
               item["amount"] -= amount;
             });
@@ -485,7 +485,6 @@ export const cartController = {
             { email: chargeSucceeded.billing_details.email } || { email: "" }
           )
             .then((user) => {
-              console.log("user ", user);
               let userId = user[0].id;
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
@@ -493,7 +492,6 @@ export const cartController = {
                   await saveInvoice(filePath);
                   setTimeout(async () => {
                     let coupon = await getActiveCouponByUserId(userId);
-                    console.log("coupon ", coupon);
                     if (coupon) {
                       if (coupon.type == "Percent") {
                         cartItems.forEach((item) => {
@@ -501,7 +499,9 @@ export const cartController = {
                             (item["amount"] * coupon.amount) / 100;
                         });
                       } else {
-                        let amount = Number(coupon.amount / cartItems.length);
+                        let amount = parseInt(
+                          coupon.amount / cartItems.length
+                        ).toFixed(2);
                         cartItems.forEach((item) => {
                           item["amount"] -= amount;
                         });
