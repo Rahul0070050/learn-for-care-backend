@@ -187,7 +187,7 @@ export const onGoingCourseController = {
   },
   getCourseAttemptsById: (req, res) => {
     try {
-      validateGetCourseAttemptsById(req.body)
+      validateGetCourseAttemptsById(req.params)
         .then((result) => {
           getCourseAttemptsByUserIdFromDb(result.id)
             .then((result) => {
