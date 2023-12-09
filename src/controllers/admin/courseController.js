@@ -33,6 +33,7 @@ import {
 export const courseController = {
   createCourseWithResourceImages: (req, res) => {
     try {
+      console.log(result);
       checkAddCourseReqBodyAndFile(req.body, req.files)
         .then((result) => {
           try {
