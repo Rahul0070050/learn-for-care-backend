@@ -34,7 +34,7 @@ export function getAllOnGoingCourseByUserIdFromDb(id, type) {
         `;
       db.query(getOnGoingCourseByIdQuery, [id, type], (err, result) => {
         if (err) return reject(err?.message);
-        else return {
+        else {
           console.log(result);
           resolve(result);
         }
