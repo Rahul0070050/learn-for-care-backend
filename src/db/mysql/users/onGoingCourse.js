@@ -54,6 +54,7 @@ export function getAllOnGoingCourseByUserIdFromDb(id, type) {
             result.map(async (item) => {
               let attempts = await getAllAttempts(item.user_id);
               item["attempts"] = attempts[0]["COUNT(*)"];
+              console.log(item["attempts"]);
               return item;
             })
           );
