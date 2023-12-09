@@ -419,39 +419,49 @@ export const userController = {
           delete result.userId;
 
           let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tablses id
-
-          let realCourse_id = course[0].course_id;
-          let realCourse_type = course[0].course_type;
-          let realValidity = course[0].validity;
-          let userId = getUser(req).id;
-          assignCourseToMAnager({
-            ...result,
-            userId,
-            realCourse_id,
-            realCourse_type,
-            realValidity,
-            from: "purchased",
-          })
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "assigned successfully",
-                  response: "",
-                },
-              });
+          if (course[0].course_count >= result.count) {
+            let realCourse_id = course[0].course_id;
+            let realCourse_type = course[0].course_type;
+            let realValidity = course[0].validity;
+            let userId = getUser(req).id;
+            assignCourseToMAnager({
+              ...result,
+              userId,
+              realCourse_id,
+              realCourse_type,
+              realValidity,
+              from: "purchased",
             })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "value not acceptable",
-                  response: err,
-                },
+              .then((result) => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "assigned successfully",
+                    response: "",
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value not acceptable",
+                    response: err,
+                  },
+                });
               });
+          } else {
+            res.status(406).json({
+              success: false,
+              data: {
+                code: 406,
+                message: "invalid course count",
+                response: "you don't have that much course to assign",
+              },
             });
+          }
         })
         .catch((err) => {
           res.status(406).json({
@@ -486,40 +496,49 @@ export const userController = {
 
           let course = await getAssignedCourseToCompanyById(result.course_id); // course_id is purchased courses tablses id
 
-          console.log(course);
-          
-          let realCourse_id = course[0].course_id;
-          let realCourse_type = course[0].course_type;
-          let realValidity = course[0].validity;
-          let userId = getUser(req).id;
-          assignCourseToMAnager({
-            ...result,
-            userId,
-            realCourse_id,
-            realCourse_type,
-            realValidity,
-            from: "assigned",
-          })
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "assigned successfully",
-                  response: "",
-                },
-              });
+          if (course[0].count >= result.count) {
+            let realCourse_id = course[0].course_id;
+            let realCourse_type = course[0].course_type;
+            let realValidity = course[0].validity;
+            let userId = getUser(req).id;
+            assignCourseToMAnager({
+              ...result,
+              userId,
+              realCourse_id,
+              realCourse_type,
+              realValidity,
+              from: "assigned",
             })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "value not acceptable",
-                  response: err,
-                },
+              .then((result) => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "assigned successfully",
+                    response: "",
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value not acceptable",
+                    response: err,
+                  },
+                });
               });
+          } else {
+            res.status(406).json({
+              success: false,
+              data: {
+                code: 406,
+                message: "value not acceptable",
+                response: "count",
+              },
             });
+          }
         })
         .catch((err) => {
           res.status(406).json({
@@ -554,37 +573,48 @@ export const userController = {
 
           let course = await getPurchasedCourseById(result.course_id); // course_id is purchased courses tables id
 
-          let realCourse_id = course[0].course_id;
-          let realCourse_type = course[0].course_type;
-          let realValidity = course[0].validity;
-          let userId = getUser(req).id;
-          assignCourseToMAnagerIndividual({
-            ...result,
-            userId,
-            realCourse_id,
-            realCourse_type,
-            realValidity,
-          })
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "assigned successfully",
-                  response: "",
-                },
-              });
+          if (course[0].course_count >= result.count) {
+            let realCourse_id = course[0].course_id;
+            let realCourse_type = course[0].course_type;
+            let realValidity = course[0].validity;
+            let userId = getUser(req).id;
+            assignCourseToMAnagerIndividual({
+              ...result,
+              userId,
+              realCourse_id,
+              realCourse_type,
+              realValidity,
             })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "value not acceptable",
-                  response: err,
-                },
+              .then((result) => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "assigned successfully",
+                    response: "",
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value not acceptable",
+                    response: err,
+                  },
+                });
               });
+          } else {
+            res.status(406).json({
+              success: false,
+              data: {
+                code: 406,
+                message: "value not acceptable",
+                response: "count is not acceptable",
+              },
             });
+          }
         })
         .catch((err) => {
           res.status(406).json({
@@ -622,37 +652,48 @@ export const userController = {
 
             console.log(course);
 
-            let realCourse_id = course[0].course_id;
-            let realCourse_type = course[0].course_type;
-            let realValidity = course[0].validity;
-            let userId = getUser(req).id;
-            assignCourseToMAnagerIndividualFromAssignedDb({
-              ...result,
-              userId,
-              realCourse_id,
-              realCourse_type,
-              realValidity,
-            })
-              .then((result) => {
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    message: "assigned successfully",
-                    response: "",
-                  },
-                });
+            if (course[0].count >= result.count) {
+              let realCourse_id = course[0].course_id;
+              let realCourse_type = course[0].course_type;
+              let realValidity = course[0].validity;
+              let userId = getUser(req).id;
+              assignCourseToMAnagerIndividualFromAssignedDb({
+                ...result,
+                userId,
+                realCourse_id,
+                realCourse_type,
+                realValidity,
               })
-              .catch((err) => {
-                res.status(406).json({
-                  success: false,
-                  data: {
-                    code: 406,
-                    message: "err from db",
-                    response: err,
-                  },
+                .then((result) => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "assigned successfully",
+                      response: "",
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(406).json({
+                    success: false,
+                    data: {
+                      code: 406,
+                      message: "err from db",
+                      response: err,
+                    },
+                  });
                 });
+            } else {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "invalid count",
+                  response: "this count is not valid",
+                },
               });
+            }
           } catch (error) {
             console.log(error);
           }
@@ -695,38 +736,49 @@ export const userController = {
 
             console.log(course);
 
-            let realCourse_id = course[0].course_id;
-            let realCourse_type = course[0].course_type;
-            let realValidity = course[0].validity;
-            let userId = getUser(req).id;
-            assignCourseToMAnagerIndividualFromAssignedToDb({
-              ...result,
-              userId,
-              realCourse_id,
-              realCourse_type,
-              realValidity,
-              from: "manager-assigned",
-            })
-              .then((result) => {
-                res.status(200).json({
-                  success: true,
-                  data: {
-                    code: 200,
-                    message: "assigned successfully",
-                    response: "",
-                  },
-                });
+            if (course[0].count >= result.count) {
+              let realCourse_id = course[0].course_id;
+              let realCourse_type = course[0].course_type;
+              let realValidity = course[0].validity;
+              let userId = getUser(req).id;
+              assignCourseToMAnagerIndividualFromAssignedToDb({
+                ...result,
+                userId,
+                realCourse_id,
+                realCourse_type,
+                realValidity,
+                from: "manager-assigned",
               })
-              .catch((err) => {
-                res.status(406).json({
-                  success: false,
-                  data: {
-                    code: 406,
-                    message: "value not acceptable",
-                    response: err,
-                  },
+                .then((result) => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "assigned successfully",
+                      response: "",
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(406).json({
+                    success: false,
+                    data: {
+                      code: 406,
+                      message: "value not acceptable",
+                      response: err,
+                    },
+                  });
                 });
+            } else {
+              res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "value is not acceptable",
+                  response: "count is not valid to assign",
+                },
               });
+            }
           } catch (error) {
             console.log(error);
           }
@@ -763,40 +815,50 @@ export const userController = {
           delete result.userId;
 
           let course = await getAssignedCourseToManagerById(result.course_id); // course_id is purchased courses tables id
-
-          console.log(course);
-          let realCourse_id = course[0].course_id;
-          let realCourse_type = course[0].course_type;
-          let realValidity = course[0].validity;
-          let userId = getUser(req).id;
-          assignCourseToMAnagerIndividual({
-            ...result,
-            userId,
-            realCourse_id,
-            realCourse_type,
-            realValidity,
-            assigned: true,
-          })
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "assigned successfully",
-                  response: "",
-                },
-              });
+          if (course[0].course_count >= result.count) {
+            console.log(course);
+            let realCourse_id = course[0].course_id;
+            let realCourse_type = course[0].course_type;
+            let realValidity = course[0].validity;
+            let userId = getUser(req).id;
+            assignCourseToMAnagerIndividual({
+              ...result,
+              userId,
+              realCourse_id,
+              realCourse_type,
+              realValidity,
+              assigned: true,
             })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "value not acceptable",
-                  response: err,
-                },
+              .then((result) => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "assigned successfully",
+                    response: "",
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value not acceptable",
+                    response: err,
+                  },
+                });
               });
+          } else {
+            res.status(406).json({
+              success: false,
+              data: {
+                code: 406,
+                message: "value is not acceptable",
+                response: "count is not valid to assign",
+              },
             });
+          }
         })
         .catch((err) => {
           res.status(406).json({
@@ -1526,17 +1588,37 @@ export const userController = {
     try {
       validateManagerSelfAssignCourseReqData(req.body)
         .then(async (result) => {
-          let course = ""
-          
-          if(result.from == "purchased") {
+          let course = "";
+
+          if (result.from == "purchased") {
             course = await getPurchasedCourseById(result.id);
+            if (!course[0].course_count >= result.count) {
+              return res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "value is not acceptable",
+                  response: "",
+                },
+              });
+            }
           } else {
             course = await getAssignedCourseToCompanyById(result.id);
+            if (!course[0].count >= result.count) {
+              return res.status(406).json({
+                success: false,
+                data: {
+                  code: 406,
+                  message: "value is not acceptable",
+                  response: "",
+                },
+              });
+            }
           }
           console.log(result.id);
 
           let userId = getUser(req).id;
-          result.purchased_course_id = result.id
+          result.purchased_course_id = result.id;
           managerAssignSelfCourse({
             ...result,
             type: course[0].course_type,
@@ -1627,7 +1709,7 @@ export const userController = {
       });
     }
   },
-  getCourseWiseIndividualReports:(req,res) => {
+  getCourseWiseIndividualReports: (req, res) => {
     try {
       let userId = getUser(req).id;
       getCourseWiseIndividualReportsFromDb(userId)
@@ -1665,7 +1747,7 @@ export const userController = {
       });
     }
   },
-  getCourseWiseIndividualManagerReports:(req,res) => {
+  getCourseWiseIndividualManagerReports: (req, res) => {
     try {
       let userId = getUser(req).id;
       getCourseWiseIndividualFromManagerReportsFromDb(userId)
