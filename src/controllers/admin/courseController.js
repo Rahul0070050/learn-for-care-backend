@@ -33,9 +33,8 @@ import {
 export const courseController = {
   createCourseWithResourceImages: (req, res) => {
     try {
-      console.log(result);
       checkAddCourseReqBodyAndFile(req.body, req.files)
-        .then((result) => {
+      .then((result) => {
           try {
             let video = uploadFileToS3("/course/video", result.video);
 
@@ -65,7 +64,7 @@ export const courseController = {
             );
 
             Promise.all([video, introVideo, thumbnail, ...ppt, ...resource])
-              .then((uploadedResult) => {
+            .then((uploadedResult) => {
                 result.resource = [];
                 result.image = [];
                 uploadedResult.forEach((file) => {
@@ -84,6 +83,7 @@ export const courseController = {
                     result[file.name] = file.file;
                   }
                 });
+                console.log(result);
                 addNewCourse(result)
                   .then(() => {
                     res.status(200).json({
