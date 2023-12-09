@@ -3,7 +3,7 @@ import { db } from "../../../conf/mysql.js";
 export function getOnGoingCourseByIdFromDb(id, userId) {
   return new Promise((resolve, reject) => {
     try {
-      console.log(id,userId);
+      console.log(id, userId);
       let getOnGoingCourseByIdQuery = `
         SELECT enrolled_course.*, course.*, enrolled_course.id AS id FROM enrolled_course 
         INNER JOIN course ON course.id = enrolled_course.course_id
@@ -11,6 +11,21 @@ export function getOnGoingCourseByIdFromDb(id, userId) {
       `;
       db.query(getOnGoingCourseByIdQuery, [id, userId], (err, result) => {
         console.log(err);
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getAllAttempts(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getOnGoingCourseByIdQuery =
+        "SELECT COUNT(*) FROM exam_attempts WHERE user_id = ?;";
+      db.query(getOnGoingCourseByIdQuery, [id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
       });
@@ -35,6 +50,13 @@ export function getAllOnGoingCourseByUserIdFromDb(id, type) {
       db.query(getOnGoingCourseByIdQuery, [id, type], (err, result) => {
         if (err) return reject(err?.message);
         else {
+          Promise.all(
+            result.map(async (item) => {
+              let attempts = await getAllAttempts(item.user_id);
+              item["attempts"] = attempts[0]["COUNT(*)"];
+              return item;
+            })
+          );
           console.log(result);
           resolve(result);
         }
