@@ -9,7 +9,7 @@ export function addNewCourse(courseData) {
       let insertCourseQuery = `INSERT INTO course(
           name,description,category,intro_video,thumbnail,video,ppt,resource,assessment,certificate,
           objective_define,What_you_will_learn,aims,who_should_attend,objectives_point,what_you_will_learn_point,
-          price,RRP,course_type,duration,course_level,course_code
+          price,RRP,course_type,duration,course_level,course_code,certificate_line
           ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
       db.query(
         insertCourseQuery,
@@ -36,6 +36,7 @@ export function addNewCourse(courseData) {
           courseData.duration,
           courseData.course_level,
           courseData.course_code,
+          certificate_line
         ],
         (err, result) => {
           if (err) return reject(err.message);

@@ -104,6 +104,7 @@ export function mySqlConnect(done) {
         resource TEXT NOT NULL,
         assessment TEXT DEFAULT NULL,
         certificate TEXT DEFAULT NULL,
+        certificate_line TEXT DEFAULT NULL,
         objective_define TEXT DEFAULT NULL,
         What_you_will_learn TEXT DEFAULT NULL,
         aims TEXT DEFAULT NULL,
