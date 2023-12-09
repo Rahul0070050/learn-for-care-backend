@@ -24,7 +24,7 @@ export function getAllAttempts(id) {
   return new Promise((resolve, reject) => {
     try {
       let getOnGoingCourseByIdQuery =
-        "SELECT COUNT(*) FROM exam_attempts WHERE user_id = ?;";
+        "SELECT COUNT(*) FROM exam_attempts WHERE enrolled_course_id = ?;";
       db.query(getOnGoingCourseByIdQuery, [id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
@@ -52,7 +52,7 @@ export function getAllOnGoingCourseByUserIdFromDb(id, type) {
         else {
           Promise.all(
             result.map(async (item) => {
-              let attempts = await getAllAttempts(item.user_id);
+              let attempts = await getAllAttempts(item.on_going_course_id);
               item["attempts"] = attempts[0]["COUNT(*)"];
               console.log(item["attempts"]);
               return item;
