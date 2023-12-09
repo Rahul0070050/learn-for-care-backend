@@ -95,6 +95,7 @@ export const examController = {
         let per = (points / answers.length) * 100;
         saveExamResult(
           per,
+          questions[0].course_id,
           result.question_id,
           user.id,
           result.enrolled_course_id

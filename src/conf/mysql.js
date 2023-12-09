@@ -246,7 +246,6 @@ export function mySqlConnect(done) {
           id INT AUTO_INCREMENT PRIMARY KEY,
           course_id INT NOT NULL,
           user_id TEXT NOT NULL,
-          attempts INT DEFAULT 0,
           percentage INT DEFAULT NULL,
           enrolled_course_id INT NOT NULL UNIQUE,
           status VARCHAR(10) DEFAULT NULL
