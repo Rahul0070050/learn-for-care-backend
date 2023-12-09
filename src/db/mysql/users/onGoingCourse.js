@@ -57,9 +57,12 @@ export function getAllOnGoingCourseByUserIdFromDb(id, type) {
               console.log(item["attempts"]);
               return item;
             })
-          );
+          ).then(result => {
+            resolve(result);
+          }).catch(err => {
+            reject(err?.message)
+          });
           console.log(result);
-          resolve(result);
         }
       });
     } catch (error) {
