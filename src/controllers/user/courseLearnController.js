@@ -1,9 +1,13 @@
 import { downloadFromS3 } from "../../AWS/S3.js";
 import {
   getAllOnGoingCourseByUserIdFromDb,
+  getCourseAttemptsByUserIdFromDb,
   getOnGoingCourseByIdFromDb,
 } from "../../db/mysql/users/onGoingCourse.js";
-import { checkGetOnGoingCourseByIdReqData } from "../../helpers/user/validateOnGoingCourseReqData.js";
+import {
+  checkGetOnGoingCourseByIdReqData,
+  validateGetCourseAttemptsById,
+} from "../../helpers/user/validateOnGoingCourseReqData.js";
 import { getUser } from "../../utils/auth.js";
 
 export const onGoingCourseController = {
@@ -12,9 +16,9 @@ export const onGoingCourseController = {
       req.params.id = Number(req.params.id);
       checkGetOnGoingCourseByIdReqData(req.params.id)
         .then((result) => {
-          let user = getUser(req)
+          let user = getUser(req);
           console.log(user);
-          getOnGoingCourseByIdFromDb(result,user.id).then(async (result) => {
+          getOnGoingCourseByIdFromDb(result, user.id).then(async (result) => {
             let newResult = await result.map(async (course, i) => {
               try {
                 console.log(course);
@@ -40,7 +44,7 @@ export const onGoingCourseController = {
 
                 for (let index = 0; index < ppt.length; index++) {
                   let link = course[`ppt${index}-`];
-                  
+
                   // let key = urlstring.pop();
 
                   let url = await downloadFromS3(index, link);
@@ -54,8 +58,8 @@ export const onGoingCourseController = {
                   let link = course[`resource${index}-`].split("&&");
                   let url = await downloadFromS3(index, link[0]);
 
-                  resource.push({url: url.url, fileName: link[1]});
-                  
+                  resource.push({ url: url.url, fileName: link[1] });
+
                   delete course[`resource${index}-`];
                 }
 
@@ -160,6 +164,63 @@ export const onGoingCourseController = {
                 code: 500,
                 message:
                   "some error occurred in the server try again after some times",
+                error: err,
+              },
+            ],
+            errorType: "server",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getCourseAttemptsById: (req, res) => {
+    try {
+      validateGetCourseAttemptsById(req.body)
+        .then((result) => {
+          getCourseAttemptsByUserIdFromDb(result.id)
+            .then((result) => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: `got data`,
+                  response: result,
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                success: false,
+                errors: [
+                  {
+                    code: 500,
+                    message: "err form db",
+                    error: err,
+                  },
+                ],
+                errorType: "server",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            success: false,
+            errors: [
+              {
+                code: 500,
+                message: "value not acceptable",
                 error: err,
               },
             ],

@@ -85,7 +85,6 @@ export function getManagerMatrixData(id,from) {
         users = await getAllManagerIndividualFromDb(id);
       }
 
-      console.log(users);
       Promise.all(
         users.map(async (item) => {
           let data = await getMatrixDataByUserId(item.id);

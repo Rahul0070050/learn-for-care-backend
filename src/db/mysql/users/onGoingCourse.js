@@ -57,3 +57,18 @@ export function getAllFinishedCourseByUserIdFromDb(id) {
     }
   });
 }
+
+export function getCourseAttemptsByUserIdFromDb(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getOnGoingCourseByIdQuery =
+        "SELECT * FROM exam_attempts WHERE enrolled_course_id = ?;";
+      db.query(getOnGoingCourseByIdQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
