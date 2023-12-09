@@ -27,15 +27,17 @@ export function getAllOnGoingCourseByUserIdFromDb(id, type) {
           SELECT enrolled_course.id AS on_going_course_id, enrolled_course.*, 
           course.name AS name, course.category AS category, 
           enrolled_course.validity AS validity,
-          course.description AS description, exam_attempts.attempts AS attempts
+          course.description AS description
           FROM enrolled_course 
-          LEFT JOIN exam_attempts ON exam_attempts.enrolled_course_id = enrolled_course.id
           INNER JOIN course ON course.id = enrolled_course.course_id
           WHERE enrolled_course.user_id = ? AND enrolled_course.user_type = ?;
         `;
       db.query(getOnGoingCourseByIdQuery, [id, type], (err, result) => {
         if (err) return reject(err?.message);
-        else return resolve(result);
+        else return {
+          console.log(result);
+          resolve(result);
+        }
       });
     } catch (error) {
       reject(error?.message);
