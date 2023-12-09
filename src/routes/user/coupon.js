@@ -6,6 +6,7 @@ import { validateAdmin } from "../../middlewares/adminAuth.js";
 const route = Router();
 
 route.post("/apply-coupon",couponController.applyCoupon);
+route.post("/remove-coupon",couponController.removeCoupon);
 route.post("/get-applied-coupon",couponController.getAppliedCoupon);
 
 export default route;

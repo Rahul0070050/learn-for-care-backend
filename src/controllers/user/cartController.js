@@ -36,7 +36,6 @@ config("../../../.env");
 export const cartController = {
   addCourseToCart: (req, res) => {
     try {
-      console.log(req.body);
       checkAddToCartReqBody(req.body.course)
         .then(async (courseIds) => {
           let user = getUser(req);
