@@ -53,7 +53,10 @@ export function deleteAppliedCoupon(id) {
     return new Promise((resolve, reject) => {
       let deleteQuery =
         "DELETE FROM applied_coupon WHERE user_id = ? AND state = ?";
-      db.query(deleteQuery, [id, true], (err, result) => {});
+      db.query(deleteQuery, [id, true], (err, result) => {
+        if(err) reject(err?.message)
+        else resolve()
+      });
     });
   } catch (error) {}
 }
