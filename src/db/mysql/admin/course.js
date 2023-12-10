@@ -36,7 +36,7 @@ export function addNewCourse(courseData) {
           courseData.duration,
           courseData.course_level,
           courseData.course_code,
-          courseData.certificate_line
+          courseData.certificate_line,
         ],
         (err, result) => {
           if (err) return reject(err.message);
@@ -54,8 +54,8 @@ export function deleteAppliedCoupon(id) {
       let deleteQuery =
         "DELETE FROM applied_coupon WHERE user_id = ? AND state = ?";
       db.query(deleteQuery, [id, true], (err, result) => {
-        if(err) reject(err?.message)
-        else resolve()
+        if (err) reject(err?.message);
+        else resolve();
       });
     });
   } catch (error) {}
@@ -133,11 +133,11 @@ export function updateCourseData(courseInfo) {
   return new Promise((resolve, reject) => {
     try {
       const {
+        RRP,
         course_id,
         name,
         description,
         category,
-        thumbnail,
         assessment,
         certificate,
         objective_define,
@@ -147,16 +147,15 @@ export function updateCourseData(courseInfo) {
         objectives_point,
         what_you_will_learn_point,
         selling_price,
-        RRP,
         course_type,
         duration,
         course_level,
         course_code,
+        certificate_line,
       } = courseInfo;
 
-
       let updateCourseDataQuery =
-        "UPDATE course SET name = ?, description = ?, category = ?, assessment = ?, certificate = ?, objective_define = ?, What_you_will_learn = ?, aims = ?, who_should_attend = ?, objectives_point = ?, what_you_will_learn_point = ?, price = ?, RRP = ?, course_type = ?, duration = ?, course_level = ?, course_code = ? WHERE id = ?;";
+        "UPDATE course SET name = ?, description = ?, category = ?, assessment = ?, certificate = ?, objective_define = ?, What_you_will_learn = ?, aims = ?, who_should_attend = ?, objectives_point = ?, what_you_will_learn_point = ?, price = ?, RRP = ?, course_type = ?, duration = ?, course_level = ?, course_code = ?, certificate_line = ? WHERE id = ?;";
       db.query(
         updateCourseDataQuery,
         [
@@ -177,6 +176,8 @@ export function updateCourseData(courseInfo) {
           duration,
           course_level,
           course_code,
+          certificate_line,
+          course_id,
         ],
         (err, result) => {
           if (err) return reject(err?.message);
