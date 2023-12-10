@@ -265,7 +265,7 @@ export function checkUpdateCourseDataReqBodyAndFile(body) {
       let bodyTemplate = object({
         course_id: number().required("please enter valid course id"),
         description: string().required("please enter valid description"),
-        price: number().required("please enter valid price"),
+        selling_price: number().required("please enter valid price"),
         category: string().required("please enter valid category"),
         name: string().required("please enter valid name"),
       });
