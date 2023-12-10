@@ -1212,7 +1212,11 @@ export const courseController = {
       console.log(req.body);
       checkUpdateCourseDataReqBodyAndFile(req.body)
         .then((result) => {
-          console.log(result);
+          
+          console.log(result.aims);
+          console.log(result.who_should_attend);
+          console.log(result.objectives_point);
+          console.log(result.what_you_will_learn_point);
           // updateCourseData(result)
           //   .then((result) => {
           //     res.status(200).json({
