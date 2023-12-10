@@ -199,7 +199,7 @@ export function checkUpdateCoursePptReqBodyAndFile(file, body) {
       });
       console.log('ppt :',file);
 
-      let pptFile = validateFile([file], "ppt");
+      let pptFile = validateFile([file], "image");
       let bodyData = bodyTemplate.validate(body);
 
       Promise.all([pptFile, bodyData])
