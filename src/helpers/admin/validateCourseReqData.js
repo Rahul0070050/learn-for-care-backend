@@ -3,32 +3,31 @@ import { validateFile } from "../validateFileTypes.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
-    let resources = files["resource[]"]
-    let ppt = files["ppt[]"]
-    delete files["resource[]"]
-    if(!resources) {
-      resources = files.resource
+    let resources = files["resource[]"];
+    let ppt = files["ppt[]"];
+    delete files["resource[]"];
+    if (!resources) {
+      resources = files.resource;
     }
-    if(!resources) {
-      resources = files.resource
+    if (!resources) {
+      resources = files.resource;
     }
 
-    files.resource = resources
-    files.ppt = ppt
+    files.resource = resources;
+    files.ppt = ppt;
     try {
-
       let introVideoFile = null;
-      
+
       let VideoFile = validateFile([{ video: files.video }], "video");
 
-      if(files?.intro_video) {
+      if (files?.intro_video) {
         introVideoFile = validateFile(
           [{ intro_video: files.intro_video }],
           "intro_video"
         );
       } else {
         introVideoFile = validateFile(
-          [{ intro_video: {name: 'somevideos.mp4'} }],
+          [{ intro_video: { name: "somevideos.mp4" } }],
           "intro_video"
         );
       }
@@ -55,7 +54,7 @@ export function checkAddCourseReqBodyAndFile(body, files) {
       });
 
       let bodData = bodyTemplate.validate(body);
-      
+
       Promise.all([
         bodData,
         VideoFile,
@@ -198,18 +197,23 @@ export function checkUpdateCoursePptReqBodyAndFile(file, body) {
         course_id: number().required("please provide valid course id"),
       });
 
-      console.log('image :',file);
+      console.log("image :", file);
 
-      let pptFile = validateFile([file], "image");
-      let bodyData = bodyTemplate.validate(body);
+      try {
+        let pptFile = validateFile([{ image: file.image }], "image");
+        let bodyData = bodyTemplate.validate(body);
 
-      Promise.all([pptFile, bodyData])
-        .then((result) => {
-          resolve(result);
-        })
-        .catch((err) => {
-          reject(err?.message);
-        });
+        Promise.all([pptFile, bodyData])
+          .then((result) => {
+            resolve(result);
+          })
+          .catch((err) => {
+            reject(err?.message);
+          });
+      } catch (error) {
+        console.log(error);
+        reject(error);
+      }
     } catch (error) {
       reject(error?.message);
     }
