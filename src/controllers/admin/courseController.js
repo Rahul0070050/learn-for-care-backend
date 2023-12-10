@@ -1209,6 +1209,7 @@ export const courseController = {
   },
   updateCourseData: (req, res) => {
     try {
+      console.log(req.body);
       checkUpdateCourseDataReqBodyAndFile(req.body)
         .then((result) => {
           console.log(result);
