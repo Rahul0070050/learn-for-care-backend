@@ -1,6 +1,9 @@
 import { number, object, string } from "yup";
 import { validateFile } from "../validateFileTypes.js";
-import { isValidFileExtensions, validFileExtension } from "../../utils/index.js";
+import {
+  isValidFileExtensions,
+  validFileExtension,
+} from "../../utils/index.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
@@ -202,7 +205,7 @@ export function checkUpdateCoursePptReqBodyAndFile(file, body) {
       let images = file.image;
 
       let imageRes = images.find((img) => {
-        if (!validFileExtension("image", img)) {
+        if (!validFileExtension(img.name, "image")) {
           return true;
         }
       });
