@@ -197,6 +197,7 @@ export function checkUpdateCoursePptReqBodyAndFile(file, body) {
       let bodyTemplate = object({
         course_id: number().required("please provide valid course id"),
       });
+      console.log(file);
 
       let pptFile = validateFile([file], "ppt");
       let bodyData = bodyTemplate.validate(body);
