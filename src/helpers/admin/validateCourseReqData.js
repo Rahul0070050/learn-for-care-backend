@@ -202,14 +202,14 @@ export function checkUpdateCoursePptReqBodyAndFile(file, body) {
       });
 
       let bodyData = bodyTemplate.validate(body);
-      let images = file.image;
+      let images = file?.image;
 
-      let imageRes = images.find((img) => {
+      let imageRes = images?.find((img) => {
         if (!validFileExtension(img.name, "image")) {
           return true;
         }
       });
-      Promise.all([pptFile, bodyData])
+      Promise.all([bodyData])
         .then((result) => {
           if (imageRes) {
             return reject("files not acceptable");
