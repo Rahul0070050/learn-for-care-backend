@@ -170,7 +170,7 @@ export function checkUpdateCourseResourceReqBodyAndFile(files, body) {
       let resourceFile = [];
 
       console.log(files);
-      console.log(files?.resource);
+
       if (Array.isArray(files?.resource)) {
         files.resource.forEach((file) =>
           resourceFile.push(validateFile([{ resource: file }], "resource"))
