@@ -1,5 +1,6 @@
 import { number, object, string } from "yup";
 import { validateFile } from "../validateFileTypes.js";
+import { isValidFileExtensions } from "../../utils/index.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
   return new Promise((resolve, reject) => {
@@ -197,23 +198,25 @@ export function checkUpdateCoursePptReqBodyAndFile(file, body) {
         course_id: number().required("please provide valid course id"),
       });
 
-      console.log("image :", file);
+      let bodyData = bodyTemplate.validate(body);
+      let images = file.image;
 
-      try {
-        let pptFile = validateFile([{ image: file.image }], "image");
-        let bodyData = bodyTemplate.validate(body);
-
-        Promise.all([pptFile, bodyData])
-          .then((result) => {
+      let imageRes = images.find((img) => {
+        if (!isValidFileExtensions("image", img.name)) {
+          return true;
+        }
+      });
+      Promise.all([pptFile, bodyData])
+        .then((result) => {
+          if (imageRes) {
+            return reject("files not acceptable");
+          } else {
             resolve(result);
-          })
-          .catch((err) => {
-            reject(err?.message);
-          });
-      } catch (error) {
-        console.log(error);
-        reject(error);
-      }
+          }
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
     } catch (error) {
       reject(error?.message);
     }

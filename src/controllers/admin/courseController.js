@@ -969,57 +969,58 @@ export const courseController = {
     try {
       checkUpdateCoursePptReqBodyAndFile(req.files, req.body)
         .then((result) => {
-          getCourseByIdFromDb(req.body.course_id)
-            .then(async (course) => {
-              let key = course.ppt;
-              await removeFromS3(key);
-              let uploadedResult = await uploadFileToS3(
-                "/course/image",
-                result[0][0].ppt
-              );
-              updateCourseSingleFieldMediaById(
-                req.body.course_id,
-                uploadedResult.file,
-                "ppt"
-              )
-                .then(() => {
-                  res.status(200).json({
-                    success: true,
-                    data: {
-                      code: 200,
-                      message: "course ppt file updated",
-                      response: "",
-                    },
-                  });
-                })
-                .catch((err) => {
-                  res.status(406).json({
-                    success: false,
-                    errors: [
-                      {
-                        code: 500,
-                        message:
-                          "some error occurred in the server try again after some times",
-                        error: err,
-                      },
-                    ],
-                    errorType: "client",
-                  });
-                });
-            })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                errors: [
-                  {
-                    code: 406,
-                    message: "invalid id",
-                    error: err,
-                  },
-                ],
-                errorType: "client",
-              });
-            });
+          console.log(result);
+          // getCourseByIdFromDb(req.body.course_id)
+          //   .then(async (course) => {
+          //     let key = course.ppt;
+          //     await removeFromS3(key);
+          //     let uploadedResult = await uploadFileToS3(
+          //       "/course/image",
+          //       result[0][0].ppt
+          //     );
+          //     updateCourseSingleFieldMediaById(
+          //       req.body.course_id,
+          //       uploadedResult.file,
+          //       "ppt"
+          //     )
+          //       .then(() => {
+          //         res.status(200).json({
+          //           success: true,
+          //           data: {
+          //             code: 200,
+          //             message: "course ppt file updated",
+          //             response: "",
+          //           },
+          //         });
+          //       })
+          //       .catch((err) => {
+          //         res.status(406).json({
+          //           success: false,
+          //           errors: [
+          //             {
+          //               code: 500,
+          //               message:
+          //                 "some error occurred in the server try again after some times",
+          //               error: err,
+          //             },
+          //           ],
+          //           errorType: "client",
+          //         });
+          //       });
+          //   })
+          //   .catch((err) => {
+          //     res.status(406).json({
+          //       success: false,
+          //       errors: [
+          //         {
+          //           code: 406,
+          //           message: "invalid id",
+          //           error: err,
+          //         },
+          //       ],
+          //       errorType: "client",
+          //     });
+          //   });
         })
         .catch((err) => {
           res.status(406).json({
