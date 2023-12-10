@@ -34,7 +34,7 @@ export const courseController = {
   createCourseWithResourceImages: (req, res) => {
     try {
       checkAddCourseReqBodyAndFile(req.body, req.files)
-      .then((result) => {
+        .then((result) => {
           try {
             let video = uploadFileToS3("/course/video", result.video);
 
@@ -64,7 +64,7 @@ export const courseController = {
             );
 
             Promise.all([video, introVideo, thumbnail, ...ppt, ...resource])
-            .then((uploadedResult) => {
+              .then((uploadedResult) => {
                 result.resource = [];
                 result.image = [];
                 uploadedResult.forEach((file) => {
@@ -304,11 +304,17 @@ export const courseController = {
 
                     images.push(url.url);
                   }
-                  
-                  course['aims'] = JSON.parse(course.aims || '[]')
-                  course['objectives_point'] = JSON.parse(course.objectives_point || '[]')
-                  course['what_you_will_learn_point'] = JSON.parse(course.what_you_will_learn_point || '[]')
-                  course['who_should_attend'] = JSON.parse(course.who_should_attend || '[]')
+
+                  course["aims"] = JSON.parse(course.aims || "[]");
+                  course["objectives_point"] = JSON.parse(
+                    course.objectives_point || "[]"
+                  );
+                  course["what_you_will_learn_point"] = JSON.parse(
+                    course.what_you_will_learn_point || "[]"
+                  );
+                  course["who_should_attend"] = JSON.parse(
+                    course.who_should_attend || "[]"
+                  );
 
                   let intro_video = await downloadFromS3(
                     course.id,
@@ -849,6 +855,7 @@ export const courseController = {
     try {
       checkUpdateCourseResourceReqBodyAndFile(req.files, req.body)
         .then((result) => {
+          console.log(req.body);
           getCourseByIdFromDb(Number(req.body.course_id))
             .then(async (course) => {
               try {
@@ -875,7 +882,11 @@ export const courseController = {
                 let files = await Promise.all(uploadedFileArray);
 
                 let resourceFilesS3Links = files.map((file) => {
-                  return { file: file.file };
+                  return {
+                    type: file.type,
+                    file: file.file,
+                    name: file.fileName,
+                  };
                 });
 
                 resource = JSON.stringify(resourceFilesS3Links);
