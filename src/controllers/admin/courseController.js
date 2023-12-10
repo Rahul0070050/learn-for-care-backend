@@ -1209,10 +1209,9 @@ export const courseController = {
   },
   updateCourseData: (req, res) => {
     try {
-      console.log(req.body);
       checkUpdateCourseDataReqBodyAndFile(req.body)
         .then((result) => {
-          
+
           console.log(result.aims);
           console.log(result.who_should_attend);
           console.log(result.objectives_point);
