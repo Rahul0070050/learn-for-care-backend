@@ -971,44 +971,50 @@ export const courseController = {
         .then((result) => {
           getCourseByIdFromDb(req.body.course_id)
             .then(async (course) => {
-              let key = JSON.parse(course.ppt);
-              key.map((item) => {
-                removeFromS3(item.file);
-              });
-              Promise.all(req.file.image.map(async (item) => {
-                return await uploadFileToS3("/course/image", item);
-              })).then(image => {
-                console.log(image);
-                updateCourseSingleFieldMediaById(
-                  req.body.course_id,
-                  uploadedResult.file,
-                  "ppt"
-                )
-                  .then(() => {
-                    res.status(200).json({
-                      success: true,
-                      data: {
-                        code: 200,
-                        message: "course ppt file updated",
-                        response: "",
-                      },
-                    });
+              try {
+                let key = JSON.parse(course.ppt);
+                key.map((item) => {
+                  removeFromS3(item.file);
+                });
+                Promise.all(
+                  req.file.image.map(async (item) => {
+                    return await uploadFileToS3("/course/image", item);
                   })
-                  .catch((err) => {
-                    res.status(406).json({
-                      success: false,
-                      errors: [
-                        {
-                          code: 500,
-                          message:
-                            "some error occurred in the server try again after some times",
-                          error: err,
+                ).then((image) => {
+                  console.log(image);
+                  updateCourseSingleFieldMediaById(
+                    req.body.course_id,
+                    uploadedResult.file,
+                    "ppt"
+                  )
+                    .then(() => {
+                      res.status(200).json({
+                        success: true,
+                        data: {
+                          code: 200,
+                          message: "course ppt file updated",
+                          response: "",
                         },
-                      ],
-                      errorType: "client",
+                      });
+                    })
+                    .catch((err) => {
+                      res.status(406).json({
+                        success: false,
+                        errors: [
+                          {
+                            code: 500,
+                            message:
+                              "some error occurred in the server try again after some times",
+                            error: err,
+                          },
+                        ],
+                        errorType: "client",
+                      });
                     });
-                  });
-              });
+                });
+              } catch (error) {
+                console.log(error);
+              }
             })
             .catch((err) => {
               res.status(406).json({
