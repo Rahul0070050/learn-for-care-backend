@@ -1211,31 +1211,32 @@ export const courseController = {
     try {
       checkUpdateCourseDataReqBodyAndFile(req.body)
         .then((result) => {
-          updateCourseData(result)
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "course data file updated",
-                  response: "",
-                },
-              });
-            })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                errors: [
-                  {
-                    code: 500,
-                    message:
-                      "some error occurred in the server try again after some times",
-                    error: err,
-                  },
-                ],
-                errorType: "client",
-              });
-            });
+          console.log(result);
+          // updateCourseData(result)
+          //   .then((result) => {
+          //     res.status(200).json({
+          //       success: true,
+          //       data: {
+          //         code: 200,
+          //         message: "course data file updated",
+          //         response: "",
+          //       },
+          //     });
+          //   })
+          //   .catch((err) => {
+          //     res.status(406).json({
+          //       success: false,
+          //       errors: [
+          //         {
+          //           code: 500,
+          //           message:
+          //             "some error occurred in the server try again after some times",
+          //           error: err,
+          //         },
+          //       ],
+          //       errorType: "client",
+          //     });
+          //   });
         })
         .catch((err) => {
           res.status(406).json({
