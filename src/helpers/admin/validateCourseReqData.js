@@ -204,6 +204,8 @@ export function checkUpdateCoursePptReqBodyAndFile(file, body) {
       let bodyData = bodyTemplate.validate(body);
       let images = file?.image;
 
+      if(!images) return reject("please provide image files")
+      
       let imageRes = images?.find((img) => {
         if (!validFileExtension(img.name, "image")) {
           return true;
