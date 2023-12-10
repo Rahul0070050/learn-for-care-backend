@@ -154,8 +154,6 @@ export function updateCourseData(courseInfo) {
         certificate_line,
       } = courseInfo;
 
-      console.log(courseInfo);
-
       let updateCourseDataQuery =
         "UPDATE course SET name = ?, description = ?, category = ?, assessment = ?, certificate = ?, objective_define = ?, What_you_will_learn = ?, aims = ?, who_should_attend = ?, objectives_point = ?, what_you_will_learn_point = ?, price = ?, RRP = ?, course_type = ?, duration = ?, course_level = ?, course_code = ?, certificate_line = ? WHERE id = ?;";
       db.query(
@@ -168,10 +166,10 @@ export function updateCourseData(courseInfo) {
           certificate,
           objective_define,
           What_you_will_learn,
-          aims,
-          who_should_attend,
-          objectives_point,
-          what_you_will_learn_point,
+          JSON.stringify(aims),
+          JSON.stringify(who_should_attend),
+          JSON.stringify(objectives_point),
+          JSON.stringify(what_you_will_learn_point),
           selling_price,
           RRP,
           course_type,
