@@ -974,7 +974,7 @@ export const courseController = {
               let key = course.ppt;
               await removeFromS3(key);
               let uploadedResult = await uploadFileToS3(
-                "/course/ppt",
+                "/course/image",
                 result[0][0].ppt
               );
               updateCourseSingleFieldMediaById(
