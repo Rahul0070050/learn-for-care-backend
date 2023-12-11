@@ -972,7 +972,7 @@ export const courseController = {
           getCourseByIdFromDb(req.body.course_id)
             .then(async (course) => {
               try {
-                let key = JSON.parse(course.ppt);
+                let key = JSON.parse(course[0].ppt);
                 key.map((item) => {
                   removeFromS3(item.file);
                 });
