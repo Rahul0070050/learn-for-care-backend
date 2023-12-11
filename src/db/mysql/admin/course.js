@@ -30,7 +30,7 @@ export function addNewCourse(courseData) {
           courseData.who_should_attend,
           courseData.objectives_point,
           courseData.what_you_will_learn_point,
-          courseData.selling_price,
+          courseData.price,
           courseData.RRP,
           courseData.course_type,
           courseData.duration,

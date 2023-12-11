@@ -48,7 +48,6 @@ export function checkAddCourseReqBodyAndFile(body, files) {
         price: number().required("please enter valid price"),
         category: string().required("please enter valid category"),
         name: string().required("please enter valid name"),
-        selling_price: string().required("please provide valid selling_price"),
         RRP: string().required("please provide valid RRP"),
         course_type: string().required("please provide valid course_type"),
         duration: string().required("please provide valid duration"),
