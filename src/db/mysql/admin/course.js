@@ -119,7 +119,7 @@ export function updateCourseSingleFieldMediaById(id, data, type) {
   return new Promise((resolve, reject) => {
     try {
       let updateCourseMediaQuery = `UPDATE course SET ${type} = ? WHERE id = ?;`;
-      db.query(updateCourseMediaQuery, [data, id], (err, result) => {
+      db.query(updateCourseMediaQuery, [JSON.stringify(data), id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
       });
