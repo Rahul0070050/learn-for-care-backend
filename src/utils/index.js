@@ -4,13 +4,12 @@ export function isValidFileExtensions(fileName, fileType) {
     video: ["mp4", , "mkv", "webm"],
     pptx: ["pptx"],
     pdf: ["pdf"],
-    resource: ["pdf", "mp4", "mkv", "webm","txt","docx"],
+    resource: ["pdf", "mp4", "mkv", "webm", "txt", "docx"],
   };
   return (
     validFileExtensions[fileType].indexOf(fileName.split(".").pop() || "") > -1
   );
 }
-
 
 export function validFileExtension(fileName, fileType) {
   const validFileExtensions = {
@@ -18,7 +17,7 @@ export function validFileExtension(fileName, fileType) {
     video: ["mp4", , "mkv", "webm"],
     pptx: ["pptx"],
     pdf: ["pdf"],
-    resource: ["pdf", "mp4", "mkv", "webm","txt","docx"],
+    resource: ["pdf", "mp4", "mkv", "webm", "txt", "docx", "jpeg", "webp", "png"],
   };
-  return validFileExtensions[`${fileType}`].includes(fileName.split(".").pop())
+  return validFileExtensions[`${fileType}`].includes(fileName.split(".").pop());
 }
