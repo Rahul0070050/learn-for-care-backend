@@ -977,7 +977,7 @@ export const courseController = {
                   removeFromS3(item.file);
                 });
                 Promise.all(
-                  req.file.image.map(async (item) => {
+                  req.files?.image.map(async (item) => {
                     return await uploadFileToS3("/course/image", item);
                   })
                 ).then((image) => {
