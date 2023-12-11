@@ -37,6 +37,20 @@ export function getActiveCouponByUserId(id) {
   });
 }
 
+export function getOfferTextsFromDb() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = "SELECT * FROM offer_text;";
+      db.query(getQuery, (err, result) => {
+        if (err) return reject(err.message);
+        else resolve(result);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+}
+
 export function disableCouponByUserId(id) {
   return new Promise((resolve, reject) => {
     try {
