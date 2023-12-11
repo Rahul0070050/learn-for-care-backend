@@ -982,9 +982,13 @@ export const courseController = {
                   })
                 ).then((image) => {
                   console.log(image);
+                  let result = [];
+                  image.forEach((item) => {
+                    result.push({ type: item.type, file: item.file });
+                  });
                   updateCourseSingleFieldMediaById(
                     req.body.course_id,
-                    uploadedResult.file,
+                    result,
                     "ppt"
                   )
                     .then(() => {
