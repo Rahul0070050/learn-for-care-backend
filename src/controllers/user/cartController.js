@@ -514,7 +514,7 @@ export const cartController = {
                     let transitionId = await saveInvoiceToDb({
                       userId,
                       image: url.file,
-                      coupon: coupon?.id || "",
+                      coupon: coupon?.id || 0,
                       total,
                     });
                     Promise.all(

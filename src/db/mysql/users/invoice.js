@@ -17,7 +17,7 @@ export function saveInvoiceToDb(data) {
           } else {
             insertId = result.insertId;
           }
-          db.query(updateQuery, [insertId], (err, result) => {});
+          db.query(updateQuery, [insertId, insertId], (err, result) => {});
           return resolve(insertId);
         }
       });
