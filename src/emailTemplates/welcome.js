@@ -348,7 +348,7 @@ export function welcomeEmail(logo) {
                   <td class="logo" style="text-align: center">
                     <img
                       src="${logo}"
-                      style="width: 15rem; padding: 4em 0 2em 0"
+                      style="width: 12rem; padding: 4em 0 2em 0"
                     />
                   </td>
                 </tr>
@@ -400,8 +400,8 @@ export function welcomeEmail(logo) {
                         >Learn Now</a
                       >
                       <p>
-                        If you did not request this One Time Password, Please
-                        contact us on support@learnforcare.co.uk
+                        If you did not request this One Time Password, </br>
+                        Please contact us on support@learnforcare.co.uk </br>
                         <a target="_blank" href="www.learnforcare.co.uk"
                           >Learn For Care
                         </a>
