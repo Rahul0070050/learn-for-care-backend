@@ -43,7 +43,10 @@ export function getOfferTextsFromDb() {
       let getQuery = "SELECT * FROM offer_text;";
       db.query(getQuery, (err, result) => {
         if (err) return reject(err.message);
-        else resolve(result);
+        else {
+          console.log(result);
+          resolve(result);
+        }
       });
     } catch (error) {
       console.log(error);

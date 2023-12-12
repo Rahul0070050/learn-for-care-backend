@@ -389,7 +389,7 @@ export function welcomeEmail(logo) {
                   <td style="text-align: center">
                     <div>
                       <p style="font-weight: 600; color: ''">
-                        Thank you for choosing LEARNFORCARE as your learning
+                        Thank you for choosing Learn For Care as your learning
                         platform. We look forward to being part of your
                         educational journey!
                       </p>
@@ -400,10 +400,9 @@ export function welcomeEmail(logo) {
                         >Learn Now</a
                       >
                       <p>
-                        If you did not request this One Time Password, </br>
-                        Please contact us on support@learnforcare.co.uk </br>
-                        <a target="_blank" href="www.learnforcare.co.uk"
-                          >Learn For Care
+                        For more information Contact : info@learnforcare.co.uk </br>
+                        <a target="_blank" href="www.learnforcare.co.uk">
+                          Learn For Care
                         </a>
                       </p>
                     </div>
@@ -419,6 +418,5 @@ export function welcomeEmail(logo) {
     </div>
   </body>
 </html>
-
     `
 }
