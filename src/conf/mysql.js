@@ -144,12 +144,11 @@ export function mySqlConnect(done) {
     const createInvoiceTable = `
       CREATE TABLE IF NOT EXISTS invoice (
       id INT AUTO_INCREMENT PRIMARY KEY,
-      user_id VARCHAR(150) NOT NULL,
-      products TEXT NOT NULL,
-      applied_coupon TEXT NOT NULL,
-      real_price INT NOT NULL,
-      discount_price INT NOT NULL,
-      state INT NOT NULL,
+      user_id INT NOT NULL,
+      transaction_id INT DEFAULT NULL,
+      applied_coupon INT DEFAULT NULL,
+      total_price INT NOT NULL,
+      img TEXT NOT NULL,
       date DATETIME DEFAULT NOW()
     );`;
 

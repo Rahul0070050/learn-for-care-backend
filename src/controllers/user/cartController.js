@@ -506,8 +506,17 @@ export const cartController = {
                         });
                       }
                     }
+                    let total = 0;
+                    cartItems.forEach((item) => {
+                      total += item.amount;
+                    });
                     let url = await uploadInvoice(filePath);
-                    await saveInvoiceToDb({ userId, image: url.file });
+                    let transitionId = await saveInvoiceToDb({
+                      userId,
+                      image: url.file,
+                      coupon: coupon.id || "",
+                      total,
+                    });
                     Promise.all(
                       cartItems.map((item) => {
                         return saveToPurchasedCourse({
@@ -516,6 +525,7 @@ export const cartController = {
                           amount: item.amount,
                           course_count: item.product_count,
                           type: item.item_type,
+                          transitionId,
                         });
                       })
                     )
