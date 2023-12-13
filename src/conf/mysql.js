@@ -96,7 +96,7 @@ export function mySqlConnect(done) {
         name VARCHAR(200) NOT NULL,
         description TEXT NOT NULL,
         category VARCHAR(50) NOT NULL,
-        price INT NOT NULL,
+        price DOUBLE NOT NULL,
         intro_video VARCHAR(200),
         thumbnail VARCHAR(200) NOT NULL,
         video VARCHAR(200) NOT NULL,
@@ -112,7 +112,7 @@ export function mySqlConnect(done) {
         objectives_point TEXT DEFAULT NULL,
         what_you_will_learn_point TEXT DEFAULT NULL,
         selling_price INT DEFAULT NULL,
-        RRP INT DEFAULT NULL,
+        RRP DOUBLE DEFAULT NULL,
         course_type VARCHAR(250) DEFAULT NULL,
         duration VARCHAR(250) DEFAULT NULL,
         course_level VARCHAR(250) DEFAULT NULL,
@@ -175,12 +175,12 @@ export function mySqlConnect(done) {
     // CREATE TABLE IF NOT EXISTS cart (
     //   id INT AUTO_INCREMENT PRIMARY KEY,
     //   user_id INT NOT NULL,
-    // course_id INT NOT NULL, // TODO: course id some times predated as bundle id
+    //   course_id INT NOT NULL, // TODO: course id some times predated as bundle id
     //   product_count INT NOT NULL,
     //   thumbnail VARCHAR(255) NOT NULL,
     //   name VARCHAR(255) NOT NULL,
     //   item_type VARCHAR(20) NOT NULL,
-    //   amount INT NOT NULL
+    //   amount DOUBLE NOT NULL
     // );`;
 
     // db.query(createCartTable, (err, result) => {
@@ -373,7 +373,7 @@ export function mySqlConnect(done) {
       CREATE TABLE IF NOT EXISTS course_bundle (
         id INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(150) NOT NULL,
-        price INT NOT NULL,
+        price DOUBLE NOT NULL,
         courses VARCHAR(150) NOT NULL,
         image VARCHAR(150) NOT NULL,
         description TEXT NOT NULL
@@ -463,7 +463,7 @@ export function mySqlConnect(done) {
           valid_till DATETIME NOT NULL,
           coupon_type VARCHAR(50) NOT NULL,
           minimum_purchase INT NOT NULL,
-          amount INT NOT NULL
+          amount DOUBLE NOT NULL
         );
       `;
 
