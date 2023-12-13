@@ -12,33 +12,62 @@ export function addCourseToCart(
 ) {
   return new Promise((resolve, reject) => {
     try {
-      let insertQuery = `INSERT INTO cart (user_id, course_id, product_count, thumbnail, amount, name, item_type)
-                SELECT ?, ?, ?, ?, ?, ?, ?
-                WHERE NOT EXISTS (SELECT * FROM cart WHERE user_id = ? AND course_id = ? AND item_type = ?);
-              `;
+      let checkQuery = `SELECT * FROM cart WHERE user_id = ? AND course_id = ? AND item_type = ?`;
 
       db.query(
-        insertQuery,
-        [
-          userId,
-          courseId,
-          count,
-          thumbnail,
-          count * price,
-          name,
-          type,
-          userId,
-          courseId,
-          type,
-        ],
-        (err, result) => {
+        checkQuery,
+        [userId, courseId, type],
+        (err,
+        (result) => {
           if (err) {
-            console.log(err?.message);
-            reject(err?.message);
+            reject(err);
           } else {
-            resolve(result);
+
+            if (result.length > 0) {
+
+              let updateCartCountQuery = `UPDATE cart SET product_count = product_count + ?, amount = product_count * ? WHERE id = ?;`;
+
+              db.query(
+                updateCartCountQuery,
+                [count, price, result[0].id],
+                (err, result) => {
+
+                }
+              );
+
+            } else {
+
+              let insertQuery = `INSERT INTO cart (user_id, course_id, product_count, thumbnail, amount, name, item_type)
+            SELECT ?, ?, ?, ?, ?, ?, ?
+                    WHERE NOT EXISTS (SELECT * FROM cart WHERE user_id = ? AND course_id = ? AND item_type = ?);
+                  `;
+
+              db.query(
+                insertQuery,
+                [
+                  userId,
+                  courseId,
+                  count,
+                  thumbnail,
+                  count * price,
+                  name,
+                  type,
+                  userId,
+                  courseId,
+                  type,
+                ],
+                (err, result) => {
+                  if (err) {
+                    console.log(err?.message);
+                    reject(err?.message);
+                  } else {
+                    resolve(result);
+                  }
+                }
+              );
+            }
           }
-        }
+        })
       );
     } catch (error) {
       reject(error?.message);
