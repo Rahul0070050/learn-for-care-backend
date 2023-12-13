@@ -1019,7 +1019,7 @@ export function getCourseWiseManagerReportsFromDb(id) {
         FROM course_assigned_manager
         INNER JOIN course ON course.id = course_assigned_manager.course_id
         WHERE course_assigned_manager.course_type = ? AND course_assigned_manager.owner = ?
-        GROUP BY course.name;
+        GROUP BY course.name, course.course_code;
       `;
       db.query(getQuery, ["course", id], (err, result) => {
         if (err) {
