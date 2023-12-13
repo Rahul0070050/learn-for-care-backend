@@ -31,7 +31,7 @@ export function addNewCourse(courseData) {
           courseData.objectives_point,
           courseData.what_you_will_learn_point,
           parseFloat(courseData.price).toFixed(2),
-          courseData.RRP,
+          parseFloat(courseData.RRP).toFixed(2),
           courseData.course_type,
           courseData.duration,
           courseData.course_level,

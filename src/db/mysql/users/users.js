@@ -1018,7 +1018,7 @@ export function getCourseWiseManagerReportsFromDb(id) {
         SELECT course.name AS course_name, COUNT(DISTINCT course_assigned_manager.manager_id) AS managers_count
         FROM course_assigned_manager
         INNER JOIN course ON course.id = course_assigned_manager.course_id
-        WHERE course_type = ? AND owner = ?
+        WHERE course_assigned_manager.course_type = ? AND course_assigned_manager.owner = ?
         GROUP BY course.name;
       `;
       db.query(getQuery, ["course", id], (err, result) => {

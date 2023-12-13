@@ -7,7 +7,8 @@ export function checkCreateBundleReqBody(body, file) {
       name: string().required("please provide valid name"),
       description: string().required("please provide valid description"),
       courses: string().required("please provide valid course"),
-      price: string().required("please provide valid price"),
+      price: string().required("please provide valid price")
+      // category: string().required("please provide valid category"),
     });
 
     body.courses = JSON.stringify(body.courses);

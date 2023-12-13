@@ -40,8 +40,8 @@ export function getActiveCouponByUserId(id) {
 export function getOfferTextsFromDb() {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT * FROM offer_text;";
-      db.query(getQuery, (err, result) => {
+      let getQuery = "SELECT * FROM offer_text WHERE is_active = ?;";
+      db.query(getQuery, [true], (err, result) => {
         if (err) return reject(err.message);
         else {
           console.log(result);
