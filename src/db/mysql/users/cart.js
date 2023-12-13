@@ -23,6 +23,7 @@ export function addCourseToCart(
             reject(err);
           } else {
 
+            console.log(result);
             if (result.length > 0) {
 
               let updateCartCountQuery = `UPDATE cart SET product_count = product_count + ?, amount = product_count * ? WHERE id = ?;`;
@@ -31,7 +32,7 @@ export function addCourseToCart(
                 updateCartCountQuery,
                 [count, price, result[0].id],
                 (err, result) => {
-
+                  resolve(result)
                 }
               );
 
