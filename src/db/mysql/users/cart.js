@@ -12,7 +12,7 @@ export function addCourseToCart(
 ) {
   return new Promise((resolve, reject) => {
     try {
-      let checkQuery = `SELECT * FROM cart WHERE user_id = ? AND course_id = ? AND item_type = ?`;
+      let checkQuery = `SELECT * FROM cart WHERE user_id = ? AND course_id = ? AND item_type = ?;`;
 
       db.query(
         checkQuery,
