@@ -97,6 +97,7 @@ export function getPurchasedCourseBundlesFromDbByUserId(id) {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
           SELECT purchased_course.*,
+          DATE_FORMAT(purchased_course.date, '%d/%m/%Y') AS date,
           purchased_course.fake_course_count AS fake_count,
           purchased_course.course_id AS bundle_id,
           purchased_course.id AS id,
