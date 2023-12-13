@@ -9,6 +9,7 @@ export function checkCreateBlogReqBody(body, file) {
       content: string().required("please provide valid content"),
       author: string().required("please provide valid author name"),
       tags: string().required("please provide valid tags"),
+      state: string().required("please provide valid state"),
     });
 
     if(Array.isArray(file?.image)) {
