@@ -37,7 +37,7 @@ export function getBlogByIdFromDb(id) {
 export function getAllBlogs() {
   return new Promise((resolve, reject) => {
     try {
-      let getAllBlogsQuery = "SELECT * FROM blogs";
+      let getAllBlogsQuery = "SELECT * FROM blogs WHERE state = 'published'";
       db.query(getAllBlogsQuery, (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
