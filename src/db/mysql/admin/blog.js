@@ -5,7 +5,7 @@ export function insertNewBlog(blog) {
   return new Promise((resolve, reject) => {
     try {
       let insertBlogQuery =
-        "INSERT INTO blogs(state, header, img, content, author, tags) VALUES(?,?,?,?,?);";
+        "INSERT INTO blogs(state, header, img, content, author, tags) VALUES(?,?,?,?,?,?);";
       db.query(
         insertBlogQuery,
         [blog.state, blog.header, blog.image, blog.content, blog.author, blog.tags],
