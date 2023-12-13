@@ -39,9 +39,9 @@ export function addCourseToCart(
             } else {
 
               let insertQuery = `INSERT INTO cart (user_id, course_id, product_count, thumbnail, amount, name, item_type)
-            SELECT ?, ?, ?, ?, ?, ?, ?
-                    WHERE NOT EXISTS (SELECT * FROM cart WHERE user_id = ? AND course_id = ? AND item_type = ?);
-                  `;
+                                  SELECT ?, ?, ?, ?, ?, ?, ?
+                                  WHERE NOT EXISTS (SELECT * FROM cart WHERE user_id = ? AND course_id = ? AND item_type = ?);
+                                `;
 
               db.query(
                 insertQuery,
