@@ -18,7 +18,7 @@ export function getInvoice(id) {
 export function getAllInvoice() {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT * FROM invoice;";
+      let getQuery = "SELECT *, DATE_FORMAT(date, '%d/%m/%Y') AS date, TIME_FORMAT(date, '%h:%i:%s %p') AS time FROM invoice;";
       db.query(getQuery, async (err, result) => {
         if (err) return reject(err?.message);
         else {
