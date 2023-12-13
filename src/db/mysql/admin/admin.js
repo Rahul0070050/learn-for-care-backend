@@ -416,7 +416,7 @@ export function getAdminExperiencesDocs(id) {
 
 export function getAdminInfoFromDb(id) {
   return new Promise((resolve, reject) => {
-    let getQuery = "SELECT * FROM admin WHERE id = ?;";
+    let getQuery = "SELECT *, DATE_FORMAT(date_of_birth, '%d/%m/%Y') AS date_of_birth, DATE_FORMAT(date_of_joining, '%d/%m/%Y') AS date_of_joining FROM admin WHERE id = ?;";
     db.query(getQuery, [id], (err, result) => {
       if (err) return reject(err?.message);
       else return resolve(result);
