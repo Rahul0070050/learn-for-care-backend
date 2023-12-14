@@ -987,7 +987,7 @@ export const courseController = {
                   });
                   updateCourseSingleFieldMediaById(
                     req.body.course_id,
-                    result,
+                    JSON.stringify(result),
                     "ppt"
                   )
                     .then(() => {
