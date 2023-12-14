@@ -6,6 +6,8 @@ import {
 } from "../../utils/index.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
+  console.log(body.price);
+  console.log(body.RRP);
   return new Promise((resolve, reject) => {
     let resources = files["resource[]"];
     let ppt = files["ppt[]"];
