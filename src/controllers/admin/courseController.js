@@ -83,7 +83,6 @@ export const courseController = {
                     result[file.name] = file.file;
                   }
                 });
-                console.log(result);
                 addNewCourse(result)
                   .then(() => {
                     res.status(200).json({
