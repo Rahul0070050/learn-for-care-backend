@@ -111,6 +111,7 @@ export function getPurchasedCourseBundlesFromDbByUserId(id) {
         if(err){
           reject(err.message);
         } else {
+          console.log(result);
           resolve(result);
         }
       })

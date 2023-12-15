@@ -8,6 +8,10 @@ import {
 export function checkAddCourseReqBodyAndFile(body, files) {
   console.log(body.price);
   console.log(body.RRP);
+  console.log(body.aims)
+  console.log(body.who_should_attend)
+  console.log(body.what_you_will_learn_point)
+  console.log(body.objectives_point);
   return new Promise((resolve, reject) => {
     let resources = files["resource[]"];
     let ppt = files["ppt[]"];

@@ -1588,64 +1588,80 @@ export const userController = {
     try {
       validateManagerSelfAssignCourseReqData(req.body)
         .then(async (result) => {
-          let course = "";
-
-          if (result.from == "purchased") {
-            course = await getPurchasedCourseById(result.id);
-            if (!course[0].course_count >= result.count) {
-              return res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "value is not acceptable",
-                  response: "",
-                },
-              });
+          try {
+            let course = "";
+            if (result.from == "manager-assigned") {
+              course = await getAssignedCourseToManagerById(result.id);
+              if (!course[0].course_count >= result.count) {
+                return res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value is not acceptable",
+                    response: "",
+                  },
+                });
+              }
+            } else if (result.from == "purchased") {
+              course = await getPurchasedCourseById(result.id);
+              if (!course[0].course_count >= result.count) {
+                return res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value is not acceptable",
+                    response: "",
+                  },
+                });
+              }
+            } else {
+              course = await getAssignedCourseToCompanyById(result.id);
+              if (!course[0].count >= result.count) {
+                return res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value is not acceptable",
+                    response: "",
+                  },
+                });
+              }
             }
-          } else {
-            course = await getAssignedCourseToCompanyById(result.id);
-            if (!course[0].count >= result.count) {
-              return res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "value is not acceptable",
-                  response: "",
-                },
-              });
-            }
-          }
-          console.log(result.id);
 
-          let userId = getUser(req).id;
-          result.purchased_course_id = result.id;
-          managerAssignSelfCourse({
-            ...result,
-            type: course[0].course_type,
-            validity: course[0].validity,
-            course_id: course[0].course_id,
-            userId,
-          })
-            .then((result) => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "assigned successfully",
-                  response: result,
-                },
-              });
+            console.log(result.id);
+
+            let userId = getUser(req).id;
+            result.purchased_course_id = result.id;
+            managerAssignSelfCourse({
+              ...result,
+              type: course[0].course_type,
+              validity: course[0].validity,
+              course_id: course[0].course_id,
+              userId,
             })
-            .catch((err) => {
-              res.status(406).json({
-                success: false,
-                data: {
-                  code: 406,
-                  message: "error from db",
-                  response: err,
-                },
+              .then((result) => {
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "assigned successfully",
+                    response: result,
+                  },
+                });
+              })
+              .catch((err) => {
+                res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "error from db",
+                    response: err,
+                  },
+                });
               });
-            });
+          } catch (error) {
+            console.log(error);
+          }
         })
         .catch((err) => {
           res.status(406).json({
