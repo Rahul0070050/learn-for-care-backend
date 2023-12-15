@@ -989,7 +989,7 @@ export function managerAssignSelfCourse(data) {
 
         if (from == "manager-assigned") {
           decreaseQuery = `UPDATE course_assigned_manager SET course_count = course_count - ? WHERE id = ?;`;
-        } else if (from == "manager-purchased" || form == "company-purchased") {
+        } else if (from == "manager-purchased" || from == "company-purchased") {
           decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
         } else {
           decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
