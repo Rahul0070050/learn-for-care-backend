@@ -1614,31 +1614,26 @@ export const userController = {
                   },
                 });
               }
-            } else if (result.from == "company") {
-              try {
-                let assignedCourse = await getAssignedCourseToCompanyById(
-                  result.id
-                );
-                let purchasedCourse = await getPurchasedCourseById(result.id);
-                if (assignedCourse.length >= 1) {
-                  course = assignedCourse;
-                }
+            } else if(result.from == "company") {
+              let assignedCourse = await getAssignedCourseToCompanyById(result.id);
+              let purchasedCourse = await getPurchasedCourseById(result.id);
+              if(assignedCourse.length >= 1) {
+                course = assignedCourse
+              }
 
-                if (purchasedCourse.length >= 1) {
-                  course = purchasedCourse;
-                }
-                if (!course[0].count >= result.count) {
-                  return res.status(406).json({
-                    success: false,
-                    data: {
-                      code: 406,
-                      message: "value is not acceptable",
-                      response: "",
-                    },
-                  });
-                }
-              } catch (error) {
-                console.log(error);
+              if(purchasedCourse.length >= 1) {
+                purchasedCourse[0].count = purchasedCourse[0].course_count
+                course = purchasedCourse
+              }
+              if (!course[0].count >= result.count) {
+                return res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value is not acceptable",
+                    response: "",
+                  },
+                });
               }
             }
 
@@ -1675,14 +1670,6 @@ export const userController = {
               });
           } catch (error) {
             console.log(error);
-            res.status(406).json({
-              success: false,
-              data: {
-                code: 406,
-                message: "value not acceptable",
-                response: error,
-              },
-            });
           }
         })
         .catch((err) => {
