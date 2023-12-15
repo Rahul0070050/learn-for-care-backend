@@ -1625,6 +1625,7 @@ export const userController = {
                 purchasedCourse[0].count = purchasedCourse[0].course_count
                 course = purchasedCourse
               }
+              console.log(course);
               if (!course[0].count >= result.count) {
                 return res.status(406).json({
                   success: false,
