@@ -30,7 +30,9 @@ export function saveInvoiceToDb(data) {
 export function getInvoiceFromDb(userId) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT * FROM invoice WHERE user_id = ?;";
+      let getQuery = `SELECT * FROM invoice 
+      INNER JOIN users ON users.id = invoice.user_id
+      WHERE invoice.user_id = ?;`;
       db.query(getQuery, [userId], async (err, result) => {
         if (err) return reject(err?.message);
         else {
