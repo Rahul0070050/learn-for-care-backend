@@ -70,7 +70,7 @@ export function deleteAppliedCoupon(id) {
 export function getCourseByIdFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getCourseByIdQuery = "SELECT * FROM course WHERE id = ?;";
+      let getCourseByIdQuery = "SELECT *, FORMAT(price, 2) AS price, FORMAT(RRP, 2) AS RRP FROM course WHERE id = ?;";
       db.query(getCourseByIdQuery, [id], (err, result) => {
         if (err) {
           return reject(err?.message);
