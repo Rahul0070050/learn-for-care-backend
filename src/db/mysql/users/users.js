@@ -739,10 +739,11 @@ export function getAllTransactionsFromDb(userId) {
     try {
       let getQuery = `
       SELECT 
-      course.name AS name, purchased_course.amount AS amount, TIME_FORMAT(purchased_course.date, "%h:%i:%s %p") AS time, purchased_course.fake_course_count AS count, DATE_FORMAT(purchased_course.date, '%d/%m/%Y') AS date
+      users.first_name AS first_name, users.last_name AS last_name, course.name AS name, purchased_course.amount AS amount, TIME_FORMAT(purchased_course.date, "%h:%i:%s %p") AS time, purchased_course.fake_course_count AS count, DATE_FORMAT(purchased_course.date, '%d/%m/%Y') AS date
       FROM 
       purchased_course 
       RIGHT JOIN course on course.id = purchased_course.course_id
+      LEFT JOIN users on users.id = purchased_course.user_id
       WHERE user_id = ?`;
       db.query(getQuery, [userId], (err, result) => {
         if (err) {
