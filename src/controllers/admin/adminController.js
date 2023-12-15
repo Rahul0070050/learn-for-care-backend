@@ -1748,7 +1748,7 @@ export const adminController = {
     try {
       validateAssignBundleReqData(req.body).then((result) => {
         let user = getUser(req);
-        assignBundleToUser({ ...result, adminId: user.id })
+        assignBundleToUser({ ...result, adminId: 0 })
           .then(() => {
             res.status(200).json({
               success: true,
