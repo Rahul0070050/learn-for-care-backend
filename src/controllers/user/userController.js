@@ -1602,7 +1602,7 @@ export const userController = {
                   },
                 });
               }
-            } else if (result.from == "purchased") {
+            } else if (result.from == "manager-purchased") {
               course = await getPurchasedCourseById(result.id);
               if (!course[0].course_count >= result.count) {
                 return res.status(406).json({
@@ -1614,7 +1614,7 @@ export const userController = {
                   },
                 });
               }
-            } else {
+            } else if(result.from == "company") {
               course = await getAssignedCourseToCompanyById(result.id);
               if (!course[0].count >= result.count) {
                 return res.status(406).json({
