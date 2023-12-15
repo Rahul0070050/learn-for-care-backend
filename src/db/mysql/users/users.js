@@ -739,7 +739,7 @@ export function getAllTransactionsFromDb(userId) {
     try {
       let getQuery = `
       SELECT 
-      course.name AS name, purchased_course.amount AS amount, purchased_course.date AS date, purchased_course.fake_course_count AS count, DATE_FORMAT(date, '%d/%m/%Y') AS date
+      course.name AS name, purchased_course.amount AS amount, TIME_FORMAT(purchased_course.date, "%h %i %s %p") AS time, purchased_course.fake_course_count AS count, DATE_FORMAT(purchased_course.date, '%d/%m/%Y') AS date
       FROM 
       purchased_course 
       RIGHT JOIN course on course.id = purchased_course.course_id
