@@ -982,7 +982,14 @@ export function managerAssignSelfCourse(data) {
       try {
         console.log(purchased_course_id);
         let decreaseQuery = "";
-        if (from == "purchased") {
+        // '' 'course_count'
+        // '' 'course_count'
+        // '' 'count'
+        // '' 'course_count'
+
+        if (from == "manager-assigned") {
+          decreaseQuery = `UPDATE course_assigned_manager SET course_count = course_count - ? WHERE id = ?;`;
+        } else if (from == "manager-purchased" || form == "company-purchased") {
           decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
         } else {
           decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;

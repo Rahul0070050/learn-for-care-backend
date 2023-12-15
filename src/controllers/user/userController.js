@@ -1614,19 +1614,21 @@ export const userController = {
                   },
                 });
               }
-            } else if(result.from == "company") {
-              let assignedCourse = await getAssignedCourseToCompanyById(result.id);
-              let purchasedCourse = await getPurchasedCourseById(result.id);
-              if(assignedCourse.length >= 1) {
-                course = assignedCourse
-              }
-
-              if(purchasedCourse.length >= 1) {
-                purchasedCourse[0].count = purchasedCourse[0].course_count
-                course = purchasedCourse
-              }
-              console.log(course);
+            } else if(result.from == "company-assigned") {
+              course = await getAssignedCourseToCompanyById(result.id);
               if (!course[0].count >= result.count) {
+                return res.status(406).json({
+                  success: false,
+                  data: {
+                    code: 406,
+                    message: "value is not acceptable",
+                    response: "",
+                  },
+                });
+              }
+            } else if (result.from == "company-purchased") {
+              course = await getPurchasedCourseById(result.id);
+              if (!course[0].course_count >= result.count) {
                 return res.status(406).json({
                   success: false,
                   data: {
