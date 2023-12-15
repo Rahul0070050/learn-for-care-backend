@@ -1615,7 +1615,15 @@ export const userController = {
                 });
               }
             } else if(result.from == "company") {
-              course = await getAssignedCourseToCompanyById(result.id);
+              let assignedCourse = await getAssignedCourseToCompanyById(result.id);
+              let purchasedCourse = await getPurchasedCourseById(result.id);
+              if(assignedCourse.length >= 1) {
+                course = assignedCourse
+              }
+
+              if(purchasedCourse.length >= 1) {
+                course = purchasedCourse
+              }
               if (!course[0].count >= result.count) {
                 return res.status(406).json({
                   success: false,
