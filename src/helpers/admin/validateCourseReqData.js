@@ -6,12 +6,6 @@ import {
 } from "../../utils/index.js";
 
 export function checkAddCourseReqBodyAndFile(body, files) {
-  console.log(body.price);
-  console.log(body.RRP);
-  console.log(body.aims)
-  console.log(body.who_should_attend)
-  console.log(body.what_you_will_learn_point)
-  console.log(body.objectives_point);
   return new Promise((resolve, reject) => {
     let resources = files["resource[]"];
     let ppt = files["ppt[]"];
@@ -51,10 +45,8 @@ export function checkAddCourseReqBodyAndFile(body, files) {
 
       let bodyTemplate = object({
         description: string().required("please enter valid description"),
-        price: number().required("please enter valid price"),
         category: string().required("please enter valid category"),
         name: string().required("please enter valid name"),
-        RRP: string().required("please provide valid RRP"),
         course_type: string().required("please provide valid course_type"),
         duration: string().required("please provide valid duration"),
         course_level: string().required("please provide valid course_level"),

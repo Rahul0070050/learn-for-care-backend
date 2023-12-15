@@ -3,7 +3,13 @@ import { db } from "../../../conf/mysql.js";
 export function addNewCourse(courseData) {
   return new Promise((resolve, reject) => {
     try {
-      console.log(courseData);
+      console.log();
+      console.log(courseData.price);
+      console.log(courseData.RRP);
+      console.log(courseData.aims)
+      console.log(courseData.who_should_attend)
+      console.log(courseData.what_you_will_learn_point)
+      console.log(courseData.objectives_point);
       let resource = JSON.stringify(courseData.resource);
       let ppt = JSON.stringify(courseData.image);
       let insertCourseQuery = `INSERT INTO course(
