@@ -522,9 +522,17 @@ export const userAuthController = {
               validatePassword(result.password, user[0].password).then(
                 (passwordVall) => {
                   if (passwordVall) {
-                    return reject(
-                      "Your new password cannot be the same as your previous password"
-                    );
+                    res.status(406).json({
+                      success: false,
+                      errors: [
+                        {
+                          code: 406,
+                          message: "Your new password cannot be the same as your previous password",
+                          error: "",
+                        },
+                      ],
+                      errorType: "server",
+                    });
                   } else {
                     hashPassword(result.password).then((hash) => {
                       updateUserPassword(email, hash)
