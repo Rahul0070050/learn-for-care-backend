@@ -250,7 +250,7 @@ export function updateBundleProgress(id, course_id, per) {
           let unFinished = JSON.parse(result[0].unfinished_course).filter(
             (id) => id != course_id
           );
-          if (result[0].finished_course) {
+          if (result[0]?.finished_course?.length >= 1) {
             finished.push(course_id);
           } else {
             finished = [course_id];
