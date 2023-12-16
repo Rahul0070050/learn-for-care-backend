@@ -255,6 +255,13 @@ export function updateBundleProgress(id, course_id, per) {
             finished = [course_id];
           }
 
+          let allCourse = ((finished?.length || 0) + (unFinished?.length || 0))
+          
+          try {
+            per = (((finished?.length || 0) / allCourse) * 100)
+          } catch (error) {
+            per = 0
+          }
           let updatedQuery =
             "UPDATE enrolled_bundle SET progress = ?, color = ?, finished_course = ?, unfinished_course = ? WHERE id = ?;";
           db.query(
