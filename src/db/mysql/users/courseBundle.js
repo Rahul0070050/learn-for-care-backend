@@ -148,17 +148,14 @@ export function getBundleDataFromDb(id) {
               result[0].unfinished_course = JSON.parse(
                 result[0].unfinished_course
               );
-              let allCourses = courses.flat(1)
-              new Promise(allCourses.map(async (course) => {
+
+              let allCourses = new Promise(courses.flat(1).map(async (course) => {
                 let attempts = await getBundleCourseAttemptsById(id,course.id)
-                console.log(attempts);
                 course['attempts'] = attempts
                 return course
-              })).then((result) => {
-                resolve({ bundle: result, courses: result });
-              }).catch(err => {
-                reject(err)
-              })
+              }))
+
+              resolve({ bundle: result, courses: allCourses.flat(1) });
             })
             .catch((err) => {
               console.log(err);
