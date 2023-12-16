@@ -161,7 +161,13 @@ export function saveOtpToDB(email) {
       let setOtpQuery = `UPDATE users SET otp = ? WHERE email = ?;`;
       db.query(setOtpQuery, [otp, email], (err, result) => {
         if (err) return reject(err.message);
-        else return resolve({ otp, email });
+        else {
+          if(result[0].matched >= 1) {
+            resolve({ otp, email });
+          } else {
+            reject("Email is not exist");
+          }
+        }
       });
     } catch (error) {
       reject(error?.message);
