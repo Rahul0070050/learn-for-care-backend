@@ -298,7 +298,7 @@ export function getAssignedBundleToManagerFromDb(userId) {
       SELECT course_bundle.price AS amount, course_bundle.name AS bundle_name, 
       course_bundle.id AS bundle_id, course_assigned_manager.count AS course_count, 
       course_assigned_manager.course_id AS course_id, course_assigned_manager.validity AS validity, 
-      course_assigned_manager.id AS id, true AS from_assigned_table 
+      course_assigned_manager.id AS id, true AS from_assigned_table, course_assigned_manager.owner AS owner
       FROM course_assigned_manager 
       INNER JOIN course_bundle ON course_bundle.id = course_assigned_manager.course_id 
       WHERE course_assigned_manager.manager_id = ?;`;
