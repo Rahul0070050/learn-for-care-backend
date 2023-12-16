@@ -220,7 +220,7 @@ export function getCourseByCourseIdFromDb(id) {
 
 export function getExamByCourseId(data) {
   return new Promise((resolve, reject) => {
-    const { course_id, bundle_id, user_id } = data;
+    const { course_id } = data;
     
     let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 1;";
     db.query(getQuestionsQuery, [course_id], (err, result) => {

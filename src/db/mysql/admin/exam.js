@@ -166,15 +166,6 @@ export function saveBundleExamResult(per, course_id, userId, enrolledCourseId) {
           if (err) throw err;
         }
       );
-      s;
-      db.query(
-        getQuestionsQuery,
-        [per, status, enrolledCourseId],
-        (err, result) => {
-          if (err) return reject(err?.message);
-          else return resolve(result);
-        }
-      );
     } catch (error) {
       reject(error?.message);
     }
