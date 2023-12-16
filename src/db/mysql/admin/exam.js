@@ -151,19 +151,14 @@ export function saveExamResult(
 export function saveBundleExamResult(per, course_id, userId, enrolledCourseId) {
   return new Promise((resolve, reject) => {
     try {
-      let color = "red";
-      if (per >= 80) {
-        color = "green";
-      } else if (per >= 50) {
-        color = "green";
-      }
       let insertQuery =
-        "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id,color) VALUES (?,?,?,?)";
+        "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id,percentage,status) VALUES (?,?,?)";
       db.query(
         insertQuery,
-        [enrolledCourseId, course_id, userId, color],
+        [enrolledCourseId, course_id, userId, per, per >= 80 ? "pass" : "fail"],
         (err, result) => {
-          if (err) throw err;
+          if (err) reject(err.message);
+          else resolve();
         }
       );
     } catch (error) {
