@@ -423,7 +423,7 @@ export function assignCourseToMAnagerIndividual(data) {
       } = data;
 
       console.log(data?.assigned);
-      console.log('count ',count);
+      console.log("count ", count);
       console.log("course_id ", course_id);
 
       let decreaseQuery = `UPDATE purchased_course SET course_count = course_count - ? WHERE id = ?;`;
@@ -505,7 +505,6 @@ export function assignCourseToMAnagerIndividualFromAssignedDb(data) {
   });
 }
 
-
 export function assignCourseToMAnagerIndividualFromAssignedToDb(data) {
   return new Promise((resolve, reject) => {
     try {
@@ -521,7 +520,6 @@ export function assignCourseToMAnagerIndividualFromAssignedToDb(data) {
 
       // let decreaseQuery = `SELECT assigned_course SET count = count - ? WHERE id = ?;`;
       let decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
-      
 
       db.query(decreaseQuery, [count, course_id], (err, result) => {
         if (err) console.log(err);
@@ -982,10 +980,6 @@ export function managerAssignSelfCourse(data) {
       try {
         console.log(purchased_course_id);
         let decreaseQuery = "";
-        // '' 'course_count'
-        // '' 'course_count'
-        // '' 'count'
-        // '' 'course_count'
 
         if (from == "manager-assigned") {
           decreaseQuery = `UPDATE course_assigned_manager SET count = count - ? WHERE id = ?;`;
@@ -994,21 +988,41 @@ export function managerAssignSelfCourse(data) {
         } else {
           decreaseQuery = `UPDATE assigned_course SET count = count - ? WHERE id = ?;`;
         }
-        
+
         db.query(decreaseQuery, [count, purchased_course_id], (err, result) => {
           if (err) console.log(err);
         });
 
-        let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, count, course_type, user_id, validity,fake_count) VALUES (?,?,?,?,?,?,?);`;
-        db.query(
-          assignCourseToManagerQuery,
-          [userId, course_id, count, type, userId, new Date(validity), count],
-          (err, result) => {
-            if (err) {
-              return reject(err.message);
-            } else return resolve(result);
-          }
-        );
+        if (from == "manager-assigned" || from == "manager-purchased") {
+          let assignCourseToManagerQuery = `INSERT INTO course_assigned_manager (course_id, manager_id, course_type, fake_count, count, validity,owner) VALUES (?,?,?,?,?,?,?);`;
+          db.query(
+            assignCourseToManagerQuery,
+            [
+              course_id,
+              userId,
+              type,
+              count,
+              count,
+              new Date(validity),
+              userId,
+            ],
+            (err, result) => {
+              if (err) return reject(err.message);
+              else return resolve(result);
+            }
+          );
+        } else {
+          let assignCourseToManagerQuery = `INSERT INTO assigned_course (owner, course_id, count, course_type, user_id, validity,fake_count) VALUES (?,?,?,?,?,?,?);`;
+          db.query(
+            assignCourseToManagerQuery,
+            [userId, course_id, count, type, userId, new Date(validity), count],
+            (err, result) => {
+              if (err) {
+                return reject(err.message);
+              } else return resolve(result);
+            }
+          );
+        }
       } catch (error) {
         console.log(error);
       }
