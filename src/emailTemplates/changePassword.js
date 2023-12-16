@@ -1,4 +1,4 @@
-export function changePasswordEmail(name,url) {
+export function changePasswordEmail(name, url, logo) {
   return `<!DOCTYPE html>
   <html
     lang="en"
@@ -342,7 +342,7 @@ export function changePasswordEmail(name,url) {
                 >
                   <tr>
                     <td class="logo" style="text-align: center">
-                      <h1><a href="#">Learn For Care</a></h1>
+                      <h1><img style="width: 5rem" src="${logo}" /></h1>
                     </td>
                   </tr>
                 </table>
@@ -371,7 +371,7 @@ export function changePasswordEmail(name,url) {
                       "
                     >
                       <div class="text">
-                        <h2>Change Password</h2>
+                        <h6>Change Password</h6>
                         <p style="font-weight: 600">
                           Use the button below to change your password
                         </p>
@@ -381,7 +381,7 @@ export function changePasswordEmail(name,url) {
                   <tr>
                     <td style="text-align: center">
                       <div style="text-align: start; margin: 0 2rem">
-                        <h1>Hi ${name},</h1>
+                        <h4>Hi ${name},</h4>
                         <p>
                           We have received a request to reset your password for
                           your account. To set a new password, please follow the
@@ -396,6 +396,7 @@ export function changePasswordEmail(name,url) {
                           <li>Enter your new password twice to confirm it.</li>
                         </ol>
                         <br />
+                        <div style="display: flex; justify-content: center;">
                         <a
                           href=${url}
                           style="
@@ -409,19 +410,11 @@ export function changePasswordEmail(name,url) {
                           "
                         >
                           Change Password
-                        </a>
+                          </a>
+                          </div>
                         <br />
                         <br />
                         <span> Password Requirements: </span>
-                        <ul>
-                          <li>Minimum of 8 characters.</li>
-                          <li>At least one uppercase letter.</li>
-                          <li>At least one lowercase letter.</li>
-                          <li>At least one number.</li>
-                          <li>
-                            Special characters are allowed but not required.
-                          </li>
-                        </ul>
                         <p style="">
                           This password reset link is valid for the next 30
                           minutes after which it will expire for security reasons.
@@ -430,10 +423,12 @@ export function changePasswordEmail(name,url) {
                           We take your account security seriously and are here to
                           assist you in maintaining it.
                         </p>
-                        <p style="text-align: center">
-                          *If you don't request this email, you can simply ignore
-                          it.*
-                        </p>
+                        <p>
+                        For more information Contact : info@learnforcare.co.uk </br>
+                        <a target="_blank" href="www.learnforcare.co.uk">
+                          Learn For Care
+                        </a>
+                      </p>
                       </div>
                     </td>
                   </tr>
