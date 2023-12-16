@@ -141,7 +141,9 @@ export function getBundleDataFromDb(id) {
             })
           )
             .then((allCourses) => {
-              console.log(result);
+              result[0].all_courses = JSON.parse(result[0].all_courses)
+              result[0].finished_course = JSON.parse(result[0].finished_course)
+              result[0].unfinished_course = JSON.parse(result[0].unfinished_course)
               resolve({ bundle: result, courses: allCourses.flat(1) });
             })
             .catch((err) => {

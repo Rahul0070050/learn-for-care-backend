@@ -208,7 +208,6 @@ export function getPurchasedCourseByIdFromCourse(id) {
 export function decrementTheCourseCount(data) {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log(data);
       let decrementTheCourseCountQuery = "";
       let course = null;
       try {
@@ -225,7 +224,7 @@ export function decrementTheCourseCount(data) {
           decrementTheCourseCountQuery = `UPDATE purchased_course SET course_count = course_count - 1 WHERE id = ?;`;
         }
       } catch (error) {
-        console.log(error);
+        reject(error);
       }
       db.query(
         decrementTheCourseCountQuery,

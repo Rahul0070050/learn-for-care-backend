@@ -316,7 +316,7 @@ export const userAuthController = {
                     {
                       code: 406,
                       message: "you provided an in valid email",
-                      error: "this email is not exist in our database",
+                      error: "Email is not registered",
                     },
                   ],
                   errorType: "client",
