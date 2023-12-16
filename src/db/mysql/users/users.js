@@ -207,11 +207,11 @@ export function deleteInactivateUser(email) {
 }
 
 export function updateUserPassword(email, password) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       let updatePasswordQuery = `UPDATE users SET password = ? WHERE email = ?;`;  
       
-      let user = getUserByEmail({email})
+      let user = await getUserByEmail({email})
       console.log(user);
       if(user[0].password == password) {
         return reject("Your new password cannot be the same as your previous password")
