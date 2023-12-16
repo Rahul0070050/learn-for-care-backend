@@ -423,14 +423,14 @@ export function changePasswordEmail(name, url, logo) {
                           We take your account security seriously and are here to
                           assist you in maintaining it.
                         </p>
-                        <p>
-                        For more information Contact : info@learnforcare.co.uk </br>
                         <div style="text-align: center;">
-                          <a target="_blank" href="www.learnforcare.co.uk">
+                          <p>
+                            For more information Contact : info@learnforcare.co.uk </br>
+                            <a target="_blank" href="www.learnforcare.co.uk">
                               Learn For Care
-                          </a>
+                            </a>
+                          </p>
                       </div>
-                      </p>
                       </div>
                     </td>
                   </tr>
