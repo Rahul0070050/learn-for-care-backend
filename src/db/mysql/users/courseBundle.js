@@ -2,6 +2,7 @@ import { db } from "../../../conf/mysql.js";
 import { deleteAppliedCoupon } from "../admin/course.js";
 import { getAssignedCourseById } from "./assignedCourse.js";
 import {
+  getBundleCourseAttemptsById,
   getManagerAssignedBundleById,
   getPurchasedCourseById,
 } from "./course.js";
@@ -141,13 +142,18 @@ export function getBundleDataFromDb(id) {
               return await getCourseByIdFromDb(id);
             })
           )
-            .then((allCourses) => {
+            .then((courses) => {
               result[0].all_courses = JSON.parse(result[0].all_courses);
               result[0].finished_course = JSON.parse(result[0].finished_course);
               result[0].unfinished_course = JSON.parse(
                 result[0].unfinished_course
               );
-              resolve({ bundle: result, courses: allCourses.flat(1) });
+              let allCourses = courses.flat(1)
+              allCourses.map(async (course) => {
+                let attempts = await getBundleCourseAttemptsById(id,course.id)
+                course['attempts'] = attempts
+              })
+              resolve({ bundle: result, courses: allCourses });
             })
             .catch((err) => {
               console.log(err);

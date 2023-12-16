@@ -23,6 +23,28 @@ export function getCourseByIdFromDb(id) {
   });
 }
 
+export function getBundleCourseAttemptsById(enrolled_bundle_id, course_id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getCourseByIdQuery =
+        "SELECT COUNT(*) AS count FROM bundle_exam_attempts WHERE id enrolled_bundle_id = ? AND course_id = ?;";
+      db.query(
+        getCourseByIdQuery,
+        [enrolled_bundle_id, course_id],
+        (err, result) => {
+          if (err) {
+            return reject(err?.message);
+          } else {
+            return resolve(result[0].count);
+          }
+        }
+      );
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getCourseByCategory(category) {
   return new Promise((resolve, reject) => {
     try {
