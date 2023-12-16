@@ -149,11 +149,10 @@ export function getBundleDataFromDb(id) {
                 result[0].unfinished_course
               );
               let allCourses = courses.flat(1)
-              allCourses = allCourses.map(async (course) => {
+              allCourses.forEach(async (course) => {
                 let attempts = await getBundleCourseAttemptsById(id,course.id)
                 console.log(attempts);
                 course['attempts'] = attempts
-                return course
               })
               resolve({ bundle: result, courses: allCourses });
             })
