@@ -156,6 +156,7 @@ export function activateUser(email) {
 
 export function saveOtpToDB(email) {
   return new Promise(async (resolve, reject) => {
+    console.log(email);
     try {
       let otp = await Number(generatorOtp());
       let setOtpQuery = `UPDATE users SET otp = ? WHERE email = ?;`;
