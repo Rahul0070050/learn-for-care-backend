@@ -396,7 +396,7 @@ export function changePasswordEmail(name, url, logo) {
                           <li>Enter your new password twice to confirm it.</li>
                         </ol>
                         <br />
-                        <div style="display: flex; justify-content: center;">
+                        <div style="text-align: center;">
                         <a
                           href=${url}
                           style="
