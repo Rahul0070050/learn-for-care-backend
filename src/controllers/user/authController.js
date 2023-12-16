@@ -518,6 +518,7 @@ export const userAuthController = {
           validateChangePassToken(token)
             .then(async () => {
               let user = await getUserByEmail({ email });
+              console.log(result.password, user[0].password);
               validatePassword(result.password, user[0].password)
                 .then(() => {
                   return reject(
