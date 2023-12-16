@@ -21,9 +21,7 @@ import {
   hashPassword,
   validatePassword,
 } from "../../helpers/validatePasswords.js";
-import {
-  createTokenForUser,
-} from "../../helpers/jwt.js";
+import { createTokenForUser } from "../../helpers/jwt.js";
 import { generatorOtp } from "../../utils/auth.js";
 import {
   generateChangePassToken,
@@ -225,8 +223,8 @@ export const userAuthController = {
 
               if (otp == result.otp) {
                 activateUser(result.email)
-                  .then(async() => {
-                    await sendWelcomeEmail(result.email)
+                  .then(async () => {
+                    await sendWelcomeEmail(result.email);
                     res.status(202).json({
                       success: true,
                       data: { code: 202, message: "signup successful" },
@@ -415,7 +413,7 @@ export const userAuthController = {
     try {
       checkForgotPasswordInfo(req.body)
         .then(async (result) => {
-          let user = await getUserByEmail({email: result.email});
+          let user = await getUserByEmail({ email: result.email });
           console.log(user);
           if (user.length <= 0) {
             res.status(406).json({
@@ -518,33 +516,42 @@ export const userAuthController = {
           let token = cryptr.decrypt(values[0]);
           let email = cryptr.decrypt(values[1]);
           validateChangePassToken(token)
-            .then(() => {
-              hashPassword(result.password).then((hash) => {
-                updateUserPassword(email, hash)
-                  .then(() => {
-                    res.status(200).json({
-                      success: true,
-                      data: {
-                        code: 200,
-                        response: "",
-                        message: "password updated",
-                      },
-                    });
-                  })
-                  .catch((err) => {
-                    res.status(406).json({
-                      success: false,
-                      errors: [
-                        {
-                          code: 406,
-                          message: "password not updated",
-                          error: err,
-                        },
-                      ],
-                      errorType: "server",
-                    });
+            .then(async () => {
+              let user = await getUserByEmail({ email });
+              validatePassword(result.password, user[0].password)
+                .then(() => {
+                  return reject(
+                    "Your new password cannot be the same as your previous password"
+                  );
+                })
+                .catch((err) => {
+                  hashPassword(result.password).then((hash) => {
+                    updateUserPassword(email, hash)
+                      .then(() => {
+                        res.status(200).json({
+                          success: true,
+                          data: {
+                            code: 200,
+                            response: "",
+                            message: "password updated",
+                          },
+                        });
+                      })
+                      .catch((err) => {
+                        res.status(406).json({
+                          success: false,
+                          errors: [
+                            {
+                              code: 406,
+                              message: "password not updated",
+                              error: err,
+                            },
+                          ],
+                          errorType: "server",
+                        });
+                      });
                   });
-              });
+                });
             })
             .catch((err) => {
               res.status(406).json({
