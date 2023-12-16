@@ -149,7 +149,7 @@ export function getBundleDataFromDb(id) {
                 result[0].unfinished_course
               );
 
-              let allCourses = new Promise(courses.flat(1).map(async (course) => {
+              let allCourses = Promise.all(courses.flat(1).map(async (course) => {
                 let attempts = await getBundleCourseAttemptsById(id,course.id)
                 course['attempts'] = attempts
                 return course
