@@ -1616,6 +1616,7 @@ export const userController = {
               }
             } else if(result.from == "company-assigned") {
               course = await getAssignedCourseToCompanyById(result.id);
+              console.log(course);
               if (!course[0].count >= result.count) {
                 return res.status(406).json({
                   success: false,
