@@ -9,7 +9,7 @@ import {
 export function getCourseBundleById(id) {
   return new Promise((resolve, reject) => {
     try {
-      deleteAppliedCoupon(id)
+      deleteAppliedCoupon(id);
       let getOneBundleQuery = "SELECT * FROM course_bundle WHERE id = ?;";
 
       db.query(getOneBundleQuery, [id], (err, bundle) => {
@@ -141,9 +141,11 @@ export function getBundleDataFromDb(id) {
             })
           )
             .then((allCourses) => {
-              result[0].all_courses = JSON.parse(result[0].all_courses)
-              result[0].finished_course = JSON.parse(result[0].finished_course)
-              result[0].unfinished_course = JSON.parse(result[0].unfinished_course)
+              result[0].all_courses = JSON.parse(result[0].all_courses);
+              result[0].finished_course = JSON.parse(result[0].finished_course);
+              result[0].unfinished_course = JSON.parse(
+                result[0].unfinished_course
+              );
               resolve({ bundle: result, courses: allCourses.flat(1) });
             })
             .catch((err) => {
@@ -239,12 +241,6 @@ export function updateBundleProgress(id, course_id, per) {
       else {
         try {
           let color = "red";
-          if (per >= 50) {
-            color = "yellow";
-          }
-          if (per >= 80) {
-            color = "green";
-          }
           let finished = JSON.parse(result[0].finished_course || "[]");
           let unFinished = JSON.parse(result[0].unfinished_course).filter(
             (id) => id != course_id
@@ -255,13 +251,21 @@ export function updateBundleProgress(id, course_id, per) {
             finished = [course_id];
           }
 
-          let allCourse = ((finished?.length || 0) + (unFinished?.length || 0))
-          
+          let allCourse = (finished?.length || 0) + (unFinished?.length || 0);
+
           try {
-            per = (((finished?.length || 0) / allCourse) * 100)
+            per = ((finished?.length || 0) / allCourse) * 100;
           } catch (error) {
-            per = 0
+            per = 0;
           }
+
+          if (per >= 50) {
+            color = "yellow";
+          }
+          if (per >= 100) {
+            color = "green";
+          }
+
           let updatedQuery =
             "UPDATE enrolled_bundle SET progress = ?, color = ?, finished_course = ?, unfinished_course = ? WHERE id = ?;";
           db.query(
@@ -289,7 +293,8 @@ export function updateBundleProgress(id, course_id, per) {
 export function getAllOnGoingBundles(user_id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT *, 1 AS on_going FROM enrolled_bundle WHERE user_id = ?";
+      let getQuery =
+        "SELECT *, 1 AS on_going FROM enrolled_bundle WHERE user_id = ?";
       db.query(getQuery, [user_id], (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
