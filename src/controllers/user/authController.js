@@ -519,40 +519,42 @@ export const userAuthController = {
             .then(async () => {
               let user = await getUserByEmail({ email });
               console.log(result.password, user[0].password);
-              validatePassword(result.password, user[0].password)
-                .then(() => {
-                  return reject(
-                    "Your new password cannot be the same as your previous password"
-                  );
-                })
-                .catch((err) => {
-                  hashPassword(result.password).then((hash) => {
-                    updateUserPassword(email, hash)
-                      .then(() => {
-                        res.status(200).json({
-                          success: true,
-                          data: {
-                            code: 200,
-                            response: "",
-                            message: "password updated",
-                          },
-                        });
-                      })
-                      .catch((err) => {
-                        res.status(406).json({
-                          success: false,
-                          errors: [
-                            {
-                              code: 406,
-                              message: "password not updated",
-                              error: err,
+              validatePassword(result.password, user[0].password).then(
+                (passwordVall) => {
+                  if (passwordVall) {
+                    return reject(
+                      "Your new password cannot be the same as your previous password"
+                    );
+                  } else {
+                    hashPassword(result.password).then((hash) => {
+                      updateUserPassword(email, hash)
+                        .then(() => {
+                          res.status(200).json({
+                            success: true,
+                            data: {
+                              code: 200,
+                              response: "",
+                              message: "password updated",
                             },
-                          ],
-                          errorType: "server",
+                          });
+                        })
+                        .catch((err) => {
+                          res.status(406).json({
+                            success: false,
+                            errors: [
+                              {
+                                code: 406,
+                                message: "password not updated",
+                                error: err,
+                              },
+                            ],
+                            errorType: "server",
+                          });
                         });
-                      });
-                  });
-                });
+                    });
+                  }
+                }
+              );
             })
             .catch((err) => {
               res.status(406).json({
