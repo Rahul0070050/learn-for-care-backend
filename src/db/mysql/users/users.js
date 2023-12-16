@@ -993,6 +993,8 @@ export function managerAssignSelfCourse(data) {
           if (err) console.log(err);
         });
 
+        console.log(from);
+
         if (from == "manager-assigned" || from == "manager-purchased") {
           let assignCourseToManagerQuery = `INSERT INTO course_assigned_manager (course_id, manager_id, course_type, fake_count, count, validity,owner) VALUES (?,?,?,?,?,?,?);`;
           db.query(
