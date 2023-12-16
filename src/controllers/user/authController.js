@@ -416,7 +416,7 @@ export const userAuthController = {
       checkForgotPasswordInfo(req.body)
         .then(async (result) => {
           let user = await getUserByEmail(result.email);
-          if (!user) {
+          if (user.length >= 1) {
             res.status(406).json({
               success: false,
               errors: [
