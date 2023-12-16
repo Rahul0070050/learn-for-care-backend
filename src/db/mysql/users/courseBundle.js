@@ -153,6 +153,7 @@ export function getBundleDataFromDb(id) {
                 let attempts = await getBundleCourseAttemptsById(id,course.id)
                 console.log(attempts);
                 course['attempts'] = attempts
+                course['attempts'] = 'hi'
               })
               resolve({ bundle: result, courses: allCourses });
             })
