@@ -149,14 +149,16 @@ export function getBundleDataFromDb(id) {
                 result[0].unfinished_course
               );
               let allCourses = courses.flat(1)
-              allCourses.forEach(async (course) => {
+              new Promise(allCourses.map(async (course) => {
                 let attempts = await getBundleCourseAttemptsById(id,course.id)
                 console.log(attempts);
                 course['attempts'] = attempts
-                course['hi'] = 'hi'
+                return course
+              })).then((result) => {
+                resolve({ bundle: result, courses: result });
+              }).catch(err => {
+                reject(err)
               })
-              console.log(allCourses);
-              resolve({ bundle: result, courses: allCourses });
             })
             .catch((err) => {
               console.log(err);
