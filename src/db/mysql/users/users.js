@@ -162,7 +162,7 @@ export function saveOtpToDB(email) {
       db.query(setOtpQuery, [otp, email], (err, result) => {
         if (err) return reject(err.message);
         else {
-          if(result[0].matched >= 1) {
+          if (result[0].matched >= 1) {
             resolve({ otp, email });
           } else {
             reject("Email is not exist");
@@ -209,19 +209,21 @@ export function deleteInactivateUser(email) {
 export function updateUserPassword(email, password) {
   return new Promise(async (resolve, reject) => {
     try {
-      let updatePasswordQuery = `UPDATE users SET password = ? WHERE email = ?;`;  
-      
-      let user = await getUserByEmail({email})
+      let updatePasswordQuery = `UPDATE users SET password = ? WHERE email = ?;`;
+
+      let user = await getUserByEmail({ email });
       console.log(user[0].password == password);
       console.log(user[0].password, password);
-      if(user[0].password == password) {
-        return reject("Your new password cannot be the same as your previous password")
+      if (user[0].password == password) {
+        return reject(
+          "Your new password cannot be the same as your previous password"
+        );
+      } else {
+        db.query(updatePasswordQuery, [password, email], (err, result) => {
+          if (err) return reject(err.message);
+          else return resolve(result);
+        });
       }
-
-      db.query(updatePasswordQuery, [password, email], (err, result) => {
-        if (err) return reject(err.message);
-        else return resolve(result);
-      });
     } catch (error) {
       reject(error?.message);
     }
@@ -1011,15 +1013,7 @@ export function managerAssignSelfCourse(data) {
           let assignCourseToManagerQuery = `INSERT INTO course_assigned_manager (course_id, manager_id, course_type, fake_count, count, validity,owner) VALUES (?,?,?,?,?,?,?);`;
           db.query(
             assignCourseToManagerQuery,
-            [
-              course_id,
-              userId,
-              type,
-              count,
-              count,
-              new Date(validity),
-              userId,
-            ],
+            [course_id, userId, type, count, count, new Date(validity), userId],
             (err, result) => {
               if (err) return reject(err.message);
               else return resolve(result);
