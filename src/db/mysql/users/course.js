@@ -27,7 +27,7 @@ export function getBundleCourseAttemptsById(enrolled_bundle_id, course_id) {
   return new Promise((resolve, reject) => {
     try {
       let getCourseByIdQuery =
-        "SELECT COUNT(*) AS count FROM bundle_exam_attempts WHERE id enrolled_bundle_id = ? AND course_id = ?;";
+        "SELECT COUNT(*) AS count FROM bundle_exam_attempts WHERE enrolled_bundle_id = ? AND course_id = ?;";
       db.query(
         getCourseByIdQuery,
         [enrolled_bundle_id, course_id],
