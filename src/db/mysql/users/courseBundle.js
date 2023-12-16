@@ -86,7 +86,7 @@ export function setNewBundleToEnroll(data) {
         all_courses,
       } = data;
 
-      let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, all_courses, user_id, course_count, validity, unfinished_course) VALUES (?,?,?,?,?,?,?)`;
+      let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, all_courses, user_id, course_count, validity, unfinished_course,color) VALUES (?,?,?,?,?,?,?,?)`;
       db.query(
         setQuery,
         [
@@ -97,6 +97,7 @@ export function setNewBundleToEnroll(data) {
           course_count,
           new Date(validity),
           JSON.stringify(unfinished_course),
+          'yellow'
         ],
         (err, result) => {
           if (err) {
@@ -221,10 +222,14 @@ export function getExamByCourseId(data) {
   return new Promise((resolve, reject) => {
     const { course_id, bundle_id, user_id } = data;
     let insertQuery =
-      "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id) VALUES (?,?,?)";
-    db.query(insertQuery, [bundle_id, course_id, user_id], (err, result) => {
-      if (err) throw err;
-    });
+      "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id,color) VALUES (?,?,?,?)";
+    db.query(
+      insertQuery,
+      [bundle_id, course_id, user_id, "yellow"],
+      (err, result) => {
+        if (err) throw err;
+      }
+    );
     let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 1;";
     db.query(getQuestionsQuery, [course_id], (err, result) => {
       if (err) return reject(err?.message);
@@ -259,9 +264,6 @@ export function updateBundleProgress(id, course_id, per) {
             per = 0;
           }
 
-          if (per >= 50) {
-            color = "yellow";
-          }
           if (per >= 100) {
             color = "green";
           }

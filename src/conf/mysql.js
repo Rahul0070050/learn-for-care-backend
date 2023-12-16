@@ -397,7 +397,7 @@ export function mySqlConnect(done) {
       unfinished_course TEXT DEFAULT ('[]'),
       finished_course TEXT DEFAULT ('[]'),
       progress INT DEFAULT 0,
-      color VARCHAR(15) DEFAULT 'orange'
+      color VARCHAR(15) DEFAULT 'yellow'
     );
   `;
 
