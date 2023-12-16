@@ -1598,7 +1598,7 @@ export const userController = {
                   data: {
                     code: 406,
                     message: "value is not acceptable",
-                    response: "",
+                    response: "from manager-assigned",
                   },
                 });
               }
@@ -1610,7 +1610,7 @@ export const userController = {
                   data: {
                     code: 406,
                     message: "value is not acceptable",
-                    response: "",
+                    response: "from manager-purchased",
                   },
                 });
               }
@@ -1623,7 +1623,7 @@ export const userController = {
                   data: {
                     code: 406,
                     message: "value is not acceptable",
-                    response: "",
+                    response: "form company-assigned",
                   },
                 });
               }
@@ -1635,7 +1635,7 @@ export const userController = {
                   data: {
                     code: 406,
                     message: "value is not acceptable",
-                    response: "",
+                    response: "from company-purchased",
                   },
                 });
               }
