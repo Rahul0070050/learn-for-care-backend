@@ -423,11 +423,11 @@ export const userAuthController = {
               errors: [
                 {
                   code: 406,
-                  message: "please provide a registered email",
-                  error: "this user is not exist",
+                  message: "Please provide a registered email",
+                  error: "This user is not exist",
                 },
               ],
-              errorType: "client",
+              errorType: "Client",
             });
           } else {
             generateChangePassToken(result)
