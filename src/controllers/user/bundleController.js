@@ -418,7 +418,6 @@ export const bundleController = {
                 async (result) => {
                   let newResult = await result.map(async (course, i) => {
                     try {
-                      console.log(course);
                       let resources = JSON.parse(course.resource);
                       let ppt = JSON.parse(course.ppt);
 
