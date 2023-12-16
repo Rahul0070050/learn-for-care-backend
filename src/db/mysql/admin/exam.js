@@ -148,30 +148,25 @@ export function saveExamResult(
   });
 }
 
-export function saveBundleExamResult(
-  per,
-  questionId,
-  UserId,
-  enrolledCourseId
-) {
+export function saveBundleExamResult(per, course_id, userId, enrolledCourseId) {
   return new Promise((resolve, reject) => {
     try {
-      let status = per >= 80 ? "pass" : "fail";
-      let getQuestionsQuery =
-        "UPDATE bundle_exam_attempts SET attempts = 1 + attempts, percentage = ?,status = ? WHERE enrolled_bundle_id = ?;";
-
-      // `UPDATE enrolled_bundle SET unfinished_course, finished_course, progress, color WHERE bundle_id = ?`
-      // let unFinished = JSON.parse(result[0].unfinished_course).filter(id => id != course_id);
-      // console.log('finished ', result[0].finished_course);
-      // if(result[0].finished_course) {
-      // let unFinished = JSON.parse(result[0].finished_course)
-      // unFinished
-      // } else {
-      // let unFinished = JSON.parse(result[0].finished_course)
-      // unFinished
-      // }
-      // console.log(course);
-
+      let color = "red";
+      if (per >= 80) {
+        color = "green";
+      } else if (per >= 50) {
+        color = "green";
+      }
+      let insertQuery =
+        "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id,color) VALUES (?,?,?,?)";
+      db.query(
+        insertQuery,
+        [enrolledCourseId, course_id, userId, color],
+        (err, result) => {
+          if (err) throw err;
+        }
+      );
+      s;
       db.query(
         getQuestionsQuery,
         [per, status, enrolledCourseId],

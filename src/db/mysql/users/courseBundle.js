@@ -221,15 +221,7 @@ export function getCourseByCourseIdFromDb(id) {
 export function getExamByCourseId(data) {
   return new Promise((resolve, reject) => {
     const { course_id, bundle_id, user_id } = data;
-    let insertQuery =
-      "INSERT INTO bundle_exam_attempts (enrolled_bundle_id,course_id,user_id,color) VALUES (?,?,?,?)";
-    db.query(
-      insertQuery,
-      [bundle_id, course_id, user_id, "yellow"],
-      (err, result) => {
-        if (err) throw err;
-      }
-    );
+    
     let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 1;";
     db.query(getQuestionsQuery, [course_id], (err, result) => {
       if (err) return reject(err?.message);

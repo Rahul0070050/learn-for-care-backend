@@ -634,7 +634,7 @@ export const bundleController = {
           let per = (points / answers.length) * 100;
           saveBundleExamResult(
             per,
-            result.question_id,
+            course[0].id,
             user.id,
             result.enrolled_course_id
           )
