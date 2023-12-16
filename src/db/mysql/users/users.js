@@ -212,7 +212,7 @@ export function updateUserPassword(email, password) {
       let updatePasswordQuery = `UPDATE users SET password = ? WHERE email = ?;`;  
       
       let user = getUserByEmail({email})
-      
+      console.log(user);
       if(user[0].password == password) {
         return reject("Your new password cannot be the same as your previous password")
       }
