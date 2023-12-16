@@ -212,7 +212,8 @@ export function updateUserPassword(email, password) {
       let updatePasswordQuery = `UPDATE users SET password = ? WHERE email = ?;`;  
       
       let user = await getUserByEmail({email})
-      console.log(user);
+      console.log(user[0].password == password);
+      console.log(user[0].password, password);
       if(user[0].password == password) {
         return reject("Your new password cannot be the same as your previous password")
       }
