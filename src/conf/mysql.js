@@ -265,6 +265,7 @@ export function mySqlConnect(done) {
           course_id INT DEFAULT NULL,
           attempts INT DEFAULT 0,
           percentage INT DEFAULT NULL,
+          date DATETIME DEFAULT NOW(),
           status VARCHAR(10) DEFAULT NULL
         );
       `;

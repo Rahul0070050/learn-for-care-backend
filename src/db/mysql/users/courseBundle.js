@@ -151,6 +151,7 @@ export function getBundleDataFromDb(id) {
               let allCourses = courses.flat(1)
               allCourses.map(async (course) => {
                 let attempts = await getBundleCourseAttemptsById(id,course.id)
+                console.log(attempts);
                 course['attempts'] = attempts
               })
               resolve({ bundle: result, courses: allCourses });
