@@ -342,7 +342,7 @@ export function changePasswordEmail(name, url, logo) {
                 >
                   <tr>
                     <td class="logo" style="text-align: center">
-                      <h1><img style="width: 5rem" src="${logo}" /></h1>
+                      <h1><img style="width: 11rem; margin-top: 6rem;" src="${logo}" /></h1>
                     </td>
                   </tr>
                 </table>
@@ -371,7 +371,7 @@ export function changePasswordEmail(name, url, logo) {
                       "
                     >
                       <div class="text">
-                        <h6>Change Password</h6>
+                        <h3 style="font-weight: 600;">Change Password</h3>
                         <p style="font-weight: 600">
                           Use the button below to change your password
                         </p>
@@ -425,9 +425,11 @@ export function changePasswordEmail(name, url, logo) {
                         </p>
                         <p>
                         For more information Contact : info@learnforcare.co.uk </br>
-                        <a target="_blank" href="www.learnforcare.co.uk">
-                          Learn For Care
-                        </a>
+                        <div style="text-align: center;">
+                          <a target="_blank" href="www.learnforcare.co.uk">
+                              Learn For Care
+                          </a>
+                      </div>
                       </p>
                       </div>
                     </td>
@@ -441,6 +443,5 @@ export function changePasswordEmail(name, url, logo) {
         </div>
       </div>
     </body>
-  </html>
-  `;
+  </html>`;
 }
