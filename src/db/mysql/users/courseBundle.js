@@ -263,6 +263,8 @@ export function updateBundleProgress(id, course_id, per) {
           } catch (error) {
             per = 0;
           }
+          console.log(per);
+          console.log(finished);
 
           if (per >= 100) {
             color = "green";
