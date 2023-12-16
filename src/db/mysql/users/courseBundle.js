@@ -142,14 +142,14 @@ export function getBundleDataFromDb(id) {
               return await getCourseByIdFromDb(id);
             })
           )
-            .then((courses) => {
+            .then(async (courses) => {
               result[0].all_courses = JSON.parse(result[0].all_courses);
               result[0].finished_course = JSON.parse(result[0].finished_course);
               result[0].unfinished_course = JSON.parse(
                 result[0].unfinished_course
               );
 
-              let allCourses = Promise.all(courses.flat(1).map(async (course) => {
+              let allCourses = await Promise.all(courses.flat(1).map(async (course) => {
                 let attempts = await getBundleCourseAttemptsById(id,course.id)
                 course['attempts'] = attempts
                 return course
