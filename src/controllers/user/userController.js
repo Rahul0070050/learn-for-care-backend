@@ -1592,8 +1592,7 @@ export const userController = {
             let course = "";
             if (result.from == "manager-assigned") {
               course = await getAssignedCourseToManagerById(result.id);
-              console.log(course);
-              if (!course[0].course_count >= result.count) {
+              if (!course[0].count >= result.count) {
                 return res.status(406).json({
                   success: false,
                   data: {
