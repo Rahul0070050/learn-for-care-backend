@@ -538,7 +538,7 @@ export const userAuthController = {
                         {
                           code: 406,
                           message: "password not updated",
-                          error: err?.message,
+                          error: err,
                         },
                       ],
                       errorType: "server",
