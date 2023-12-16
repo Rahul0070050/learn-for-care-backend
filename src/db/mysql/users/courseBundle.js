@@ -297,7 +297,7 @@ export function getAllOnGoingBundlesFromDb(user_id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery = `
-        SELECT course_bundle.name AS name, enrolled_bundle.validity AS validity,
+        SELECT course_bundle.name AS name, DATE_FORMAT(enrolled_bundle.validity, '%d/%m/%Y') AS validity,
         enrolled_bundle.bundle_id AS bundle_id, enrolled_bundle.id AS id, 1 AS form_ongoing,
         course_bundle.description AS description, enrolled_bundle.progress AS progress
         FROM enrolled_bundle 
