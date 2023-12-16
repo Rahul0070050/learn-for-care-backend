@@ -256,7 +256,7 @@ export function updateBundleProgress(id, course_id, per) {
             finished = [course_id];
           }
 
-          let allCourse = (finished?.length || 0) + (unFinished?.length || 0);
+          let allCourse = JSON.parse(result[0].all_courses || '[]');
 
           try {
             per = ((finished?.length || 0) / allCourse) * 100;
