@@ -48,10 +48,10 @@ export function getAllBlogs() {
   });
 }
 
-export function getAllBlogs() {
+export function getAllBlogsForAdmin() {
   return new Promise((resolve, reject) => {
     try {
-      let getAllBlogsQuery = "SELECT *, DATE_FORMAT(date, '%d/%m/%Y') AS date FROM blogs";
+      let getAllBlogsQuery = "SELECT *, DATE_FORMAT(date, '%d/%m/%Y') AS date FROM blogs;";
       db.query(getAllBlogsQuery, (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
