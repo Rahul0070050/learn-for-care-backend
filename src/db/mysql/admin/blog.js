@@ -47,6 +47,20 @@ export function getAllBlogs() {
     }
   });
 }
+
+export function getAllBlogs() {
+  return new Promise((resolve, reject) => {
+    try {
+      let getAllBlogsQuery = "SELECT *, DATE_FORMAT(date, '%d/%m/%Y') AS date FROM blogs";
+      db.query(getAllBlogsQuery, (err, result) => {
+        if (err) return reject(err?.message);
+        else return resolve(result);
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
 export function updateBlogImage(blogInfo) {
   return new Promise((resolve, reject) => {
     try {

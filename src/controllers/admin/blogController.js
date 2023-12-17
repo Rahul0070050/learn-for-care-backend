@@ -10,6 +10,7 @@ import { downloadFromS3, removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 import {
   deleteBlogById,
   getAllBlogs,
+  getAllBlogsForAdmin,
   getBlogById,
   getBlogByIdFromDb,
   getInactiveBlogs,
@@ -242,7 +243,7 @@ export const blogController = {
   },
   getAllBlog: (req, res) => {
     try {
-      getAllBlogs()
+      getAllBlogsForAdmin()
         .then(async (result) => {
           let fileResponses = result.map((item) =>
             downloadFromS3(item.id, item.img)
