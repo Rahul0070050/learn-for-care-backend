@@ -135,7 +135,7 @@ export function getAllAssignedCourseFromDb(id, type) {
     try {
       let getAssignedCourseByIdDataQuery = `
       SELECT assigned_course.*, 0 AS from_purchased, assigned_course.fake_count AS fake_count, course.id AS course_id,
-      course.name, course.description, assigned_course.count AS course_count,
+      course.name AS name, course.description AS description, assigned_course.count AS course_count,
       course.category, assigned_course.validity
       FROM assigned_course 
       INNER JOIN course ON assigned_course.course_id = course.id
