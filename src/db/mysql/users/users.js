@@ -1130,7 +1130,7 @@ export function getCourseWiseIndividualFromManagerReportsFromDb(id) {
           let course = await getAllAssignedCourseByUserId(item.id);
           course.map((c) => {
             if (!course_names.find((item) => item?.course_name == c.name))
-              course_names.push({ course_name: c.name, count: 0 });
+              course_names.push({ course_name: c.name, count: 0 ,code: c.course_code});
           });
           item["course"] = course;
           return item;
