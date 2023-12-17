@@ -85,7 +85,7 @@ export function getPurchasedCourseByUserId(id) {
       let getPurchasedCourseDataQuery = `
         SELECT purchased_course.id AS purchased_course_id, purchased_course.fake_course_count AS fake_count, purchased_course.id AS id,
         1 AS from_purchased, Name, description, course_count,
-        course_id, category, validity
+        course_id, category, DATE_FORMAT(purchased_course.validity, '%d/%m/%Y') AS validity
         FROM purchased_course 
         INNER JOIN course ON purchased_course.course_id = course.id
         WHERE purchased_course.user_id = ? AND purchased_course.course_count >= ?;
