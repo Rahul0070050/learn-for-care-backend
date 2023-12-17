@@ -110,7 +110,7 @@ export function getAllPurchasedCourseByUserId(id) {
       let getPurchasedCourseDataQuery = `
         SELECT purchased_course.id AS purchased_course_id,
         status, Name, description, course_count,
-        course_id, category, validity 
+        course_id, category, DATE_FORMAT(purchased_course.validity, '%d/%m/%Y') AS validity 
         FROM purchased_course 
         INNER JOIN course ON purchased_course.course_id = course.id
         WHERE purchased_course.user_id = ?;
