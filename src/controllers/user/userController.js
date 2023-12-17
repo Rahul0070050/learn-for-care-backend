@@ -815,7 +815,7 @@ export const userController = {
           delete result.userId;
 
           let course = await getAssignedCourseToManagerById(result.course_id); // course_id is purchased courses tables id
-          if (course[0].course_count >= result.count) {
+          if (course[0].count >= result.count) {
             console.log(course);
             let realCourse_id = course[0].course_id;
             let realCourse_type = course[0].course_type;
@@ -855,7 +855,7 @@ export const userController = {
               data: {
                 code: 406,
                 message: "value is not acceptable",
-                response: "count is not valid to assign",
+                response: "No courses left",
               },
             });
           }
