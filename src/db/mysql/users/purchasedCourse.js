@@ -98,6 +98,7 @@ export function getPurchasedCourseBundlesFromDbByUserId(id) {
       let getQuery = `
           SELECT purchased_course.*,
           DATE_FORMAT(purchased_course.date, '%d/%m/%Y') AS date,
+          DATE_FORMAT(purchased_course.validity, '%d/%m/%Y') AS validity
           purchased_course.fake_course_count AS fake_count,
           purchased_course.course_id AS bundle_id,
           purchased_course.id AS id,
