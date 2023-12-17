@@ -41,7 +41,7 @@ export function getAllOnGoingCourseByUserIdFromDb(id, type) {
       let getOnGoingCourseByIdQuery = `
           SELECT enrolled_course.id AS on_going_course_id, enrolled_course.*, 
           course.name AS name, course.category AS category, 
-          enrolled_course.validity AS validity,
+          DATE_FORMAT(enrolled_course.validity, '%d/%m/%Y') AS validity,
           course.description AS description
           FROM enrolled_course 
           INNER JOIN course ON course.id = enrolled_course.course_id
