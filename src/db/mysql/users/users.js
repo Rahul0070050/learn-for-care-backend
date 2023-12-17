@@ -1110,6 +1110,7 @@ export function getCourseWiseIndividualReportsFromDb(id) {
           });
         });
       });
+      console.log(course_names);
 
       resolve(course_names);
     } catch (error) {
