@@ -315,7 +315,8 @@ export function getAllOnGoingBundlesFromDb(user_id) {
       let getQuery = `
         SELECT course_bundle.name AS name, DATE_FORMAT(enrolled_bundle.validity, '%d/%m/%Y') AS validity,
         enrolled_bundle.bundle_id AS bundle_id, enrolled_bundle.id AS id, 1 AS form_ongoing,
-        course_bundle.description AS description, enrolled_bundle.progress AS progress
+        course_bundle.description AS description, enrolled_bundle.progress AS progress,
+        enrolled_bundle.all_courses AS all_courses, enrolled_bundle.finished_course AS finished_course
         FROM enrolled_bundle 
         INNER JOIN course_bundle ON course_bundle.id = enrolled_bundle.bundle_id 
         WHERE enrolled_bundle.user_id = ?
