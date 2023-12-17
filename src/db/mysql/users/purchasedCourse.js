@@ -159,8 +159,6 @@ export function getAssignedBundlesFromDbByCompanyId(userId) {
         if(err){
           reject(err.message);
         } else {
-          result[0]['all_courses'] = JSON.parse(result[0]['all_courses'])
-          result[0]['finished_course'] = JSON.parse(result[0]['finished_course'])
           resolve(result);
         }
       })
