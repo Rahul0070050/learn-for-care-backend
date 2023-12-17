@@ -42,6 +42,7 @@ import {
   getCourseWiseIndividualFromManagerReportsFromDb,
   getMonthlyTransactionsFromDb,
   assignCourseToMAnagerIndividualFromAssignedToDb,
+  assignCourseToMAnagerIndividualFromManagerAssigned,
 } from "../../db/mysql/users/users.js";
 import sentOtpEmail from "../../helpers/sendOtpEmail.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
@@ -816,12 +817,11 @@ export const userController = {
 
           let course = await getAssignedCourseToManagerById(result.course_id); // course_id is purchased courses tables id
           if (course[0].count >= result.count) {
-            console.log(course);
             let realCourse_id = course[0].course_id;
             let realCourse_type = course[0].course_type;
             let realValidity = course[0].validity;
             let userId = getUser(req).id;
-            assignCourseToMAnagerIndividual({
+            assignCourseToMAnagerIndividualFromManagerAssigned({
               ...result,
               userId,
               realCourse_id,
