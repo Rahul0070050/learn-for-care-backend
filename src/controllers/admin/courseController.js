@@ -1293,13 +1293,13 @@ export const courseController = {
         .then((result) => {
           deleteCourseFromDb(result)
             .then(async (course) => {
-              await removeFromS3(course?.thumbnail || "");
-              await removeFromS3(course?.video || "");
-              await removeFromS3(course?.ppt || "");
-              await removeFromS3(course?.intro_video || "");
+              removeFromS3(course?.thumbnail || "");
+              removeFromS3(course?.video || "");
+              removeFromS3(course?.ppt || "");
+              removeFromS3(course?.intro_video || "");
 
               course?.resource?.forEach(async (url) => {
-                await removeFromS3(url.file);
+                removeFromS3(url.file);
               });
 
               res.status(200).json({
