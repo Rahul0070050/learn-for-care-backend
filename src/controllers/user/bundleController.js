@@ -428,8 +428,7 @@ export const bundleController = {
                       course[`pptCount`] = resources.length;
 
                       resources.forEach((item, i) => {
-                        console.log(item.file + ":" + item.type);
-                        course[`resource${i}-`] = item.file;
+                        course[`resource${i}-`] = `${item.file}&&${item.name}`;
                       });
 
                       ppt.forEach((item, i) => {
@@ -446,14 +445,18 @@ export const bundleController = {
 
                         let url = await downloadFromS3(index, link);
 
+                        delete course[`ppt${index}-`];
+
                         images.push(url.url);
                       }
 
                       for (let index = 0; index < resources.length; index++) {
-                        let link = course[`resource${index}-`];
-                        let url = await downloadFromS3(index, link);
-
-                        resource.push(url.url);
+                        let link = course[`resource${index}-`].split("&&");
+                        let url = await downloadFromS3(index, link[0]);
+      
+                        resource.push({ url: url.url, fileName: link[1] });
+      
+                        delete course[`resource${index}-`];
                       }
 
                       let intro_video = await downloadFromS3(
