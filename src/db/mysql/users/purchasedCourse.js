@@ -8,7 +8,6 @@ export function saveToPurchasedCourse(course) {
       let date = new Date();
       date.setFullYear(date.getFullYear() + 1);
       // TODO: year: 1/5/2023 to 01/05/2023 // add '0' to frond of everyone
-      let year = date.toLocaleDateString();
       db.query(
         insertPurchasedCourseQuery,
         [
@@ -17,7 +16,7 @@ export function saveToPurchasedCourse(course) {
           course.amount,
           course.course_count,
           course.course_count,
-          year,
+          date,
           course.type,
           course.transitionId
         ],
