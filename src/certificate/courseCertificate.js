@@ -51,7 +51,7 @@ export async function saveCertificate({
       doc.text(courseName, 220, 472);
       doc.text(newdate, 220, 514);
       doc.text(sl, 220, 554);
-      doc.text("some text for course description".split(1, 60), 220, 595);
+      doc.text("some text for course description".split(1, 60), 220, 590);
       doc.end();
       fileStream.on("finish", () => {
         resolve(file_path);
