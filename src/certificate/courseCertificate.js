@@ -33,11 +33,15 @@ export async function saveCertificate({
         }
       );
 
+      const textWidth = doc.widthOfString(userName);
+      const textHeight = doc.heightOfString(userName);
+      const centerX = (doc.page.width - textWidth) / 2;
+      const centerY = (doc.page.height - textHeight) / 2;
+      
       doc.font("Helvetica-Bold");
-
       doc.fontSize(16);
       doc.fillColor("black");
-      doc.text(`Rahul`,0,392,{align: 'center'});
+      doc.text(userName, centerX, centerY);
 
       doc.end();
       fileStream.on("finish", () => {
