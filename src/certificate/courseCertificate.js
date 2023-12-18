@@ -51,10 +51,12 @@ export async function saveCertificate({
       doc.text(courseName, 220, 472);
 
       doc.text(newDate, 220, 514);
-
+      
       doc.text(sl, 220, 554);
 
       doc.text("some text for course description".split(1, 60), 220, 590);
+      
+      doc.text(newDate, 120, 800);
 
       doc.end();
 
