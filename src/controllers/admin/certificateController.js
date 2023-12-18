@@ -18,10 +18,10 @@ export const certificateController = {
       validateCreateCertificateInfo(req.body)
         .then(async (result) => {
           let filePath = uuid() + ".pdf"
-          await saveCertificate(filePath);
           let url = await uploadPdfToS3(filePath)
           insertNewCertificate({...result,image: url.file})
-            .then(async (result) => {
+          .then(async (sl) => {
+              await saveCertificate({filePath,sl,userName: user_name, courseName: course_name, date });
               res.status(201).json({
                 success: true,
                 data: {

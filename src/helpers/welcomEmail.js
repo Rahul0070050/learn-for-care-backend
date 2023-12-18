@@ -12,7 +12,8 @@ export default function sendWelcomeEmail(email) {
       const mailData = {
         from: {
           name: 'LearnForCare',
-          address: process.env.EMAIL_ID},
+          address: process.env.EMAIL_ID
+        },
         to: email,
         subject: "Learn For Care",
         text: "here is your otp",

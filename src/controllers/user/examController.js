@@ -83,7 +83,7 @@ export const examController = {
         let course = await getCourseByIdFromDb(questions[0].course_id);
         let points = 0;
         let user = getUser(req);
-        let wrongAnswers = []
+        let wrongAnswers = [];
         realAnswers.map((item) => {
           let ans = answers.find((i) => i.question == item.question);
           if (ans.answer == item.answer) {
@@ -103,7 +103,6 @@ export const examController = {
           .then(async () => {
             if (per >= 80) {
               let filePath = uuid() + ".pdf";
-              await saveCertificate(filePath);
               let url = await uploadPdfToS3(filePath);
               insertNewCertificate({
                 ...result,
@@ -114,7 +113,14 @@ export const examController = {
                 image: url.file,
                 course_name: course[0].name,
               })
-                .then(async (result) => {
+                .then(async (sl) => {
+                  await saveCertificate({
+                    filePath,
+                    sl,
+                    userName: user.first_name + " " + user.last_name,
+                    courseName: course[0].name,
+                    date: new Date(),
+                  });
                   res.status(201).json({
                     success: true,
                     data: {
@@ -124,7 +130,7 @@ export const examController = {
                         per: per + " %",
                         rightAnswers: points,
                         wrongAnswers: wrongAnswers,
-                        certificate: url.file
+                        certificate: url.file,
                       },
                     },
                   });

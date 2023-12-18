@@ -17,7 +17,7 @@ export function insertNewCertificate(info) {
             console.log(err);
             return reject(err?.message);
           } else {
-            return resolve();
+            return resolve(result.insertId);
           }
         }
       );
