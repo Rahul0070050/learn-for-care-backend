@@ -213,6 +213,7 @@ export const bundleController = {
           startANewBundle({ ...result, id: user.id })
             .then((startedResult) => {
               try {
+                console.log(startedResult);
                 let data = {
                   bundle_id: startedResult.id,
                   validity: startedResult.validity,
