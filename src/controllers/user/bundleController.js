@@ -214,6 +214,7 @@ export const bundleController = {
             .then((startedResult) => {
               try {
                 console.log(startedResult);
+                console.log(startedResult.course_count);
                 let data = {
                   bundle_id: startedResult.id,
                   validity: startedResult.validity,
