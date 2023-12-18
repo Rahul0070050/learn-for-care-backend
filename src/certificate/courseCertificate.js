@@ -41,7 +41,7 @@ export async function saveCertificate({
       doc.font("Helvetica-Bold");
       doc.fontSize(16);
       doc.fillColor("black");
-      doc.text(userName, centerX, centerY);
+      doc.text(userName, centerX, centerY - 15);
 
       doc.end();
       fileStream.on("finish", () => {
