@@ -324,8 +324,8 @@ export function getAllOnGoingBundlesFromDb(user_id) {
       db.query(getQuery, [user_id], (err, result) => {
         if (err) return reject(err?.message);
         else {
-          result[0]['all_courses'] = JSON.parse(result[0]['all_courses'])
-          result[0]['finished_course'] = JSON.parse(result[0]['finished_course'])
+          // result[0]['all_courses'] = JSON.parse(result[0]['all_courses'])
+          // result[0]['finished_course'] = JSON.parse(result[0]['finished_course'])
           return resolve(result);
         }
       });
