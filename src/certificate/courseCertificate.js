@@ -27,7 +27,8 @@ export async function saveCertificate({
         0,
         0,
         {
-          cover: [doc.page.width - 100, doc.page.height - 300],
+          align: "center",
+          valign: "center",
         }
       );
 
