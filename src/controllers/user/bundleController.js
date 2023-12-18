@@ -213,25 +213,14 @@ export const bundleController = {
           startANewBundle({ ...result, id: user.id })
             .then((startedResult) => {
               try {
-                console.log(startedResult);
-                console.log(startedResult.course_count);
-                console.log(JSON.parse(startedResult.course_count));
-                console.log(JSON.parse(startedResult.course_count));
-                console.log(JSON.parse(JSON.parse(startedResult.course_count)).length);
                 let data = {
                   bundle_id: startedResult.id,
                   validity: startedResult.validity,
                   bundle_name: startedResult.bundleName,
                   user_id: user.id,
-                  course_count: JSON.parse(startedResult.course_count).split(
-                    ","
-                  ).length,
-                  unfinished_course: JSON.parse(
-                    startedResult.course_count
-                  ).split(","),
-                  all_courses: JSON.parse(startedResult.course_count).split(
-                    ","
-                  ),
+                  course_count: JSON.parse(JSON.parse(startedResult.course_count)).length,
+                  unfinished_course: JSON.parse(JSON.parse(startedResult.course_count)),
+                  all_courses: JSON.parse(JSON.parse(startedResult.course_count)),
                 };
                 setNewBundleToEnroll(data)
                   .then((result) => {
