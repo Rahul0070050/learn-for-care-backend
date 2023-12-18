@@ -14,7 +14,7 @@ export async function saveCertificate({
     try {
       let description = "some text";
       const doc = new PDFDocument({
-        size: [612, 810],
+        size: [612, 840],
       });
 
       let file_path = path.join(__dirname, "../", `/certificate/${filePath}`);
