@@ -38,7 +38,7 @@ export async function saveCertificate({
 
       doc.fontSize(16);
       doc.fillColor("black");
-      doc.text(`${userName}`,0,395,{align: 'center'});
+      doc.text(`Rahul`,0,395,{align: 'center'});
 
       doc.end();
       fileStream.on("finish", () => {
