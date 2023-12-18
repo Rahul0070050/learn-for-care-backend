@@ -49,8 +49,8 @@ export async function saveCertificate({
       doc.font("Helvetica");
 
       doc.text(courseName, 220, 470);
-      doc.text(newdate, 220, 420);
-      doc.text(sl, 220, 460);
+      doc.text(newdate, 220, 510);
+      doc.text(sl, 220, 550);
       doc.text("some text for course description".split(1, 60), 220, 600);
       doc.end();
       fileStream.on("finish", () => {
