@@ -249,6 +249,7 @@ export function decrementTheCourseCount(data) {
       } catch (error) {
         reject(error);
       }
+      console.log(course);
       db.query(
         decrementTheCourseCountQuery,
         [data.course_id],
