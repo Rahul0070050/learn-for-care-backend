@@ -34,7 +34,7 @@ export async function saveCertificate({
       );
 
       let date = new Date().toLocaleDateString().split("/");
-      let newdate = date[1] + "/" + date[0] + "/" + date[2];
+      let newDate = date[1] + "/" + date[0] + "/" + date[2];
 
       const userNameWidth = doc.widthOfString(userName);
       const userNameHeight = doc.heightOfString(userName);
@@ -49,13 +49,19 @@ export async function saveCertificate({
       doc.font("Helvetica");
 
       doc.text(courseName, 220, 472);
-      doc.text(newdate, 220, 514);
+
+      doc.text(newDate, 220, 514);
+
       doc.text(sl, 220, 554);
+
       doc.text("some text for course description".split(1, 60), 220, 590);
+
       doc.end();
+
       fileStream.on("finish", () => {
         resolve(file_path);
       });
+
     } catch (error) {
       console.log(error);
       reject(error.message);
