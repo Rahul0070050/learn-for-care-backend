@@ -129,7 +129,7 @@ export function saveExamResult(
         "UPDATE enrolled_course SET progress = ? ,color = ? WHERE id = ?;";
       db.query(updateQuery, [per, color, enrolledCourseId], (err, result) => {
         if (err) return reject(err?.message);
-        else return resolve(result);
+        // else return resolve(result);
       });
 
       let insertQuery = `INSERT INTO exam_attempts (course_id, user_id, percentage, enrolled_course_id, status) VALUES (?,?,?,?,?)`;
@@ -139,7 +139,7 @@ export function saveExamResult(
         [course_id, userId, per, enrolledCourseId, status],
         (err, result) => {
           if (err) return reject(err?.message);
-          else return resolve(result);
+          else return resolve(result.insertId);
         }
       );
     } catch (error) {

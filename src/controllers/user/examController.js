@@ -100,8 +100,17 @@ export const examController = {
           user.id,
           result.enrolled_course_id
         )
-          .then(async () => {
+          .then(async (sl) => {
             if (per >= 80) {
+              let filePath = uuid() + ".pdf";
+              await saveCertificate({
+                filePath,
+                sl,
+                userName: user.first_name + " " + user.last_name,
+                courseName: course[0].name,
+                date: new Date(),
+              });
+              let url = await uploadPdfToS3(filePath);
               insertNewCertificate({
                 ...result,
                 user_id: user.id,
@@ -113,15 +122,6 @@ export const examController = {
               })
                 .then(async (sl) => {
                   try {
-                    let filePath = uuid() + ".pdf";
-                    await saveCertificate({
-                      filePath,
-                      sl,
-                      userName: user.first_name + " " + user.last_name,
-                      courseName: course[0].name,
-                      date: new Date(),
-                    });
-                    let url = await uploadPdfToS3(filePath);
                     res.status(201).json({
                       success: true,
                       data: {
