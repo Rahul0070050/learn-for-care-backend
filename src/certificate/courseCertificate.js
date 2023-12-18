@@ -10,26 +10,39 @@ export async function saveCertificate(
   courseName,
   date
 ) {
-  let description = 'some text'
-  const doc = new PDFDocument();
+  return new Promise((resolve, reject) => {
+    try {
+      let description = "some text";
+      const doc = new PDFDocument();
 
-  let file_path = path.join(__dirname, "../", `/certificate/${filePath}`);
-  doc.pipe(fs.createWriteStream(file_path));
-  doc.image(
-    path.join(__dirname, "../", "/certificate/learnforcare-certificate.jpg"),
-    50,
-    50,
-    {
-      width: 500,
+      let file_path = path.join(__dirname, "../", `/certificate/${filePath}`);
+      let fileStream = fs.createWriteStream(file_path);
+      doc.pipe(fileStream);
+      doc.image(
+        path.join(
+          __dirname,
+          "../",
+          "/certificate/learnforcare-certificate.jpg"
+        ),
+        50,
+        50,
+        {
+          width: 500,
+        }
+      );
+
+      doc.font("Helvetica-Bold");
+
+      doc.fontSize(16);
+      doc.fillColor("black");
+      doc.text("This is my Text", 100, 100);
+
+      doc.end();
+      fileStream.on("finish", () => {
+        resolve(file_path);
+      });
+    } catch (error) {
+      reject(error.message);
     }
-  );
-
-  doc.font("Helvetica-Bold");
-
-  doc.fontSize(16);
-  doc.fillColor("black");
-  doc.text("This is my Text", 100, 100);
-
-  doc.end();
-  return file_path;
+  });
 }
