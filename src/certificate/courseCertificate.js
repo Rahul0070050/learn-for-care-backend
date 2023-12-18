@@ -13,7 +13,7 @@ export async function saveCertificate(
   let description = 'some text'
   const doc = new PDFDocument();
 
-  let file_path = path.join(__dirname, "../", `/certificate/${file_name}`);
+  let file_path = path.join(__dirname, "../", `/certificate/${filePath}`);
   doc.pipe(fs.createWriteStream(file_path));
   doc.image(
     path.join(__dirname, "../", "/certificate/learnforcare-certificate.jpg"),
