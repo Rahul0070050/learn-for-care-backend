@@ -8,7 +8,7 @@ export async function saveInvoice(file_name) {
 
   let file_path = path.join(__dirname, "../", `/invoice/${file_name}`);
   doc.pipe(fs.createWriteStream(file_path));
-  doc.image(path.join(__dirname, "../", "/invoice/invoice.jpg"), 50, 50, {
+  doc.image(path.join(__dirname, "../", "/invoice/learnforcare-invoice.jpg"), 50, 50, {
     width: 500,
   });
 
