@@ -13,7 +13,9 @@ export async function saveCertificate({
   return new Promise((resolve, reject) => {
     try {
       let description = "some text";
-      const doc = new PDFDocument();
+      const doc = new PDFDocument({
+        size: [612, 10334],
+      });
 
       let file_path = path.join(__dirname, "../", `/certificate/${filePath}`);
       let fileStream = fs.createWriteStream(file_path);
@@ -30,8 +32,8 @@ export async function saveCertificate({
           cover: [doc.page.width, doc.page.height - 150],
         }
       );
-      console.log('d w ',doc.page.width);
 
+      console.log('d h ', doc.page.height);
       doc.font("Helvetica-Bold");
 
       doc.fontSize(16);
