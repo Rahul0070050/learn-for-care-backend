@@ -13,9 +13,7 @@ export async function saveCertificate({
   return new Promise((resolve, reject) => {
     try {
       let description = "some text";
-      const doc = new PDFDocument({
-        size: [612, 10334],
-      });
+      const doc = new PDFDocument();
 
       let file_path = path.join(__dirname, "../", `/certificate/${filePath}`);
       let fileStream = fs.createWriteStream(file_path);
