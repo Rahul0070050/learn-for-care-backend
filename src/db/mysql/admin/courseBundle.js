@@ -2,15 +2,15 @@ import { db } from "../../../conf/mysql.js";
 
 export function insertNewBundle(bundle) {
   console.log(bundle);
-  let { name, description, courses, price, image } = bundle;
+  let { name, category, description, courses, price, image } = bundle;
   return new Promise((resolve, reject) => {
     try {
       let insertBundleQuery =
-        "INSERT INTO course_bundle (name,description,courses,price,image) VALUES(?,?,?,?,?);";
+        "INSERT INTO course_bundle (name,category,description,courses,price,image) VALUES(?,?,?,?,?,?);";
 
       db.query(
         insertBundleQuery,
-        [name, description, courses, price, image],
+        [name, category, description, courses, price, image],
         (err, course) => {
           if (err) reject(err?.message);
           else resolve({});
