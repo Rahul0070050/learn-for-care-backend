@@ -131,6 +131,7 @@ export function getUserById(id) {
         }
       });
     } catch (error) {
+      console.log(error);
       reject(error?.message);
     }
   });
