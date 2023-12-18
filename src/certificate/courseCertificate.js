@@ -24,8 +24,8 @@ export async function saveCertificate({
           "../",
           "/certificate/learnforcare-certificate.jpg"
         ),
-        50,
-        50,
+        0,
+        0,
         {
           width: 500,
         }
