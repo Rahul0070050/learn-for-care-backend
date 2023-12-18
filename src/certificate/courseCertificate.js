@@ -27,7 +27,7 @@ export async function saveCertificate({
         0,
         0,
         {
-          cover: [doc.page.width - 40, doc.page.height - 10],
+          cover: [doc.page.width - 10, doc.page.height - 20],
         }
       );
 
