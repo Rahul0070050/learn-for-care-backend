@@ -10,7 +10,10 @@ export default function sentOtpEmail(email, otp) {
     try {
       let image = await downloadFromS3("","/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7")
       const mailData = {
-        from: process.env.EMAIL_ID,
+        from: {
+          name: 'LearnForCare',
+          address: process.env.EMAIL_ID
+        },
         to: email,
         subject: "Learn For Care",
         text: "here is your otp",
