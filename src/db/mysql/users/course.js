@@ -232,6 +232,7 @@ export function decrementTheCourseCount(data) {
     try {
       let decrementTheCourseCountQuery = "";
       let course = null;
+      console.log(data.from);
       try {
         if (data.from == "assigned") {
           decrementTheCourseCountQuery = `UPDATE assigned_course SET count = count - 1 WHERE id = ?;`;
