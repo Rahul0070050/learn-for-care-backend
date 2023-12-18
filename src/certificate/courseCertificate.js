@@ -38,7 +38,7 @@ export async function saveCertificate({
 
       doc.fontSize(16);
       doc.fillColor("black");
-      doc.text(`${userName}`,{align: 'center'}).moveDown(500);
+      doc.text(`${userName}`,{align: 'center'}).moveDown(2000);
 
       doc.end();
       fileStream.on("finish", () => {
