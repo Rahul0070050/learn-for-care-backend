@@ -42,6 +42,7 @@ export async function saveCertificate(
         resolve(file_path);
       });
     } catch (error) {
+      console.log(error);
       reject(error.message);
     }
   });

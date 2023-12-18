@@ -111,29 +111,33 @@ export const examController = {
                 image: url.file,
                 course_name: course[0].name,
               })
-              .then(async (sl) => {
-                let filePath = uuid() + ".pdf";
-                await saveCertificate({
-                  filePath,
-                  sl,
-                  userName: user.first_name + " " + user.last_name,
-                  courseName: course[0].name,
-                  date: new Date(),
-                });
-                let url = await uploadPdfToS3(filePath);
-                  res.status(201).json({
-                    success: true,
-                    data: {
-                      code: 201,
-                      message: "you successfully finished the course",
-                      response: {
-                        per: per + " %",
-                        rightAnswers: points,
-                        wrongAnswers: wrongAnswers,
-                        certificate: url.file,
+                .then(async (sl) => {
+                  try {
+                    let filePath = uuid() + ".pdf";
+                    await saveCertificate({
+                      filePath,
+                      sl,
+                      userName: user.first_name + " " + user.last_name,
+                      courseName: course[0].name,
+                      date: new Date(),
+                    });
+                    let url = await uploadPdfToS3(filePath);
+                    res.status(201).json({
+                      success: true,
+                      data: {
+                        code: 201,
+                        message: "you successfully finished the course",
+                        response: {
+                          per: per + " %",
+                          rightAnswers: points,
+                          wrongAnswers: wrongAnswers,
+                          certificate: url.file,
+                        },
                       },
-                    },
-                  });
+                    });
+                  } catch (error) {
+                    console.log(error);
+                  }
                 })
                 .catch((error) => {
                   res.status(406).json({
