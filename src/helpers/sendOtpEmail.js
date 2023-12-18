@@ -11,7 +11,7 @@ export default function sentOtpEmail(email, otp) {
       let image = await downloadFromS3("","/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7")
       const mailData = {
         from: {
-          name: 'LearnForCare',
+          name: 'support@learnforcare.co.uk',
           address: process.env.EMAIL_ID
         },
         to: email,
