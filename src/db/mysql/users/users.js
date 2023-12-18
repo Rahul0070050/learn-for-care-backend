@@ -161,6 +161,7 @@ export function saveOtpToDB(email) {
       db.query(setOtpQuery, [otp, email], (err, result) => {
         if (err) return reject(err.message);
         else {
+          console.log(result);
           if(result[0].matched >= 1) {
             resolve({ otp, email });
           } else {
