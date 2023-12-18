@@ -26,7 +26,9 @@ export async function saveCertificate({
         ),
         0,
         0,
-        {fit: [100, 100]}
+        {
+          cover: [doc.page.width, doc.page.height],
+        }
       );
 
       doc.font("Helvetica-Bold");
