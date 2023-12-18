@@ -3,13 +3,13 @@ import path from "path";
 import { __dirname } from "../utils/filePath.js";
 import PDFDocument from "pdfkit";
 
-export async function saveCertificate(
+export async function saveCertificate({
   filePath,
   sl,
   userName,
   courseName,
-  date
-) {
+  date,
+}) {
   return new Promise((resolve, reject) => {
     try {
       let description = "some text";
