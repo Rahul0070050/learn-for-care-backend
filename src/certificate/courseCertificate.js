@@ -38,7 +38,7 @@ export async function saveCertificate({
 
       doc.fontSize(16);
       doc.fillColor("black");
-      doc.text(`Rahul`,0,395,{align: 'center'}).moveTo(10,0);
+      doc.text(`Rahul`,0,395,{align: 'center'}).moveTo(60,0);
 
       doc.end();
       fileStream.on("finish", () => {
