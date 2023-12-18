@@ -25,10 +25,7 @@ export async function saveCertificate({
           "/certificate/learnforcare-certificate.jpg"
         ),
         0,
-        0,
-        {
-          width: 500,
-        }
+        0
       );
 
       doc.font("Helvetica-Bold");
