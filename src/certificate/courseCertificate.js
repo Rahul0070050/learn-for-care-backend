@@ -45,7 +45,7 @@ export async function saveCertificate({
 
       doc.text(courseName, 220,400)
       doc.text(courseName, 220,450)
-      doc.text(lorem.split(1,60), 220,500)
+      doc.text('some text for course description'.split(1,60), 220,500)
       doc.end();
       fileStream.on("finish", () => {
         resolve(file_path);
