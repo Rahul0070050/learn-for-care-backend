@@ -216,7 +216,7 @@ export const bundleController = {
                 console.log(startedResult);
                 console.log(startedResult.course_count);
                 console.log(JSON.parse(startedResult.course_count));
-                console.log(JSON.parse(startedResult.course_count).length);
+                console.log(JSON.parse(Array(startedResult.course_count)).length);
                 let data = {
                   bundle_id: startedResult.id,
                   validity: startedResult.validity,
