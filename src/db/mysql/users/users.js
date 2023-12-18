@@ -162,7 +162,7 @@ export function saveOtpToDB(email) {
         if (err) return reject(err.message);
         else {
           console.log(result);
-          if(result[0].matched >= 1) {
+          if(result.affectedRows >= 1) {
             resolve({ otp, email });
           } else {
             reject("Email is not exist");
