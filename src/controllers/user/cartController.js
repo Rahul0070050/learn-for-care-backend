@@ -490,72 +490,76 @@ export const cartController = {
                   let filePath = uuid() + ".pdf";
                   await saveInvoice(filePath);
                   setTimeout(async () => {
-                    let coupon = await getActiveCouponByUserId(userId);
-                    if (coupon) {
-                      if (coupon.type == "Percent") {
-                        cartItems.forEach((item) => {
-                          item["amount"] =
-                            (item["amount"] * coupon.amount) / 100;
-                        });
-                      } else {
-                        let amount = parseInt(
-                          coupon.amount / cartItems.length
-                        ).toFixed(2);
-                        cartItems.forEach((item) => {
-                          item["amount"] -= amount;
-                        });
+                    try {
+                      let coupon = await getActiveCouponByUserId(userId);
+                      if (coupon) {
+                        if (coupon.type == "Percent") {
+                          cartItems.forEach((item) => {
+                            item["amount"] =
+                              (item["amount"] * coupon.amount) / 100;
+                          });
+                        } else {
+                          let amount = parseInt(
+                            coupon.amount / cartItems.length
+                          ).toFixed(2);
+                          cartItems.forEach((item) => {
+                            item["amount"] -= amount;
+                          });
+                        }
                       }
-                    }
-                    let total = 0;
-                    cartItems.forEach((item) => {
-                      total += item.amount;
-                    });
-                    let url = await uploadInvoice(filePath);
-                    let transitionId = await saveInvoiceToDb({
-                      userId,
-                      image: url.file,
-                      coupon: coupon?.id || 0,
-                      total,
-                    });
-                    Promise.all(
-                      cartItems.map((item) => {
-                        return saveToPurchasedCourse({
-                          user_id: item.user_id,
-                          course_id: item.course_id,
-                          amount: item.amount,
-                          course_count: item.product_count,
-                          type: item.item_type,
-                          transitionId,
-                        });
-                      })
-                    )
-                      .then((result) => {
-                        cartItems.forEach((item) => {
-                          deleteCourseFromDb(item.id)
-                            .then(() => {
-                              console.log("Deleted from Cart");
-                            })
-                            .catch((err) => {
-                              console.error("Error deleting from db", err);
-                            });
-                        });
-                        res.send();
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                        res.status(406).send();
+                      let total = 0;
+                      cartItems.forEach((item) => {
+                        total += item.amount;
                       });
+                      let url = await uploadInvoice(filePath);
+                      let transitionId = await saveInvoiceToDb({
+                        userId,
+                        image: url.file,
+                        coupon: coupon?.id || 0,
+                        total,
+                      });
+                      Promise.all(
+                        cartItems.map((item) => {
+                          return saveToPurchasedCourse({
+                            user_id: item.user_id,
+                            course_id: item.course_id,
+                            amount: item.amount,
+                            course_count: item.product_count,
+                            type: item.item_type,
+                            transitionId,
+                          });
+                        })
+                      )
+                        .then((result) => {
+                          cartItems.forEach((item) => {
+                            deleteCourseFromDb(item.id)
+                              .then(() => {
+                                console.log("Deleted from Cart");
+                              })
+                              .catch((err) => {
+                                console.error("Error deleting from db", err);
+                              });
+                          });
+                          res.send();
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                          res.status(406).send();
+                        });
+                    } catch (err) {
+                      console.log(err);
+                    }
                   }, 2000);
                 })
                 .catch((err) => {
+                  console.log(err);
                   res.status(406).send();
-                  console.log(err.message);
                 });
             })
             .catch((err) => {
-              res.status(406).send();
               console.log("err.message");
               console.log(err.message);
+              res.status(406).send();
             });
           // Then define and call a function to handle the event charge.succeeded
           break;
