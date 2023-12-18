@@ -48,10 +48,10 @@ export async function saveCertificate({
 
       doc.font("Helvetica");
 
-      doc.text(courseName, 220, 470);
-      doc.text(newdate, 220, 510);
-      doc.text(sl, 220, 550);
-      doc.text("some text for course description".split(1, 60), 220, 600);
+      doc.text(courseName, 220, 472);
+      doc.text(newdate, 220, 514);
+      doc.text(sl, 220, 554);
+      doc.text("some text for course description".split(1, 60), 220, 595);
       doc.end();
       fileStream.on("finish", () => {
         resolve(file_path);
