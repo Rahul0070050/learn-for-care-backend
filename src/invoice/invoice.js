@@ -3,11 +3,39 @@ import path from "path";
 import { __dirname } from "../utils/filePath.js";
 import PDFDocument from "pdfkit";
 
-export async function saveInvoice(file_name, sl, userName, data, subTotal, tax) {
+export async function saveInvoice(
+  file_name,
+  sl,
+  userName,
+  data,
+  subTotal,
+  tax
+) {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({
         size: [612, 860],
+      });
+
+      // id: 318,
+      // user_id: 17,
+      // course_id: 26,
+      // product_count: 2,
+      // thumbnail: '/course/thumbnail/18b48451-7b33-46d7-9016-88fde43e5e21',
+      // name: 'Standard 1 Understand your role',
+      // item_type: 'course',
+      // amount: 30
+
+      let tableData = data.map((item) => {
+        return [
+          `LFC${item.id}`,
+          item.name.length > 40
+            ? `${item.name.slice(0, 40)}...`
+            : `${item.name}`,
+          parseFloat(item.amount / item.product_count).toFixed(2),
+          item.product_count,
+          parseFloat(item.amount).toFixed(2),
+        ];
       });
 
       let total = subTotal + tax;
@@ -47,7 +75,7 @@ export async function saveInvoice(file_name, sl, userName, data, subTotal, tax) 
 
       // Function to draw the entire table
       function drawTable() {
-        data.forEach((row) => {
+        tableData.forEach((row) => {
           drawRow(row, startX, startY);
           startY += rowHeight;
         });

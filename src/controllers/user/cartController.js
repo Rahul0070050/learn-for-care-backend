@@ -519,22 +519,21 @@ export const cartController = {
                       });
                       let filePath = uuid() + ".pdf";
                       const vatAmount = calculateVATAmount(total);
-                      console.log(cartItems);
-                      // await saveInvoice(
-                      //   filePath,
-                      //   transitionId,
-                      //   userName,
-                      //   cartItems,
-                      //   total,
-                      //   vatAmount
-                      // );
+                      await saveInvoice(
+                        filePath,
+                        transitionId,
+                        userName,
+                        cartItems,
+                        total,
+                        vatAmount
+                      );
 
-                      // let url = await uploadInvoice(filePath);
+                      let url = await uploadInvoice(filePath);
 
-                      // await saveInvoiceImageToDb({
-                      //   image: url.file,
-                      //   id: transitionId,
-                      // });
+                      await saveInvoiceImageToDb({
+                        image: url.file,
+                        id: transitionId,
+                      });
 
                       Promise.all(
                         cartItems.map((item) => {
