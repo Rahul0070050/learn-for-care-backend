@@ -18,7 +18,7 @@ export function saveToPurchasedCourse(course) {
           course.course_count,
           date,
           course.type,
-          course.transitionId
+          course.transitionId,
         ],
         (err, result) => {
           if (err) {
@@ -38,33 +38,24 @@ export function getPurchasedCourseById(id) {
   return new Promise((resolve, reject) => {
     try {
       let getCourseByIdQuery = `SELECT * FROM purchased_course WHERE id = ?;`;
-      db.query(
-        getCourseByIdQuery,
-        [id],
-        (err, result) => {
-          if (err) return reject(err.message);
-          else return resolve(result);
-        }
-      );
+      db.query(getCourseByIdQuery, [id], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }
   });
 }
 
-
 export function getAssignedCourseToManagerById(id) {
   return new Promise((resolve, reject) => {
     try {
       let getCourseByIdQuery = `SELECT * FROM course_assigned_manager WHERE id = ?;`;
-      db.query(
-        getCourseByIdQuery,
-        [id],
-        (err, result) => {
-          if (err) return reject(err.message);
-          else return resolve(result);
-        }
-      );
+      db.query(getCourseByIdQuery, [id], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }
@@ -75,14 +66,10 @@ export function getAssignedCourseToCompanyById(id) {
   return new Promise((resolve, reject) => {
     try {
       let getCourseByIdQuery = `SELECT * FROM assigned_course WHERE id = ?;`;
-      db.query(
-        getCourseByIdQuery,
-        [id],
-        (err, result) => {
-          if (err) return reject(err.message);
-          else return resolve(result);
-        }
-      );
+      db.query(getCourseByIdQuery, [id], (err, result) => {
+        if (err) return reject(err.message);
+        else return resolve(result);
+      });
     } catch (error) {
       reject(error?.message);
     }
@@ -90,9 +77,8 @@ export function getAssignedCourseToCompanyById(id) {
 }
 
 export function getPurchasedCourseBundlesFromDbByUserId(id) {
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve, reject) => {
     try {
-
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
           SELECT purchased_course.*,
@@ -106,23 +92,23 @@ export function getPurchasedCourseBundlesFromDbByUserId(id) {
           FROM purchased_course
           INNER JOIN course_bundle ON purchased_course.course_id = course_bundle.id
           WHERE purchased_course.course_type = ? AND purchased_course.user_id = ?;
-        `
-      db.query(getQuery,['bundle',id],(err,result) => {
-        if(err){
+        `;
+      db.query(getQuery, ["bundle", id], (err, result) => {
+        if (err) {
           reject(err.message);
         } else {
           console.log(result);
           resolve(result);
         }
-      })
+      });
     } catch (error) {
-      reject(error?.message)
+      reject(error?.message);
     }
-   })
+  });
 }
 
 export function getAssignedBundlesFromDbByUserId(userId) {
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve, reject) => {
     try {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
@@ -130,22 +116,22 @@ export function getAssignedBundlesFromDbByUserId(userId) {
       assigned_course.course_id AS bundle_id, assigned_course.id AS id, 0 AS from_purchased, assigned_course.count AS course_count,
       FROM assigned_course 
       INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id 
-      WHERE course_type = ? AND user_id = ?`
-      db.query(getQuery,['bundle',userId],(err,result) => {
-        if(err){
+      WHERE course_type = ? AND user_id = ?`;
+      db.query(getQuery, ["bundle", userId], (err, result) => {
+        if (err) {
           reject(err.message);
         } else {
           resolve(result);
         }
-      })
+      });
     } catch (error) {
-      reject(error?.message)
+      reject(error?.message);
     }
-   })
+  });
 }
 
 export function getAssignedBundlesFromDbByCompanyId(userId) {
-  return new Promise((resolve, reject) => { 
+  return new Promise((resolve, reject) => {
     try {
       // when we purchase bundle, the course id in the purchased course table turned to be the bundle id
       let getQuery = `
@@ -154,19 +140,23 @@ export function getAssignedBundlesFromDbByCompanyId(userId) {
       DATE_FORMAT(assigned_course.validity, '%d/%m/%Y') AS validity, course_bundle.courses AS all_courses, '[]' AS finished_course
       FROM assigned_course 
       INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id 
-      WHERE course_type = ? AND user_id = ?`
-      db.query(getQuery,['bundle',userId],(err,result) => {
-        if(err){
+      WHERE course_type = ? AND user_id = ?`;
+      db.query(getQuery, ["bundle", userId], (err, result) => {
+        if (err) {
           reject(err.message);
         } else {
-          result[0]['all_courses'] = JSON.parse(result[0]['all_courses'])
-          result[0]['finished_course'] = JSON.parse(result[0]['finished_course'])
+          if (result.length < 0) {
+            result[0]["all_courses"] = JSON.parse(result[0]["all_courses"]);
+            result[0]["finished_course"] = JSON.parse(
+              result[0]["finished_course"]
+            );
+          }
           resolve(result);
         }
-      })
+      });
     } catch (error) {
       console.log(error);
-      reject(error?.message)
+      reject(error?.message);
     }
-   })
+  });
 }
