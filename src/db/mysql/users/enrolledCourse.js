@@ -138,8 +138,8 @@ export function getManagerMatrixDataFromAdmin(id) {
       //   });
 
       let user = await getUserDataFromDb(id);
-      let data = await getMatrixDataByUserId(user.id);
-      let assigned = await getAssignedCourseByUserId(user.id);
+      let data = await getMatrixDataByUserId(user[0].id);
+      let assigned = await getAssignedCourseByUserId(user[0].id);
       user[0]["matrix"] = data;
       user[0]["matrix_assigned"] = assigned;
       resolve(user);
