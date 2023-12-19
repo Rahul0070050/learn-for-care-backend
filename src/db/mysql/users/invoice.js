@@ -4,9 +4,9 @@ import { db } from "../../../conf/mysql.js";
 export function saveInvoiceToDb(data) {
   return new Promise((resolve, reject) => {
     try {
-      const { userId, image, coupon, total } = data;
+      const { userId, coupon, total } = data;
       let insertQuery =
-        "INSERT INTO invoice (user_id, applied_coupon, total_price, img) VALUES (?,?,?,?);";
+        "INSERT INTO invoice (user_id, applied_coupon, total_price) VALUES (?,?,?);";
       let updateQuery = "UPDATE invoice SET transaction_id = ? WHERE id = ?";
       db.query(insertQuery, [userId, coupon, total, image], (err, result) => {
         if (err) return reject(err?.message);
@@ -19,6 +19,24 @@ export function saveInvoiceToDb(data) {
           }
           db.query(updateQuery, [insertId, insertId], (err, result) => {});
           return resolve(insertId);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function saveInvoiceImageToDb(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const { id, image } = data;
+      let updateQuery = "UPDATE invoice SET img = ? WHERE id = ?";
+      db.query(updateQuery, [id, image], (err, result) => {
+        if (err) {
+          reject(err?.message);
+        } else {
+          resolve();
         }
       });
     } catch (error) {

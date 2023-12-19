@@ -3,21 +3,82 @@ import path from "path";
 import { __dirname } from "../utils/filePath.js";
 import PDFDocument from "pdfkit";
 
-export async function saveInvoice(file_name) {
-  const doc = new PDFDocument();
+export async function saveInvoice(file_name, sl, userName, data, subTotal, tax) {
+  return new Promise((resolve, reject) => {
+    try {
+      const doc = new PDFDocument({
+        size: [612, 860],
+      });
 
-  let file_path = path.join(__dirname, "../", `/invoice/${file_name}`);
-  doc.pipe(fs.createWriteStream(file_path));
-  doc.image(path.join(__dirname, "../", "/invoice/learnforcare-invoice.jpg"), 50, 50, {
-    width: 500,
+      let total = subTotal + tax;
+
+      let file_path = path.join(__dirname, "../", `/invoice/${file_name}`);
+      const fileStream = fs.createWriteStream(file_path);
+      doc.pipe(fileStream);
+      doc.image(
+        path.join(__dirname, "../", "/invoice/learnforcare-invoice.jpg"),
+        0,
+        0,
+        {
+          cover: [doc.page.width, doc.page.height],
+        }
+      );
+
+      doc.font("Helvetica");
+
+      // Set the starting position for the table
+      let startX = 50;
+      let startY = 280;
+
+      setTimeout(() => {
+        fs.unlinkSync(file_name);
+      }, 20000);
+      // Set the width and height for each column
+      const columnWidths = [70, 245, 86, 80, 50];
+      const rowHeight = 20;
+
+      // Function to draw a table row
+      function drawRow(rowData, startX, startY) {
+        rowData.forEach((text, index) => {
+          doc.text(text, startX, startY, { width: columnWidths[index] });
+          startX += columnWidths[index];
+        });
+      }
+
+      // Function to draw the entire table
+      function drawTable() {
+        data.forEach((row) => {
+          drawRow(row, startX, startY);
+          startY += rowHeight;
+        });
+      }
+
+      // Draw the table
+      drawTable();
+
+      let date = new Date().toLocaleDateString().split("/");
+      let newDate = date[1] + "/" + date[0] + "/" + date[2];
+
+      doc.text(sl, 485, 154);
+      doc.text(newDate, 485, 182, { width: 70 });
+      doc.text(userName, 135, 702, { width: 160 });
+
+      doc.fontSize(14);
+      doc.text(subTotal, 520, 618, { width: 70 });
+      doc.text(tax, 520, 646, { width: 70 });
+
+      doc.fontSize(18);
+      doc.text(total, 500, 682, { width: 70 });
+
+      doc.end();
+
+      fileStream.on("finish", () => {
+        resolve();
+        console.log("PDF created");
+      });
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
   });
-
-  doc.font("Helvetica-Bold");
-
-  doc.fontSize(16);
-  doc.fillColor("black");
-  doc.text("This is my Text", 100, 100);
-
-  doc.end();
-  return file_path;
 }

@@ -28,9 +28,11 @@ import { v4 as uuid } from "uuid";
 import { saveInvoice } from "../../invoice/invoice.js";
 import {
   getInvoiceFromDb,
+  saveInvoiceImageToDb,
   saveInvoiceToDb,
 } from "../../db/mysql/users/invoice.js";
 import { getActiveCouponByUserId } from "../../db/mysql/users/coupon.js";
+import { calculateVATAmount } from "../../helpers/getTaxAmount.js";
 
 config("../../../.env");
 export const cartController = {
@@ -485,10 +487,9 @@ export const cartController = {
           )
             .then((user) => {
               let userId = user[0].id;
+              let userName = user[0].first_name + " " + user[0].last_name
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
-                  let filePath = uuid() + ".pdf";
-                  await saveInvoice(filePath);
                   setTimeout(async () => {
                     try {
                       let coupon = await getActiveCouponByUserId(userId);
@@ -511,13 +512,30 @@ export const cartController = {
                       cartItems.forEach((item) => {
                         total += item.amount;
                       });
-                      let url = await uploadInvoice(filePath);
                       let transitionId = await saveInvoiceToDb({
                         userId,
-                        image: url.file,
                         coupon: coupon?.id || 0,
                         total,
                       });
+                      let filePath = uuid() + ".pdf";
+                      const vatAmount = calculateVATAmount(total);
+                      console.log(cartItems);
+                      // await saveInvoice(
+                      //   filePath,
+                      //   transitionId,
+                      //   userName,
+                      //   cartItems,
+                      //   total,
+                      //   vatAmount
+                      // );
+
+                      // let url = await uploadInvoice(filePath);
+
+                      // await saveInvoiceImageToDb({
+                      //   image: url.file,
+                      //   id: transitionId,
+                      // });
+
                       Promise.all(
                         cartItems.map((item) => {
                           return saveToPurchasedCourse({
