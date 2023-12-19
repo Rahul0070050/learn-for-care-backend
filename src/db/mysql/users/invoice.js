@@ -32,7 +32,7 @@ export function saveInvoiceImageToDb(data) {
     try {
       const { id, image } = data;
       let updateQuery = "UPDATE invoice SET img = ? WHERE id = ?";
-      db.query(updateQuery, [id, image], (err, result) => {
+      db.query(updateQuery, [image, id], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {
