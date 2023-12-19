@@ -158,7 +158,7 @@ export function saveBundleExamResult(per, course_id, userId, enrolledCourseId) {
         [enrolledCourseId, course_id, userId, per, per >= 80 ? "pass" : "fail"],
         (err, result) => {
           if (err) reject(err.message);
-          else resolve();
+          else resolve(result.insertId);
         }
       );
     } catch (error) {

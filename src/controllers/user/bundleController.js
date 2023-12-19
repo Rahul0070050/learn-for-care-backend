@@ -218,9 +218,15 @@ export const bundleController = {
                   validity: startedResult.validity,
                   bundle_name: startedResult.bundleName,
                   user_id: user.id,
-                  course_count: JSON.parse(JSON.parse(startedResult.course_count)).length,
-                  unfinished_course: JSON.parse(JSON.parse(startedResult.course_count)),
-                  all_courses: JSON.parse(JSON.parse(startedResult.course_count)),
+                  course_count: JSON.parse(
+                    JSON.parse(startedResult.course_count)
+                  ).length,
+                  unfinished_course: JSON.parse(
+                    JSON.parse(startedResult.course_count)
+                  ),
+                  all_courses: JSON.parse(
+                    JSON.parse(startedResult.course_count)
+                  ),
                 };
                 setNewBundleToEnroll(data)
                   .then((result) => {
@@ -357,21 +363,21 @@ export const bundleController = {
     try {
       validateSTartBundleCourseReqData(req.body)
         .then((result) => {
-          startBundleCourse(result).then(result => {
-
-          }).catch(err => {
-            res.status(406).json({
-              success: false,
-              errors: [
-                {
-                  code: 406,
-                  message: "value not acceptable",
-                  error: err,
-                },
-              ],
-              errorType: "client",
+          startBundleCourse(result)
+            .then((result) => {})
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "value not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
             });
-          })
         })
         .catch((err) => {
           res.status(406).json({
@@ -447,9 +453,9 @@ export const bundleController = {
                       for (let index = 0; index < resources.length; index++) {
                         let link = course[`resource${index}-`].split("&&");
                         let url = await downloadFromS3(index, link[0]);
-      
+
                         resource.push({ url: url.url, fileName: link[1] });
-      
+
                         delete course[`resource${index}-`];
                       }
 
@@ -634,13 +640,24 @@ export const bundleController = {
             user.id,
             result.enrolled_course_id
           )
-            .then(async () => {
+            .then(async (sl) => {
               try {
                 if (per >= 80) {
                   let filePath = uuid() + ".pdf";
-                  await saveCertificate(filePath);
+
+                  await saveCertificate({
+                    filePath,
+                    sl,
+                    userName: user.first_name+ " " + user.last_name,
+                    courseName: course[0].name,
+                    date: new Date(),
+                  });
                   let url = await uploadPdfToS3(filePath);
-                  updateBundleProgress(result.enrolled_course_id,questions[0].course_id,per)
+                  updateBundleProgress(
+                    result.enrolled_course_id,
+                    questions[0].course_id,
+                    per
+                  );
                   insertNewCertificate({
                     ...result,
                     user_id: user.id,
@@ -728,33 +745,33 @@ export const bundleController = {
       });
     }
   },
-  getOnGoingBundles:(req,res) => {
+  getOnGoingBundles: (req, res) => {
     try {
-      let user = getUser(req)
+      let user = getUser(req);
       getAllOnGoingBundlesFromDb(user.id)
-      .then((result) => {
-        res.status(200).json({
-          success: true,
-          data: {
-            code: 200,
-            message: `got all on-going bundles`,
-            response: result,
-          },
-        });
-      })
-      .catch((err) => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "value not acceptable",
-              error: err,
+        .then((result) => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: `got all on-going bundles`,
+              response: result,
             },
-          ],
-          errorType: "client",
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
         });
-      });
     } catch (error) {
       res.status(500).json({
         success: false,
