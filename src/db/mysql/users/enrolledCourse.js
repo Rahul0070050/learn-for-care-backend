@@ -73,14 +73,17 @@ export function getBundleMatrixDataByUserId(id) {
   });
 }
 
-export function getManagerMatrixData(id,from) {
+export function getManagerMatrixData(id, from) {
   return new Promise(async (resolve, reject) => {
     try {
-      let users = ""
-      if(from == "user") {
+      let users = "";
+      if (from == "user") {
         users = await getUserDataFromDb(id);
       } else if (from == "self") {
-        users = [...await getUserDataFromDb(id), ...await getAllManagerIndividualFromDb(id)];
+        users = [
+          ...(await getUserDataFromDb(id)),
+          ...(await getAllManagerIndividualFromDb(id)),
+        ];
       } else {
         users = await getAllManagerIndividualFromDb(id);
       }
@@ -106,11 +109,51 @@ export function getManagerMatrixData(id,from) {
   });
 }
 
-export function getManagerBundleMatrixData(id,from) {
+export function getManagerMatrixDataFromAdmin(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      let users = ""
-      if(from == "user") {
+      // let users = ""
+      // if(from == "user") {
+      //   users = await getUserDataFromDb(id);
+      // } else if (from == "self") {
+      //   users = [...await getUserDataFromDb(id), ...await getAllManagerIndividualFromDb(id)];
+      // } else {
+      //   users = await getAllManagerIndividualFromDb(id);
+      // }
+
+      // Promise.all(
+      //   users.map(async (item) => {
+      //     let data = await getMatrixDataByUserId(item.id);
+      //     let assigned = await getAssignedCourseByUserId(item.id);
+      //     item["matrix"] = data;
+      //     item["matrix_assigned"] = assigned;
+      //     return item;
+      //   })
+      // )
+      //   .then((result) => {
+      //     resolve(result);
+      //   })
+      //   .catch((err) => {
+      //     reject(err?.message);
+      //   });
+
+      let user = await getUserDataFromDb(id);
+      let data = await getMatrixDataByUserId(user.id);
+      let assigned = await getAssignedCourseByUserId(user.id);
+      user["matrix"] = data;
+      user["matrix_assigned"] = assigned;
+      resolve(user);
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getManagerBundleMatrixData(id, from) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let users = "";
+      if (from == "user") {
         users = await getUserDataFromDb(id);
       } else {
         users = await getAllManagerIndividualFromDb(id);

@@ -16,6 +16,7 @@ import {
 import {
   getManagerBundleMatrixData,
   getManagerMatrixData,
+  getManagerMatrixDataFromAdmin,
 } from "../../db/mysql/users/enrolledCourse.js";
 import {
   checkAddCourseReqBodyAndFile,
@@ -29,6 +30,7 @@ import {
   checkUpdateCourseVideoReqBodyAndFile,
   checkDeleteCourseParams,
 } from "../../helpers/admin/validateCourseReqData.js";
+import { getUser } from "../../utils/auth.js";
 
 export const courseController = {
   createCourseWithResourceImages: (req, res) => {
@@ -1357,8 +1359,8 @@ export const courseController = {
   },
   getManagerMatrix: (req, res) => {
     try {
-      let userId = req.body?.manager_id;
-      getManagerMatrixData(userId)
+      let userId = req.body?.manager_id ? req.body?.manager_id : getUser(req).id;
+      getManagerMatrixDataFromAdmin(userId)
         .then((result) => {
           res.status(200).json({
             success: true,
