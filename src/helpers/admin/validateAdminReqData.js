@@ -206,7 +206,6 @@ export function validateSetAdminExperienceReqData(body, files) {
       organization: string().required("please provide organization"),
       designation: string().required("please provide designation"),
       no_of_years: string().required("please provide no_of_years"),
-      content: string().required("please provide content"),
     });
 
     let doc = validateFile([{ pdf: files.doc }], "pdf");
