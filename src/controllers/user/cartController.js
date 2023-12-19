@@ -594,7 +594,7 @@ export const cartController = {
           {
             code: 400,
             message: "some error occurred please try again later",
-            error: err?.message ? err?.message : error,
+            error: err?.message ? err?.message : err,
           },
         ],
         errorType: "server",

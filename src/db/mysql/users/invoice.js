@@ -8,7 +8,7 @@ export function saveInvoiceToDb(data) {
       let insertQuery =
         "INSERT INTO invoice (user_id, applied_coupon, total_price) VALUES (?,?,?);";
       let updateQuery = "UPDATE invoice SET transaction_id = ? WHERE id = ?";
-      db.query(insertQuery, [userId, coupon, total, image], (err, result) => {
+      db.query(insertQuery, [userId, coupon, total], (err, result) => {
         if (err) return reject(err?.message);
         else {
           let insertId = null;
