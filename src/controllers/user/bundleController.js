@@ -412,7 +412,7 @@ export const bundleController = {
   getBundleCourse: (req, res) => {
     try {
       let bundleId = req.params.id; // bundle name or bundle id
-      if (Number.isInteger(bundleId)) {
+      if (Number.isInteger(Number(bundleId))) {
         getBundleCourseByBundleId(bundleId)
           .then(async (result) => {
             let newResult = await Promise.all(
