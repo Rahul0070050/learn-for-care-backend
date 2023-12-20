@@ -409,55 +409,73 @@ export const bundleController = {
       });
     }
   },
-  getBundleCourse:(req,res) => {
+  getBundleCourse: (req, res) => {
     try {
-      let bundleId = req.params.id // bundle name or bundle id
-      if(Number.isInteger(bundleId)) {
-        getBundleCourseByBundleId(bundleId).then(result => {
-          res.status(200).json({
-            success: true,
-            data: {
-              code: 200,
-              message: "got courses",
-              response: result,
-            },
-          });
-        }).catch(err => {
-          res.status(406).json({
-            success: false,
-            errors: [
-              {
-                code: 406,
-                message: "value not acceptable",
-                error: err,
+      let bundleId = req.params.id; // bundle name or bundle id
+      if (Number.isInteger(bundleId)) {
+        getBundleCourseByBundleId(bundleId)
+          .then(async (result) => {
+            result = await Promise.all(
+              result.allCourses.map(async (item) => {
+                let image = await downloadFromS3("", item.thumbnail);
+                item["image"] = image.url;
+                return item;
+              })
+            );
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "got courses",
+                response: result,
               },
-            ],
-            errorType: "client",
+            });
+          })
+          .catch((err) => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "value not acceptable",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
           });
-        })
       } else {
-        getBundleCourseByBundleName(bundleId).then(result => {
-          res.status(200).json({
-            success: true,
-            data: {
-              code: 200,
-              message: "got courses",
-              response: result,
-            },
-          });
-        }).catch(err => {
-          res.status(406).json({
-            success: false,
-            errors: [
-              {
-                code: 406,
-                message: "value not acceptable",
-                error: err,
+        getBundleCourseByBundleName(bundleId)
+          .then(async (result) => {
+            result = await Promise.all(
+              result.allCourses.map(async (item) => {
+                let image = await downloadFromS3("", item.thumbnail);
+                item["image"] = image.url;
+                return item;
+              })
+            );
+            res.status(200).json({
+              success: true,
+              data: {
+                code: 200,
+                message: "got courses",
+                response: result,
               },
-            ],
-            errorType: "client",
+            });
+          })
+          .catch((err) => {
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "value not acceptable",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
           });
-        })
       }
     } catch (error) {
       res.status(500).json({
@@ -715,7 +733,7 @@ export const bundleController = {
                   await saveCertificate({
                     filePath,
                     sl,
-                    userName: user.first_name+ " " + user.last_name,
+                    userName: user.first_name + " " + user.last_name,
                     courseName: course[0].name,
                     date: new Date(),
                   });

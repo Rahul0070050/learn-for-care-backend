@@ -87,7 +87,6 @@ export function setNewBundleToEnroll(data) {
         all_courses,
       } = data;
 
-
       let setQuery = `INSERT INTO enrolled_bundle (bundle_name, bundle_id, all_courses, user_id, course_count, validity, unfinished_course,color) VALUES (?,?,?,?,?,?,?,?)`;
       db.query(
         setQuery,
@@ -99,7 +98,7 @@ export function setNewBundleToEnroll(data) {
           course_count,
           new Date(validity),
           JSON.stringify(unfinished_course),
-          'yellow'
+          "yellow",
         ],
         (err, result) => {
           if (err) {
@@ -118,11 +117,11 @@ export function getCourseByIdFromDb(id) {
     try {
       id = Number(id);
       let getAllBundleQuery =
-        "SELECT id, name, description, category FROM course WHERE id = ?;";
+        "SELECT id, name, description, category, thumbnail FROM course WHERE id = ?;";
 
-      db.query(getAllBundleQuery, [id], (err, bundle) => {
+      db.query(getAllBundleQuery, [id], (err, course) => {
         if (err) reject(err?.message);
-        else resolve(bundle);
+        else resolve(course);
       });
     } catch (error) {
       reject(error?.message);
@@ -150,11 +149,16 @@ export function getBundleDataFromDb(id) {
                 result[0].unfinished_course
               );
 
-              let allCourses = await Promise.all(courses.flat(1).map(async (course) => {
-                let attempts = await getBundleCourseAttemptsById(id,course.id)
-                course['attempts'] = attempts
-                return course
-              }))
+              let allCourses = await Promise.all(
+                courses.flat(1).map(async (course) => {
+                  let attempts = await getBundleCourseAttemptsById(
+                    id,
+                    course.id
+                  );
+                  course["attempts"] = attempts;
+                  return course;
+                })
+              );
 
               resolve({ bundle: result, courses: allCourses.flat(1) });
             })
@@ -230,7 +234,7 @@ export function getCourseByCourseIdFromDb(id) {
 export function getExamByCourseId(data) {
   return new Promise((resolve, reject) => {
     const { course_id } = data;
-    
+
     let getQuestionsQuery = "SELECT * FROM exams WHERE course_id = ? LIMIT 1;";
     db.query(getQuestionsQuery, [course_id], (err, result) => {
       if (err) return reject(err?.message);
@@ -257,7 +261,7 @@ export function updateBundleProgress(id, course_id, per) {
             finished = [course_id];
           }
 
-          let allCourse = JSON.parse(result[0].all_courses || '[]');
+          let allCourse = JSON.parse(result[0].all_courses || "[]");
 
           try {
             per = ((finished?.length || 0) / allCourse.length) * 100;
@@ -339,13 +343,18 @@ export function getAllOnGoingBundlesFromDb(user_id) {
 export function getBundleCourseByBundleId(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery =
-        "SELECT * FROM course_bundle WHERE id = ?";
-      db.query(getQuery, [id], (err, result) => {
+      let getQuery = "SELECT * FROM course_bundle WHERE id = ?";
+      db.query(getQuery, [id], async (err, result) => {
         if (err) return reject(err?.message);
         else {
-          console.log('bundle ',result);
-          resolve(result)
+          let courses = JSON.parse(JSON.parse(result[0].courses));
+          let allCourses = await Promise.all(
+            courses.map(async (id) => {
+              return getCourseByIdFromDb(id);
+            })
+          );
+          allCourses = allCourses.flat(1);
+          resolve({ bundle: result, allCourses });
         }
       });
     } catch (error) {
@@ -357,14 +366,18 @@ export function getBundleCourseByBundleId(id) {
 export function getBundleCourseByBundleName(name) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery =
-        "SELECT * FROM course_bundle WHERE name = ?";
-      db.query(getQuery, [name], (err, result) => {
+      let getQuery = "SELECT * FROM course_bundle WHERE name = ?";
+      db.query(getQuery, [name], async (err, result) => {
         if (err) return reject(err?.message);
         else {
-          console.log('bundle ',result);
-          console.log(typeof JSON.parse(result[0].courses));
-          resolve(result)
+          let courses = JSON.parse(JSON.parse(result[0].courses));
+          let allCourses = await Promise.all(
+            courses.map(async (id) => {
+              return getCourseByIdFromDb(id);
+            })
+          );
+          allCourses = allCourses.flat(1);
+          resolve({ bundle: result, allCourses });
         }
       });
     } catch (error) {
