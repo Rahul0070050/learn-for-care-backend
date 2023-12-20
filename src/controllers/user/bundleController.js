@@ -415,13 +415,15 @@ export const bundleController = {
       if (Number.isInteger(bundleId)) {
         getBundleCourseByBundleId(bundleId)
           .then(async (result) => {
-            result = await Promise.all(
+            let newResult = await Promise.all(
               result.allCourses.map(async (item) => {
                 let image = await downloadFromS3("", item.thumbnail);
                 item["image"] = image.url;
                 return item;
               })
             );
+            newResult = newResult.flat(1)
+            result.allCourses = newResult
             res.status(200).json({
               success: true,
               data: {
@@ -447,13 +449,15 @@ export const bundleController = {
       } else {
         getBundleCourseByBundleName(bundleId)
           .then(async (result) => {
-            result = await Promise.all(
+            let newResult = await Promise.all(
               result.allCourses.map(async (item) => {
                 let image = await downloadFromS3("", item.thumbnail);
                 item["image"] = image.url;
                 return item;
               })
             );
+            newResult = newResult.flat(1)
+            result.allCourses = newResult
             res.status(200).json({
               success: true,
               data: {
