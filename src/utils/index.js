@@ -5,6 +5,7 @@ export function isValidFileExtensions(fileName, fileType) {
     pptx: ["pptx"],
     pdf: ["pdf"],
     resource: ["pdf", "mp4", "mkv", "webm", "txt", "docx", "jpg", "jpeg", "webp", "png"],
+    ExpAndQulFiles: ["docx","pdf","doc"]
   };
   return (
     validFileExtensions[fileType].indexOf(fileName.split(".").pop() || "") > -1
