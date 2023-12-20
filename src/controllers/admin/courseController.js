@@ -1402,7 +1402,7 @@ export const courseController = {
   },
   getManagerMatrixBundle: (req, res) => {
     try {
-      let userId = req.body?.manager_id;
+      let userId = req.body?.manager_id ? req.body?.manager_id : getUser(req).id;
       getManagerBundleMatrixData(userId)
         .then((result) => {
           res.status(200).json({
