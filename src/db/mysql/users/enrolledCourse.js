@@ -158,7 +158,7 @@ export function getManagerBundleMatrixData(id, from) {
       console.log("data ", data);
       user[0]["matrix"] = data;
       user[0]["matrix_assigned"] = assigned;
-      resolve(result);
+      resolve(user);
     } catch (error) {
       reject(error?.message);
     }
