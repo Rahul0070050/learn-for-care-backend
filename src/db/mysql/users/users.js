@@ -751,42 +751,6 @@ export function getAllManagerIndividualFromDb(id) {
   });
 }
 
-export function getAllManagerIndividualFromDbFromCompany(id) {
-  return new Promise((resolve, reject) => {
-    try {
-      let getQuery =
-        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ? AND type_oc_account = ?";
-      db.query(getQuery, [id, "individual"], (err, result) => {
-        if (err) {
-          reject(err.message);
-        } else {
-          resolve(result);
-        }
-      });
-    } catch (error) {
-      reject(error?.message);
-    }
-  });
-}
-
-export function getAllManagerRealIndividualFromDb(id) {
-  return new Promise((resolve, reject) => {
-    try {
-      let getQuery =
-        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ? AND type_of_account = ?";
-      db.query(getQuery, [id, "individual"], (err, result) => {
-        if (err) {
-          reject(err.message);
-        } else {
-          resolve(result);
-        }
-      });
-    } catch (error) {
-      reject(error?.message);
-    }
-  });
-}
-
 export function getAllIndividualUnderCompanyFromDb(id) {
   return new Promise(async (resolve, reject) => {
     let managers = await getAllMAnagers(id);
@@ -795,7 +759,7 @@ export function getAllIndividualUnderCompanyFromDb(id) {
         managers.map((item) => getAllManagerIndividualFromDb(item.id))
       )
         .then(async (result) => {
-          let individualsOfAdmin = await getAllManagerIndividualFromDbFromCompany(id);
+          let individualsOfAdmin = await getAllManagerIndividualFromDb(id);
           resolve([...result, individualsOfAdmin]);
         })
         .catch((err) => {
