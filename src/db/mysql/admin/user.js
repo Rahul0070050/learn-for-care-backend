@@ -76,6 +76,41 @@ export function getCountPurchasedCourse(id) {
   });
 }
 
+export function getCountAssignedCourse(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      // course_assigned_manager
+      let getQuery = `SELECT COUNT(*) FROM assigned_course WHERE user_id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getCountManagerAssignedCourse(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery = `SELECT COUNT(*) FROM course_assigned_manager WHERE manager_id = ?;`;
+      db.query(getQuery, [id], (err, result) => {
+        if (err) {
+          return reject(err.message);
+        } else {
+          return resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function getCountAllCertificates(id) {
   return new Promise((resolve, reject) => {
     try {
@@ -97,7 +132,9 @@ export function getUserByIdFromDb(id) {
   return new Promise(async (resolve, reject) => {
     try {
       let courses = await getAllPurchasedCourseByUserId(id);
-      let course = await getCountPurchasedCourse(id);
+      let purchased_course_count = await getCountPurchasedCourse(id);
+      let manager_assigned_course_count = await getCountManagerAssignedCourse(id);
+      let assigned_course_count = await getCountAssignedCourse(id);
       let certificate = await getCountAllCertificates(id);
       let getUsersQuery = `SELECT * FROM users WHERE id = ?`;
       db.query(getUsersQuery, [id], async (err, result) => {
@@ -107,7 +144,7 @@ export function getUserByIdFromDb(id) {
           console.log(result[0]);
           let image = await downloadFromS3("", result[0].profile_image || "");
           result[0]["profile_image"] = image.url;
-          result[0].course_count = course[0]["COUNT(*)"];
+          result[0].course_count = purchased_course_count[0]["COUNT(*)"] + manager_assigned_course_count[0]["COUNT(*)"] + assigned_course_count[0]["COUNT(*)"];
           result[0].certificate_count = certificate[0]["COUNT(*)"];
           result[0].course = courses;
           resolve(result);
