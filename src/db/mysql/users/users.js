@@ -163,7 +163,7 @@ export function saveOtpToDB(email) {
         if (err) return reject(err.message);
         else {
           console.log(result);
-          if(result.affectedRows >= 1) {
+          if (result.affectedRows >= 1) {
             resolve({ otp, email });
           } else {
             reject("Email is not exist");
@@ -208,10 +208,10 @@ export function deleteInactivateUser(email) {
 }
 
 export function updateUserPassword(email, password) {
-  return new Promise(async(resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      let updatePasswordQuery = `UPDATE users SET password = ? WHERE email = ?;`;  
-      
+      let updatePasswordQuery = `UPDATE users SET password = ? WHERE email = ?;`;
+
       db.query(updatePasswordQuery, [password, email], (err, result) => {
         if (err) return reject(err.message);
         else return resolve(result);
@@ -737,8 +737,8 @@ export function getAllManagerIndividualFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery =
-        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ? AND type_of_account = ?";
-      db.query(getQuery, [id, "individual"], (err, result) => {
+        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ?";
+      db.query(getQuery, [id], (err, result) => {
         if (err) {
           reject(err.message);
         } else {
@@ -1053,15 +1053,7 @@ export function managerAssignSelfCourse(data) {
           let assignCourseToManagerQuery = `INSERT INTO course_assigned_manager (course_id, manager_id, course_type, fake_count, count, validity,owner) VALUES (?,?,?,?,?,?,?);`;
           db.query(
             assignCourseToManagerQuery,
-            [
-              course_id,
-              userId,
-              type,
-              count,
-              count,
-              new Date(validity),
-              userId,
-            ],
+            [course_id, userId, type, count, count, new Date(validity), userId],
             (err, result) => {
               if (err) return reject(err.message);
               else return resolve(result);
@@ -1143,7 +1135,11 @@ export function getCourseWiseIndividualReportsFromDb(id) {
           let course = await getAllAssignedCourseByUserId(item.id);
           course.map((c) => {
             if (!course_names.find((item) => item?.course_name == c.name))
-              course_names.push({ course_name: c.name, count: 0,code: c.course_code });
+              course_names.push({
+                course_name: c.name,
+                count: 0,
+                code: c.course_code,
+              });
           });
           item["course"] = course;
           return item;
@@ -1179,7 +1175,11 @@ export function getCourseWiseIndividualFromManagerReportsFromDb(id) {
           let course = await getAllAssignedCourseByUserId(item.id);
           course.map((c) => {
             if (!course_names.find((item) => item?.course_name == c.name))
-              course_names.push({ course_name: c.name, count: 0 ,code: c.course_code});
+              course_names.push({
+                course_name: c.name,
+                count: 0,
+                code: c.course_code,
+              });
           });
           item["course"] = course;
           return item;

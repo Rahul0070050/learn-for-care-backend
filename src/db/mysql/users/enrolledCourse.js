@@ -152,13 +152,26 @@ export function getManagerMatrixDataFromAdmin(id) {
 export function getManagerBundleMatrixData(id, from) {
   return new Promise(async (resolve, reject) => {
     try {
-      let user = await getUserDataFromDb(id);
-      let data = await getBundleMatrixDataByUserId(user[0].id);
-      let assigned = await getBundleAssignedCourseByUserId(user[0].id);
-      console.log("data ", data);
-      user[0]["matrix"] = data;
-      user[0]["matrix_assigned"] = assigned;
-      resolve(user);
+      let users = [
+        ...(await getUserDataFromDb(id)),
+        ...(await getAllManagerIndividualFromDb(id)),
+      ];
+      Promise.all(
+        users.map(async (item) => {
+          let data = await getBundleMatrixDataByUserId(item.id);
+          let assigned = await getBundleAssignedCourseByUserId(item.id);
+          console.log("data ", data);
+          item["matrix"] = data;
+          item["matrix_assigned"] = assigned;
+          return item;
+        })
+      )
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
     } catch (error) {
       reject(error?.message);
     }
