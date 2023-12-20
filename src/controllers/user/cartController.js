@@ -407,18 +407,22 @@ export const cartController = {
       } else {
         let coupon = await getActiveCouponByUserId(user.id);
         if (coupon) {
-          if (coupon.type == "Percent") {
-            cart.forEach((item) => {
-              let per = parseInt(
-                (item["amount"] * coupon.amount) / 100
-              ).toFixed(2);
-              item["amount"] = parseFloat(item["amount"] - per);
-            });
-          } else {
-            let amount = parseInt(coupon.amount / cart.length).toFixed(2);
-            cart.forEach((item) => {
-              item["amount"] -= amount;
-            });
+          try {
+            if (coupon.type == "Percent") {
+              cart.forEach((item) => {
+                let per = parseInt(
+                  (item["amount"] * parseInt(coupon.amount)) / 100
+                ).toFixed(2);
+                item["amount"] = parseFloat(item["amount"] - per);
+              });
+            } else {
+              let amount = parseInt(coupon.amount / cart.length).toFixed(2);
+              cart.forEach((item) => {
+                item["amount"] -= amount;
+              });
+            }
+          } catch (error) {
+            console.log(error);
           }
         }
         let session = await getStripeUrl(cart, user.email);
@@ -487,7 +491,7 @@ export const cartController = {
           )
             .then((user) => {
               let userId = user[0].id;
-              let userName = user[0].first_name + " " + user[0].last_name
+              let userName = user[0].first_name + " " + user[0].last_name;
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
                   setTimeout(async () => {
