@@ -438,10 +438,7 @@ export const cartController = {
               });
             } else {
               let amount = (coupon.amount / cart.length);
-              console.log('amount ',amount)
               cart.forEach((item) => {
-                console.log('m price ',item["amount"] - amount)
-                console.log('price ',item["amount"])
                 item["amount"] = (item["amount"] - amount);
               });
             }
