@@ -412,7 +412,9 @@ export const bundleController = {
   getBundleCourse: (req, res) => {
     try {
       let bundleId = req.params.id; // bundle name or bundle id
+      console.log(bundleId);
       if (Number.isInteger(Number(bundleId))) {
+        console.log('from if ', bundleId);
         getBundleCourseByBundleId(bundleId)
           .then(async (result) => {
             let newResult = await Promise.all(
@@ -422,8 +424,8 @@ export const bundleController = {
                 return item;
               })
             );
-            newResult = newResult.flat(1)
-            result.allCourses = newResult
+            newResult = newResult.flat(1);
+            result.allCourses = newResult;
             res.status(200).json({
               success: true,
               data: {
@@ -447,6 +449,7 @@ export const bundleController = {
             });
           });
       } else {
+        console.log('from else ',bundleId);
         getBundleCourseByBundleName(bundleId)
           .then(async (result) => {
             let newResult = await Promise.all(
@@ -456,8 +459,8 @@ export const bundleController = {
                 return item;
               })
             );
-            newResult = newResult.flat(1)
-            result.allCourses = newResult
+            newResult = newResult.flat(1);
+            result.allCourses = newResult;
             res.status(200).json({
               success: true,
               data: {
