@@ -19,6 +19,7 @@ export function validFileExtension(fileName, fileType) {
     pptx: ["pptx"],
     pdf: ["pdf"],
     resource: ["pdf", "mp4", "mkv", "webm", "txt", "docx", "jpeg", "webp", "png"],
+    ExpAndQulFiles: ["docx","pdf","doc"]
   };
   return validFileExtensions[`${fileType}`].includes(fileName.split(".").pop());
 }
