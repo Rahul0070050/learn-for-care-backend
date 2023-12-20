@@ -422,6 +422,17 @@ export const cartController = {
               });
             }
           } catch (error) {
+            res.status(500).json({
+              success: false,
+              errors: [
+                {
+                  code: 500,
+                  message: "some error occurred from coupon proses",
+                  error: error,
+                },
+              ],
+              errorType: "server",
+            });
             console.log(error);
           }
         }
