@@ -118,7 +118,7 @@ export function getCourseByIdFromDb(id) {
     try {
       id = Number(id);
       let getAllBundleQuery =
-        "SELECT id, name, description, category, thumbnail FROM course WHERE id = ?;";
+        "SELECT id, name, price, description, category, thumbnail FROM course WHERE id = ?;";
 
       db.query(getAllBundleQuery, [id], (err, course) => {
         if (err) reject(err?.message);
