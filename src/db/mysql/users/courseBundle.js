@@ -335,3 +335,41 @@ export function getAllOnGoingBundlesFromDb(user_id) {
     }
   });
 }
+
+export function getBundleCourseByBundleId(id) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery =
+        "SELECT * FROM course_bundle WHERE id = ?";
+      db.query(getQuery, [id], (err, result) => {
+        if (err) return reject(err?.message);
+        else {
+          console.log(result[0].courses);
+          console.log(JSON.parse(result[0].courses));
+          resolve(result)
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
+export function getBundleCourseByBundleName(name) {
+  return new Promise((resolve, reject) => {
+    try {
+      let getQuery =
+        "SELECT * FROM course_bundle WHERE name = ?";
+      db.query(getQuery, [name], (err, result) => {
+        if (err) return reject(err?.message);
+        else {
+          console.log(result[0].courses);
+          console.log(JSON.parse(result[0].courses));
+          resolve(result)
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}

@@ -9,6 +9,7 @@ route.get("/get-all-bundles", bundleController.getAllBundle);
 route.post("/start-bundle", bundleController.startBundle);
 route.get("/get-started-bundle/:id", bundleController.getBundleInfo);
 route.post("/start-bundle-course", bundleController.startBundleCourse);
+route.get("/get-bundle-courses", bundleController.getBundleCourse);
 route.post("/get-course", bundleController.getCourse);
 route.post("/get-exam", bundleController.getExam);
 route.post("/validate-exam", bundleController.validateExamResult);

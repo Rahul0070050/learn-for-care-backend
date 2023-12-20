@@ -11,6 +11,7 @@ import {
   getAllBBundle,
   getAllOnGoingBundles,
   getAllOnGoingBundlesFromDb,
+  getBundleCourseByBundleId,
   getBundleDataFromDb,
   getCourseBundleById,
   getCourseByCourseIdFromDb,
@@ -392,6 +393,71 @@ export const bundleController = {
             errorType: "client",
           });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            error: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  getBundleCourse:(req,res) => {
+    try {
+      let bundleId = req.params.id // bundle name or bundle id
+      if(bundleId) {
+        getBundleCourseByBundleId().then(result => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got courses",
+              response: result,
+            },
+          });
+        }).catch(err => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        })
+      } else {
+        getBundleCourseByBundleName(bundleId).then(result => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "got courses",
+              response: result,
+            },
+          });
+        }).catch(err => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        })
+      }
     } catch (error) {
       res.status(500).json({
         success: false,
