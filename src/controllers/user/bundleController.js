@@ -12,6 +12,7 @@ import {
   getAllOnGoingBundles,
   getAllOnGoingBundlesFromDb,
   getBundleCourseByBundleId,
+  getBundleCourseByBundleName,
   getBundleDataFromDb,
   getCourseBundleById,
   getCourseByCourseIdFromDb,
