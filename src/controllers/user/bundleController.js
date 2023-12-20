@@ -420,7 +420,7 @@ export const bundleController = {
             let newResult = await Promise.all(
               result.allCourses.map(async (item) => {
                 let image = await downloadFromS3("", item.thumbnail);
-                item["image"] = image.url;
+                item["thumbnail"] = image.url;
                 return item;
               })
             );
@@ -455,7 +455,7 @@ export const bundleController = {
             let newResult = await Promise.all(
               result.allCourses.map(async (item) => {
                 let image = await downloadFromS3("", item.thumbnail);
-                item["image"] = image.url;
+                item["thumbnail"] = image.url;
                 return item;
               })
             );
