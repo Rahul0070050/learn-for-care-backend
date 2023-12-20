@@ -436,6 +436,7 @@ export const cartController = {
             console.log(error);
           }
         }
+        console.log(cart);
         let session = await getStripeUrl(cart, user.email);
         res.status(200).json({
           success: true,
