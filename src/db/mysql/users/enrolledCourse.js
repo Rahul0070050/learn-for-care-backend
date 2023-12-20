@@ -156,6 +156,7 @@ export function getManagerBundleMatrixData(id, from) {
         ...(await getUserDataFromDb(id)),
         ...(await getAllManagerIndividualFromDb(id)),
       ];
+      users = users.flat()
       Promise.all(
         users.map(async (item) => {
           let data = await getBundleMatrixDataByUserId(item.id);
