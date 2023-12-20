@@ -39,6 +39,9 @@ export function validateFile(files, key) {
       case "resource":
         type = "resource";
         break;
+      case "ExpAndQulFiles":
+        type = "ExpAndQulFiles"
+        break;
     }
 
     let fileTemplate = object().shape({
