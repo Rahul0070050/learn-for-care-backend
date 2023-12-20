@@ -376,7 +376,7 @@ export function getBundleCourseByBundleId(id) {
 export function getBundleCourseByBundleName(name) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT * FROM course_bundle WHERE name = ?";
+      let getQuery = "SELECT * FROM course_bundle WHERE name = ? LIMIT 1";
       db.query(getQuery, [name], async (err, result) => {
         if (err) return reject(err?.message);
         else {
