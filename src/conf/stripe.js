@@ -6,7 +6,9 @@ config();
 export const stripeObj = new Stripe(process.env.STRIP_PRIVAT_KEY);
 
 export async function getStripeUrl(items = [], email) {
-  console.log(items);
+  console.log(items.map(item => {
+    return parseFloat((item.amount / item.product_count) * 100).toFixed(2)    
+  }));
   let session = await stripeObj.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
