@@ -344,7 +344,7 @@ export function getBundleCourseByBundleId(id) {
       db.query(getQuery, [id], (err, result) => {
         if (err) return reject(err?.message);
         else {
-          console.log(result);
+          console.log('bundle ',result);
           resolve(result)
         }
       });
@@ -362,7 +362,7 @@ export function getBundleCourseByBundleName(name) {
       db.query(getQuery, [name], (err, result) => {
         if (err) return reject(err?.message);
         else {
-          console.log(result);
+          console.log('bundle ',result);
           // console.log(JSON.parse(result[0].courses));
           resolve(result)
         }
