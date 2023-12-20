@@ -1360,6 +1360,7 @@ export const courseController = {
   getManagerMatrix: (req, res) => {
     try {
       let userId = req.body?.manager_id ? req.body?.manager_id : getUser(req).id;
+      console.log(userId)
       getManagerMatrixDataFromAdmin(userId)
         .then((result) => {
           res.status(200).json({
