@@ -412,8 +412,8 @@ export const bundleController = {
   getBundleCourse:(req,res) => {
     try {
       let bundleId = req.params.id // bundle name or bundle id
-      if(bundleId) {
-        getBundleCourseByBundleId().then(result => {
+      if(Number.isInteger(bundleId)) {
+        getBundleCourseByBundleId(bundleId).then(result => {
           res.status(200).json({
             success: true,
             data: {
