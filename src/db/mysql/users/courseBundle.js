@@ -345,7 +345,6 @@ export function getBundleCourseByBundleId(id) {
         if (err) return reject(err?.message);
         else {
           console.log(result);
-          console.log(JSON.parse(result[0].courses));
           resolve(result)
         }
       });
