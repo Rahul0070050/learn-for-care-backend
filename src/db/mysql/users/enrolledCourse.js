@@ -131,6 +131,8 @@ export function getManagerMatrixDataFromAdmin(id) {
         .catch((err) => {
           reject(err?.message);
         });
+    } catch(error) {
+      reject(error)
     }
   });
 }
