@@ -354,6 +354,7 @@ export function getBundleCourseByBundleId(id) {
             })
           );
           allCourses = allCourses.flat(1);
+          console.log(allCourses);
           resolve({ bundle: result, allCourses });
         }
       });
@@ -377,6 +378,7 @@ export function getBundleCourseByBundleName(name) {
             })
           );
           allCourses = allCourses.flat(1);
+          console.log(allCourses);
           resolve({ bundle: result, allCourses });
         }
       });
