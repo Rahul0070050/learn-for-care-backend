@@ -363,7 +363,7 @@ export function getBundleCourseByBundleName(name) {
         if (err) return reject(err?.message);
         else {
           console.log('bundle ',result);
-          console.log(JSON.parse(result[0].courses));
+          console.log(typeof JSON.parse(result[0].courses));
           resolve(result)
         }
       });
