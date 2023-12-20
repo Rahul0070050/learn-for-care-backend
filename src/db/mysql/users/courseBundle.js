@@ -347,17 +347,21 @@ export function getBundleCourseByBundleId(id) {
       db.query(getQuery, [id], async (err, result) => {
         if (err) return reject(err?.message);
         else {
-          console.log(result);
-          let courses = JSON.parse(JSON.parse(result[0].courses));
-          console.log(courses);
-          let allCourses = await Promise.all(
-            courses.map(async (id) => {
-              return getCourseByIdFromDb(id);
-            })
-          );
-          allCourses = allCourses.flat(1);
-          console.log(allCourses);
-          resolve({ bundle: result, allCourses });
+          try {
+            console.log(result);
+            let courses = JSON.parse(JSON.parse(result[0].courses));
+            console.log(courses);
+            let allCourses = await Promise.all(
+              courses.map(async (id) => {
+                return getCourseByIdFromDb(id);
+              })
+            );
+            allCourses = allCourses.flat(1);
+            console.log(allCourses);
+            resolve({ bundle: result, allCourses });
+          } catch (error) {
+            reject(error);
+          }
         }
       });
     } catch (error) {
@@ -373,17 +377,21 @@ export function getBundleCourseByBundleName(name) {
       db.query(getQuery, [name], async (err, result) => {
         if (err) return reject(err?.message);
         else {
-          console.log(result);
-          let courses = JSON.parse(JSON.parse(result[0].courses));
-          console.log(courses);
-          let allCourses = await Promise.all(
-            courses.map(async (id) => {
-              return getCourseByIdFromDb(id);
-            })
-          );
-          allCourses = allCourses.flat(1);
-          console.log(allCourses);
-          resolve({ bundle: result, allCourses });
+          try {
+            console.log(result);
+            let courses = JSON.parse(JSON.parse(result[0].courses));
+            console.log(courses);
+            let allCourses = await Promise.all(
+              courses.map(async (id) => {
+                return getCourseByIdFromDb(id);
+              })
+            );
+            allCourses = allCourses.flat(1);
+            console.log(allCourses);
+            resolve({ bundle: result, allCourses });
+          } catch (error) {
+            reject(error);
+          }
         }
       });
     } catch (error) {
