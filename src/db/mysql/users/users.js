@@ -751,7 +751,7 @@ export function getAllManagerIndividualFromDb(id) {
   });
 }
 
-export function getAllManagerIndividualFromDb(id) {
+export function getAllManagerRealIndividualFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery =
