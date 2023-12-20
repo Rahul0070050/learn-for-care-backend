@@ -433,13 +433,11 @@ export const cartController = {
           try {
             if (coupon.type == "Percent") {
               cart.forEach((item) => {
-                let per = parseInt(
-                  (item["amount"] * parseInt(coupon.amount)) / 100
-                ).toFixed(2);
-                item["amount"] = parseFloat(item["amount"] - per).toFixed(2);
+                let per = (item["amount"] * coupon.amount) / 100;
+                item["amount"] = (item["amount"] - per);
               });
             } else {
-              let amount = parseInt(coupon.amount / cart.length).toFixed(2);
+              let amount = (coupon.amount / cart.length);
               cart.forEach((item) => {
                 item["amount"] -= amount;
               });

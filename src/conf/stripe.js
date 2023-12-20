@@ -20,7 +20,7 @@ export async function getStripeUrl(items = [], email) {
           product_data: {
             name: item.name,
           },
-          unit_amount: Number(parseFloat(parseInt(item.amount / item.product_count) * 100).toFixed(2)),
+          unit_amount: (item.amount / item.product_count) * 100,
         },
         quantity: item.product_count,
       };
