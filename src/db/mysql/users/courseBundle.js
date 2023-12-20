@@ -348,6 +348,7 @@ export function getBundleCourseByBundleId(id) {
         if (err) return reject(err?.message);
         else {
           let courses = JSON.parse(JSON.parse(result[0].courses));
+          console.log(courses);
           let allCourses = await Promise.all(
             courses.map(async (id) => {
               return getCourseByIdFromDb(id);
