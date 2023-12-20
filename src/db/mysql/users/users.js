@@ -769,24 +769,6 @@ export function getAllManagerIndividualFromDbFromCompany(id) {
   });
 }
 
-export function getAllManagerRealIndividualFromDb(id) {
-  return new Promise((resolve, reject) => {
-    try {
-      let getQuery =
-        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ? AND type_of_account = ?";
-      db.query(getQuery, [id, "individual"], (err, result) => {
-        if (err) {
-          reject(err.message);
-        } else {
-          resolve(result);
-        }
-      });
-    } catch (error) {
-      reject(error?.message);
-    }
-  });
-}
-
 export function getAllIndividualUnderCompanyFromDb(id) {
   return new Promise(async (resolve, reject) => {
     let managers = await getAllMAnagers(id);
