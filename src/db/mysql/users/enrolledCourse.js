@@ -112,39 +112,25 @@ export function getManagerMatrixData(id, from) {
 export function getManagerMatrixDataFromAdmin(id) {
   return new Promise(async (resolve, reject) => {
     try {
-      // let users = ""
-      // if(from == "user") {
-      //   users = await getUserDataFromDb(id);
-      // } else if (from == "self") {
-      //   users = [...await getUserDataFromDb(id), ...await getAllManagerIndividualFromDb(id)];
-      // } else {
-      //   users = await getAllManagerIndividualFromDb(id);
-      // }
+      let users = [...await getUserDataFromDb(id), ...await getAllManagerIndividualFromDb(id)];
 
-      // Promise.all(
-      //   users.map(async (item) => {
-      //     let data = await getMatrixDataByUserId(item.id);
-      //     let assigned = await getAssignedCourseByUserId(item.id);
-      //     item["matrix"] = data;
-      //     item["matrix_assigned"] = assigned;
-      //     return item;
-      //   })
-      // )
-      //   .then((result) => {
-      //     resolve(result);
-      //   })
-      //   .catch((err) => {
-      //     reject(err?.message);
-      //   });
+      users = users.flat(1)
 
-      let user = await getUserDataFromDb(id);
-      let data = await getMatrixDataByUserId(user[0].id);
-      let assigned = await getAssignedCourseByUserId(user[0].id);
-      user[0]["matrix"] = data;
-      user[0]["matrix_assigned"] = assigned;
-      resolve(user);
-    } catch (error) {
-      reject(error?.message);
+      Promise.all(
+        users.map(async (item) => {
+          let data = await getMatrixDataByUserId(item.id);
+          let assigned = await getAssignedCourseByUserId(item.id);
+          item["matrix"] = data;
+          item["matrix_assigned"] = assigned;
+          return item;
+        })
+      )
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
     }
   });
 }
@@ -156,7 +142,7 @@ export function getManagerBundleMatrixData(id, from) {
         ...(await getUserDataFromDb(id)),
         ...(await getAllManagerIndividualFromDb(id)),
       ];
-      users = users.flat()
+      users = users.flat(1)
       Promise.all(
         users.map(async (item) => {
           let data = await getBundleMatrixDataByUserId(item.id);
