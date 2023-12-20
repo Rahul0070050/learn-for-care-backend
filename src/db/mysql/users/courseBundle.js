@@ -1,3 +1,4 @@
+import { downloadFromS3 } from "../../../AWS/S3.js";
 import { db } from "../../../conf/mysql.js";
 import { deleteAppliedCoupon } from "../admin/course.js";
 import { getAssignedCourseById } from "./assignedCourse.js";
@@ -349,6 +350,8 @@ export function getBundleCourseByBundleId(id) {
         else {
           try {
             console.log(result);
+            let image = await downloadFromS3("", result[0].image);
+            result[0]['image'] = image.url;
             let courses = JSON.parse(JSON.parse(result[0].courses));
             console.log(courses);
             let allCourses = await Promise.all(
@@ -379,6 +382,10 @@ export function getBundleCourseByBundleName(name) {
         else {
           try {
             console.log(result);
+
+            let image = await downloadFromS3("", result[0].image);
+            result[0]['image'] = image.url;
+
             let courses = JSON.parse(JSON.parse(result[0].courses));
             console.log(courses);
             let allCourses = await Promise.all(
