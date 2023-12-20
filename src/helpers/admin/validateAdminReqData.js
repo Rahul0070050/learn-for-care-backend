@@ -183,7 +183,7 @@ export function validateSetAdminQualificationsReqBody(body, files) {
       course_name: string().required("please provide course name"),
     });
 
-    let doc = validateFile([{ pdf: files.doc }], "ExpAndQulFiles");
+    let doc = validateFile([{ ExpAndQulFiles: files.doc }], "ExpAndQulFiles");
     let bodyResponse = dataTemplate.validate(body);
     console.log(body, files);
     try {
@@ -208,7 +208,7 @@ export function validateSetAdminExperienceReqData(body, files) {
       no_of_years: string().required("please provide no_of_years"),
     });
 
-    let doc = validateFile([{ pdf: files.doc }], "ExpAndQulFiles");
+    let doc = validateFile([{ ExpAndQulFiles: files.doc }], "ExpAndQulFiles");
     let bodyResponse = dataTemplate.validate(body);
     try {
       Promise.all([doc, bodyResponse])

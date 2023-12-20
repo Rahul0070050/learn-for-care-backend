@@ -741,7 +741,7 @@ export const adminController = {
         .then((result) => {
           result = result.flat();
           console.log(result);
-          uploadFileToS3("/qualifications", result[0].pdf).then(
+          uploadFileToS3("/qualifications", result[0].ExpAndQulFiles).then(
             (pdfSavedResult) => {
               console.log(pdfSavedResult.file);
               let admin = getUser(req);
@@ -812,7 +812,7 @@ export const adminController = {
       validateSetAdminExperienceReqData(req.body, req.files)
         .then((result) => {
           result = result.flat();
-          uploadFileToS3("/experience", result[0].pdf).then(
+          uploadFileToS3("/experience", result[0].ExpAndQulFiles).then(
             (pdfSavedResult) => {
               let admin = getUser(req);
               console.log(result);
