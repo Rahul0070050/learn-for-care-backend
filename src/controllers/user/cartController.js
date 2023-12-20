@@ -407,29 +407,29 @@ export const cartController = {
       } else {
         let coupon = await getActiveCouponByUserId(user.id);
         if (coupon) {
-          [
-            {
-              id: 328,
-              user_id: 39,
-              course_id: 26,
-              product_count: 7,
-              thumbnail:
-                "/course/thumbnail/18b48451-7b33-46d7-9016-88fde43e5e21",
-              name: "Standard 1 Understand your role",
-              item_type: "course",
-              amount: 95,
-            },
-            {
-              id: 331,
-              user_id: 39,
-              course_id: 23,
-              product_count: 3,
-              thumbnail: "/blogs/ed1075d5-6088-4528-9f9e-723bcc8388ba",
-              name: "Specialised Care Bundle",
-              item_type: "bundle",
-              amount: 26,
-            },
-          ];
+          // [
+          //   {
+          //     id: 328,
+          //     user_id: 39,
+          //     course_id: 26,
+          //     product_count: 7,
+          //     thumbnail:
+          //       "/course/thumbnail/18b48451-7b33-46d7-9016-88fde43e5e21",
+          //     name: "Standard 1 Understand your role",
+          //     item_type: "course",
+          //     amount: 95,
+          //   },
+          //   {
+          //     id: 331,
+          //     user_id: 39,
+          //     course_id: 23,
+          //     product_count: 3,
+          //     thumbnail: "/blogs/ed1075d5-6088-4528-9f9e-723bcc8388ba",
+          //     name: "Specialised Care Bundle",
+          //     item_type: "bundle",
+          //     amount: 26,
+          //   },
+          // ];
           try {
             if (coupon.type == "Percent") {
               cart.forEach((item) => {
