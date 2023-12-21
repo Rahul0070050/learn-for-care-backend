@@ -1,8 +1,10 @@
-import { validateUserJwtToken,checkCompanyUserOrManagerUserPrivileges } from "../helpers/jwt.js";
+import {
+  validateUserJwtToken,
+  checkCompanyUserOrManagerUserPrivileges,
+} from "../helpers/jwt.js";
 import { getUser } from "../utils/auth.js";
 
 export function validateUser(req, res, next) {
-
   const { authorization } = req.headers;
   const token = authorization?.split(" ")[1] || "";
 
@@ -25,7 +27,7 @@ export function validateUser(req, res, next) {
     });
 }
 
-export function validateCompanyOrManagerUser(req,res,next) {
+export function validateCompanyOrManagerUser(req, res, next) {
   const { authorization } = req.headers;
   const token = authorization?.split(" ")[1] || "";
 

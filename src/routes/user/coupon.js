@@ -12,6 +12,6 @@ route.post(
   validateUser,
   couponController.getAppliedCoupon
 );
-route.get("/get-offer-text", validateUser, couponController.getOfferTexts);
+route.get("/get-offer-text", couponController.getOfferTexts);
 
 export default route;
