@@ -737,25 +737,7 @@ export function getAllManagerIndividualFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery =
-        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ?";
-      db.query(getQuery, [id], (err, result) => {
-        if (err) {
-          reject(err.message);
-        } else {
-          resolve(result);
-        }
-      });
-    } catch (error) {
-      reject(error?.message);
-    }
-  });
-}
-
-export function getAllManagerRealIndividualFromDb(id) {
-  return new Promise((resolve, reject) => {
-    try {
-      let getQuery =
-        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ? AND type_oc_account = ?";
+        "SELECT city ,phone ,email ,first_name ,id ,joined ,last_name, block, type_of_account FROM users WHERE created_by = ? AND type_of_account = ?";
       db.query(getQuery, [id, "individual"], (err, result) => {
         if (err) {
           reject(err.message);
