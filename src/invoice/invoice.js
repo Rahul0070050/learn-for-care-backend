@@ -63,7 +63,7 @@ export async function saveInvoice(
       }, 20000);
       // Set the width and height for each column
       const columnWidths = [70, 245, 86, 80, 50];
-      const rowHeight = 20;
+      const rowHeight = 30;
 
       // Function to draw a table row
       function drawRow(rowData, startX, startY) {
