@@ -31,8 +31,8 @@ export function validateUserInfo(userInfo) {
 export function checkOtpInfo(otpReqInfo) {
   return new Promise((resolve, reject) => {
     let otpInfo = object({
-      otp: number().required("please provide otp"),
-      email: string().required("please provide email address").email(),
+      otp: number().required("Please Provide Otp"),
+      email: string().required("Please Provide Email Address").email(),
     });
 
     try {
@@ -53,8 +53,8 @@ export function checkOtpInfo(otpReqInfo) {
 export function validateUserLoginData(info) {
   return new Promise((resolve, reject) => {
     let checkInfo = object({
-      email: string().required("please provide email address").email(),
-      password: string().required("please provide password"),
+      email: string().required("Please Provide Email Address").email(),
+      password: string().required("Please Provide Password"),
     });
 
     try {
@@ -75,7 +75,7 @@ export function validateUserLoginData(info) {
 export function checkReSendOtpInfo(info) {
   return new Promise((resolve, reject) => {
     let checkInfo = object({
-      email: string().email().required("please provide email address")
+      email: string().email().required("Please Provide Email Address")
     });
     
     try {
