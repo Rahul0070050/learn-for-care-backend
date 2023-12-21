@@ -116,7 +116,7 @@ export function getAssignedBundlesFromDbByUserId(userId) {
       assigned_course.course_id AS bundle_id, assigned_course.id AS id, 0 AS from_purchased, assigned_course.count AS course_count,
       FROM assigned_course 
       INNER JOIN course_bundle ON course_bundle.id = assigned_course.course_id 
-      WHERE course_type = ? AND user_id = ?`;
+      WHERE assigned_course.course_type = ? AND assigned_course.user_id = ?`;
       db.query(getQuery, ["bundle", userId], (err, result) => {
         if (err) {
           reject(err.message);
