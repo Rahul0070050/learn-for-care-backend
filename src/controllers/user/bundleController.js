@@ -725,7 +725,7 @@ export const bundleController = {
               });
             }
           });
-          let per = (points / answers.length) * 100;
+          let per = parseInt((points / answers.length) * 100);
           saveBundleExamResult(
             per,
             course[0].id,
