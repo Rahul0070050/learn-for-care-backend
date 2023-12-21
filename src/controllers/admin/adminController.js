@@ -13,6 +13,7 @@ import {
   getAllIndividualsAndCompaniesFromDb,
   getAllQualificationsFromDB,
   getAllTransactionsFromDb,
+  getAllUsersReportFromDb,
   getCourseWiseIndividualReportsFromAdminDb,
   getCourseWiseManager,
   getDashboardData,
@@ -1590,7 +1591,7 @@ export const adminController = {
   },
   getIndividualReport:(req,res) => {
     try {
-      getIndividualReportFromDb().then(result => {
+      getAllUsersReportFromDb().then(result => {
         res.status(200).json({
           success: true,
           data: {

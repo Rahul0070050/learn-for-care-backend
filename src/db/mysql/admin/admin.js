@@ -25,6 +25,7 @@ import {
   geCountOfAllCompanyUsers,
   geCountOfAllIndividualUsers,
   geCountOfAllIndividuals,
+  getAllUsersFromDb,
   getCountOfAssignedBundleForIndividuals,
   getNewCompanyUsers,
   getNewUsers,
@@ -684,6 +685,46 @@ export function getIndividualReportFromDb() {
           return item;
         } catch (error) {
           console.log(error);
+        }
+      })
+    )
+      .then((result) => {
+        resolve(result);
+      })
+      .catch((err) => {
+        reject(err?.message);
+      });
+  });
+}
+
+
+export function getAllUsersReportFromDb() {
+  return new Promise(async (resolve, reject) => {
+    let users = await getAllUsersFromDb();
+    Promise.all(
+      users.map(async (item) => {
+        try {
+          let bundleCount1 = await getCountOfAssignedBundleForIndividuals(
+            item.id
+          );
+          let bundleCount2 = await getCountOfBundlePurchasedByOwnerId(item.id);
+          let CourseCount1 = await geCountOfPurchasedCourse(item.id);
+          let CourseCount2 = await geCountOfAssignedCourse(item.id);
+          let countOfIndividuals = await geCountOfAllCertificatesByUserId(
+            item.id
+          );
+
+          // Number.isInteger
+          item["assigned_course_count"] = CourseCount2[0]["SUM(fake_count)"];
+          item["assigned_bundle_count"] = bundleCount1[0]["SUM(count)"];
+          item["purchased_course_count"] =
+            CourseCount1[0]["SUM(fake_course_count)"];
+          item["purchased_bundle_count"] =
+            bundleCount2[0]["SUM(fake_course_count)"];
+          item["certificates"] = countOfIndividuals[0]["COUNT(*)"];
+          return item;
+        } catch (error) {
+          reject(error)
         }
       })
     )
