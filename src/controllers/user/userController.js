@@ -1188,7 +1188,7 @@ export const userController = {
   getAllManagerIndividual: (req, res) => {
     try {
       let user = getUser(req);
-      getAllManagerRealIndividualFromDb(user.id)
+      getAllIndividualUnderCompanyFromDb(user.id)
         .then((result) => {
           res.status(200).json({
             success: true,
