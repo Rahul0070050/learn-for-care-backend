@@ -751,7 +751,7 @@ export function getAllManagerIndividualFromDb(id) {
   });
 }
 
-export function getAllManagerIndividualFromDbFromCompany(id) {
+export function getAllManagerRealIndividualFromDb(id) {
   return new Promise((resolve, reject) => {
     try {
       let getQuery =
@@ -778,7 +778,7 @@ export function getAllIndividualUnderCompanyFromDb(id) {
       )
         .then(async (result) => {
           let individualsOfAdmin = await getAllManagerIndividualFromDb(id);
-          resolve([...result, individualsOfAdmin]);
+          resolve([...result, ...individualsOfAdmin]);
         })
         .catch((err) => {
           reject(err);
