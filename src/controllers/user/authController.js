@@ -211,8 +211,8 @@ export const userAuthController = {
                   errors: [
                     {
                       code: 406,
-                      message: "this user not exist",
-                      error: "this email is not exist in our database",
+                      message: "This User Not Exist",
+                      error: "This Email Is Not Exist In Our Database",
                     },
                   ],
                   errorType: "client",

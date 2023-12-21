@@ -3,14 +3,14 @@ import { object, string, number } from "yup";
 export function validateUserInfo(userInfo) {
   return new Promise((resolve, reject) => {
     let user = object({
-      email: string().required("please provide email address").email(),
-      first_name: string().required("please provide first_name"),
-      last_name: string().required("please provide last_name"),
-      password: string().required("please provide password"),
-      phone: string().required("please provide phone"),
-      country: string().required("please provide country"),
-      type_of_account: string().required("please provide type"),
-      city: string().required("please provide city"),
+      email: string().required("Please Provide Email Address").email(),
+      first_name: string().required("Please Provide First Name"),
+      last_name: string().required("Please Provide Last name"),
+      password: string().required("Please Provide Password"),
+      phone: string().required("Please Provide Phone"),
+      country: string().required("Please Provide Country"),
+      type_of_account: string().required("Please Provide Type"),
+      city: string().required("Please Provide City"),
     });
 
     try {
