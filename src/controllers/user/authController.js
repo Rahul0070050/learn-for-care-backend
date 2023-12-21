@@ -50,7 +50,7 @@ export const userAuthController = {
                         success: true,
                         data: {
                           code: 200,
-                          message: "OTP sent check your email",
+                          message: "OTP Sent Check Your Email",
                           response: sentOtpRes,
                         },
                       });
@@ -77,7 +77,7 @@ export const userAuthController = {
                     errors: [
                       {
                         code: 406,
-                        message: "values not acceptable",
+                        message: "Values Not Acceptable",
                         error: err,
                       },
                     ],
@@ -313,8 +313,8 @@ export const userAuthController = {
                   errors: [
                     {
                       code: 406,
-                      message: "you provided an in valid email",
-                      error: "Email is not registered",
+                      message: "You Provided An In Valid Email",
+                      error: "Email Is Not Registered",
                     },
                   ],
                   errorType: "client",
@@ -342,8 +342,8 @@ export const userAuthController = {
                         errors: [
                           {
                             code: 406,
-                            message: "password is incorrect",
-                            error: "password is not matching",
+                            message: "Password Is Incorrect",
+                            error: "Password Is Not Matching",
                           },
                         ],
                         errorType: "client",
@@ -387,7 +387,7 @@ export const userAuthController = {
             errors: [
               {
                 code: 406,
-                message: "values not acceptable",
+                message: "Values Not Acceptable",
                 error: err,
               },
             ],
