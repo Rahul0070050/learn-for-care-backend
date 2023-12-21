@@ -759,6 +759,7 @@ export function getAllIndividualUnderCompanyFromDb(id) {
         managers.map((item) => getAllManagerIndividualFromDb(item.id))
       )
         .then(async (result) => {
+          result = result.flat()
           let individualsOfAdmin = await getAllManagerIndividualFromDb(id);
           resolve([...result, ...individualsOfAdmin]);
         })
