@@ -38,7 +38,7 @@ export async function saveInvoice(
         ];
       });
 
-      let total = subTotal + tax;
+      let total = parseFloat(Number(subTotal) + Number(tax)).toFixed(2);
 
       let file_path = path.join(__dirname, "../", `/invoice/${file_name}`);
       const fileStream = fs.createWriteStream(file_path);
@@ -56,7 +56,7 @@ export async function saveInvoice(
 
       // Set the starting position for the table
       let startX = 50;
-      let startY = 280;
+      let startY = 300;
 
       setTimeout(() => {
         fs.unlinkSync(file_name);
