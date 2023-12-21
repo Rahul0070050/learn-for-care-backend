@@ -95,7 +95,7 @@ export function deleteCoupon(id) {
 export function getAllCoupons() {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT *, DATE_FORMAT(valid_till, '%d/%m/%Y') AS date FROM coupons;";
+      let getQuery = "SELECT *, DATE_FORMAT(valid_till, '%d/%m/%Y') AS date FROM coupons ORDER BY id DESC;";
       db.query(getQuery, (err, result) => {
         if (err) return reject(err?.message);
         else return resolve(result);
