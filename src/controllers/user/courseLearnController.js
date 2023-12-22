@@ -59,10 +59,26 @@ export const onGoingCourseController = {
                   let link = course[`resource${index}-`].split("&&");
                   let url = await downloadFromS3(index, link[0]);
 
+                  let type = ""
+                  if(link[2] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                    type = "docx"
+                  }
+                  if(link[2] == "video/mp4" || link[2] == "video/mkv" || link[2] == "video/webm") {
+                    type = "video"
+                  }
+                  if(link[2] == "application/pdf") {
+                    type = "pdf"
+                  }
+                  if(link[2] == "text/plain") {
+                    type = "txt"
+                  }
+                  if(link[2] == "image/jpg" || link[2] == "image/jpeg" || link[2] == "image/webp" || link[2] == "image/png") {
+                    type = "image"
+                  }
                   resource.push({
                     url: url.url,
                     fileName: link[1],
-                    type: link[2],
+                    type,
                   });
 
                   delete course[`resource${index}-`];
