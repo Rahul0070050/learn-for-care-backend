@@ -107,7 +107,7 @@ export function getCourseByCategory(category) {
 export function getAllCoursesFromDb() {
   return new Promise((resolve, reject) => {
     try {
-      let getCourseByCategoryQuery = "SELECT * FROM course;";
+      let getCourseByCategoryQuery = "SELECT * FROM course LEFT JOIN exams ON exams.course_id = course.id;";
       db.query(getCourseByCategoryQuery, (err, result) => {
         if (err) {
           return reject(err?.message);
