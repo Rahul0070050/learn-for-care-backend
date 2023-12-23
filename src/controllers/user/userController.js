@@ -44,8 +44,8 @@ import {
   assignCourseToMAnagerIndividualFromAssignedToDb,
   assignCourseToMAnagerIndividualFromManagerAssigned,
 } from "../../db/mysql/users/users.js";
-import sentOtpEmail from "../../helpers/sendOtpEmail.js";
-import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassToSubUser.js";
+import sendEmailAndPassByEmail from "../../helpers/sentEmailAndPassUser.js";
+import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassUser.js";
 import {
   checkAssignCourseToManagerIndividualReqData,
   checkAssignCourseToManagerReqData,
@@ -1100,7 +1100,12 @@ export const userController = {
           let userId = getUser(req).id;
           let password = await hashPassword(result.password);
           saveAManagerToDb({ ...result, password, userId })
-            .then(() => {
+            .then(async () => {
+              await sendEmailAndPassByEmail(
+                result.first_name + " " + result.last_name,
+                result.email,
+                result.password
+              );
               res.status(200).json({
                 success: true,
                 data: {
@@ -1614,7 +1619,7 @@ export const userController = {
                   },
                 });
               }
-            } else if(result.from == "company-assigned") {
+            } else if (result.from == "company-assigned") {
               course = await getAssignedCourseToCompanyById(result.id);
               console.log(course);
               if (!course[0].count >= result.count) {
