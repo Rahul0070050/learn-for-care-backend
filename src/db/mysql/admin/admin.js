@@ -76,6 +76,7 @@ export function getLineGraphData() {
     let getQuery = 
     `
       SELECT
+          YEAR(date) AS year, 
           MONTH(MIN(date)) AS month_number,
           DATE_FORMAT(MIN(date), '%M') AS month_name,
           SUM(amount) AS total_purchases
