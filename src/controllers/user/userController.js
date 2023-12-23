@@ -1101,12 +1101,14 @@ export const userController = {
           let password = await hashPassword(result.password);
           saveAManagerToDb({ ...result, password, userId })
             .then(async () => {
+              console.log('from else');
               try {
                 await sendEmailAndPassByEmail(
                   result.first_name + " " + result.last_name,
                   result.email,
                   result.password
                 );
+                console.log('from if case');
               } catch (error) {
                 console.log(error);
                 res.status(500).json({
@@ -1121,6 +1123,7 @@ export const userController = {
                   errorType: "server",
                 });
               }
+              console.log('email sent');
               res.status(200).json({
                 success: true,
                 data: {
