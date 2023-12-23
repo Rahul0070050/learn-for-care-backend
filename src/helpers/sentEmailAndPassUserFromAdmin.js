@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 import { mailer } from "../conf/nodeMailer.js";
-import { userCredentials } from "../emailTemplates/userCredentialsFromAdmin.js"
+import { userCredentialsFromAdmin } from "../emailTemplates/userCredentialsFromAdmin.js"
 
 config();
 
@@ -16,7 +16,7 @@ export default function sentEmailToSubUserEmailAndPassword(
         to: email,
         subject: "Learn For Care",
         text: "here is your otp",
-        html: userCredentials(name, email, password),
+        html: userCredentialsFromAdmin(name, email, password),
       };
 
       mailer().sendMail(mailData, function (err, info) {
