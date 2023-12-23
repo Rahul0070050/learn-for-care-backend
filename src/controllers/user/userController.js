@@ -1097,6 +1097,7 @@ export const userController = {
     try {
       checkCreateManagerIndividualReqBody(req.body)
         .then(async (result) => {
+          console.log('form top then');
           let userId = getUser(req).id;
           let password = await hashPassword(result.password);
           saveAManagerToDb({ ...result, password, userId })
