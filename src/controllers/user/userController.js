@@ -1101,7 +1101,7 @@ export const userController = {
           let password = await hashPassword(result.password);
           saveAManagerToDb({ ...result, password, userId })
             .then(async () => {
-              console.log('from else');
+              console.log('form then');
               try {
                 await sendEmailAndPassByEmail(
                   result.first_name + " " + result.last_name,
