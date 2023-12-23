@@ -1010,7 +1010,12 @@ export const userController = {
           let userId = getUser(req).id;
           let password = await hashPassword(result.password);
           saveAManagerToDb({ ...result, password, userId })
-            .then(() => {
+            .then(async () => {
+              await sendEmailAndPassByEmail(
+                result.first_name + " " + result.last_name,
+                result.email,
+                result.password
+              );
               res.status(200).json({
                 success: true,
                 data: {
@@ -1097,19 +1102,19 @@ export const userController = {
     try {
       checkCreateManagerIndividualReqBody(req.body)
         .then(async (result) => {
-          console.log('form top then');
+          console.log("form top then");
           let userId = getUser(req).id;
           let password = await hashPassword(result.password);
           saveAManagerToDb({ ...result, password, userId })
             .then(async () => {
-              console.log('form then');
+              console.log("form then");
               try {
                 await sendEmailAndPassByEmail(
                   result.first_name + " " + result.last_name,
                   result.email,
                   result.password
                 );
-                console.log('from if case');
+                console.log("from if case");
               } catch (error) {
                 console.log(error);
                 res.status(500).json({
@@ -1124,7 +1129,7 @@ export const userController = {
                   errorType: "server",
                 });
               }
-              console.log('email sent');
+              console.log("email sent");
               res.status(200).json({
                 success: true,
                 data: {
