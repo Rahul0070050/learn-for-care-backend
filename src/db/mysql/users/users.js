@@ -695,7 +695,7 @@ export function saveAManagerToDb(data) {
               err.message ===
               `ER_DUP_ENTRY: Duplicate entry '${email}' for key 'users.email'`
             ) {
-              return reject("email already exist");
+              return reject("Email Already Exist");
             } else {
               return reject(err.message);
             }
