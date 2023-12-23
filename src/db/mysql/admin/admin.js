@@ -44,8 +44,6 @@ export function getDashboardData() {
       let course_count = await geCountOfAllCourse();
       let graph_data = await getLineGraphData();
 
-      console.log(graph_data);
-
       let getQuery = `SELECT * FROM purchased_course ORDER BY id DESC;`;
       db.query(getQuery, (err, result) => {
         if (err) {
