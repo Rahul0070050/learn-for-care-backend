@@ -1101,11 +1101,26 @@ export const userController = {
           let password = await hashPassword(result.password);
           saveAManagerToDb({ ...result, password, userId })
             .then(async () => {
-              await sendEmailAndPassByEmail(
-                result.first_name + " " + result.last_name,
-                result.email,
-                result.password
-              );
+              try {
+                await sendEmailAndPassByEmail(
+                  result.first_name + " " + result.last_name,
+                  result.email,
+                  result.password
+                );
+              } catch (error) {
+                console.log(error);
+                res.status(500).json({
+                  success: false,
+                  errors: [
+                    {
+                      code: 500,
+                      message: "some error occurred please try again later",
+                      error: error,
+                    },
+                  ],
+                  errorType: "server",
+                });
+              }
               res.status(200).json({
                 success: true,
                 data: {
