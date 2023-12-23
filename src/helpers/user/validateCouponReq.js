@@ -3,7 +3,7 @@ import { object, string } from "yup";
 export function validateApplyCouponReq(body) {
     return new Promise((resolve, reject) => {
       let bodyTemplate = object({
-        code: string().required("please provide invoice id"),
+        code: string().required("Please Provide Coupon Code"),
       });
       try {
         bodyTemplate
