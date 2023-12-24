@@ -127,7 +127,8 @@ export function getUserById(id) {
           let allIndividuals = await Promise.all(managersCount.map(async item => await getIndividualsCountById(item.id)))
           // allIndividuals = allIndividuals.flat()
           let individualsCount = await getIndividualsCountById(id);
-          console.log(individualsCount, allIndividuals);
+          console.log(allIndividuals);
+          console.log(individualsCount);
           result[0]["managers_count"] = managersCount.length;
           result[0]["individuals_count"] = 0;
           return resolve(result);
