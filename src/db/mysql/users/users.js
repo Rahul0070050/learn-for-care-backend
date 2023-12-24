@@ -125,11 +125,8 @@ export function getUserById(id) {
           delete result[0]?.password;
           let managersCount = await getManagersCountById(id);
           let allIndividuals = await Promise.all(managersCount.map(async item => await getIndividualsCountById(item.id)))
-          // allIndividuals = allIndividuals.flat()
           let individualsCount = await getIndividualsCountById(id);
-          console.log('ind ', individualsCount);
           allIndividuals = allIndividuals.flat(1)
-          console.log('all ind ',allIndividuals);
           let individuals = 0
           allIndividuals.map(item => {
             individuals += item['COUNT(*)']
