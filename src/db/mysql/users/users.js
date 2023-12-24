@@ -100,7 +100,7 @@ export function getIndividualsCountById(id) {
 export function getManagersCountById(id) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT COUNT(*) FROM users WHERE type_of_account = ? AND created_by = ?;`;
+      let getQuery = `SELECT id FROM users WHERE type_of_account = ? AND created_by = ?;`;
       db.query(getQuery, ["manager", id], (err, result) => {
         if (err) {
           return reject(err.message);
@@ -124,8 +124,11 @@ export function getUserById(id) {
         } else {
           delete result[0]?.password;
           let managersCount = await getManagersCountById(id);
+          let allIndividuals = new Promise.all(managersCount.map(async item => await getIndividualsCountById(item.id)))
+          allIndividuals = allIndividuals.flat()
+          console.log(managersCount, allIndividuals);
           let individualsCount = await getIndividualsCountById(id);
-          result[0]["managers_count"] = managersCount[0]["COUNT(*)"];
+          result[0]["managers_count"] = 0;
           result[0]["individuals_count"] = individualsCount[0]["COUNT(*)"];
           return resolve(result);
         }
