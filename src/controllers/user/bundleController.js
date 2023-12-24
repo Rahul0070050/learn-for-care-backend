@@ -414,7 +414,7 @@ export const bundleController = {
       let bundleId = req.params.id; // bundle name or bundle id
       console.log(bundleId);
       if (Number.isInteger(Number(bundleId))) {
-        console.log('from if ', bundleId);
+        console.log("from if ", bundleId);
         getBundleCourseByBundleId(bundleId)
           .then(async (result) => {
             let newResult = await Promise.all(
@@ -449,7 +449,7 @@ export const bundleController = {
             });
           });
       } else {
-        console.log('from else ',bundleId);
+        console.log("from else ", bundleId);
         getBundleCourseByBundleName(bundleId)
           .then(async (result) => {
             let newResult = await Promise.all(
@@ -520,7 +520,7 @@ export const bundleController = {
                       course[`pptCount`] = resources.length;
 
                       resources.forEach((item, i) => {
-                        course[`resource${i}-`] = `${item.file}&&${item.name}`;
+                        course[`resource${i}-`] = `${item.file}&&${item.name}&&${item.type}`;
                       });
 
                       ppt.forEach((item, i) => {
@@ -546,7 +546,39 @@ export const bundleController = {
                         let link = course[`resource${index}-`].split("&&");
                         let url = await downloadFromS3(index, link[0]);
 
-                        resource.push({ url: url.url, fileName: link[1] });
+                        let type = "";
+                        if (
+                          link[2] ==
+                          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        ) {
+                          type = "docx";
+                        }
+                        if (
+                          link[2] == "video/mp4" ||
+                          link[2] == "video/mkv" ||
+                          link[2] == "video/webm"
+                        ) {
+                          type = "video";
+                        }
+                        if (link[2] == "application/pdf") {
+                          type = "pdf";
+                        }
+                        if (link[2] == "text/plain") {
+                          type = "txt";
+                        }
+                        if (
+                          link[2] == "image/jpg" ||
+                          link[2] == "image/jpeg" ||
+                          link[2] == "image/webp" ||
+                          link[2] == "image/png"
+                        ) {
+                          type = "image";
+                        }
+                        resource.push({
+                          url: url.url,
+                          fileName: link[1],
+                          type,
+                        });
 
                         delete course[`resource${index}-`];
                       }
