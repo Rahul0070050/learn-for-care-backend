@@ -302,7 +302,7 @@ export function mySqlConnect(done) {
       if (err) console.log(err);
       else console.log("assigned course table created");
     });
-    
+
     const courseBundleTable = `
       CREATE TABLE IF NOT EXISTS course_bundle (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -341,22 +341,22 @@ export function mySqlConnect(done) {
       else console.log("enrolled bundle table created");
     });
 
-    // const certificateTable = `
-    //     CREATE TABLE IF NOT EXISTS certificate (
-    //       id INT AUTO_INCREMENT PRIMARY KEY,
-    //       user_id INT NOT NULL,
-    //       course_name VARCHAR(50) NOT NULL,
-    //       user_name VARCHAR(50) NOT NULL,
-    //       date DATETIME NOT NULL DEFAULT NOW(),
-    //       percentage INT NOT NULL,
-    //       image VARCHAR(300) DEFAULT NULL
-    //     ) AUTO_INCREMENT = 10000;
-    //   `;
+    const certificateTable = `
+        CREATE TABLE IF NOT EXISTS certificate (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          user_id INT NOT NULL,
+          course_name VARCHAR(50) NOT NULL,
+          user_name VARCHAR(50) NOT NULL,
+          date DATETIME NOT NULL DEFAULT NOW(),
+          percentage INT NOT NULL,
+          image VARCHAR(300) DEFAULT NULL
+        ) AUTO_INCREMENT = 10000;
+      `;
 
-    // db.query(certificateTable, (err, result) => {
-    //   if (err) console.log(err);
-    //   else console.log("user table created");
-    // });
+    db.query(certificateTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("user table created");
+    });
 
     const qualificationsTable = `
         CREATE TABLE IF NOT EXISTS qualifications (
@@ -374,7 +374,7 @@ export function mySqlConnect(done) {
       else console.log("user table qualifications");
     });
 
-    const certificateTable = `
+    const experienceTable = `
         CREATE TABLE IF NOT EXISTS experience (
           id INT AUTO_INCREMENT PRIMARY KEY,
           admin_id INT NOT NULL UNIQUE,
@@ -386,7 +386,7 @@ export function mySqlConnect(done) {
         );
       `;
 
-    db.query(certificateTable, (err, result) => {
+    db.query(experienceTable, (err, result) => {
       if (err) console.log(err);
       else console.log("user table experience");
     });
