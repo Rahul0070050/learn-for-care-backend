@@ -78,18 +78,6 @@ export function mySqlConnect(done) {
       else console.log("admin table created");
     });
 
-    //   const createCategoryTable = `
-    //     CREATE TABLE IF NOT EXISTS category (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     category VARCHAR(50) UNIQUE NOT NULL,
-    //     productCount INT DEFAULT 0
-    //   );`;
-
-    // db.query(createCategoryTable, (err, result) => {
-    //   if (err) console.log(err);
-    //   else console.log("category table created");
-    // });
-
       const createCourseTable = `
         CREATE TABLE IF NOT EXISTS course (
         id INT AUTO_INCREMENT PRIMARY KEY,
