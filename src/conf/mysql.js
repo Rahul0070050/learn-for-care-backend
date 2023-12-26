@@ -303,21 +303,6 @@ export function mySqlConnect(done) {
       else console.log("assigned course table created");
     });
     
-    // const subAdminTable = `
-    //   CREATE TABLE IF NOT EXISTS sub_admin (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     name VARCHAR(150) NOT NULL,
-    //     email VARCHAR(150) NOT NULL UNIQUE,
-    //     password VARCHAR(150) NOT NULL,
-    //     block BOOLEAN DEFAULT FALSE
-    //   );
-    // `;
-
-    // db.query(subAdminTable, (err, result) => {
-    //   if (err) console.log(err.message);
-    //   else console.log("assigned course table created");
-    // });
-
     const courseBundleTable = `
       CREATE TABLE IF NOT EXISTS course_bundle (
         id INT AUTO_INCREMENT PRIMARY KEY,
