@@ -263,27 +263,6 @@ export function mySqlConnect(done) {
       else console.log("exam_attempts table created");
     });
 
-    // const subUserTable = `
-    //   CREATE TABLE IF NOT EXISTS sub_user (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     first_name VARCHAR(250) NOT NULL,
-    //     last_name VARCHAR(250) NOT NULL,
-    //     password VARCHAR(250) NOT NULL,
-    //     type_of_account VARCHAR(250) NOT NULL DEFAULT 'sub_user',
-    //     email VARCHAR(250) NOT NULL UNIQUE,
-    //     phone INT DEFAULT NULL,
-    //     city VARCHAR(250) NOT NULL,
-    //     country VARCHAR(250) NOT NULL,
-    //     created_by INT NOT NULL,
-    //     block BOOLEAN NOT NULL DEFAULT FALSE
-    //   );
-    // `;
-
-    // db.query(subUserTable, (err, result) => {
-    //   if (err) console.log(err.message);
-    //   else console.log("sub_user table created");
-    // });
-
     const assignedToManagerTable = `
       CREATE TABLE IF NOT EXISTS course_assigned_manager (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -323,26 +302,7 @@ export function mySqlConnect(done) {
       if (err) console.log(err);
       else console.log("assigned course table created");
     });
-    // =================> NOT THIS
-    //  const assignedCourseTable = `
-    //   CREATE TABLE IF NOT EXISTS assigned_course (
-    //     id INT AUTO_INCREMENT PRIMARY KEY,
-    //     company_id INT NOT NULL,
-    //     course_id INT NOT NULL,
-    //     sub_user_id INT NOT NULL,
-    //     progress INT NOT NULL DEFAULT 0,
-    //     course_count INT NOT NULL DEFAULT 1,
-    //     color VARCHAR(15) NOT NULL DEFAULT 'red',
-    //     validity VARCHAR(15) NOT NULL
-    //   );
-    // `;
-
-    //   db.query(assignedCourseTable, (err, result) => {
-    //     if (err) console.log(err.message);
-    //     else console.log("assigned course table created");
-    //   });
-    // =================>
-
+    
     // const subAdminTable = `
     //   CREATE TABLE IF NOT EXISTS sub_admin (
     //     id INT AUTO_INCREMENT PRIMARY KEY,
