@@ -159,22 +159,22 @@ export function mySqlConnect(done) {
     else console.log("blog table created");
   });
 
-    // const createCartTable = `
-    // CREATE TABLE IF NOT EXISTS cart (
-    //   id INT AUTO_INCREMENT PRIMARY KEY,
-    //   user_id INT NOT NULL,
-    //   course_id INT NOT NULL, // TODO: course id some times predated as bundle id
-    //   product_count INT NOT NULL,
-    //   thumbnail VARCHAR(255) NOT NULL,
-    //   name VARCHAR(255) NOT NULL,
-    //   item_type VARCHAR(20) NOT NULL,
-    //   amount DOUBLE NOT NULL
-    // );`;
+    const createCartTable = `
+    CREATE TABLE IF NOT EXISTS cart (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      user_id INT NOT NULL,
+      course_id INT NOT NULL, // TODO: course id some times predated as bundle id
+      product_count INT NOT NULL,
+      thumbnail VARCHAR(255) NOT NULL,
+      name VARCHAR(255) NOT NULL,
+      item_type VARCHAR(20) NOT NULL,
+      amount DOUBLE NOT NULL
+    );`;
 
-    // db.query(createCartTable, (err, result) => {
-    //   if (err) console.log(err);
-    //   else console.log("cart table created");
-    // });
+    db.query(createCartTable, (err, result) => {
+      if (err) console.log(err);
+      else console.log("cart table created");
+    });
     
     // const purchasedCourseTable = `
     //   CREATE TABLE IF NOT EXISTS purchased_course (
