@@ -144,6 +144,27 @@ export function validateCreateOfferTextInfo(body) {
   });
 }
 
+export function validateCreateOfferTextImageRoute(file, body) {
+  return new Promise((resolve, reject) => {
+    
+    let bodyTemplate = object({
+      is_active: boolean().required("please provide is active status"),
+    });
+
+    let imageFile = validateFile([file], "image");
+
+    try {
+      Promise.all([imageFile.validate(file), bodyTemplate.validate(body)]).then(result => {
+        resolve(result)
+      }).catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function validateDeleteOfferTextInfo(data) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({

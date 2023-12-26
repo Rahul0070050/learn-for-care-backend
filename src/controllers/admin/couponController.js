@@ -13,6 +13,7 @@ import {
 } from "../../db/mysql/admin/coupons.js";
 import {
   validateCreateCouponInfo,
+  validateCreateOfferTextImageRoute,
   validateCreateOfferTextInfo,
   validateCreateVolumeCouponInfo,
   validateDeleteCouponInfo,
@@ -338,30 +339,32 @@ export const couponController = {
       });
     }
   },
-  getAllVolumeCoupon:(req,res) => {
+  getAllVolumeCoupon: (req, res) => {
     try {
-      getAllVolumeCoupon().then(result => {
-        res.status(201).json({
-          success: true,
-          data: {
-            code: 201,
-            message: "got volume coupons",
-            response: result
-          },
-        });
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "err from db",
-              error: err,
+      getAllVolumeCoupon()
+        .then((result) => {
+          res.status(201).json({
+            success: true,
+            data: {
+              code: 201,
+              message: "got volume coupons",
+              response: result,
             },
-          ],
-          errorType: "client",
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "err from db",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -486,30 +489,31 @@ export const couponController = {
       });
     }
   },
-  getAllOfferText:(req,res) => {
+  createOfferTextImage: (req, res) => {
     try {
-      getAllOfferTextFromDb().then(result => {
-        res.status(201).json({
-          success: true,
-          data: {
-            code: 201,
-            message: "got all offer text",
-            response: result
-          },
-        });
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "error from db",
-              error: err,
+      validateCreateOfferTextImageRoute(req.files, req.body)
+        .then((result) => {
+          res.status(201).json({
+            success: true,
+            data: {
+              code: 201,
+              message: "offer text created",
             },
-          ],
-          errorType: "client",
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -524,47 +528,32 @@ export const couponController = {
       });
     }
   },
-  deleteDeleteOfferText:(req,res) => {
+  getAllOfferText: (req, res) => {
     try {
-      validateDeleteOfferTextInfo(req.params)
-      .then((result) => {
-        deleteOfferText(result.id)
-          .then(() => {
-            res.status(201).json({
-              success: true,
-              data: {
-                code: 201,
-                message: "offer text deleted",
-              },
-            });
-          })
-          .catch((err) => {
-            res.status(406).json({
-              success: false,
-              errors: [
-                {
-                  code: 406,
-                  message: "error from db",
-                  error: err,
-                },
-              ],
-              errorType: "client",
-            });
-          });
-      })
-      .catch((err) => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "value not acceptable",
-              error: err,
+      getAllOfferTextFromDb()
+        .then((result) => {
+          res.status(201).json({
+            success: true,
+            data: {
+              code: 201,
+              message: "got all offer text",
+              response: result,
             },
-          ],
-          errorType: "client",
+          });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "error from db",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
         });
-      });
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -578,5 +567,60 @@ export const couponController = {
         errorType: "server",
       });
     }
-  }
+  },
+  deleteDeleteOfferText: (req, res) => {
+    try {
+      validateDeleteOfferTextInfo(req.params)
+        .then((result) => {
+          deleteOfferText(result.id)
+            .then(() => {
+              res.status(201).json({
+                success: true,
+                data: {
+                  code: 201,
+                  message: "offer text deleted",
+                },
+              });
+            })
+            .catch((err) => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "error from db",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "value not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
 };
