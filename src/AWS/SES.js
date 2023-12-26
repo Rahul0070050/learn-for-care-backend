@@ -11,7 +11,7 @@
 //     },
 //     Subject: { Data: "Test email" },
 //   },
-//   Source: "support.testkiran.online",
+//   Source: "support@testkiran.online",
 // };
 
 // // Create the promise and SES service object

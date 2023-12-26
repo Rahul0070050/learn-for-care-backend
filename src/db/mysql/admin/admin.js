@@ -75,19 +75,19 @@ export function getLineGraphData() {
   return new Promise((resolve, reject) => {
     let getQuery = 
     `
-    SELECT
-        YEAR(date) AS year,
-        MONTH(MIN(date)) AS month_number,
-        DATE_FORMAT(MIN(date), '%M') AS month_name,
-        SUM(amount) AS total_purchases
-    FROM
-        purchased_course
-    WHERE
-        YEAR(date) = YEAR(CURDATE())
-    GROUP BY
-        YEAR(date), MONTH(date)
-    ORDER BY
-        YEAR(date) DESC, MONTH(date) DESC;
+      SELECT
+          YEAR(date) AS year,
+          MONTH(MIN(date)) AS month_number,
+          DATE_FORMAT(MIN(date), '%M') AS month_name,
+          SUM(amount) AS total_purchases
+      FROM
+          purchased_course
+      WHERE
+          YEAR(date) = YEAR(CURDATE())
+      GROUP BY
+          YEAR(date), MONTH(date)
+      ORDER BY
+          YEAR(date) DESC, MONTH(date) DESC;
     `;
     db.query(getQuery, (err, result) => {
       if (err) {
