@@ -266,3 +266,28 @@ export function validateManagerSelfAssignCourseReqData(data) {
     }
   });
 }
+
+export function validateContactUsReqData(data) {
+  return new Promise((resolve, reject) => {
+    try {
+      const schema = yup.object({
+        name: yup.number().required("please provide valid name"),
+        email: yup.number().required("please provide valid email"),
+        sub: yup.number().required("please provide valid count"),
+        message: yup.number().required("please provide valid count"),
+      });
+
+      let value = schema.validate(data);
+
+      value
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error.message);
+    }
+  });  
+}

@@ -13,6 +13,9 @@ route.post("/set-profile-image", validateUser, userController.setProfileImage);
 route.get("/get-purchased-bundles", validateUser, userController.getPurchasedBundles);
 route.get("/get-individual-assigned-bundles", validateUser, userController.getAllAssignedBundlesForIndividuals); // this also works fro company users because admin can assign bundles to the company and individual users
 route.get("/get-assigned-bundles-for-company", validateUser, userController.getAllAssignedBundlesForCompany); // this also works fro company users because admin can assign bundles to the company and individual users
+
+route.post("/contact-us", validateUser, userController.contactUs);
+
 // sub-user
 // route.post("/create-sub-user", validateCompanyUserUser, userController.createSubUser);
 // route.get("/get-all-sub-users", validateCompanyUserUser, userController.getSubUser);

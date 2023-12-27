@@ -56,9 +56,12 @@ import {
   checkSetUserProfileImageReqData,
   checkUnBlockUserRewData,
   validateAssignCourseOrBundleReqData,
+  validateContactUsReqData,
   validateManagerSelfAssignCourseReqData,
   validateUpdateUserInfo,
 } from "../../helpers/user/validateUserReqData.js";
+
+import sendConcatUsEmail from "../../helpers/sendContactUsEmail.js";
 import { hashPassword } from "../../helpers/validatePasswords.js";
 import { getUser } from "../../utils/auth.js";
 
@@ -1447,6 +1450,43 @@ export const userController = {
             },
           });
         });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message: "some error occurred please try again later",
+            error: error,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  },
+  contactUs: (req, res) => {
+    try {
+      validateContactUsReqData(req.body).then((result) => {
+        sendConcatUsEmail(result.email, result.name, result.message, result.sub).then(() => {
+          res.status(200).json({
+            success: true,
+            data: {
+              code: 200,
+              message: "Email Sent",
+              response: "",
+            },
+          });
+        }).catch(err => {
+          res.status(406).json({
+            success: false,
+            data: {
+              code: 406,
+              message: "value not acceptable",
+              response: err,
+            },
+          });
+        });
+      });
     } catch (error) {
       res.status(500).json({
         success: false,
