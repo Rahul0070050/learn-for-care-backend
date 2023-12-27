@@ -544,6 +544,7 @@ export const couponController = {
             item['image'] = image.url
             return item;
           }))
+          console.log(newResult);
           res.status(201).json({
             success: true,
             data: {
