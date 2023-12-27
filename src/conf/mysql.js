@@ -163,7 +163,7 @@ export function mySqlConnect(done) {
     CREATE TABLE IF NOT EXISTS cart (
       id INT AUTO_INCREMENT PRIMARY KEY,
       user_id INT NOT NULL,
-      course_id INT NOT NULL, // TODO: course id some times predated as bundle id
+      course_id INT NOT NULL,
       product_count INT NOT NULL,
       thumbnail VARCHAR(255) NOT NULL,
       name VARCHAR(255) NOT NULL,
