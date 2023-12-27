@@ -48,7 +48,7 @@ export function saveInvoiceImageToDb(data) {
 export function getInvoiceFromDb(userId) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT *, DATE_FORMAT(invoice.date, '%d/%m/%Y') AS date FROM invoice 
+      let getQuery = `SELECT *, DATE_FORMAT(invoice.date, '%d/%m/%Y') AS date, TIME_FORMAT(invoice.date, '%h:%i:%s %p') AS time FROM invoice 
       INNER JOIN users ON users.id = invoice.user_id
       WHERE invoice.user_id = ?;`;
       db.query(getQuery, [userId], async (err, result) => {
