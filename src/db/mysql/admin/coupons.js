@@ -189,12 +189,12 @@ export function deleteVolumeCoupon(id) {
 export function saveOfferText(data) {
   return new Promise((resolve, reject) => {
     try {
-      const { offer_text, hight_light_text, is_active } = data;
+      const { offer_text, hight_light_text, is_active, image } = data;
       let deleteQuery =
-        "INSERT INTO offer_text (offer_text, hight_light_text, is_active) VALUES (?,?,?)";
+        "INSERT INTO offer_text (offer_text, hight_light_text, is_active,image) VALUES (?,?,?,?)";
       db.query(
         deleteQuery,
-        [offer_text, hight_light_text, is_active],
+        [offer_text, hight_light_text, is_active, image],
         (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);

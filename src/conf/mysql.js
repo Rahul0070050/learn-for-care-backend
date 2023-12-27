@@ -427,7 +427,8 @@ export function mySqlConnect(done) {
         id INT AUTO_INCREMENT PRIMARY KEY,
         offer_text TEXT NOT NULL,
         hight_light_text VARCHAR(250) NOT NULL,
-        is_active BOOLEAN NOT NULL
+        is_active BOOLEAN NOT NULL,
+        image VARCHAR(250) NOT NULL
       );
     `;
 

@@ -22,6 +22,7 @@ import {
   validateUpdateVolumeCouponInfo,
 } from "../../helpers/admin/validateCouponReqData.js";
 import { generatorOtp, getUser } from "../../utils/auth.js";
+import { downloadFromS3, removeFromS3, uploadFileToS3 } from "../../AWS/S3.js";
 
 export const couponController = {
   createCoupon: (req, res) => {
@@ -436,10 +437,14 @@ export const couponController = {
   },
   createOfferText: (req, res) => {
     try {
-      validateCreateOfferTextInfo(req.body,req.files)
-        .then((result) => {
-          console.log(result);
-          saveOfferText(result[0])
+      validateCreateOfferTextInfo(req.body)
+        .then(async (result) => {
+          const { image } = req.files;
+          let imageFile = ""
+          if (image) {
+            imageFile = await uploadFileToS3("/offer-text-image", image);
+          }
+          saveOfferText({ result, image: imageFile?.file || "" })
             .then(() => {
               res.status(201).json({
                 success: true,
