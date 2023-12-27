@@ -538,13 +538,18 @@ export const couponController = {
   getAllOfferText: (req, res) => {
     try {
       getAllOfferTextFromDb()
-        .then((result) => {
+        .then(async (result) => {
+          let newResult = await Promise.all(result.map(async item => {
+            let image = await downloadFromS3("",item.image)
+            item['image'] = image.url
+            return item;
+          }))
           res.status(201).json({
             success: true,
             data: {
               code: 201,
               message: "got all offer text",
-              response: result,
+              response: newResult,
             },
           });
         })
