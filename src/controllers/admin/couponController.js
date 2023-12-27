@@ -439,8 +439,10 @@ export const couponController = {
     try {
       validateCreateOfferTextInfo(req.body)
         .then(async (result) => {
-          console.log(req.files);
-          const { image } = req.files;
+          try {
+            
+            console.log(req.files);
+            const { image } = req.files;
           let imageFile = null;
           if (image) {
             imageFile = await uploadFileToS3("/offer-text-image", image);
@@ -470,6 +472,20 @@ export const couponController = {
                 errorType: "client",
               });
             });
+          } catch (error) {
+            console.log(error);
+            res.status(406).json({
+              success: false,
+              errors: [
+                {
+                  code: 406,
+                  message: "error from db",
+                  error: err,
+                },
+              ],
+              errorType: "client",
+            });
+          }
         })
         .catch((err) => {
           res.status(406).json({
