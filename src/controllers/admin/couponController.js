@@ -442,7 +442,7 @@ export const couponController = {
           try {
             
             console.log(req.files);
-            const { image } = req.files;
+            const { image } = req.files || {image: ""};
           let imageFile = null;
           if (image) {
             imageFile = await uploadFileToS3("/offer-text-image", image);
