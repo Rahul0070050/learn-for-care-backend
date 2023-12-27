@@ -1,3 +1,4 @@
+import { downloadFromS3 } from "../../AWS/S3.js";
 import { deleteAppliedCoupon } from "../../db/mysql/admin/course.js";
 import {
   applyCouponToCart,
