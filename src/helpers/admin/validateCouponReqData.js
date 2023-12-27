@@ -1,4 +1,5 @@
 import { number, object, string, boolean } from "yup";
+import { validateFile } from "../validateFileTypes.js";
 
 export function validateCreateCouponInfo(body) {
   return new Promise((resolve, reject) => {
@@ -129,9 +130,10 @@ export function validateCreateOfferTextInfo(body) {
       is_active: boolean().required("please provide is active status"),
     });
 
+    let imageFile = validateFile([file], "image");
+
     try {
-      bodyTemplate
-        .validate(body)
+      Promise.all([bodyTemplate.validate(body), imageFile])
         .then((result) => {
           resolve(result);
         })
@@ -146,7 +148,6 @@ export function validateCreateOfferTextInfo(body) {
 
 export function validateCreateOfferTextImageRoute(file, body) {
   return new Promise((resolve, reject) => {
-    
     let bodyTemplate = object({
       is_active: boolean().required("please provide is active status"),
     });
@@ -154,9 +155,11 @@ export function validateCreateOfferTextImageRoute(file, body) {
     let imageFile = validateFile([file], "image");
 
     try {
-      Promise.all([imageFile.validate(file), bodyTemplate.validate(body)]).then(result => {
-        resolve(result)
-      }).catch((err) => {
+      Promise.all([imageFile.validate(file), bodyTemplate])
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
           reject(err?.message);
         });
     } catch (error) {

@@ -436,9 +436,10 @@ export const couponController = {
   },
   createOfferText: (req, res) => {
     try {
-      validateCreateOfferTextInfo(req.body)
+      validateCreateOfferTextInfo(req.body,req.files)
         .then((result) => {
-          saveOfferText(result)
+          console.log(result);
+          saveOfferText(result[0])
             .then(() => {
               res.status(201).json({
                 success: true,
