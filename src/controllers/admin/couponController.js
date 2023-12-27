@@ -439,6 +439,7 @@ export const couponController = {
     try {
       validateCreateOfferTextInfo(req.body)
         .then(async (result) => {
+          console.log(req.files);
           const { image } = req.files;
           let imageFile = ""
           if (image) {

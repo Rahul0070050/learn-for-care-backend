@@ -191,7 +191,7 @@ export function saveOfferText(data) {
     try {
       const { offer_text, hight_light_text, is_active, image } = data;
       let deleteQuery =
-        "INSERT INTO offer_text (offer_text, hight_light_text, is_active,image) VALUES (?,?,?,?)";
+        "INSERT INTO offer_text (offer_text, hight_light_text, is_active, image) VALUES (?,?,?,?)";
       db.query(
         deleteQuery,
         [offer_text, hight_light_text, is_active, image],
