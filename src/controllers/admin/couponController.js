@@ -445,7 +445,7 @@ export const couponController = {
           if (image) {
             imageFile = await uploadFileToS3("/offer-text-image", image);
           }
-          saveOfferText({ result, image: imageFile?.file || "" })
+          saveOfferText({ ...result, image: imageFile?.file || "" })
             .then(() => {
               res.status(201).json({
                 success: true,
