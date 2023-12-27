@@ -441,9 +441,11 @@ export const couponController = {
         .then(async (result) => {
           console.log(req.files);
           const { image } = req.files;
-          let imageFile = ""
+          let imageFile = null;
           if (image) {
             imageFile = await uploadFileToS3("/offer-text-image", image);
+          } else {
+            imageFile = { file: "" }
           }
           saveOfferText({ ...result, image: imageFile?.file || "" })
             .then(() => {
@@ -539,11 +541,13 @@ export const couponController = {
     try {
       getAllOfferTextFromDb()
         .then(async (result) => {
-          let newResult = await Promise.all(result.map(async item => {
-            let image = await downloadFromS3("",item.image)
-            item['image'] = image.url
-            return item;
-          }))
+          let newResult = await Promise.all(
+            result.map(async (item) => {
+              let image = await downloadFromS3("", item.image);
+              item["image"] = image.url;
+              return item;
+            })
+          );
           console.log(newResult);
           res.status(201).json({
             success: true,
