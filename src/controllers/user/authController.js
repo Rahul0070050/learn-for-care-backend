@@ -8,7 +8,9 @@ import {
   validateUserInfo,
   validateUserLoginData,
 } from "../../helpers/user/validateAuthReqData.js";
-import sentOtpEmail, { sendOtpEmailByTrap } from "../../helpers/sendOtpEmail.js";
+import sentOtpEmail, {
+  sendOtpEmailByTrap,
+} from "../../helpers/sendOtpEmail.js";
 import {
   activateUser,
   getOtpFromDB,
@@ -28,7 +30,9 @@ import {
   validateChangePassToken,
 } from "../../helpers/genarateToken.js";
 import sendLinkToChangePasswordEmail from "../../helpers/sendForgotPassLink.js";
-import sendWelcomeEmail, { sendWelcomeEmailByTrap } from "../../helpers/welcomEmail.js";
+import sendWelcomeEmail, {
+  sendWelcomeEmailByTrap,
+} from "../../helpers/welcomEmail.js";
 
 config();
 let cryptr = new Cryptr(process.env.CRYPTER);
@@ -220,7 +224,7 @@ export const userAuthController = {
               }
 
               otp = otp[0]?.otp;
-
+              console.log(otp, result.otp);
               if (otp == result.otp) {
                 activateUser(result.email)
                   .then(async () => {
@@ -527,7 +531,8 @@ export const userAuthController = {
                       errors: [
                         {
                           code: 406,
-                          message: "Your new password cannot be the same as your previous password",
+                          message:
+                            "Your new password cannot be the same as your previous password",
                           error: "",
                         },
                       ],
