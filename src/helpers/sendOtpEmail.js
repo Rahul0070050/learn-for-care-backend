@@ -47,6 +47,8 @@ export function sendOtpEmailByTrap(email, otp) {
         "/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7"
       );
 
+      console.log('from ',process.env.EMAIL_ID);
+      console.log('to ',email);
       const sender = {
         email: process.env.EMAIL_ID,
         name: "mailtrap@kiranjohnson.online",
