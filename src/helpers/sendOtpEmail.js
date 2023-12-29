@@ -39,6 +39,7 @@ export default function sentOtpEmail(email, otp) {
 }
 
 export function sendOtpEmailByTrap(email, otp) {
+  console.log('from mail trap');
   return new Promise(async (resolve, reject) => {
     try {
       let image = await downloadFromS3(
@@ -70,6 +71,7 @@ export function sendOtpEmailByTrap(email, otp) {
           resolve(result);
         });
     } catch (error) {
+      console.log(error);
       reject(error);
     }
   });
