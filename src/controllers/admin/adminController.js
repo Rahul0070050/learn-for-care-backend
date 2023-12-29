@@ -35,7 +35,7 @@ import {
   updateExperienceDocDbByAdminIdAndDocId,
   updateQualificationDocDbByAdminIdAndDocId,
 } from "../../db/mysql/admin/admin.js";
-import sentEmailToSubUserEmailAndPasswordByTrap from "../../helpers/sentEmailAndPassUserFromAdmin.js";
+import {sentEmailToSubUserEmailAndPasswordByTrap} from "../../helpers/sentEmailAndPassUserFromAdmin.js";
 import { assignBundleToUser } from "../../db/mysql/admin/bundle.js";
 import {
   deleteSubAdminFomDb,
