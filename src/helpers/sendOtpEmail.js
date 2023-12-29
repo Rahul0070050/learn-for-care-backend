@@ -50,14 +50,17 @@ export function sendOtpEmailByTrap(email, otp) {
       console.log('from ',process.env.EMAIL_ID);
       console.log('to ',email);
       console.log(process.env.MAILTRAP_TOKEN , " ", process.env.MAILTRAP_ENDPOINT);
+
       let mailTrapClient = new MailtrapClient({
-        endpoint: process.env.MAILTRAP_TOKEN,
-        token: process.env.MAILTRAP_ENDPOINT,
+        endpoint: process.env.MAILTRAP_ENDPOINT,
+        token: process.env.MAILTRAP_TOKEN,
       });
+      
       const sender = {
         email: process.env.EMAIL_ID,
         name: "mailtrap@kiranjohnson.online",
       };
+      
       const recipients = [
         {
           email: email,
