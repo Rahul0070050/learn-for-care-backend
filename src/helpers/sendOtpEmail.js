@@ -49,7 +49,7 @@ export function sendOtpEmailByTrap(email, otp) {
 
       const sender = {
         email: process.env.EMAIL_ID,
-        name: "support@learnforcare.co.uk",
+        name: "mailtrap@kiranjohnson.online",
       };
       const recipients = [
         {
