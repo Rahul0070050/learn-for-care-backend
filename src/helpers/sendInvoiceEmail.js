@@ -86,7 +86,7 @@ export function sendInvoiceToUserByTrapEmail(
             {
               filename: "invoice.pdf",
               content: readFileSync(file_path),
-              encoding: "base64",
+              type: 'application/pdf'
             },
           ],
         })
