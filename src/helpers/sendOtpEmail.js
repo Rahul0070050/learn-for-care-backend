@@ -2,7 +2,7 @@ import { config } from "dotenv";
 import { mailer } from "../conf/nodeMailer.js";
 import { otpEMail } from "../emailTemplates/otpVerification.js";
 import { downloadFromS3 } from "../AWS/S3.js";
-import { mailTrapClient } from "../conf/mailTrap.js";
+import { MailtrapClient } from "mailtrap";
 
 config();
 
@@ -50,6 +50,10 @@ export function sendOtpEmailByTrap(email, otp) {
       console.log('from ',process.env.EMAIL_ID);
       console.log('to ',email);
       console.log(process.env.MAILTRAP_TOKEN , " ", process.env.MAILTRAP_ENDPOINT);
+      let mailTrapClient = new MailtrapClient({
+        endpoint: process.env.MAILTRAP_TOKEN,
+        token: process.env.MAILTRAP_ENDPOINT,
+      });
       const sender = {
         email: process.env.EMAIL_ID,
         name: "mailtrap@kiranjohnson.online",
