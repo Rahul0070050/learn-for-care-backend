@@ -1,3 +1,4 @@
+import { config } from "dotenv";
 import { MailtrapClient } from "mailtrap";
 
 config();
