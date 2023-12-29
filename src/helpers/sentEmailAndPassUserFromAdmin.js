@@ -39,10 +39,6 @@ export function sentEmailToSubUserEmailAndPasswordByTrap(
 ) {
   return new Promise(async (resolve, reject) => {
     try {
-      let image = await downloadFromS3(
-        "",
-        "/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7"
-      );
 
       let mailTrapClient = new MailtrapClient({
         endpoint: process.env.MAILTRAP_ENDPOINT,
