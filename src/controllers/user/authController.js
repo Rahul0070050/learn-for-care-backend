@@ -133,7 +133,7 @@ export const userAuthController = {
         .then((result) => {
           saveOtpToDB(result?.email)
             .then((result) => {
-              sendWelcomeEmailByTrap(result.email, result.otp)
+              sendOtpEmailByTrap(result.email, result.otp)
                 .then(() => {
                   res.status(200).json({
                     success: true,
