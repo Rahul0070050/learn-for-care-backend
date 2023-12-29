@@ -22,6 +22,7 @@ export default function sentOtpEmail(email, otp) {
 
       mailer().sendMail(mailData, function (err, info) {
         if (err) {
+          console.log(err);
           reject(err.message);
         } else {
           resolve({ accepted: info.accepted[0] });
