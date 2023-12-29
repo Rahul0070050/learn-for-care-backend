@@ -38,6 +38,7 @@ import subAdminAuth from "./routes/subAdmin/auth.js";
 
 import { mySqlConnect } from "./conf/mysql.js";
 import { s3Config } from "./conf/aws_s3.js";
+import { mailtrapConf } from "./conf/mailTrap.js";
 
 import { cartController } from "./controllers/user/cartController.js";
 
@@ -74,6 +75,11 @@ app.use(
     credentials: true,
   })
 );
+mailtrapConf().then(() => {
+  console.log('mailTrap connected');
+}).catch(err => {
+  console.log(err);
+})
 
 // mysql connection
 mySqlConnect((err) => {

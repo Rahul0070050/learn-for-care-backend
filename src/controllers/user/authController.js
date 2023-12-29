@@ -8,7 +8,7 @@ import {
   validateUserInfo,
   validateUserLoginData,
 } from "../../helpers/user/validateAuthReqData.js";
-import sentOtpEmail from "../../helpers/sendOtpEmail.js";
+import sentOtpEmail, { sendOtpEmailByTrap } from "../../helpers/sendOtpEmail.js";
 import {
   activateUser,
   getOtpFromDB,
@@ -44,7 +44,7 @@ export const userAuthController = {
               result.password = hashedPassword;
               insertUser(result, otp)
                 .then(({ otp }) => {
-                  sentOtpEmail(result.email, otp)
+                  sendOtpEmailByTrap(result.email, otp)
                     .then((sentOtpRes) => {
                       res.status(200).json({
                         success: true,
