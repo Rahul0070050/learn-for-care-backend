@@ -28,7 +28,7 @@ import {
   validateChangePassToken,
 } from "../../helpers/genarateToken.js";
 import sendLinkToChangePasswordEmail from "../../helpers/sendForgotPassLink.js";
-import sendWelcomeEmail from "../../helpers/welcomEmail.js";
+import sendWelcomeEmail, { sendWelcomeEmailByTrap } from "../../helpers/welcomEmail.js";
 
 config();
 let cryptr = new Cryptr(process.env.CRYPTER);
@@ -133,7 +133,7 @@ export const userAuthController = {
         .then((result) => {
           saveOtpToDB(result?.email)
             .then((result) => {
-              sentOtpEmail(result.email, result.otp)
+              sendWelcomeEmailByTrap(result.email, result.otp)
                 .then(() => {
                   res.status(200).json({
                     success: true,
@@ -224,7 +224,7 @@ export const userAuthController = {
               if (otp == result.otp) {
                 activateUser(result.email)
                   .then(async () => {
-                    await sendWelcomeEmail(result.email);
+                    await sendWelcomeEmailByTrap(result.email);
                     res.status(202).json({
                       success: true,
                       data: { code: 202, message: "signup successful" },

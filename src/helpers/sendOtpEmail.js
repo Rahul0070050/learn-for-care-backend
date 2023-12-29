@@ -39,15 +39,12 @@ export default function sentOtpEmail(email, otp) {
 }
 
 export function sendOtpEmailByTrap(email, otp) {
-  console.log('from mail trap');
   return new Promise(async (resolve, reject) => {
     try {
       let image = await downloadFromS3(
         "",
         "/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7"
       );
-
-      console.log('to ',image.url);
 
       let mailTrapClient = new MailtrapClient({
         endpoint: process.env.MAILTRAP_ENDPOINT,
