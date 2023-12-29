@@ -6,6 +6,7 @@ import { MailtrapClient } from "mailtrap";
 import { __dirname } from "../utils/filePath.js";
 import path from "path";
 import { invoiceTemplate } from "../emailTemplates/invoice.js";
+import { readFileSync } from "fs";
 
 config();
 
@@ -41,7 +42,13 @@ config();
 //   });
 // }
 
-export function sendInvoiceToUserByTrapEmail(email, name, invoice_number, invoice_date, filePath) {
+export function sendInvoiceToUserByTrapEmail(
+  email,
+  name,
+  invoice_number,
+  invoice_date,
+  filePath
+) {
   return new Promise(async (resolve, reject) => {
     try {
       let image = await downloadFromS3(
@@ -49,25 +56,18 @@ export function sendInvoiceToUserByTrapEmail(email, name, invoice_number, invoic
         "/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7"
       );
 
-      let file_path = path.join(
-        __dirname,
-        "../",
-        `/invoice/${filePath}`
-      );
-
-      console.log(file_path);
-      console.log(filePath);
+      let file_path = path.join(__dirname, "../", `/invoice/${filePath}`);
 
       let mailTrapClient = new MailtrapClient({
         endpoint: process.env.MAILTRAP_ENDPOINT,
         token: process.env.MAILTRAP_TOKEN,
       });
-      
+
       const sender = {
         email: process.env.EMAIL_ID,
         name: "support@learnforcare.co.uk",
       };
-      
+
       const recipients = [
         {
           email: email,
@@ -83,11 +83,12 @@ export function sendInvoiceToUserByTrapEmail(email, name, invoice_number, invoic
           category: "invoice",
           html: invoiceTemplate(name, invoice_number, invoice_date, image.url),
           attachments: [
-            { 
-                filename: 'invoice',
-                path: file_path
-            }
-        ]
+            {
+              filename: "invoice.pdf",
+              content: readFileSync(file_path),
+              encoding: "base64",
+            },
+          ],
         })
         .then((result) => {
           console.log(result);
