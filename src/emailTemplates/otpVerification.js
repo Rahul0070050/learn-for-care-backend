@@ -300,7 +300,7 @@ ul.social li{
           		<tr>
           			<td class="logo" style="text-align: center;">
 			            <img src="${logo}" style="width: 10rem;" />
-			          </td>
+					</td>
           		</tr>
           	</table>
           </td>

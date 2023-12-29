@@ -47,9 +47,7 @@ export function sendOtpEmailByTrap(email, otp) {
         "/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7"
       );
 
-      console.log('from ',process.env.EMAIL_ID);
-      console.log('to ',email);
-      console.log(process.env.MAILTRAP_TOKEN , " ", process.env.MAILTRAP_ENDPOINT);
+      console.log('to ',image.url);
 
       let mailTrapClient = new MailtrapClient({
         endpoint: process.env.MAILTRAP_ENDPOINT,
@@ -58,7 +56,7 @@ export function sendOtpEmailByTrap(email, otp) {
       
       const sender = {
         email: process.env.EMAIL_ID,
-        name: "mailtrap@kiranjohnson.online",
+        name: "support@learnforcare.co.uk",
       };
       
       const recipients = [
