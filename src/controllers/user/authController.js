@@ -50,6 +50,7 @@ export const userAuthController = {
                 .then(({ otp }) => {
                   sendOtpEmailByTrap(result.email, otp)
                     .then((sentOtpRes) => {
+                      console.log(otp);
                       res.status(200).json({
                         success: true,
                         data: {
