@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+export const invoiceTemplate = (name, invoice_number, invoice_date, logo) => {
+  return `
+  <!DOCTYPE html>
   <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
   <head>
       <meta charset="utf-8"> <!-- utf-8 works for most cases -->
@@ -337,4 +339,5 @@ Please review the attached invoice at your earliest convenience. If you have any
       </div>
   </div>
   </body>
-  </html>  
+  </html>`;
+};

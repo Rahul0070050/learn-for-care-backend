@@ -33,6 +33,7 @@ import {
 } from "../../db/mysql/users/invoice.js";
 import { getActiveCouponByUserId } from "../../db/mysql/users/coupon.js";
 import { calculateVATAmount } from "../../helpers/getTaxAmount.js";
+import { sendInvoiceToUserByTrapEmail } from "../../helpers/sendInvoiceEmail.js";
 
 config("../../../.env");
 export const cartController = {
@@ -434,12 +435,12 @@ export const cartController = {
             if (coupon.type == "Percent") {
               cart.forEach((item) => {
                 let per = (item["amount"] * coupon.amount) / 100;
-                item["amount"] = (item["amount"] - per);
+                item["amount"] = item["amount"] - per;
               });
             } else {
-              let amount = (coupon.amount / cart.length);
+              let amount = coupon.amount / cart.length;
               cart.forEach((item) => {
-                item["amount"] = (item["amount"] - amount);
+                item["amount"] = item["amount"] - amount;
               });
             }
           } catch (error) {
@@ -562,6 +563,13 @@ export const cartController = {
                         cartItems,
                         total,
                         vatAmount
+                      );
+
+                      await sendInvoiceToUserByTrapEmail(
+                        userName,
+                        transitionId,
+                        new Date().toLocaleDateString("en-GB"),
+                        filePath
                       );
 
                       let url = await uploadInvoice(filePath);
