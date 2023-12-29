@@ -29,7 +29,7 @@ import {
   generateChangePassToken,
   validateChangePassToken,
 } from "../../helpers/genarateToken.js";
-import sendLinkToChangePasswordEmail from "../../helpers/sendForgotPassLink.js";
+import sendLinkToChangePasswordEmail, { sendLinkToChangePasswordEmailByTrap } from "../../helpers/sendForgotPassLink.js";
 import sendWelcomeEmail, {
   sendWelcomeEmailByTrap,
 } from "../../helpers/welcomEmail.js";
@@ -442,7 +442,7 @@ export const userAuthController = {
                   newToken +
                   "$" +
                   newEmail;
-                sendLinkToChangePasswordEmail(result.email, url)
+                  sendLinkToChangePasswordEmailByTrap(result.email, url)
                   .then(() => {
                     res.status(200).json({
                       success: true,

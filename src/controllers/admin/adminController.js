@@ -35,7 +35,7 @@ import {
   updateExperienceDocDbByAdminIdAndDocId,
   updateQualificationDocDbByAdminIdAndDocId,
 } from "../../db/mysql/admin/admin.js";
-import sendEmailAndPassByEmail from "../../helpers/sentEmailAndPassUserFromAdmin.js";
+import sentEmailToSubUserEmailAndPasswordByTrap from "../../helpers/sentEmailAndPassUserFromAdmin.js";
 import { assignBundleToUser } from "../../db/mysql/admin/bundle.js";
 import {
   deleteSubAdminFomDb,
@@ -227,7 +227,7 @@ export const adminController = {
               let password = hashedPassword;
               insertUser({ ...result, password: password, type_of_account: result.type }, otp)
                 .then(async() => {
-                  await sendEmailAndPassByEmail(
+                  await sentEmailToSubUserEmailAndPasswordByTrap(
                     result.first_name + " " + result.last_name,
                     result.email,
                     result.password
