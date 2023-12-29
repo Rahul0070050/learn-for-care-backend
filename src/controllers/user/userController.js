@@ -44,7 +44,7 @@ import {
   assignCourseToMAnagerIndividualFromAssignedToDb,
   assignCourseToMAnagerIndividualFromManagerAssigned,
 } from "../../db/mysql/users/users.js";
-import sendEmailAndPassByEmail from "../../helpers/sentEmailAndPassUser.js";
+import sendEmailAndPassByEmail, { sentEmailToSubUserEmailAndPasswordByTrap } from "../../helpers/sentEmailAndPassUser.js";
 import sentEmailToSubUserEmailAndPassword from "../../helpers/sentEmailAndPassUser.js";
 import {
   checkAssignCourseToManagerIndividualReqData,
@@ -175,7 +175,7 @@ export const userController = {
           let password = await hashPassword(result.password);
           saveASubUserToDb({ ...result, password, userId })
             .then(() => {
-              sentEmailToSubUserEmailAndPassword(
+              sentEmailToSubUserEmailAndPasswordByTrap(
                 `${result.first_name} ${result.last_name}`,
                 result.email,
                 result.password

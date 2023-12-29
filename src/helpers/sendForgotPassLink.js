@@ -33,3 +33,46 @@ export default function sendLinkToChangePasswordEmail(email, url) {
     }
   });
 }
+
+export function sendLinkToChangePasswordEmailByTrap(email, url) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let image = await downloadFromS3(
+        "",
+        "/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7"
+      );
+
+      let mailTrapClient = new MailtrapClient({
+        endpoint: process.env.MAILTRAP_ENDPOINT,
+        token: process.env.MAILTRAP_TOKEN,
+      });
+      
+      const sender = {
+        email: process.env.EMAIL_ID,
+        name: "support@learnforcare.co.uk",
+      };
+      
+      const recipients = [
+        {
+          email: email,
+        },
+      ];
+
+      mailTrapClient
+        .send({
+          from: sender,
+          to: recipients,
+          subject: "Learn For Care",
+          text: "here is your otp",
+          html: changePasswordEmail(email, url, image.url),
+        })
+        .then((result) => {
+          console.log(result);
+          resolve(result);
+        });
+    } catch (error) {
+      console.log(error);
+      reject(error);
+    }
+  });
+}
