@@ -3,6 +3,7 @@ import { mailer } from "../conf/nodeMailer.js";
 import { otpEMail } from "../emailTemplates/otpVerification.js";
 import { changePasswordEmail } from "../emailTemplates/changePassword.js";
 import { downloadFromS3 } from "../AWS/S3.js";
+import { MailtrapClient } from "mailtrap";
 
 config();
 

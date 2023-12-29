@@ -1,6 +1,7 @@
 import { config } from "dotenv";
 import { mailer } from "../conf/nodeMailer.js";
 import { userCredentialsFromAdmin } from "../emailTemplates/userCredentialsFromAdmin.js";
+import { MailtrapClient } from "mailtrap";
 
 config();
 
