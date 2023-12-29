@@ -1,4 +1,4 @@
-const { MailtrapClient } = require("mailtrap");
+import { MailtrapClient } from "mailtrap";
 
 config();
 
