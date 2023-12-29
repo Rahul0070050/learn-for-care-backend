@@ -41,7 +41,7 @@ config();
 //   });
 // }
 
-export function sendInvoiceToUserByTrapEmail(name, invoice_number, invoice_date, filePath) {
+export function sendInvoiceToUserByTrapEmail(email, name, invoice_number, invoice_date, filePath) {
   return new Promise(async (resolve, reject) => {
     try {
       let image = await downloadFromS3(

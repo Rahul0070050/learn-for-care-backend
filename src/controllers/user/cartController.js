@@ -524,6 +524,7 @@ export const cartController = {
           )
             .then((user) => {
               let userId = user[0].id;
+              let email = user[0].email;
               let userName = user[0].first_name + " " + user[0].last_name;
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
@@ -566,6 +567,7 @@ export const cartController = {
                       );
 
                       await sendInvoiceToUserByTrapEmail(
+                        email,
                         userName,
                         transitionId,
                         new Date().toLocaleDateString("en-GB"),
