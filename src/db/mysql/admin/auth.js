@@ -98,3 +98,20 @@ export const changeEmail = (email) => {
     }
   });
 };
+
+export const changeAdminPassword = (password) => {
+  return new Promise((resolve, reject) => {
+    try {
+      let insertQuery = `UPDATE admin SET password = ?;`;
+      db.query(insertQuery, [password], (err, result) => {
+        if (err) {
+          return reject(err?.message);
+        } else {
+          resolve(result);
+        }
+      });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+};

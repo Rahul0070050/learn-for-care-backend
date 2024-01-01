@@ -4,6 +4,7 @@ import {
   activateAdmin,
   getOtpFromDB,
   getAdminByEmail,
+  changeAdminPassword,
 } from "../../db/mysql/admin/auth.js";
 import {
   hashPassword,
@@ -12,6 +13,7 @@ import {
 import { createTokenForAdmin } from "../../helpers/jwt.js";
 import { getAdminEmail } from "../../db/mysql/admin/auth.js";
 import {
+  checkChangePasswordReqBody,
   checkValidateOtpReqBody,
   validateAdminLoginReqBody,
 } from "../../helpers/admin/validateAuthReqData.js";
@@ -291,4 +293,56 @@ export const adminAuthController = {
       });
     }
   },
+  changePassword:(req,res) => {
+    try {
+      checkChangePasswordReqBody(req.body).then(result => {
+        changeAdminPassword().then(() => {
+          res.status(202).json({
+            success: true,
+            data: {
+              code: 202,
+              message: "password changed successfully",
+            },
+          });
+        }).catch(() => {
+          res.status(406).json({
+            success: false,
+            errors: [
+              {
+                code: 406,
+                message: "values not acceptable",
+                error: err,
+              },
+            ],
+            errorType: "client",
+          });
+        })
+      }).catch(err => {
+        res.status(406).json({
+          success: false,
+          errors: [
+            {
+              code: 406,
+              message: "values not acceptable",
+              error: err,
+            },
+          ],
+          errorType: "client",
+        });
+      })
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        errors: [
+          {
+            code: 500,
+            message:
+              "some error occurred in the server try again after some times",
+            response: error?.message,
+          },
+        ],
+        errorType: "server",
+      });
+    }
+  }
 };
