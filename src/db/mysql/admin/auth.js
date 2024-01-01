@@ -28,15 +28,19 @@ export function getAdminEmail() {
   });
 }
 
-export function saveOtpToDB(email) {
+export function saveOtpToDB() {
   return new Promise(async (resolve, reject) => {
     try {
       let otp = await Number(generatorOtp());
 
-      let setOtpQuery = `UPDATE admin SET otp = ?, activate = ? WHERE email = ?;`;
-      db.query(setOtpQuery, [otp, false, email], (err, result) => {
+      let setOtpQuery = `UPDATE admin SET otp = ?, activate = ?;`;
+      let getQuery = `SELECT * FORM admin LIMIT = 1;`;
+      db.query(setOtpQuery, [otp, false], (err, result) => {
         if (err) return reject(err.message);
-        else return resolve({ otp, email });
+        db.query(setOtpQuery, [otp, false], (err, result) => {
+          if (err) return reject(err.message);
+          else return resolve({ otp, email: result[0].email });
+        });
       });
     } catch (error) {
       reject(error?.message);

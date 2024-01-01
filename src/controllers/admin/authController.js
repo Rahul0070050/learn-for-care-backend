@@ -37,11 +37,14 @@ export const adminAuthController = {
                   errorType: "client",
                 });
               } else {
-                let admin = adminData[0]
+                let admin = adminData[0];
                 validatePassword(loginInfo.password, admin.password).then(
                   (result) => {
                     if (result) {
-                      createTokenForAdmin({ ...admin, type_of_account: "admin" })
+                      createTokenForAdmin({
+                        ...admin,
+                        type_of_account: "admin",
+                      })
                         .then((token) => {
                           res.status(200).json({
                             success: true,
@@ -50,7 +53,7 @@ export const adminAuthController = {
                               jwt_access_token: token.accessToken,
                               jwt_re_fresh_token: token.reFreshToken,
                               message: "login successful",
-                              adminType: "admin"
+                              adminType: "admin",
                             },
                           });
                         })
@@ -130,34 +133,17 @@ export const adminAuthController = {
   },
   resendOtp: (req, res) => {
     try {
-      getAdminEmail()
+      saveOtpToDB()
         .then((result) => {
-          let email = result[0].email;
-          saveOtpToDB(email)
-            .then((result) => {
-              sentOtpEmail(email, result.otp)
-                .then(() => {
-                  res.status(200).json({
-                    success: true,
-                    data: {
-                      code: 200,
-                      message: "OTP sent to the email",
-                    },
-                  });
-                })
-                .catch((err) => {
-                  res.status(500).json({
-                    success: false,
-                    errors: [
-                      {
-                        code: 500,
-                        message: "some error occurred please try again later",
-                        error: err,
-                      },
-                    ],
-                    errorType: "server",
-                  });
-                });
+          sentOtpEmail(result.email, result.otp)
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                data: {
+                  code: 200,
+                  message: "OTP sent to the email",
+                },
+              });
             })
             .catch((err) => {
               res.status(500).json({
