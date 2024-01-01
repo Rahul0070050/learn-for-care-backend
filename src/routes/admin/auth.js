@@ -7,5 +7,6 @@ const route = Router();
 route.post("/login", adminAuthController.login);
 route.post("/validate-otp", adminAuthController.validateOtp);
 route.patch("/resend-otp", adminAuthController.resendOtp);
+route.patch("/update-password", adminAuthController.changePassword);
 
 export default route;
