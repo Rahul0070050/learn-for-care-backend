@@ -1,4 +1,6 @@
-import sentOtpEmail, { sendOtpEmailByTrap } from "../../helpers/sendOtpEmail.js";
+import sentOtpEmail, {
+  sendOtpEmailByTrap,
+} from "../../helpers/sendOtpEmail.js";
 import {
   saveOtpToDB,
   activateAdmin,
@@ -210,34 +212,15 @@ export const adminAuthController = {
                 });
               }
 
-              console.log(otp, result.otp);
               otp = otp[0]?.otp;
-              console.log(otp, result.otp);
               if (otp == result.otp) {
-                activateAdmin()
-                  .then(() => {
-                    res.status(202).json({
-                      success: true,
-                      data: {
-                        code: 202,
-                        message: "otp validation successful",
-                      },
-                    });
-                  })
-                  .catch((err) => {
-                    res.status(500).json({
-                      success: false,
-                      errors: [
-                        {
-                          code: 500,
-                          message:
-                            "some error occurred in the server try again after some times",
-                          error: err,
-                        },
-                      ],
-                      errorType: "server",
-                    });
-                  });
+                res.status(202).json({
+                  success: true,
+                  data: {
+                    code: 202,
+                    message: "otp validation successful",
+                  },
+                });
               } else {
                 res.status(406).json({
                   success: false,
@@ -295,18 +278,35 @@ export const adminAuthController = {
       });
     }
   },
-  changePassword:(req,res) => {
+  changePassword: (req, res) => {
     try {
-      checkChangePasswordReqBody(req.body).then(result => {
-        changeAdminPassword().then(() => {
-          res.status(202).json({
-            success: true,
-            data: {
-              code: 202,
-              message: "password changed successfully",
-            },
-          });
-        }).catch(() => {
+      checkChangePasswordReqBody(req.body)
+        .then((result) => {
+          changeAdminPassword()
+            .then(() => {
+              res.status(202).json({
+                success: true,
+                data: {
+                  code: 202,
+                  message: "password changed successfully",
+                },
+              });
+            })
+            .catch(() => {
+              res.status(406).json({
+                success: false,
+                errors: [
+                  {
+                    code: 406,
+                    message: "values not acceptable",
+                    error: err,
+                  },
+                ],
+                errorType: "client",
+              });
+            });
+        })
+        .catch((err) => {
           res.status(406).json({
             success: false,
             errors: [
@@ -318,20 +318,7 @@ export const adminAuthController = {
             ],
             errorType: "client",
           });
-        })
-      }).catch(err => {
-        res.status(406).json({
-          success: false,
-          errors: [
-            {
-              code: 406,
-              message: "values not acceptable",
-              error: err,
-            },
-          ],
-          errorType: "client",
         });
-      })
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -346,5 +333,5 @@ export const adminAuthController = {
         errorType: "server",
       });
     }
-  }
+  },
 };
