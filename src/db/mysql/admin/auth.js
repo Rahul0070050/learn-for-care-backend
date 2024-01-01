@@ -51,8 +51,8 @@ export function saveOtpToDB() {
 export function getOtpFromDB(email) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT otp FROM admin WHERE email = ?;`;
-      db.query(getQuery, [email], (err, result) => {
+      let getQuery = `SELECT otp FROM admin;`;
+      db.query(getQuery, (err, result) => {
         if (err) {
           reject(err.message);
         } else {
@@ -65,11 +65,11 @@ export function getOtpFromDB(email) {
   });
 }
 
-export function activateAdmin(email) {
+export function activateAdmin() {
   return new Promise((resolve, reject) => {
     try {
-      let updateQuery = `UPDATE admin SET activate = ?, otp = ? WHERE email = ?;`;
-      db.query(updateQuery, [true, null, email], (err, result) => {
+      let updateQuery = `UPDATE admin SET activate = ?, otp = ?;`;
+      db.query(updateQuery, [true, null], (err, result) => {
         if (err) {
           reject(err?.message);
         } else {

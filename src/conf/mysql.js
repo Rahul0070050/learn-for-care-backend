@@ -70,6 +70,7 @@ export function mySqlConnect(done) {
             account_no VARCHAR(100) DEFAULT NULL,
             sort_code	VARCHAR(100) DEFAULT NULL,
             roll_number VARCHAR(100) DEFAULT NULL,
+            otp INT DEFAULT NULL,
             brief_profile TEXT DEFAULT NULL
       );`;
 

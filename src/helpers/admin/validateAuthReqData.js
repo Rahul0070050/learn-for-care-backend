@@ -26,7 +26,6 @@ export function checkValidateOtpReqBody(otpReqInfo) {
   return new Promise((resolve, reject) => {
     let otpInfo = object({
       otp: number().required("please provide otp"),
-      email: string().required("please provide email address").email(),
     });
 
     try {

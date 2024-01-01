@@ -191,7 +191,7 @@ export const adminAuthController = {
     try {
       checkValidateOtpReqBody(req.body)
         .then((result) => {
-          getOtpFromDB(result?.email)
+          getOtpFromDB()
             .then((otp) => {
               if (otp.length <= 0) {
                 return res.status(406).json({
@@ -210,7 +210,7 @@ export const adminAuthController = {
               otp = otp[0]?.otp;
 
               if (otp == result.otp) {
-                activateAdmin(result.email)
+                activateAdmin()
                   .then(() => {
                     res.status(202).json({
                       success: true,
