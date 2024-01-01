@@ -210,8 +210,9 @@ export const adminAuthController = {
                 });
               }
 
+              console.log(otp, result.otp);
               otp = otp[0]?.otp;
-
+              console.log(otp, result.otp);
               if (otp == result.otp) {
                 activateAdmin()
                   .then(() => {
