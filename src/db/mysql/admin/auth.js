@@ -37,7 +37,7 @@ export function saveOtpToDB() {
       let getQuery = `SELECT * FORM admin LIMIT = 1;`;
       db.query(setOtpQuery, [otp], (err, result) => {
         if (err) return reject(err.message);
-        db.query(setOtpQuery, [otp, false], (err, result) => {
+        db.query(getQuery, [otp, false], (err, result) => {
           if (err) return reject(err.message);
           else return resolve({ otp, email: result[0].email });
         });
