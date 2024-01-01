@@ -34,7 +34,7 @@ export function saveOtpToDB() {
       let otp = await Number(generatorOtp());
 
       let setOtpQuery = `UPDATE admin SET otp = ?;`;
-      let getQuery = `SELECT * FORM admin LIMIT = 1;`;
+      let getQuery = `SELECT * FROM admin;`;
       db.query(setOtpQuery, [otp], (err, result) => {
         if (err) return reject(err.message);
         db.query(getQuery, [otp, false], (err, result) => {
