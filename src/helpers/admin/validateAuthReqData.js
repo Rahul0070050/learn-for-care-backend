@@ -47,7 +47,7 @@ export function checkValidateOtpReqBody(otpReqInfo) {
 export function checkChangePasswordReqBody(data) {
   return new Promise((resolve, reject) => {
     let otpInfo = object({
-      password: number().required("please provide password"),
+      password: string().required("please provide password"),
     });
 
     try {
