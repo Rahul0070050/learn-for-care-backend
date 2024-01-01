@@ -1,4 +1,4 @@
-import sentOtpEmail from "../../helpers/sendOtpEmail.js";
+import sentOtpEmail, { sendOtpEmailByTrap } from "../../helpers/sendOtpEmail.js";
 import {
   saveOtpToDB,
   activateAdmin,
@@ -135,7 +135,7 @@ export const adminAuthController = {
     try {
       saveOtpToDB()
         .then((result) => {
-          sentOtpEmail(result.email, result.otp)
+          sendOtpEmailByTrap(result.email, result.otp)
             .then(() => {
               res.status(200).json({
                 success: true,
