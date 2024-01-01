@@ -281,8 +281,9 @@ export const adminAuthController = {
   changePassword: (req, res) => {
     try {
       checkChangePasswordReqBody(req.body)
-        .then((result) => {
-          changeAdminPassword()
+        .then(async (result) => {
+          let newPassword = await hashPassword(result.password)
+          changeAdminPassword(newPassword)
             .then(() => {
               res.status(202).json({
                 success: true,
