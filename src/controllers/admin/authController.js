@@ -195,6 +195,7 @@ export const adminAuthController = {
         .then((result) => {
           getOtpFromDB()
             .then((otp) => {
+              console.log(otp);
               if (otp.length <= 0) {
                 return res.status(406).json({
                   success: false,
