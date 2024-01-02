@@ -313,21 +313,20 @@ export const invoiceTemplate = (name, invoice_number, invoice_date, logo) => {
                         <td style="text-align: center;">
                             <div style="text-align: start; margin: 0 3rem;">
                                 <strong>Dear ${name},</strong>
-<p>
-    I hope this email finds you well. Attached, please find the invoice for the products provided by LearnForCare. The details of the invoice are outlined below:
-</p>
+                                    <p>
+                                        I hope this email finds you well. Attached, please find the invoice for the products provided by LearnForCare. The details of the invoice are outlined below:
+                                    </p>
 
-Invoice Number: ${invoice_number} <br>
-Invoice Date: ${invoice_date} <br>
-<br>
+                                    Invoice Number: ${invoice_number} <br>
+                                    Invoice Date: ${invoice_date} <br>
+                                    <br>
 
-Please review the attached invoice at your earliest convenience. If you have any questions or concerns, feel free to reach out to us. We kindly request that payment be made by the due date specified on the invoice. <br>
-<br>
-<div style="text-align: center;">
-    Please contact us on support@learnforcare.co.uk </br>
-    <a target="_blank" href="www.learnforcare.co.uk">Learn For Care</a>
-</div>
-
+                                    Please review the attached invoice at your earliest convenience. If you have any questions or concerns, feel free to reach out to us. We kindly request that payment be made by the due date specified on the invoice. <br>
+                                    <br>
+                                    <div style="text-align: center;">
+                                        Please contact us on support@learnforcare.co.uk </br>
+                                        <a target="_blank" href="www.learnforcare.co.uk">Learn For Care</a>
+                                    </div>
                              </div>
                         </td>
                       </tr>

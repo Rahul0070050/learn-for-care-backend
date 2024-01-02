@@ -393,8 +393,7 @@ export function userCredentials(name, email, pass) {
                       <p>This account is assigned by your company, ensuring that the courses offered here are tailored to your professional development. With your login credentials in hand, you're ready to embark on an exciting educational journey. Now, let the learning adventure begin! Happy learning!</p>
                       <br />
                       <p>
-                        If you don't request this email, you can simply ignore
-                        it.
+                        If you don't request this email, you can simply ignore it.
                       </p>
                     </div>
                   </td>
