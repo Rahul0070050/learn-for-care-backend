@@ -212,7 +212,7 @@ export const adminAuthController = {
     try {
       checkValidateOtpReqBody(req.body)
         .then((result) => {
-          getOtpFromDB()
+          getOtpFromDB(result.email)
             .then((otp) => {
               console.log(otp);
               if (otp.length <= 0) {

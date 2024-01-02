@@ -55,8 +55,8 @@ export function saveOtpToDB(email) {
 export function getOtpFromDB(email) {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = `SELECT otp FROM admin;`;
-      db.query(getQuery, (err, result) => {
+      let getQuery = `SELECT otp FROM admin WHERE email = ?;`;
+      db.query(getQuery, [email], (err, result) => {
         if (err) {
           reject(err.message);
         } else {
