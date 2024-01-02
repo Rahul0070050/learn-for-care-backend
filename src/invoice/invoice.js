@@ -29,9 +29,9 @@ export async function saveInvoice(
       let date = new Date().toLocaleDateString().split("/");
       let newDate = date[1] + "/" + date[0] + "/" + date[2];
 
-      let tableData = data.map((item) => {
+      let tableData = data.map((item,index) => {
         return [
-          `LFC${item.id}`,
+          `LFC${index}`,
           item.name.length > 40
             ? `${item.name.slice(0, 40)}...`
             : `${item.name}`,
