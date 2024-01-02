@@ -22,9 +22,30 @@ export function validateAdminLoginReqBody(info) {
   });
 }
 
+export function validateResendOtpReqBody(data) {
+  return new Promise((resolve, reject) => {
+    let template = object({      
+      email: string().required("Please Enter Email Address").email(),
+    });
+
+    try {
+      template
+        .validate(data)
+        .then((result) => {
+          resolve(result);
+        })
+        .catch((err) => {
+          reject(err?.message);
+        });
+    } catch (error) {
+      reject(error?.message);
+    }
+  });
+}
+
 export function checkValidateOtpReqBody(otpReqInfo) {
   return new Promise((resolve, reject) => {
-    let otpInfo = object({
+    let otpInfo = object({      
       otp: number().required("please provide otp"),
     });
 

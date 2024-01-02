@@ -28,18 +28,22 @@ export function getAdminEmail() {
   });
 }
 
-export function saveOtpToDB() {
+export function saveOtpToDB(email) {
   return new Promise(async (resolve, reject) => {
     try {
       let otp = await Number(generatorOtp());
 
       let setOtpQuery = `UPDATE admin SET otp = ?;`;
-      let getQuery = `SELECT * FROM admin;`;
+      let getQuery = `SELECT * FROM admin WHERE email = ?;`;
       db.query(setOtpQuery, [otp], (err, result) => {
         if (err) return reject(err.message);
-        db.query(getQuery, [otp, false], (err, result) => {
+        db.query(getQuery, [email], (err, result) => {
           if (err) return reject(err.message);
-          else return resolve({ otp, email: result[0].email });
+          if(result.length <= 0) {
+            reject("Email Is Not Exist");
+          } else {
+            resolve({ otp, email: result[0]?.email });
+          }
         });
       });
     } catch (error) {

@@ -18,6 +18,7 @@ import {
   checkChangePasswordReqBody,
   checkValidateOtpReqBody,
   validateAdminLoginReqBody,
+  validateResendOtpReqBody,
 } from "../../helpers/admin/validateAuthReqData.js";
 
 export const adminAuthController = {
@@ -137,17 +138,33 @@ export const adminAuthController = {
   },
   resendOtp: (req, res) => {
     try {
-      saveOtpToDB()
+      validateResendOtpReqBody(req.body)
         .then((result) => {
-          sendOtpEmailByTrap(result.email, result.otp)
-            .then(() => {
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "OTP sent to the email",
-                },
-              });
+          saveOtpToDB(result.email)
+            .then((result) => {
+              sendOtpEmailByTrap(req.body.email, result.otp)
+                .then(() => {
+                  res.status(200).json({
+                    success: true,
+                    data: {
+                      code: 200,
+                      message: "OTP sent to the email",
+                    },
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).json({
+                    success: false,
+                    errors: [
+                      {
+                        code: 500,
+                        message: "some error occurred please try again later",
+                        error: err,
+                      },
+                    ],
+                    errorType: "server",
+                  });
+                });
             })
             .catch((err) => {
               res.status(500).json({
@@ -164,16 +181,16 @@ export const adminAuthController = {
             });
         })
         .catch((err) => {
-          res.status(500).json({
+          res.status(406).json({
             success: false,
             errors: [
               {
-                code: 500,
-                message: "some error occurred please try again later",
+                code: 406,
+                message: "values not acceptable",
                 error: err,
               },
             ],
-            errorType: "server",
+            errorType: "client",
           });
         });
     } catch (error) {
@@ -282,7 +299,7 @@ export const adminAuthController = {
     try {
       checkChangePasswordReqBody(req.body)
         .then(async (result) => {
-          let newPassword = await hashPassword(result.password)
+          let newPassword = await hashPassword(result.password);
           changeAdminPassword(newPassword)
             .then(() => {
               res.status(202).json({
