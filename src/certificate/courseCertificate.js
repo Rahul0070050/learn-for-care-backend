@@ -9,6 +9,7 @@ export async function saveCertificate({
   userName,
   courseName,
   date,
+  per
 }) {
   return new Promise((resolve, reject) => {
     try {
