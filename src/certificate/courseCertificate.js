@@ -57,7 +57,7 @@ export async function saveCertificate({
   
       doc.text(per+"%", 230, 579);
   
-      doc.text("some text for course description".split(1, 60), 230, 621);
+      doc.text("some text for course description".split(1, 60), 230, 622);
 
       doc.text(newDate, 100, 690);
 
