@@ -300,7 +300,7 @@ export const adminAuthController = {
       checkChangePasswordReqBody(req.body)
         .then(async (result) => {
           let newPassword = await hashPassword(result.password);
-          changeAdminPassword(newPassword)
+          changeAdminPassword(newPassword,result?.email)
             .then(() => {
               res.status(202).json({
                 success: true,

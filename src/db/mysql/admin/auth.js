@@ -103,11 +103,11 @@ export const changeEmail = (email) => {
   });
 };
 
-export const changeAdminPassword = (password) => {
+export const changeAdminPassword = (password,email) => {
   return new Promise((resolve, reject) => {
     try {
-      let insertQuery = `UPDATE admin SET password = ?;`;
-      db.query(insertQuery, [password], (err, result) => {
+      let insertQuery = `UPDATE admin SET password = ? WHERE email = ?;`;
+      db.query(insertQuery, [password,email], (err, result) => {
         if (err) {
           return reject(err?.message);
         } else {
