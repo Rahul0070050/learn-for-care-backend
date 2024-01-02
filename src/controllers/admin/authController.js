@@ -167,12 +167,12 @@ export const adminAuthController = {
                 });
             })
             .catch((err) => {
-              res.status(500).json({
+              res.status(406).json({
                 success: false,
                 errors: [
                   {
-                    code: 500,
-                    message: "some error occurred please try again later",
+                    code: 406,
+                    message: "values not acceptable",
                     error: err,
                   },
                 ],
