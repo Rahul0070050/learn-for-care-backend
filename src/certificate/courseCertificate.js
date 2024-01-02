@@ -48,14 +48,16 @@ export async function saveCertificate({
 
       doc.font("Helvetica");
 
-      doc.text(courseName, 220, 472);
+      doc.text(courseName, 230, 451);
 
-      doc.text(newDate, 220, 514);
-      
-      doc.text(sl, 220, 554);
+      doc.text(newDate, 230, 492);
+  
+      doc.text(sl, 230, 535);
+  
+      doc.text(per+"%", 230, 579);
+  
+      doc.text("some text for course description".split(1, 60), 230, 625);
 
-      doc.text("some text for course description".split(1, 60), 220, 597);
-      
       doc.text(newDate, 100, 690);
 
       doc.end();

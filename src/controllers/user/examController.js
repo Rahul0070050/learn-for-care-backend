@@ -109,6 +109,7 @@ export const examController = {
                 userName: user.first_name + " " + user.last_name,
                 courseName: course[0].name,
                 date: new Date(),
+                per: per,
               });
               let url = await uploadPdfToS3(filePath);
               insertNewCertificate({

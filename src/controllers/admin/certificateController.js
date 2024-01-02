@@ -10,18 +10,25 @@ import {
   validateGetCertificateByIdInfo,
   validateSaveCertificateByUserIdInfo,
 } from "../../helpers/admin/validateCertificateReqData.js";
-import { v4 as uuid} from "uuid";
+import { v4 as uuid } from "uuid";
 
 export const certificateController = {
   createCertificate: (req, res) => {
     try {
       validateCreateCertificateInfo(req.body)
         .then(async (result) => {
-          let filePath = uuid() + ".pdf"
-          let url = await uploadPdfToS3(filePath)
-          insertNewCertificate({...result,image: url.file})
-          .then(async (sl) => {
-              await saveCertificate({filePath,sl,userName: user_name, courseName: course_name, date });
+          let filePath = uuid() + ".pdf";
+          let url = await uploadPdfToS3(filePath);
+          insertNewCertificate({ ...result, image: url.file })
+            .then(async (sl) => {
+              await saveCertificate({
+                filePath,
+                sl,
+                userName: user_name,
+                courseName: course_name,
+                date,
+                per: "80",
+              });
               res.status(201).json({
                 success: true,
                 data: {
