@@ -621,7 +621,7 @@ export const cartController = {
             })
             .catch((err) => {
               console.log("err.message");
-              console.log(err.message);
+              console.log(err);
               res.status(406).send();
             });
           // Then define and call a function to handle the event charge.succeeded
