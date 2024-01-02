@@ -31,7 +31,7 @@ export async function saveInvoice(
 
       let tableData = data.map((item,index) => {
         return [
-          `LFC${index}`,
+          `LFC${++index}`,
           item.name.length > 40
             ? `${item.name.slice(0, 40)}...`
             : `${item.name}`,
