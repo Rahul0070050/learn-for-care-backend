@@ -24,7 +24,7 @@ export async function saveCertificate({
         path.join(
           __dirname,
           "../",
-          "/certificate/learnforcare-certificate.jpg"
+          "/certificate/certificate.jpg"
         ),
         0,
         0,
