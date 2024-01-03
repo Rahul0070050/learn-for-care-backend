@@ -136,7 +136,7 @@ export function getUserByIdFromDb(id) {
       let manager_assigned_course_count = await getCountManagerAssignedCourse(id);
       let assigned_course_count = await getCountAssignedCourse(id);
       let certificate = await getCountAllCertificates(id);
-      let getUsersQuery = `SELECT *, DATE_FORMAT(date_of_joining, '%d/%m/%Y') AS date_of_joining FROM users WHERE id = ?`;
+      let getUsersQuery = `SELECT *, DATE_FORMAT(joined, '%d/%m/%Y') AS joined FROM users WHERE id = ?`;
       db.query(getUsersQuery, [id], async (err, result) => {
         if (err) {
           reject(err?.message);
