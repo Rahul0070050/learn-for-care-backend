@@ -49,8 +49,11 @@ export async function saveCertificate({
       doc.fillColor("#F3A024");
       doc.text(userName, centerX, centerY - 30);
       
-      doc.fillColor("#000");
       // doc.font("Helvetica");
+      
+      doc.font(path.join(__dirname, "../", "/font/Montserrat/static/Montserrat-Regular.ttf"));
+      
+      doc.fillColor("#000");
 
       doc.fontSize(16);
 
