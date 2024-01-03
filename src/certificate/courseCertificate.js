@@ -44,7 +44,7 @@ export async function saveCertificate({
 
       doc.font(path.join(__dirname, "../", "/font/Montserrat/static/Montserrat-Bold.ttf"));
       doc.fontSize(16);
-      doc.fillColor("#212A4F");
+      doc.fillColor("#fff");
       doc.text(userName, centerX, centerY - 30);
 
       doc.font("Helvetica");
