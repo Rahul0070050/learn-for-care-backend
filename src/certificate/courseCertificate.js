@@ -53,9 +53,9 @@ export async function saveCertificate({
       
       doc.font(path.join(__dirname, "../", "/font/Montserrat/static/Montserrat-Regular.ttf"));
       
-      doc.fillColor("#000");
+      doc.fillColor("#3D3B40");
 
-      doc.fontSize(16);
+      doc.fontSize(15);
 
       doc.text(courseName, 230, 451);
 
