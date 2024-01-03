@@ -45,7 +45,7 @@ export function getCertificateByIdFromDb(id) {
 export function getAllCertificateFromDb() {
   return new Promise((resolve, reject) => {
     try {
-      let getQuery = "SELECT *, DATE_FORMAT(date, '%d/%m/%Y') AS date FROM certificate";
+      let getQuery = "SELECT *, DATE_FORMAT(date, '%d/%m/%Y') AS date FROM certificate ORDER BY id DESC";
       db.query(getQuery, async (err, result) => {
         if (err) return reject(err?.message);
         else {
