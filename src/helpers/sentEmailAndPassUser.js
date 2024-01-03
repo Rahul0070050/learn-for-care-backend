@@ -41,6 +41,10 @@ export function sentEmailToSubUserEmailAndPasswordByTrap(
   return new Promise(async (resolve, reject) => {
     try {
 
+      let image = await downloadFromS3(
+        "",
+        "/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7"
+      );
       let mailTrapClient = new MailtrapClient({
         endpoint: process.env.MAILTRAP_ENDPOINT,
         token: process.env.MAILTRAP_TOKEN,
@@ -63,7 +67,7 @@ export function sentEmailToSubUserEmailAndPasswordByTrap(
           to: recipients,
           subject: "Learn For Care",
           text: "here is your otp",
-          html: userCredentials(name, email, password),
+          html: userCredentials(name, email, password, image.url),
         })
         .then((result) => {
           console.log(result);

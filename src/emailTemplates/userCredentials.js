@@ -1,4 +1,4 @@
-export function userCredentials(name, email, pass) {
+export function userCredentials(name, email, pass, logo) {
   return `
     
 <!DOCTYPE html>
@@ -342,9 +342,9 @@ export function userCredentials(name, email, pass) {
                 width="100%"
               >
                 <tr>
-                  <td class="logo" style="text-align: center">
-                    <h1><a href="#">Learn For Care</a></h1>
-                  </td>
+                <td class="logo" style="text-align: center;">
+                  <img src="${logo}" style="width: 10rem;" />
+                </td>
                 </tr>
               </table>
             </td>
