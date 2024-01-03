@@ -52,6 +52,8 @@ export async function saveCertificate({
       doc.fillColor("#000");
       // doc.font("Helvetica");
 
+      doc.fontSize(16);
+
       doc.text(courseName, 230, 451);
 
       doc.text(newDate, 230, 492);
