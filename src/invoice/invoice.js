@@ -41,7 +41,7 @@ export async function saveInvoice(
         ];
       });
 
-      let total = parseFloat(Number(subTotal) + Number(tax)).toFixed(2);
+      let total = parseFloat(Number(subTotal)).toFixed(2);
 
       let file_path = path.join(__dirname, "../", `/invoice/${file_name}`);
       const fileStream = fs.createWriteStream(file_path);

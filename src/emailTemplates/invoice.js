@@ -325,6 +325,8 @@ export const invoiceTemplate = (name, invoice_number, invoice_date, logo) => {
                                     <br>
                                     <div style="text-align: center;">
                                         Please contact us on support@learnforcare.co.uk </br>
+                                    </div>
+                                    <div style="text-align: center;">
                                         <a target="_blank" href="www.learnforcare.co.uk">Learn For Care</a>
                                     </div>
                              </div>
