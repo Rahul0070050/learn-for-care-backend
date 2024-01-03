@@ -48,8 +48,9 @@ export async function saveCertificate({
 
       doc.fillColor("#F3A024");
       doc.text(userName, centerX, centerY - 30);
-
-      doc.font("Helvetica");
+      
+      doc.fillColor("#000");
+      // doc.font("Helvetica");
 
       doc.text(courseName, 230, 451);
 
