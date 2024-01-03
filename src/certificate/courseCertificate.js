@@ -57,7 +57,7 @@ export async function saveCertificate({
 
       doc.fontSize(15);
 
-      doc.text(courseName, 230, 447);
+      doc.text(courseName, 230, 446);
 
       doc.text(newDate, 230, 488);
   
@@ -67,7 +67,7 @@ export async function saveCertificate({
   
       doc.text("some text for course description".split(1, 60), 230, 620);
 
-      doc.text(newDate, 100, 686);
+      doc.text(newDate, 100, 684);
 
       doc.end();
 
