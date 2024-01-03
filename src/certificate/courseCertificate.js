@@ -43,7 +43,9 @@ export async function saveCertificate({
       const centerY = (doc.page.height - userNameHeight) / 2;
 
       doc.font(path.join(__dirname, "../", "/font/Montserrat/static/Montserrat-Bold.ttf"));
+      
       doc.fontSize(16);
+
       doc.fillColor("#F3A024");
       doc.text(userName, centerX, centerY - 30);
 
