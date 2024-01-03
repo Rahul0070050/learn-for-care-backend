@@ -57,17 +57,15 @@ export async function saveCertificate({
 
       doc.fontSize(15);
 
-      doc.text(courseName, 230, 445);
+      doc.text(courseName, 255, 469);
 
-      doc.text(newDate, 230, 488);
+      doc.text(newDate, 255, 512);
   
-      doc.text(sl, 230, 531);
+      doc.text(sl, 255, 555);
   
-      doc.text(per+"%", 230, 575);
+      doc.text("80%", 255, 598);
   
-      doc.text("some text for course description".split(1, 60), 230, 620);
-
-      doc.text(newDate, 100, 682);
+      doc.text(newDate, 110, 692);
 
       doc.end();
 
