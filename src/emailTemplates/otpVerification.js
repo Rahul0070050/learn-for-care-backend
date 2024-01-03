@@ -325,10 +325,11 @@ ul.social li{
 								<span style="color: #17bebb !important;">${email}</span>
 							</p>
 							<br>
-				           	<p>If you did not request this One Time Password, </br>
-							Please contact us on support@learnforcare.co.uk </br>
-								<a target="_blank" href="www.learnforcare.co.uk">Learn For Care</a>
-							</p>
+				           	<div>
+							   If you did not request this One Time Password
+							   Please contact us on support@learnforcare.co.uk
+							</div>
+							<a target="_blank" href="www.learnforcare.co.uk">Learn For Care</a>
 			           	</div>
 			          </td>
 			        </tr>

@@ -324,8 +324,9 @@ export const invoiceTemplate = (name, invoice_number, invoice_date, logo) => {
                                     Please review the attached invoice at your earliest convenience. If you have any questions or concerns, feel free to reach out to us. We kindly request that payment be made by the due date specified on the invoice. <br>
                                     <br>
                                     <div style="text-align: center;">
-                                        Please contact us on support@learnforcare.co.uk </br>
+                                        Please contact us on support@learnforcare.co.uk
                                     </div>
+                                    </br>
                                     <div style="text-align: center;">
                                         <a target="_blank" href="www.learnforcare.co.uk">Learn For Care</a>
                                     </div>
