@@ -42,7 +42,7 @@ export async function saveCertificate({
       const centerX = (doc.page.width - userNameWidth) / 2;
       const centerY = (doc.page.height - userNameHeight) / 2;
 
-      doc.font(path.join("../", "/font/Montserrat/static/Montserrat-Bold.ttf"));
+      doc.font(path.join(__dirname, "../", "/font/Montserrat/static/Montserrat-Bold.ttf"));
       doc.fontSize(16);
       doc.fillColor("#212A4F");
       doc.text(userName, centerX, centerY - 30);
