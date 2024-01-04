@@ -70,7 +70,9 @@ app.use(
       "http://localhost:3000",
       "http://localhost:5173",
       "https://admin.learnforcare.co.uk",
-      "https://test.learnforcare.co.uk"
+      "https://test.learnforcare.co.uk",
+      "https://learnforcare.co.uk/",
+      "https://www.learnforcare.co.uk/"
     ],
     credentials: true,
   })
