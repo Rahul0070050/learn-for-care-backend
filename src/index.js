@@ -72,7 +72,8 @@ app.use(
       "https://admin.learnforcare.co.uk",
       "https://test.learnforcare.co.uk",
       "https://learnforcare.co.uk/",
-      "https://www.learnforcare.co.uk/"
+      "https://www.learnforcare.co.uk/",
+      "https://www.admin.learnforcare.co.uk/"
     ],
     credentials: true,
   })
