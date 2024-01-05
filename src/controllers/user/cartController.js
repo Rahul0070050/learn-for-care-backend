@@ -519,14 +519,15 @@ export const cartController = {
           // console.log(chargeSucceeded);
           // console.log(chargeSucceeded.billing_details.email);
           // console.log(chargeSucceeded.billing_details.email);
+          console.log("from success");
           getUserByEmail(
             { email: chargeSucceeded.billing_details.email } || { email: "" }
           )
-            .then((user) => {
+          .then((user) => {
+              console.log("from get user");
               let userId = user[0].id;
               let email = user[0].email;
               let userName = user[0].first_name + " " + user[0].last_name;
-              console.log("from get user");
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
                   console.log("from get cart item");
