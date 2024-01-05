@@ -8,7 +8,7 @@ config();
 export default function sendConcatUsEmail(from, name, content,sub) {
   return new Promise(async(resolve, reject) => {
     try {
-      let image = await downloadFromS3("","/blogs/e3ad1356-490e-4252-bbb8-2296a59a6db7")
+      let image = await downloadFromS3("","/blogs/db3d45bc-f4eb-4e70-a3a8-0f9231c5d16f")
       const mailData = {
         from: {
           name: '',
