@@ -293,11 +293,11 @@ export function mySqlConnect(done) {
         user_id INT NOT NULL DEFAULT 0,
         count INT NOT NULL DEFAULT 1,
         fake_count INT NOT NULL DEFAULT 1,
-        status VARCHAR(20) NOT NULL DEFAULT 'not started',
         validity DATETIME NOT NULL,
         date DATETIME NOT NULL DEFAULT NOW()
       );
     `;
+    // status VARCHAR(20) NOT NULL DEFAULT 'not started',
 
     db.query(assignedCourseTable, (err, result) => {
       if (err) console.log(err);

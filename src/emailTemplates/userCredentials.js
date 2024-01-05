@@ -392,9 +392,6 @@ export function userCredentials(name, email, pass, logo) {
                       <br />
                       <p>This account is assigned by your company, ensuring that the courses offered here are tailored to your professional development. With your login credentials in hand, you're ready to embark on an exciting educational journey. Now, let the learning adventure begin! Happy learning!</p>
                       <br />
-                      // <p>
-                      //   If you don't request this email, you can simply ignore it.
-                      // </p>
                       <div style="text-align: center">
                         Please contact us on support@learnforcare.co.uk </br>
                       </div>
