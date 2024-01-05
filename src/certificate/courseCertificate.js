@@ -42,7 +42,7 @@ export async function saveCertificate({
       const centerX = parseInt(612 - (userNameWidth / 2));
       const centerY = parseInt(860 - (userNameHeight / 2));
 
-      doc.font(path.join(__dirname, "../", "/font/Montserrat/static/Montserrat-Bold.ttf"));
+      doc.font("Times-Roman");
       
       doc.fontSize(20);
 
