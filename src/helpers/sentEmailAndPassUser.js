@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import { mailer } from "../conf/nodeMailer.js";
 import { userCredentials } from "../emailTemplates/userCredentials.js";
 import { MailtrapClient } from "mailtrap";
+import { downloadFromS3 } from "../AWS/S3.js";
 
 config();
 

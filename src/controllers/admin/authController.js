@@ -36,7 +36,7 @@ export const adminAuthController = {
                       code: 406,
                       message:
                         "this email is invalid please provide valid email",
-                      error: "email in incorrect",
+                      error: "Email Incorrect",
                     },
                   ],
                   errorType: "client",
@@ -57,7 +57,7 @@ export const adminAuthController = {
                               code: 200,
                               jwt_access_token: token.accessToken,
                               jwt_re_fresh_token: token.reFreshToken,
-                              message: "login successful",
+                              message: "Login Successful",
                               adminType: "admin",
                             },
                           });
@@ -82,8 +82,8 @@ export const adminAuthController = {
                         errors: [
                           {
                             code: 406,
-                            message: "the password is incorrect",
-                            error: "password not matching",
+                            message: "The Password Is Incorrect",
+                            error: "Password Not Matching",
                           },
                         ],
                         errorType: "client",

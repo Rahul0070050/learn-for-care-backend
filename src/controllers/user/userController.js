@@ -1105,18 +1105,24 @@ export const userController = {
     try {
       checkCreateManagerIndividualReqBody(req.body)
         .then(async (result) => {
-          console.log("form top then");
           let userId = getUser(req).id;
           let password = await hashPassword(result.password);
           saveAManagerToDb({ ...result, password, userId })
             .then(async () => {
-              console.log("form then");
               try {
                 await sentEmailToSubUserEmailAndPasswordByTrap(
                   result.first_name + " " + result.last_name,
                   result.email,
                   result.password
                 );
+                res.status(200).json({
+                  success: true,
+                  data: {
+                    code: 200,
+                    message: "manager individual created",
+                    response: "",
+                  },
+                });
                 console.log("from if case");
               } catch (error) {
                 console.log(error);
@@ -1132,15 +1138,6 @@ export const userController = {
                   errorType: "server",
                 });
               }
-              console.log("email sent");
-              res.status(200).json({
-                success: true,
-                data: {
-                  code: 200,
-                  message: "manager individual created",
-                  response: "",
-                },
-              });
             })
             .catch((err) => {
               res.status(406).json({
