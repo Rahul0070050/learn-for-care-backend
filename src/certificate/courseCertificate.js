@@ -39,15 +39,15 @@ export async function saveCertificate({
 
       const userNameWidth = doc.widthOfString(userName);
       const userNameHeight = doc.heightOfString(userName);
-      const centerX = (612 - userNameWidth) / 2;
-      const centerY = (860 - userNameHeight) / 2;
+      const centerX = parseInt(612 - (userNameWidth / 2));
+      const centerY = parseInt(860 - (userNameHeight / 2));
 
       doc.font(path.join(__dirname, "../", "/font/Montserrat/static/Montserrat-Bold.ttf"));
       
       doc.fontSize(20);
 
       doc.fillColor("#F3A024");
-      doc.text(userName, centerX - 20, centerY - 30);
+      doc.text(userName, centerX, centerY - 30);
       
       // doc.font("Helvetica");
       
