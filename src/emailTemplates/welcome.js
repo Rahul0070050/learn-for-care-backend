@@ -399,12 +399,14 @@ export function welcomeEmail(logo) {
                         href="https://www.learnforcare.co.uk/course-all"
                         >Learn Now</a
                       >
-                      <p>
-                        For more information Contact : info@learnforcare.co.uk </br>
+                      <div>
+                        For more information Contact : info@learnforcare.co.uk 
+                      </div>
+                      <div>
                         <a target="_blank" href="www.learnforcare.co.uk">
                           Learn For Care
                         </a>
-                      </p>
+                      </div>
                     </div>
                   </td>
                 </tr>
