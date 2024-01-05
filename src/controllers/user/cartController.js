@@ -526,8 +526,10 @@ export const cartController = {
               let userId = user[0].id;
               let email = user[0].email;
               let userName = user[0].first_name + " " + user[0].last_name;
+              console.log("from get user");
               getCartItemsByUserId(userId)
                 .then(async (cartItems) => {
+                  console.log("from get cart item");
                   setTimeout(async () => {
                     try {
                       let coupon = await getActiveCouponByUserId(userId);
@@ -557,22 +559,26 @@ export const cartController = {
                       });
                       let filePath = uuid() + ".pdf";
                       const vatAmount = calculateVATAmount(total);
-                      await saveInvoice(
-                        filePath,
-                        transitionId,
-                        userName,
-                        cartItems,
-                        total,
-                        vatAmount
-                      );
+                      try {
+                        await saveInvoice(
+                          filePath,
+                          transitionId,
+                          userName,
+                          cartItems,
+                          total,
+                          vatAmount
+                        );
 
-                      await sendInvoiceToUserByTrapEmail(
-                        email,
-                        userName,
-                        transitionId,
-                        new Date().toLocaleDateString("en-GB"),
-                        filePath
-                      );
+                        await sendInvoiceToUserByTrapEmail(
+                          email,
+                          userName,
+                          transitionId,
+                          new Date().toLocaleDateString("en-GB"),
+                          filePath
+                        );
+                      } catch (error) {
+                        console.log(error);
+                      }
 
                       let url = await uploadInvoice(filePath);
 
@@ -594,6 +600,7 @@ export const cartController = {
                         })
                       )
                         .then((result) => {
+                          console.log("from promiss");
                           cartItems.forEach((item) => {
                             deleteCourseFromDb(item.id)
                               .then(() => {
