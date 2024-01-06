@@ -34,17 +34,17 @@ export async function saveCertificate({
         }
       );
 
-      let date = new Date().toLocaleDateString().split("/");
+      let date = new Date().toLocaleDateString().split("/").map(d => d.length <= 1 ? "0"+d : d);
       let newDate = date[1] + "/" + date[0] + "/" + date[2];
 
       const userNameWidth = doc.widthOfString(userName);
       const userNameHeight = doc.heightOfString(userName);
-      const centerX = (doc.page.width - userNameWidth) / 2;
+      const centerX = (doc.page.width - (userNameWidth + 10)) / 2;
       const centerY = (doc.page.height - userNameHeight) / 2;
 
       doc.font("Times-Roman");
       
-      doc.fontSize(20);
+      doc.fontSize(22);
 
       doc.fillColor("#F3A024");
       doc.text(userName, centerX, centerY - 30);
