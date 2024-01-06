@@ -3,7 +3,7 @@ import { db } from "../../../conf/mysql.js";
 export function getBlogByIdFromDb(id) {
     return new Promise((resolve, reject) => {
       try {
-        let getAllBlogsQuery = "SELECT * FROM blogs WHERE id = ?";
+        let getAllBlogsQuery = "SELECT *, DATE_FORMAT(date, '%d/%m/%Y') AS date FROM blogs WHERE id = ?";
         db.query(getAllBlogsQuery, [id], (err, result) => {
           if (err) return reject(err?.message);
           else return resolve(result);
