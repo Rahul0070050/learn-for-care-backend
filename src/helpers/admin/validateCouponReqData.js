@@ -124,7 +124,6 @@ export function validateUpdateVolumeCouponInfo(data) {
 export function validateCreateOfferTextInfo(body) {
   return new Promise((resolve, reject) => {
     let bodyTemplate = object({
-      offer_text: string().required("please enter offer text"),
       is_active: boolean().required("please provide is active status"),
     });
 
