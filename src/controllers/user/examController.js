@@ -141,6 +141,7 @@ export const examController = {
                   }
                 })
                 .catch((error) => {
+                  console.log(error);
                   res.status(406).json({
                     success: false,
                     errors: [
@@ -169,6 +170,7 @@ export const examController = {
             }
           })
           .catch((err) => {
+            console.log(err);
             res.status(406).json({
               success: false,
               errors: [
@@ -184,6 +186,7 @@ export const examController = {
         console.log(points);
       });
     } catch (error) {
+      console.log(error);
       res.status(500).json({
         success: false,
         errors: [
