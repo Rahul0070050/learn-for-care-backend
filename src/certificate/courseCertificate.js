@@ -39,8 +39,8 @@ export async function saveCertificate({
 
       const userNameWidth = doc.widthOfString(userName);
       const userNameHeight = doc.heightOfString(userName);
-      const centerX = parseInt(doc.page.width - (userNameWidth / 2));
-      const centerY = parseInt(doc.page.height - (userNameHeight / 2));
+      const centerX = (doc.page.width - userNameWidth) / 2;
+      const centerY = (doc.page.height - userNameHeight) / 2;
 
       doc.font("Times-Roman");
       

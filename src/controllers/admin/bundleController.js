@@ -19,7 +19,7 @@ export const bundleController = {
       checkCreateBundleReqBody(req.body, req.files)
         .then(async (result) => {
           const blogImage = await uploadFileToS3("/blogs", result[1][0]?.image);
-          insertNewBundle({ ...result[0], image: blogImage.file })
+          insertNewBundle({ ...req.body, image: blogImage.file })
             .then((result) => {
               res.status(200).json({
                 success: true,
