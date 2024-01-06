@@ -44,7 +44,7 @@ export async function saveCertificate({
 
       doc.font("Times-Roman");
       
-      doc.fontSize(22);
+      doc.fontSize(23);
 
       doc.fillColor("#F3A024");
       doc.text(userName, centerX, centerY - 30);
