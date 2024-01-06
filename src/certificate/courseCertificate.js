@@ -63,7 +63,7 @@ export async function saveCertificate({
   
       doc.text(sl, 255, 555);
   
-      doc.text("80%", 255, 598);
+      doc.text(per, 255, 598);
   
       doc.text(newDate, 110, 692);
 
