@@ -426,9 +426,9 @@ export function mySqlConnect(done) {
     const offerTextTable = `
       CREATE TABLE IF NOT EXISTS offer_text (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        offer_text TEXT NOT NULL,
+        offer_text TEXT DEFAULT NULL,
         hight_light_text VARCHAR(250) DEFAULT NULL,
-        is_active BOOLEAN NOT NULL,
+        is_active BOOLEAN DEFAULT NULL,
         image VARCHAR(250) DEFAULT NULL
       );
     `;
