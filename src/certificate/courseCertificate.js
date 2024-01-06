@@ -44,10 +44,10 @@ export async function saveCertificate({
 
       doc.font("Times-Roman");
       
-      doc.fontSize(24);
+      doc.fontSize(25);
 
       doc.fillColor("#F3A024");
-      doc.text(userName, centerX - 17, centerY - 30);
+      doc.text(userName, centerX - 23, centerY - 30);
       
       // doc.font("Helvetica");
       
